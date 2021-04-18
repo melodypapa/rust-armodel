@@ -15,7 +15,11 @@ pub struct ARPackage {
     //referenceBase: Vec<ReferenceBase>,
 }
 
-impl ARPackage {
+trait ARPackageInterface {
+    fn create_package(&self);
+}
+
+impl ARPackageInterface for ARPackage {
     /// construct ARPackage Object
     pub fn new() -> ARPackage {
         println!("Create ARPackage");
@@ -24,6 +28,11 @@ impl ARPackage {
             //element: Vec::new(),
         }
     }
+
+    pub create_package(short_name: str&){
+        
+    }
+fn create_package(&self) { todo!() }
 }
 
 #[cfg(test)]

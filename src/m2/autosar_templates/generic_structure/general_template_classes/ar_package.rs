@@ -1,38 +1,46 @@
+#[derive(Debug)]
+pub struct PackageableElement {}
 
-/// 
+#[derive(Debug)]
+pub struct ARObject {}
+
+#[derive(Debug)]
+pub struct ReferenceBase{}
+
+///
 /// AUTOSAR package, allowing to create top level packages to structure the contained ARElements.
 /// ARPackages are open sets. This means that in a file based description system multiple files can be used
 /// to partially describe the contents of a package.
 /// This is an extended version of MSR’s SW-SYSTEM
-/// 
+///
 /// Attributes
 /// ----------
 ///   
 #[derive(Debug)]
 pub struct ARPackage {
     ar_packages: Vec<ARPackage>,
-    //element: Vec<PackageableElement>,
-    //referenceBase: Vec<ReferenceBase>,
+    elements: Vec<PackageableElement>,
+    reference_bases: Vec<ReferenceBase>,
 }
 
-trait ARPackageInterface {
+trait ARObjectTraits: {
+    fn init(&self);
+
+}
+
+trait ARPackageTraits: ARObjectTraits {
     fn create_package(&self);
 }
 
-impl ARPackageInterface for ARPackage {
+impl ARPackage {
     /// construct ARPackage Object
-    pub fn new() -> ARPackage {
-        println!("Create ARPackage");
-        ARPackage {
+    pub fn new() -> Self {
+        Self {
             ar_packages: Vec::new(),
-            //element: Vec::new(),
+            elements: Vec::new(),
+            reference_bases: Vec::new(),
         }
     }
-
-    pub create_package(short_name: str&){
-        
-    }
-fn create_package(&self) { todo!() }
 }
 
 #[cfg(test)]
@@ -41,6 +49,6 @@ mod tests {
 
     #[test]
     fn create_arpackage_test() {
-        let _pkg = ARPackage::new();
+        let pkg = ARPackage::new();
     }
 }

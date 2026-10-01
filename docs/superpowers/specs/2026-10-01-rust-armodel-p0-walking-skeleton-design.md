@@ -69,31 +69,61 @@ P0.
 | Rust | Stable toolchain, no nightly; edition 2021 |
 | Generated code | Committed `.rs` (applies from P1 onward) |
 | Test assertion | Model equality only |
+| Module structure | Derived from the AUTOSAR spec markdown `\| Package \| M2::… \|` rows in `py-armodel/autosar/<release>/markdown/` |
+| Interface-marked types | Concrete Rust structs, matching py-armodel |
+
+### Structural source of truth
+
+Each AUTOSAR class is defined in the spec markdown (`py-armodel/autosar/R23-11/markdown/*.md`)
+with a class table containing an explicit package row, e.g.:
+
+```
+| Class   | ARPackage |
+| Package | M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ARPackage |
+```
+
+**Rule:** every `::` segment of the `Package` row becomes a `snake_case` Rust module; one
+module per package; the class name is used unchanged as the Rust type name. Non-leaf
+packages (those containing only sub-packages) are `mod.rs` module declarations. This mirrors
+py-armodel's own `Foo.py` / `Foo/__init__.py` convention and makes the Rust tree verifiable
+against the spec.
+
+Some types are marked `(interface)` in the spec but implemented as concrete classes in
+py-armodel (e.g. `LPlainText`, `SdgContents`). Per the locked decision, they are modelled as
+**concrete Rust structs** so behaviour and round-trip parity match py-armodel; the divergence
+is recorded here rather than resolved in favour of the spec.
 
 ## 4. Architecture
 
-Single library crate `armodel`, with a module tree mirroring py-armodel so the later
-mechanical port maps cleanly.
+Single library crate `armodel`. The module tree mirrors the AUTOSAR spec package paths
+(§3), so the later mechanical port maps cleanly.
 
 ```
 rust-armodel/
 ├── Cargo.toml                      # edition 2021; deps: quick-xml, id_arena, getopts
 ├── src/
 │   ├── lib.rs
-│   ├── m2/                         # typed model (hand-written in P0)
+│   ├── m2/                                     # module tree = spec Package paths
 │   │   ├── autosar_templates/
-│   │   │   ├── autosar_top_level_structure.rs   # Document (AUTOSAR root)
-│   │   │   └── generic_structure/general_template_classes/
-│   │   │       ├── ar_object.rs                 # ARObject
-│   │   │       ├── identifier.rs                # Referrable, MultilanguageReferrable, Identifiable
-│   │   │       └── ar_package.rs                # CollectableElement, PackageableElement, ARElement, ARPackage, ReferenceBase
+│   │   │   ├── autosar_top_level_structure.rs  # M2::AUTOSARTemplates::AutosarTopLevelStructure
+│   │   │   └── generic_structure/
+│   │   │       ├── mod.rs                      # M2::AUTOSARTemplates::GenericStructure
+│   │   │       └── general_template_classes/
+│   │   │           ├── mod.rs                  # …::GeneralTemplateClasses
+│   │   │           ├── ar_object.rs            #   ::ArObject          -> ARObject
+│   │   │           ├── identifiable.rs         #   ::Identifiable      -> Referrable, MultilanguageReferrable, Identifiable, Describable, …
+│   │   │           ├── element_collection.rs   #   ::ElementCollection -> CollectableElement, Collection
+│   │   │           └── ar_package.rs           #   ::ARPackage         -> PackageableElement, ARElement, ARPackage, ReferenceBase
 │   │   └── msr/
 │   │       ├── asam_hdo/
-│   │       │   ├── admin_data.rs                # AdminData
-│   │       │   └── special_data.rs              # Sd, Sdf, SdgCaption, SdgContents, Sdg
-│   │       └── documentation/text_model/
-│   │           ├── multilanguage_data.rs        # MultiLanguagePlainText
-│   │           └── language_data_model.rs       # LPlainText
+│   │       │   ├── admin_data.rs               # M2::MSR::AsamHdo::AdminData   -> AdminData, DocRevision, Modification
+│   │       │   └── special_data.rs             # M2::MSR::AsamHdo::SpecialData -> Sd, Sdf, Sdg, SdgCaption, SdgContents
+│   │       └── documentation/
+│   │           ├── mod.rs                      # M2::MSR::Documentation
+│   │           └── text_model/
+│   │               ├── mod.rs                  # M2::MSR::Documentation::TextModel
+│   │               ├── multilanguage_data.rs   #   ::MultilanguageData  -> MultiLanguagePlainText, MultiLanguageOverviewParagraph
+│   │               └── language_data_model.rs  #   ::LanguageDataModel  -> LPlainText, WhitespaceControlled, LanguageSpecific
 │   ├── parser/
 │   │   ├── abstract_arxml_parser.rs             # Node DOM + find/findall/get_child_element helpers
 │   │   └── arxml_parser.rs                      # load(), read_admin_data(), read_ar_packages()
@@ -104,6 +134,10 @@ rust-armodel/
     ├── test_files/AdminDataWhitespace.arxml     # copied from py-armodel
     └── roundtrip.rs
 ```
+
+`Document` (the root type, replacing py's `AUTOSAR`) lives in
+`autosar_top_level_structure.rs`, the module for spec class `AUTOSAR`
+(`M2::AUTOSARTemplates::AutosarTopLevelStructure`).
 
 `src/bin/arxml-dump.rs` is retained and updated to compile against the new model API; its
 behaviour is unchanged in P0.
@@ -121,45 +155,54 @@ P0 implements only the classes `AdminDataWhitespace.arxml` needs, plus the base 
 fields are private; accessors are `get_`/`set_` (setters return `&mut Self` for chaining),
 mapped from py's `getX`/`setX`.
 
-Base chain (hand-written, defines the pattern):
+Base chain (hand-written, defines the pattern). Each entry notes its spec package → Rust
+module; the class name is used unchanged:
 
 - `ARObject { checksum: Option<String>, timestamp: Option<String> }`
+  — `…GeneralTemplateClasses::ArObject` → `general_template_classes::ar_object`
 - `Referrable : ARObject { parent: Option<ElementRef>, short_name: Option<String> }`
-- `MultilanguageReferrable : Referrable` (no new fields in P0)
+  — `…GeneralTemplateClasses::Identifiable` → `general_template_classes::identifiable`
+- `MultilanguageReferrable : Referrable` (no new fields in P0) — same module
 - `Identifiable : MultilanguageReferrable { uuid: Option<String>, category: Option<String>,
-  admin_data: Option<Id<AdminData>> }` — the remaining spec fields (desc, introduction,
-  annotations, long_name) arrive in P1 from the converter.
+  admin_data: Option<Id<AdminData>> }` — same module; the remaining spec fields (desc,
+  introduction, annotations, long_name) arrive in P1 from the converter.
 - `CollectableElement : Identifiable`
+  — `…GeneralTemplateClasses::ElementCollection` → `general_template_classes::element_collection`
 - `PackageableElement : CollectableElement`
-- `ARElement : PackageableElement`
+  — `…GeneralTemplateClasses::ARPackage` → `general_template_classes::ar_package`
+- `ARElement : PackageableElement` — same module
 - `ARPackage : CollectableElement { elements: Vec<ElementRef>, ar_packages: Vec<Id<ARPackage>>,
-  reference_bases: Vec<Id<ReferenceBase>> }`
-- `ReferenceBase : ARElement`
-- `Document` (root, replaces py's `AbstractAUTOSAR`): owns every arena, plus
-  `admin_data: Option<Id<AdminData>>`, `root_ar_packages: Vec<Id<ARPackage>>`,
-  `schema_location: String`, `ar_release: String`.
+  reference_bases: Vec<Id<ReferenceBase>> }` — same module
+- `ReferenceBase : ARElement` — same module
+- `Document` (root, in place of py's `AUTOSAR`): specified by spec class `AUTOSAR`
+  (`M2::AUTOSARTemplates::AutosarTopLevelStructure` → `autosar_templates::autosar_top_level_structure`).
+  Owns every arena, plus `admin_data: Option<Id<AdminData>>`,
+  `root_ar_packages: Vec<Id<ARPackage>>`, `schema_location: String`, `ar_release: String`.
 
-Content classes (driven by the file; field names and shapes taken from py-armodel):
+Content classes (driven by the file; field names and shapes taken from py-armodel, module
+placement from the spec `Package` rows):
 
 - `AdminData { doc_revisions: Vec<Id<DocRevision>>, language: Option<String>,
   sdgs: Vec<Id<Sdg>>, used_languages: Option<Id<MultiLanguagePlainText>> }`
-  (`MSR/AsamHdo/AdminData.py`). Note `used_languages` is a **single** `MultiLanguagePlainText`,
-  not a list.
+  — `M2::MSR::AsamHdo::AdminData` → `msr::asam_hdo::admin_data`. Note `used_languages` is a
+  **single** `MultiLanguagePlainText`, not a list.
 - `MultiLanguagePlainText { l10s: Vec<Id<LPlainText>> }`
-  (`MSR/Documentation/TextModel/MultilanguageData.py:152`)
+  — `M2::MSR::Documentation::TextModel::MultilanguageData` → `…::text_model::multilanguage_data`
 - `LPlainText { l: Option<String>, xml_space: Option<XmlSpace>, value: Option<String> }`
-  (`MSR/Documentation/TextModel/LanguageDataModel.py:1025`; `l` from `LanguageSpecific`,
-  `xml_space` from `WhitespaceControlled`, `value` from `AtpMixedString`). This is the
-  `<L-10 L="EN" xml:space="preserve">English</L-10>` element.
+  — `M2::MSR::Documentation::TextModel::LanguageDataModel` → `…::text_model::language_data_model`
+  (`l` from `LanguageSpecific`, `xml_space` from `WhitespaceControlled`, `value` from the
+  mixed-content base). This is the `<L-10 L="EN" xml:space="preserve">English</L-10>` element.
+  The spec marks `LPlainText` as an interface; per §3 it is a concrete struct.
 - `Sd { gid: Option<String>, value: Option<String>, xml_space: Option<XmlSpace> }`
-  (`MSR/AsamHdo/SpecialData.py:10`) — `xml:space` is an **explicit field**, which is how
-  whitespace fidelity is preserved.
-- `Sdf { gid: Option<String>, value: Option<String> }` (`SpecialData.py:116`)
+  — `M2::MSR::AsamHdo::SpecialData` → `msr::asam_hdo::special_data`. `xml:space` is an
+  **explicit field**, which is how whitespace fidelity is preserved.
+- `Sdf { gid: Option<String>, value: Option<String> }` — same module
 - `SdgCaption : MultilanguageReferrable { desc: Option<Id<MultiLanguageOverviewParagraph>> }`
-  (`SpecialData.py:82`)
-- `SdgContents { sd: Vec<Id<Sd>>, sdf: Vec<Id<Sdf>>, sdg: Vec<Id<Sdg>> }` (`SpecialData.py:169`)
+  — same module
+- `SdgContents { sd: Vec<Id<Sd>>, sdf: Vec<Id<Sdf>>, sdg: Vec<Id<Sdg>> }` — same module. The
+  spec marks it as an interface; modelled as a concrete struct per §3.
 - `Sdg { gid: Option<String>, sdg_caption: Option<Id<SdgCaption>>,
-  sdg_contents_type: Option<Id<SdgContents>> }` (`SpecialData.py:279`)
+  sdg_contents_type: Option<Id<SdgContents>> }` — same module
 
 `DocRevision` and `MultiLanguageOverviewParagraph` are referenced by type but do not occur in
 `AdminDataWhitespace.arxml`; they may remain empty placeholder structs in P0 and are filled in
@@ -258,8 +301,9 @@ diff may be added in a later phase.
 ## 9. Implementation steps
 
 1. **Scaffold** — edition 2021; `Cargo.toml` deps `quick-xml`, `id_arena`, `getopts`;
-   create the module tree; remove dead stubs (`autosar_top_level_structure.rs`'s invalid
-   `str&` field) and the unused `regex`/`libxml` references.
+   create the module tree per the spec `Package` paths (§3–§4); remove dead stubs
+   (`autosar_top_level_structure.rs`'s invalid `str&` field) and the unused
+   `regex`/`libxml` references.
 2. **Model** — implement the base chain, `ElementRef`, `Document` with arenas, and the
    content classes from §5, with `get_`/`set_` accessors.
 3. **DOM + abstract parser** — quick-xml `Node` DOM and the find/get helpers from §6.
@@ -284,7 +328,9 @@ diff may be added in a later phase.
 ## 11. Follow-on phases (out of scope here)
 
 - **P1** Converter: `tools/py2rust/` (Python `ast`) emits committed typed Rust model from
-  `models/M2/**`, plus the generated `ElementRef` enum and factory/dispatch tables.
+  py's `models/M2/**`, with **module placement taken from the spec markdown `Package` rows**
+  (`py-armodel/autosar/<release>/markdown/*.md`), plus the generated `ElementRef` enum and
+  the tag → constructor registry.
 - **P2–P4** Mechanical parser and writer port, batched by AUTOSAR domain, expanded until all
   133 files round-trip.
 - **P5** Redesign into a schema-driven single engine (the "improve the parser and writer"

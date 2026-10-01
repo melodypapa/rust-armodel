@@ -15,3 +15,7 @@ getopts = "0.2"
 quick-xml = "0.42.0"
 id-arena = "2.3.0"
 thiserror = "2"
+
+[[test]]
+name = "roundtrip"
+path = "tests/integration/roundtrip.rs"

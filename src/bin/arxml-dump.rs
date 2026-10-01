@@ -1,9 +1,7 @@
-use armodel::ARPackage;
 use getopts::Options;
 use std::env;
 
 fn main() {
-    let _ = ARPackage::new();
     let args: Vec<String> = env::args().collect();
 
     let mut opts = Options::new();
@@ -15,8 +13,7 @@ fn main() {
             panic!("{}", f.to_string())
         }
     };
-    if matches.opt_present("h"){
+    if matches.opt_present("h") {
         print!("Help");
-        return;
     }
 }

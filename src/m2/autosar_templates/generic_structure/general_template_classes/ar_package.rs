@@ -1,54 +1,6 @@
-#[derive(Debug)]
-pub struct PackageableElement {}
-
-#[derive(Debug)]
-pub struct ARObject {}
-
-#[derive(Debug)]
-pub struct ReferenceBase{}
-
-///
-/// AUTOSAR package, allowing to create top level packages to structure the contained ARElements.
-/// ARPackages are open sets. This means that in a file based description system multiple files can be used
-/// to partially describe the contents of a package.
-/// This is an extended version of MSR’s SW-SYSTEM
-///
-/// Attributes
-/// ----------
-///   
-#[derive(Debug)]
-pub struct ARPackage {
-    ar_packages: Vec<ARPackage>,
-    elements: Vec<PackageableElement>,
-    reference_bases: Vec<ReferenceBase>,
-}
-
-trait ARObjectTraits: {
-    fn init(&self);
-
-}
-
-trait ARPackageTraits: ARObjectTraits {
-    fn create_package(&self);
-}
-
-impl ARPackage {
-    /// construct ARPackage Object
-    pub fn new() -> Self {
-        Self {
-            ar_packages: Vec::new(),
-            elements: Vec::new(),
-            reference_bases: Vec::new(),
-        }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::ARPackage;
-
-    #[test]
-    fn create_arpackage_test() {
-        let pkg = ARPackage::new();
-    }
-}
+// M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ARPackage
+//
+// Spec classes `PackageableElement`, `ARElement`, `ARPackage`,
+// `ReferenceBase` (P0 design §5). Children are stored as `Vec<Id<ARPackage>>`
+// into a `Document`-owned arena — never `Vec<ARPackage>` by value
+// (`docs/code_guide.md` §4). Implemented in step 2.

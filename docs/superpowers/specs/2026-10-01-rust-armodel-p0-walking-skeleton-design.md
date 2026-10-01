@@ -10,7 +10,7 @@ Scope: Phase P0 only
 stub (~108 LOC): an `ARObject`/`PackageableElement`/`ReferenceBase`/`ARPackage` skeleton, an
 empty `AUTOSAR` struct, and an `arxml-dump` binary that parses CLI args and does nothing.
 
-`py-armodel` (sibling repo at `/Users/ray/Workspace/py-armodel`) is the mature reference:
+`py-armodel` (https://github.com/melodypapa/py-armodel/) is the mature reference:
 ~1,987 model classes (107k LOC) under `src/armodel/models/M2/`, a 15.8k-line hand-written
 parser (`src/armodel/parser/arxml_parser.py`), and a 15.4k-line writer
 (`src/armodel/writer/arxml_writer.py`). Its contract is round-trip integrity, enforced over

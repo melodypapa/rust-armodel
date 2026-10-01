@@ -1,0 +1,34 @@
+# AGENTS.md
+
+## What this is
+
+Rust port of **py-armodel** (reference implementation at https://github.com/melodypapa/py-armodel/) for parsing/generating AUTOSAR ARXML. North star is full 1:1 parity with py-armodel; the crate is currently in the **P0 walking skeleton** phase.
+
+## Read before writing code
+
+- `docs/code_guide.md` — binding coding rules: composition instead of inheritance, arenas + `Id<T>` links, naming, error/warning model, porting checklist, anti-patterns. This is the authority; follow it over README prose.
+- `docs/superpowers/specs/2026-10-01-rust-armodel-p0-walking-skeleton-design.md` — P0 design and the phased plan (P1 converter, P2–P4 mass port, P5 parser/writer redesign).
+
+## Commands
+
+- `cargo build` / `cargo test` — what CI (Travis) runs
+- `cargo fmt` and `cargo clippy -- -D warnings` must be clean before commit (code_guide §1)
+- CLI: `cargo run --bin arxml-dump -- -a <file.arxml>` (currently a stub)
+
+## Current state: the tree is mostly stubs
+
+Files under `src/m2/`, `src/parser/arxml_parser.rs`, and `src/writer/` contain only `//` comments stating the spec path and "Implemented in step N". These are *planned work items* from the P0 design, not broken or deleted code. Don't assume code_guide examples (`Document`, `assert_structurally_equal`, `tests/integration/roundtrip.rs`, thiserror) exist yet — check the source and `Cargo.toml` first.
+
+## Rules that are easy to violate
+
+- No `unwrap`/`expect`/`panic!` in library code; only the CLI may print an error and `exit(1)` (panics allowed in tests).
+- Tree nodes are `Id<T>` handles into `Document`-owned arenas — never `Vec<Struct>` by value (ownership recursion).
+- No `PartialEq` on arena-linked types; equality means `Document::assert_structurally_equal`.
+- Classes keep AUTOSAR spelling (`ARPackage`); modules/fields/functions are `snake_case` — port `getShortName` → `get_short_name`, never keep camelCase.
+- Module paths mirror AUTOSAR spec package rows (`M2::A::B::C` → `src/m2/a/b/c.rs`), derived from the `| Package |` tables in `https://github.com/melodypapa/py-armodel/tree/main/autosar/R23-11/markdown/*.md`.
+- Test fixtures are verbatim copies of py-armodel's `tests/integration_tests/test_files/*.arxml` — never regenerate them.
+- Setters return `&mut Self` for chaining; all cross-type mutation goes through `Document`, not `&self` factory methods.
+
+## CI
+
+Travis runs `cargo build` + `cargo test` on stable/beta (nightly allowed to fail). Branch: `main`.

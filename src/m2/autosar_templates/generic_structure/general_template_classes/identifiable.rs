@@ -4,8 +4,7 @@
 //! (P0 design §5), modelled as composition per `docs/code_guide.md` §3.
 
 use super::ar_object::{ARObject, ElementRef};
-use crate::m2::msr::asam_hdo::admin_data::AdminData;
-use id_arena::Id;
+use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 
 /// spec class `Referrable` — `Referrable : ARObject`.
 #[derive(Debug, Default)]
@@ -86,7 +85,7 @@ pub struct Identifiable {
     base: MultilanguageReferrable,
     uuid: Option<String>,
     category: Option<String>,
-    admin_data: Option<Id<AdminData>>,
+    admin_data: Option<AdminDataId>,
 }
 
 impl Identifiable {
@@ -129,11 +128,11 @@ impl Identifiable {
         self
     }
 
-    pub fn get_admin_data(&self) -> Option<Id<AdminData>> {
+    pub fn get_admin_data(&self) -> Option<AdminDataId> {
         self.admin_data
     }
 
-    pub fn set_admin_data(&mut self, admin_data: Id<AdminData>) -> &mut Self {
+    pub fn set_admin_data(&mut self, admin_data: AdminDataId) -> &mut Self {
         self.admin_data = Some(admin_data);
         self
     }
@@ -142,6 +141,7 @@ impl Identifiable {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::m2::msr::asam_hdo::admin_data::AdminData;
 
     #[test]
     fn referrable_accessors() {
@@ -170,8 +170,8 @@ mod tests {
         assert_eq!(identifiable.get_category(), None);
         assert!(identifiable.get_admin_data().is_none());
 
-        let mut arena: id_arena::Arena<AdminData> = id_arena::Arena::new();
-        let admin_data_id = arena.alloc(AdminData::new());
+        let mut arena: slotmap::SlotMap<AdminDataId, AdminData> = slotmap::SlotMap::with_key();
+        let admin_data_id = arena.insert(AdminData::new());
 
         identifiable
             .set_uuid("uuid-1")

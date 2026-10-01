@@ -4,19 +4,22 @@
 //! (P0 design §4): it owns one arena per concrete class, and all
 //! cross-type mutation goes through it (`docs/code_guide.md` §4).
 
-use id_arena::{Arena, Id};
+use slotmap::SlotMap;
 
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::{
     ARObject, ElementRef,
 };
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::{
-    ARPackage, ReferenceBase,
+    ARPackage, ARPackageId, ReferenceBase, ReferenceBaseId,
 };
-use crate::m2::msr::asam_hdo::admin_data::{AdminData, DocRevision};
-use crate::m2::msr::asam_hdo::special_data::{Sd, Sdf, Sdg, SdgCaption, SdgContents};
-use crate::m2::msr::documentation::text_model::language_data_model::LPlainText;
+use crate::m2::msr::asam_hdo::admin_data::{AdminData, AdminDataId, DocRevision, DocRevisionId};
+use crate::m2::msr::asam_hdo::special_data::{
+    Sd, SdId, Sdf, SdfId, Sdg, SdgCaption, SdgCaptionId, SdgContents, SdgContentsId, SdgId,
+};
+use crate::m2::msr::documentation::text_model::language_data_model::{LPlainText, LPlainTextId};
 use crate::m2::msr::documentation::text_model::multilanguage_data::{
-    MultiLanguageOverviewParagraph, MultiLanguagePlainText,
+    MultiLanguageOverviewParagraph, MultiLanguageOverviewParagraphId, MultiLanguagePlainText,
+    MultiLanguagePlainTextId,
 };
 
 /// Root type, in place of py-armodel's `AUTOSAR`.
@@ -27,28 +30,30 @@ use crate::m2::msr::documentation::text_model::multilanguage_data::{
 #[derive(Debug, Default)]
 pub struct Document {
     // — arenas (one per concrete class) —
-    pub(crate) ar_packages: Arena<ARPackage>,
+    pub(crate) ar_packages: SlotMap<ARPackageId, ARPackage>,
     /// P0 placeholder arena: nothing allocates `ReferenceBase`s until P1.
     #[allow(dead_code)]
-    pub(crate) reference_bases: Arena<ReferenceBase>,
-    pub(crate) admin_datas: Arena<AdminData>,
+    pub(crate) reference_bases: SlotMap<ReferenceBaseId, ReferenceBase>,
+    pub(crate) admin_datas: SlotMap<AdminDataId, AdminData>,
     /// P0 placeholder arena: nothing allocates `DocRevision`s until P1.
     #[allow(dead_code)]
-    pub(crate) doc_revisions: Arena<DocRevision>,
-    pub(crate) multi_language_plain_texts: Arena<MultiLanguagePlainText>,
+    pub(crate) doc_revisions: SlotMap<DocRevisionId, DocRevision>,
+    pub(crate) multi_language_plain_texts:
+        SlotMap<MultiLanguagePlainTextId, MultiLanguagePlainText>,
     /// P0 placeholder arena: nothing allocates overview paragraphs until P1.
     #[allow(dead_code)]
-    pub(crate) multi_language_overview_paragraphs: Arena<MultiLanguageOverviewParagraph>,
-    pub(crate) l_plain_texts: Arena<LPlainText>,
-    pub(crate) sds: Arena<Sd>,
-    pub(crate) sdfs: Arena<Sdf>,
-    pub(crate) sdg_captions: Arena<SdgCaption>,
-    pub(crate) sdg_contents: Arena<SdgContents>,
-    pub(crate) sdgs: Arena<Sdg>,
+    pub(crate) multi_language_overview_paragraphs:
+        SlotMap<MultiLanguageOverviewParagraphId, MultiLanguageOverviewParagraph>,
+    pub(crate) l_plain_texts: SlotMap<LPlainTextId, LPlainText>,
+    pub(crate) sds: SlotMap<SdId, Sd>,
+    pub(crate) sdfs: SlotMap<SdfId, Sdf>,
+    pub(crate) sdg_captions: SlotMap<SdgCaptionId, SdgCaption>,
+    pub(crate) sdg_contents: SlotMap<SdgContentsId, SdgContents>,
+    pub(crate) sdgs: SlotMap<SdgId, Sdg>,
 
     // — root fields (spec class `AUTOSAR`) —
-    admin_data: Option<Id<AdminData>>,
-    root_ar_packages: Vec<Id<ARPackage>>,
+    admin_data: Option<AdminDataId>,
+    root_ar_packages: Vec<ARPackageId>,
     schema_location: String,
     ar_release: String,
 }
@@ -64,12 +69,12 @@ impl Document {
         self.admin_data.and_then(|id| self.admin_datas.get(id))
     }
 
-    pub fn set_admin_data(&mut self, admin_data: Id<AdminData>) -> &mut Self {
+    pub fn set_admin_data(&mut self, admin_data: AdminDataId) -> &mut Self {
         self.admin_data = Some(admin_data);
         self
     }
 
-    pub fn get_ar_packages(&self) -> &[Id<ARPackage>] {
+    pub fn get_ar_packages(&self) -> &[ARPackageId] {
         &self.root_ar_packages
     }
 
@@ -96,17 +101,13 @@ impl Document {
     /// Creates an `ARPackage` in the arena and links it: when `parent` is
     /// `Some`, the child's `parent` handle is set and the id is pushed into
     /// the parent's package list; when `None`, it becomes a root package.
-    pub fn add_ar_package(
-        &mut self,
-        parent: Option<Id<ARPackage>>,
-        short_name: &str,
-    ) -> Id<ARPackage> {
+    pub fn add_ar_package(&mut self, parent: Option<ARPackageId>, short_name: &str) -> ARPackageId {
         let mut package = ARPackage::new();
         package.set_short_name(short_name);
         if let Some(parent_id) = parent {
             package.set_parent(Some(ElementRef::ARPackage(parent_id)));
         }
-        let id = self.ar_packages.alloc(package);
+        let id = self.ar_packages.insert(package);
         match parent {
             Some(parent_id) => {
                 if let Some(parent) = self.ar_packages.get_mut(parent_id) {
@@ -119,7 +120,7 @@ impl Document {
     }
 
     /// py `addElement` — appends a heterogeneous element to a package.
-    pub fn add_element(&mut self, package: Id<ARPackage>, element: ElementRef) {
+    pub fn add_element(&mut self, package: ARPackageId, element: ElementRef) {
         if let Some(package) = self.ar_packages.get_mut(package) {
             package.push_element(element);
         }
@@ -127,30 +128,30 @@ impl Document {
 
     // — id resolvers (read access from outside the crate) —
 
-    pub fn get_ar_package(&self, id: Id<ARPackage>) -> Option<&ARPackage> {
+    pub fn get_ar_package(&self, id: ARPackageId) -> Option<&ARPackage> {
         self.ar_packages.get(id)
     }
 
-    pub fn get_sdg(&self, id: Id<Sdg>) -> Option<&Sdg> {
+    pub fn get_sdg(&self, id: SdgId) -> Option<&Sdg> {
         self.sdgs.get(id)
     }
 
-    pub fn get_sdg_contents(&self, id: Id<SdgContents>) -> Option<&SdgContents> {
+    pub fn get_sdg_contents(&self, id: SdgContentsId) -> Option<&SdgContents> {
         self.sdg_contents.get(id)
     }
 
-    pub fn get_sd(&self, id: Id<Sd>) -> Option<&Sd> {
+    pub fn get_sd(&self, id: SdId) -> Option<&Sd> {
         self.sds.get(id)
     }
 
     pub fn get_multi_language_plain_text(
         &self,
-        id: Id<MultiLanguagePlainText>,
+        id: MultiLanguagePlainTextId,
     ) -> Option<&MultiLanguagePlainText> {
         self.multi_language_plain_texts.get(id)
     }
 
-    pub fn get_l_plain_text(&self, id: Id<LPlainText>) -> Option<&LPlainText> {
+    pub fn get_l_plain_text(&self, id: LPlainTextId) -> Option<&LPlainText> {
         self.l_plain_texts.get(id)
     }
 

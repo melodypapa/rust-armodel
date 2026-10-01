@@ -6,13 +6,14 @@ use std::fs::File;
 use std::io::{BufWriter, Write};
 use std::path::Path;
 
-use id_arena::Id;
 use quick_xml::events::{BytesDecl, BytesEnd, BytesStart, Event};
 use quick_xml::writer::Writer;
 
 use crate::m2::autosar_templates::autosar_top_level_structure::Document;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
-use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARPackage;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::{
+    ARPackage, ARPackageId,
+};
 use crate::m2::msr::asam_hdo::admin_data::AdminData;
 use crate::m2::msr::asam_hdo::special_data::{Sd, Sdg};
 use crate::writer::abstract_arxml_writer::{write_text_element, WriteError};
@@ -212,7 +213,7 @@ impl ARXMLWriter {
     fn write_ar_packages<W: Write>(
         &self,
         writer: &mut Writer<W>,
-        packages: &[Id<ARPackage>],
+        packages: &[ARPackageId],
         document: &Document,
     ) -> Result<(), WriteError> {
         if packages.is_empty() {
@@ -281,30 +282,30 @@ mod tests {
         l10.set_l("EN")
             .set_xml_space(XmlSpace::Preserve)
             .set_value("English");
-        let l10_id = document.l_plain_texts.alloc(l10);
+        let l10_id = document.l_plain_texts.insert(l10);
 
         let mut paragraph = MultiLanguagePlainText::new();
         paragraph.push_l10(l10_id);
-        let paragraph_id = document.multi_language_plain_texts.alloc(paragraph);
+        let paragraph_id = document.multi_language_plain_texts.insert(paragraph);
 
         let mut sd = Sd::new();
         sd.set_gid("purpose")
             .set_xml_space(XmlSpace::Preserve)
             .set_value("special   data");
-        let sd_id = document.sds.alloc(sd);
+        let sd_id = document.sds.insert(sd);
 
         let mut contents = SdgContents::new();
         contents.push_sd(sd_id);
-        let contents_id = document.sdg_contents.alloc(contents);
+        let contents_id = document.sdg_contents.insert(contents);
 
         let mut sdg = Sdg::new();
         sdg.set_gid("demo").set_sdg_contents_type(contents_id);
-        let sdg_id = document.sdgs.alloc(sdg);
+        let sdg_id = document.sdgs.insert(sdg);
 
         let mut admin_data = AdminData::new();
         admin_data.set_used_languages(paragraph_id);
         admin_data.push_sdg(sdg_id);
-        let admin_data_id = document.admin_datas.alloc(admin_data);
+        let admin_data_id = document.admin_datas.insert(admin_data);
         document.set_admin_data(admin_data_id);
 
         document.add_ar_package(None, "WhitespaceDemo");
@@ -314,12 +315,10 @@ mod tests {
     #[test]
     fn save_emits_namespaced_root_and_preserved_whitespace() {
         let document = fixture_document();
-        let output =
-            std::env::temp_dir().join(format!("armodel_writer_test_{}.arxml", std::process::id()));
-        ARXMLWriter::new().save(&output, &document).unwrap();
+        let output = tempfile::NamedTempFile::new().unwrap();
+        ARXMLWriter::new().save(output.path(), &document).unwrap();
 
-        let text = std::fs::read_to_string(&output).unwrap();
-        let _ = std::fs::remove_file(&output);
+        let text = std::fs::read_to_string(output.path()).unwrap();
 
         assert!(text.starts_with("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
         assert!(text.contains(

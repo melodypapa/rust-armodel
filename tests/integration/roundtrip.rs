@@ -23,13 +23,13 @@ fn admin_data_whitespace_roundtrip() {
     assert_eq!(document.get_ar_release(), "R21-11");
 
     // 2. write to a temp file
-    let output = std::env::temp_dir().join("armodel_roundtrip_AdminDataWhitespace.arxml");
-    ARXMLWriter::new().save(&output, &document).unwrap();
+    let output = tempfile::NamedTempFile::new().unwrap();
+    ARXMLWriter::new().save(output.path(), &document).unwrap();
 
     // 3. re-parse
     let mut reparsed = Document::new();
     ARXMLParser::new(default_options())
-        .load(&output, &mut reparsed)
+        .load(output.path(), &mut reparsed)
         .unwrap();
 
     // 4. structural equality (model equality only — no written-text diff in P0)
@@ -51,6 +51,4 @@ fn admin_data_whitespace_roundtrip() {
         .unwrap();
     let l10 = document.get_l_plain_text(paragraph.get_l10s()[0]).unwrap();
     assert_eq!(l10.get_value(), Some("English"));
-
-    let _ = std::fs::remove_file(&output);
 }

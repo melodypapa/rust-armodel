@@ -8,11 +8,17 @@
 //! Children live in `Document`-owned arenas and are referenced by id —
 //! never `Vec<ARPackage>` by value (`docs/code_guide.md` §4).
 
-use id_arena::Id;
+use slotmap::new_key_type;
 
 use super::ar_object::ElementRef;
 use super::element_collection::CollectableElement;
-use crate::m2::msr::asam_hdo::admin_data::AdminData;
+use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
+
+new_key_type! {
+    /// Arena keys for the `ARPackage` classes.
+    pub struct ARPackageId;
+    pub struct ReferenceBaseId;
+}
 
 /// spec class `PackageableElement` — `PackageableElement : CollectableElement`.
 /// No new fields in P0.
@@ -79,8 +85,8 @@ impl ARElement {
 pub struct ARPackage {
     base: CollectableElement,
     elements: Vec<ElementRef>,
-    ar_packages: Vec<Id<ARPackage>>,
-    reference_bases: Vec<Id<ReferenceBase>>,
+    ar_packages: Vec<ARPackageId>,
+    reference_bases: Vec<ReferenceBaseId>,
 }
 
 impl ARPackage {
@@ -150,11 +156,11 @@ impl ARPackage {
         self
     }
 
-    pub fn get_admin_data(&self) -> Option<Id<AdminData>> {
+    pub fn get_admin_data(&self) -> Option<AdminDataId> {
         self.base.base().get_admin_data()
     }
 
-    pub fn set_admin_data(&mut self, admin_data: Id<AdminData>) -> &mut Self {
+    pub fn set_admin_data(&mut self, admin_data: AdminDataId) -> &mut Self {
         self.base.base_mut().set_admin_data(admin_data);
         self
     }
@@ -172,16 +178,16 @@ impl ARPackage {
         self.elements.push(element);
     }
 
-    pub fn get_ar_packages(&self) -> &[Id<ARPackage>] {
+    pub fn get_ar_packages(&self) -> &[ARPackageId] {
         &self.ar_packages
     }
 
     #[allow(dead_code)]
-    pub(crate) fn push_ar_package(&mut self, ar_package: Id<ARPackage>) {
+    pub(crate) fn push_ar_package(&mut self, ar_package: ARPackageId) {
         self.ar_packages.push(ar_package);
     }
 
-    pub fn get_reference_bases(&self) -> &[Id<ReferenceBase>] {
+    pub fn get_reference_bases(&self) -> &[ReferenceBaseId] {
         &self.reference_bases
     }
 }
@@ -210,7 +216,7 @@ impl ReferenceBase {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use id_arena::Arena;
+    use slotmap::SlotMap;
 
     #[test]
     fn ar_package_accessors() {
@@ -233,8 +239,8 @@ mod tests {
 
     #[test]
     fn ar_package_links_use_ids() {
-        let mut arena: Arena<ARPackage> = Arena::new();
-        let parent_id = arena.alloc(ARPackage::new());
+        let mut arena: SlotMap<ARPackageId, ARPackage> = SlotMap::with_key();
+        let parent_id = arena.insert(ARPackage::new());
 
         let mut child = ARPackage::new();
         child.set_parent(Some(ElementRef::ARPackage(parent_id)));

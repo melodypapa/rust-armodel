@@ -4,6 +4,20 @@
 //! (AUTOSAR_FO_TPS_GenericStructureTemplate, Table 6.1).
 //! `ElementRef` (the heterogeneous-link enum) is added in Task 5.
 
+use id_arena::Id;
+
+use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARPackage;
+
+/// Type-erased handle for heterogeneous links (`Referrable::parent`,
+/// `ARPackage::elements`) — replaces py's untyped `parent: ARObject`.
+///
+/// P0 hand-writes the single variant `AdminDataWhitespace.arxml` can produce;
+/// the P1 converter generates the full variant list.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ElementRef {
+    ARPackage(Id<ARPackage>),
+}
+
 /// spec class `ARObject`
 #[derive(Debug, Default)]
 pub struct ARObject {

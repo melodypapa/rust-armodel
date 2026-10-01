@@ -3,17 +3,15 @@
 //! Spec classes `Referrable`, `MultilanguageReferrable`, `Identifiable`
 //! (P0 design §5), modelled as composition per `docs/code_guide.md` §3.
 
-use super::ar_object::ARObject;
+use super::ar_object::{ARObject, ElementRef};
 use crate::m2::msr::asam_hdo::admin_data::AdminData;
 use id_arena::Id;
 
 /// spec class `Referrable` — `Referrable : ARObject`.
-///
-/// The `parent: Option<ElementRef>` field is added in Task 5 together with
-/// `ElementRef` (it needs `ar_package::ARPackage` to exist first).
 #[derive(Debug, Default)]
 pub struct Referrable {
     base: ARObject,
+    parent: Option<ElementRef>,
     short_name: Option<String>,
 }
 
@@ -28,6 +26,15 @@ impl Referrable {
 
     pub fn base_mut(&mut self) -> &mut ARObject {
         &mut self.base
+    }
+
+    pub fn get_parent(&self) -> Option<ElementRef> {
+        self.parent
+    }
+
+    pub fn set_parent(&mut self, parent: Option<ElementRef>) -> &mut Self {
+        self.parent = parent;
+        self
     }
 
     pub fn get_short_name(&self) -> Option<&str> {
@@ -144,6 +151,8 @@ mod tests {
         referrable.set_short_name("Pkg");
         assert_eq!(referrable.get_short_name(), Some("Pkg"));
         assert_eq!(referrable.base().get_checksum(), None);
+        // parent is set through Document::add_ar_package (Task 8).
+        assert!(referrable.get_parent().is_none());
     }
 
     #[test]

@@ -104,8 +104,18 @@ pub fn build_dom_from_reader<R: BufRead>(reader: Reader<R>) -> Result<Node, Pars
             Event::Empty(start) => {
                 let mut node = start_to_node(&start)?;
                 apply_whitespace_rule(&mut node);
-                if let Some(parent) = stack.last_mut() {
-                    parent.children.push(node);
+                match stack.last_mut() {
+                    Some(parent) => parent.children.push(node),
+                    None => {
+                        // A self-closing root element (e.g. `<AUTOSAR/>`).
+                        if root.is_some() {
+                            return Err(ParseError::InvalidElement {
+                                element: node.name,
+                                reason: "multiple root elements".to_string(),
+                            });
+                        }
+                        root = Some(node);
+                    }
                 }
             }
             Event::Text(text) => {

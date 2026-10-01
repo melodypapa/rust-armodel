@@ -10,7 +10,9 @@ This guide translates those decisions into concrete Rust rules.
 ## 1. Ground rules
 
 - Stable toolchain, **edition 2021**, no `unsafe`, no nightly features.
-- XML I/O via **quick-xml**; identity via **id_arena** (`Arena<T>` / `Id<T>`).
+- XML I/O via **quick-xml**; identity via **slotmap** — one
+  `SlotMap<TId, T>` arena per concrete class, with a typed key `TId`
+  declared next to the class via `slotmap::new_key_type!`.
 - Errors with **thiserror**; the library never `panic!`s, `unwrap`s, or `expect`s
   on external input. Panics are allowed only in tests.
 - `cargo fmt` + `cargo clippy -- -D warnings` must be clean before commit.
@@ -65,7 +67,7 @@ pub struct Identifiable {
     base: Referrable,
     uuid: Option<String>,
     category: Option<String>,
-    admin_data: Option<Id<AdminData>>,
+    admin_data: Option<AdminDataId>,
 }
 ```
 
@@ -84,15 +86,16 @@ Rules:
 
 ## 4. Arenas, handles, and mutation
 
-- Every concrete class `T` gets an `Arena<T>` owned by `Document`; instances
-  are referenced by `Id<T>`.
-- Typed links use `Id<T>` (`ar_packages: Vec<Id<ARPackage>>`).
+- Every concrete class `T` gets a `SlotMap<TId, T>` owned by `Document`;
+  instances are referenced by the typed key `TId` (`AdminDataId`,
+  `ARPackageId`, …) declared beside the class.
+- Typed links use the class's key (`ar_packages: Vec<ARPackageId>`).
 - Heterogeneous links (`Referrable::parent`, `ARPackage::elements`) use the
   generated `ElementRef` enum:
 
 ```rust
 pub enum ElementRef {
-    ARPackage(Id<ARPackage>),
+    ARPackage(ARPackageId),
     // … one variant per element kind (P1 converter emits the full list)
 }
 ```
@@ -101,9 +104,9 @@ pub enum ElementRef {
 
 ```rust
 impl Document {
-    pub fn add_ar_package(&mut self, parent: Option<Id<ARPackage>>, short_name: &str)
-        -> Id<ARPackage>;
-    pub fn add_element(&mut self, pkg: Id<ARPackage>, e: ElementRef);
+    pub fn add_ar_package(&mut self, parent: Option<ARPackageId>, short_name: &str)
+        -> ARPackageId;
+    pub fn add_element(&mut self, pkg: ARPackageId, e: ElementRef);
 }
 ```
 
@@ -145,10 +148,10 @@ Map the spec multiplicity directly:
 
 | Spec        | Rust                            |
 |-------------|---------------------------------|
-| 0..1        | `Option<Id<T>>` / `Option<T>`   |
+| 0..1        | `Option<TId>` / `Option<T>`     |
 | 1           | plain field (set in `new`)      |
-| 0..*        | `Vec<Id<T>>` / `Vec<T>`         |
-| referenced  | `Id<T>` (never `Box<T>`)        |
+| 0..*        | `Vec<TId>` / `Vec<T>`           |
+| referenced  | `TId` (never `Box<T>`)          |
 
 Whitespace fidelity: mixed-content text elements (`SD`, `L-10`) keep
 `xml_space: Option<XmlSpace>` as an **explicit field** — this is how
@@ -200,12 +203,12 @@ Writer (`src/writer/`):
 
 ## 9. Equality
 
-`Id<T>` is only meaningful inside one `Document`, so:
+A `TId` key is only meaningful inside one `Document`'s arena, so:
 
 - Do **not** derive `PartialEq` on arena-linked types.
 - Implement `Document::assert_structurally_equal(&self, other: &Document)
-  -> Result<(), String>`: walk both models, resolve ids within each document,
-  compare scalars and `Vec<Id<_>>` element-wise in order, ignore `parent`.
+  -> Result<(), String>`: walk both models, resolve keys within each document,
+  compare scalars and `Vec<TId>` element-wise in order, ignore `parent`.
 - Pure-value types (primitives, enums) may derive `PartialEq`/`Eq` freely.
 
 ## 10. Testing
@@ -246,7 +249,7 @@ When porting a Python class:
 - ❌ `pub` fields on model structs — always accessors.
 - ❌ `unwrap`/`expect`/`panic!` in library code.
 - ❌ camelCase functions or Python attribute names in XML-facing code.
-- ❌ Deriving `PartialEq` across `Id<T>` links or comparing `Id`s from two
+- ❌ Deriving `PartialEq` across arena links or comparing keys from two
   documents.
 - ❌ Stringly-typed AUTOSAR enumerations.
 - ❌ Files not reachable from `lib.rs`.

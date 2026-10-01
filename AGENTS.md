@@ -6,7 +6,7 @@ Rust port of **py-armodel** (reference implementation at https://github.com/melo
 
 ## Read before writing code
 
-- `docs/code_guide.md` — binding coding rules: composition instead of inheritance, arenas + `Id<T>` links, naming, error/warning model, porting checklist, anti-patterns. This is the authority; follow it over README prose.
+- `docs/code_guide.md` — binding coding rules: composition instead of inheritance, slotmap arenas + typed keys, naming, error/warning model, porting checklist, anti-patterns. This is the authority; follow it over README prose.
 - `docs/superpowers/specs/2026-10-01-rust-armodel-p0-walking-skeleton-design.md` — P0 design and the phased plan (P1 converter, P2–P4 mass port, P5 parser/writer redesign).
 
 ## Commands
@@ -22,7 +22,7 @@ Files under `src/m2/`, `src/parser/arxml_parser.rs`, and `src/writer/` contain o
 ## Rules that are easy to violate
 
 - No `unwrap`/`expect`/`panic!` in library code; only the CLI may print an error and `exit(1)` (panics allowed in tests).
-- Tree nodes are `Id<T>` handles into `Document`-owned arenas — never `Vec<Struct>` by value (ownership recursion).
+- Tree nodes are typed slotmap keys (`ARPackageId`, `AdminDataId`, …) into `Document`-owned `SlotMap<TId, T>` arenas — never `Vec<Struct>` by value (ownership recursion).
 - No `PartialEq` on arena-linked types; equality means `Document::assert_structurally_equal`.
 - Classes keep AUTOSAR spelling (`ARPackage`); modules/fields/functions are `snake_case` — port `getShortName` → `get_short_name`, never keep camelCase.
 - Module paths mirror AUTOSAR spec package rows (`M2::A::B::C` → `src/m2/a/b/c.rs`), derived from the `| Package |` tables in `https://github.com/melodypapa/py-armodel/tree/main/autosar/R23-11/markdown/*.md`.

@@ -6,6 +6,11 @@
 
 use std::fmt;
 
+slotmap::new_key_type! {
+    /// Arena key locating an `LPlainText` in `Document`'s arena.
+    pub struct LPlainTextId;
+}
+
 /// `xml:space` enumeration. Whitespace-fidelity carrier: text elements
 /// (`SD`, `L-10`) keep this as an explicit field (`docs/code_guide.md` §6).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

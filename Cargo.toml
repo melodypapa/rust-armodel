@@ -11,10 +11,13 @@ license = "MIT"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-getopts = "0.2"
+clap = { version = "4", features = ["derive"] }
 quick-xml = "0.42.0"
-id-arena = "2.3.0"
+slotmap = "1.0"
 thiserror = "2"
+
+[dev-dependencies]
+tempfile = "3"
 
 [[test]]
 name = "roundtrip"

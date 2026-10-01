@@ -2,11 +2,17 @@
 //!
 //! Spec classes `AdminData`, `DocRevision`, `Modification` (P0 design §5).
 
-use id_arena::Id;
+use slotmap::new_key_type;
 
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
-use crate::m2::msr::asam_hdo::special_data::Sdg;
-use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguagePlainText;
+use crate::m2::msr::asam_hdo::special_data::SdgId;
+use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguagePlainTextId;
+
+new_key_type! {
+    /// Arena keys for the `AdminData` classes.
+    pub struct AdminDataId;
+    pub struct DocRevisionId;
+}
 
 /// spec class `DocRevision`.
 /// P0 placeholder: `AdminDataWhitespace.arxml` has none; fields arrive in P1
@@ -18,10 +24,10 @@ pub struct DocRevision;
 #[derive(Debug, Default)]
 pub struct AdminData {
     base: ARObject,
-    doc_revisions: Vec<Id<DocRevision>>,
+    doc_revisions: Vec<DocRevisionId>,
     language: Option<String>,
-    sdgs: Vec<Id<Sdg>>,
-    used_languages: Option<Id<MultiLanguagePlainText>>,
+    sdgs: Vec<SdgId>,
+    used_languages: Option<MultiLanguagePlainTextId>,
 }
 
 impl AdminData {
@@ -37,12 +43,12 @@ impl AdminData {
         &mut self.base
     }
 
-    pub fn get_doc_revisions(&self) -> &[Id<DocRevision>] {
+    pub fn get_doc_revisions(&self) -> &[DocRevisionId] {
         &self.doc_revisions
     }
 
     /// py `addDocRevision`
-    pub fn push_doc_revision(&mut self, revision: Id<DocRevision>) {
+    pub fn push_doc_revision(&mut self, revision: DocRevisionId) {
         self.doc_revisions.push(revision);
     }
 
@@ -55,22 +61,22 @@ impl AdminData {
         self
     }
 
-    pub fn get_sdgs(&self) -> &[Id<Sdg>] {
+    pub fn get_sdgs(&self) -> &[SdgId] {
         &self.sdgs
     }
 
     /// py `addSdg`
-    pub fn push_sdg(&mut self, sdg: Id<Sdg>) {
+    pub fn push_sdg(&mut self, sdg: SdgId) {
         self.sdgs.push(sdg);
     }
 
     /// py `getUsedLanguages` — a **single** `MultiLanguagePlainText`, not a list.
-    pub fn get_used_languages(&self) -> Option<Id<MultiLanguagePlainText>> {
+    pub fn get_used_languages(&self) -> Option<MultiLanguagePlainTextId> {
         self.used_languages
     }
 
     /// py `setUsedLanguages`
-    pub fn set_used_languages(&mut self, used_languages: Id<MultiLanguagePlainText>) -> &mut Self {
+    pub fn set_used_languages(&mut self, used_languages: MultiLanguagePlainTextId) -> &mut Self {
         self.used_languages = Some(used_languages);
         self
     }
@@ -79,7 +85,8 @@ impl AdminData {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use id_arena::Arena;
+    use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguagePlainText;
+    use slotmap::SlotMap;
 
     #[test]
     fn admin_data_accessors() {
@@ -89,8 +96,9 @@ mod tests {
         assert!(admin_data.get_doc_revisions().is_empty());
         assert!(admin_data.get_used_languages().is_none());
 
-        let mut arena: Arena<MultiLanguagePlainText> = Arena::new();
-        let mlpt_id = arena.alloc(MultiLanguagePlainText::new());
+        let mut arena: SlotMap<MultiLanguagePlainTextId, MultiLanguagePlainText> =
+            SlotMap::with_key();
+        let mlpt_id = arena.insert(MultiLanguagePlainText::new());
 
         admin_data.set_language("EN").set_used_languages(mlpt_id);
 

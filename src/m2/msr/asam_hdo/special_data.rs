@@ -4,12 +4,21 @@
 //! `Sd`/`Sdf` carry explicit `xml_space`/`value` fields — this is how
 //! whitespace fidelity is preserved in the round trip.
 
-use id_arena::Id;
+use slotmap::new_key_type;
 
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Referrable;
 use crate::m2::msr::documentation::text_model::language_data_model::XmlSpace;
-use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraph;
+use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId;
+
+new_key_type! {
+    /// Arena keys for the `SpecialData` classes.
+    pub struct SdId;
+    pub struct SdfId;
+    pub struct SdgId;
+    pub struct SdgCaptionId;
+    pub struct SdgContentsId;
+}
 
 /// spec class `Sd` — `<SD GID="…" xml:space="preserve">text</SD>`.
 #[derive(Debug, Default)]
@@ -105,7 +114,7 @@ impl Sdf {
 #[derive(Debug, Default)]
 pub struct SdgCaption {
     base: Referrable,
-    desc: Option<Id<MultiLanguageOverviewParagraph>>,
+    desc: Option<MultiLanguageOverviewParagraphId>,
 }
 
 impl SdgCaption {
@@ -130,11 +139,11 @@ impl SdgCaption {
         self
     }
 
-    pub fn get_desc(&self) -> Option<Id<MultiLanguageOverviewParagraph>> {
+    pub fn get_desc(&self) -> Option<MultiLanguageOverviewParagraphId> {
         self.desc
     }
 
-    pub fn set_desc(&mut self, desc: Id<MultiLanguageOverviewParagraph>) -> &mut Self {
+    pub fn set_desc(&mut self, desc: MultiLanguageOverviewParagraphId) -> &mut Self {
         self.desc = Some(desc);
         self
     }
@@ -144,9 +153,9 @@ impl SdgCaption {
 /// concrete struct per §3.
 #[derive(Debug, Default)]
 pub struct SdgContents {
-    sd: Vec<Id<Sd>>,
-    sdf: Vec<Id<Sdf>>,
-    sdg: Vec<Id<Sdg>>,
+    sd: Vec<SdId>,
+    sdf: Vec<SdfId>,
+    sdg: Vec<SdgId>,
 }
 
 impl SdgContents {
@@ -154,30 +163,30 @@ impl SdgContents {
         Self::default()
     }
 
-    pub fn get_sd(&self) -> &[Id<Sd>] {
+    pub fn get_sd(&self) -> &[SdId] {
         &self.sd
     }
 
     /// py `addSd`
-    pub fn push_sd(&mut self, sd: Id<Sd>) {
+    pub fn push_sd(&mut self, sd: SdId) {
         self.sd.push(sd);
     }
 
-    pub fn get_sdf(&self) -> &[Id<Sdf>] {
+    pub fn get_sdf(&self) -> &[SdfId] {
         &self.sdf
     }
 
     /// py `addSdf`
-    pub fn push_sdf(&mut self, sdf: Id<Sdf>) {
+    pub fn push_sdf(&mut self, sdf: SdfId) {
         self.sdf.push(sdf);
     }
 
-    pub fn get_sdg(&self) -> &[Id<Sdg>] {
+    pub fn get_sdg(&self) -> &[SdgId] {
         &self.sdg
     }
 
     /// py `addSdg`
-    pub fn push_sdg(&mut self, sdg: Id<Sdg>) {
+    pub fn push_sdg(&mut self, sdg: SdgId) {
         self.sdg.push(sdg);
     }
 
@@ -193,8 +202,8 @@ impl SdgContents {
 pub struct Sdg {
     base: ARObject,
     gid: Option<String>,
-    sdg_caption: Option<Id<SdgCaption>>,
-    sdg_contents_type: Option<Id<SdgContents>>,
+    sdg_caption: Option<SdgCaptionId>,
+    sdg_contents_type: Option<SdgContentsId>,
 }
 
 impl Sdg {
@@ -219,20 +228,20 @@ impl Sdg {
         self
     }
 
-    pub fn get_sdg_caption(&self) -> Option<Id<SdgCaption>> {
+    pub fn get_sdg_caption(&self) -> Option<SdgCaptionId> {
         self.sdg_caption
     }
 
-    pub fn set_sdg_caption(&mut self, caption: Id<SdgCaption>) -> &mut Self {
+    pub fn set_sdg_caption(&mut self, caption: SdgCaptionId) -> &mut Self {
         self.sdg_caption = Some(caption);
         self
     }
 
-    pub fn get_sdg_contents_type(&self) -> Option<Id<SdgContents>> {
+    pub fn get_sdg_contents_type(&self) -> Option<SdgContentsId> {
         self.sdg_contents_type
     }
 
-    pub fn set_sdg_contents_type(&mut self, contents: Id<SdgContents>) -> &mut Self {
+    pub fn set_sdg_contents_type(&mut self, contents: SdgContentsId) -> &mut Self {
         self.sdg_contents_type = Some(contents);
         self
     }
@@ -241,7 +250,7 @@ impl Sdg {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use id_arena::Arena;
+    use slotmap::SlotMap;
 
     #[test]
     fn sd_accessors() {
@@ -277,10 +286,10 @@ mod tests {
         let mut contents = SdgContents::new();
         assert!(contents.is_empty());
 
-        let mut arena: Arena<Sd> = Arena::new();
+        let mut arena: SlotMap<SdId, Sd> = SlotMap::with_key();
         let mut sd = Sd::new();
         sd.set_gid("purpose");
-        let sd_id = arena.alloc(sd);
+        let sd_id = arena.insert(sd);
 
         contents.push_sd(sd_id);
         assert!(!contents.is_empty());

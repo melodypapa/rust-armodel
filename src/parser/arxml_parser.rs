@@ -5,14 +5,13 @@
 use std::io::BufRead;
 use std::path::Path;
 
-use id_arena::Id;
 use quick_xml::reader::Reader;
 
 use crate::m2::autosar_templates::autosar_top_level_structure::Document;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
-use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARPackage;
-use crate::m2::msr::asam_hdo::admin_data::AdminData;
-use crate::m2::msr::asam_hdo::special_data::{Sd, Sdf, Sdg, SdgCaption, SdgContents};
+use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARPackageId;
+use crate::m2::msr::asam_hdo::admin_data::{AdminData, AdminDataId};
+use crate::m2::msr::asam_hdo::special_data::{Sd, Sdf, Sdg, SdgCaption, SdgContents, SdgId};
 use crate::m2::msr::documentation::text_model::language_data_model::{LPlainText, XmlSpace};
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguagePlainText;
 use crate::parser::abstract_arxml_parser::{
@@ -156,7 +155,7 @@ impl ARXMLParser {
         &mut self,
         element: &Node,
         document: &mut Document,
-    ) -> Result<Id<AdminData>, ParseError> {
+    ) -> Result<AdminDataId, ParseError> {
         let mut admin_data = AdminData::new();
         self.read_ar_object(element, admin_data.base_mut());
 
@@ -183,10 +182,10 @@ impl ARXMLParser {
                 if let Some(value) = &l10_node.text {
                     l10.set_value(value.as_str());
                 }
-                let l10_id = document.l_plain_texts.alloc(l10);
+                let l10_id = document.l_plain_texts.insert(l10);
                 paragraph.push_l10(l10_id);
             }
-            let paragraph_id = document.multi_language_plain_texts.alloc(paragraph);
+            let paragraph_id = document.multi_language_plain_texts.insert(paragraph);
             admin_data.set_used_languages(paragraph_id);
         }
 
@@ -210,11 +209,11 @@ impl ARXMLParser {
             }
         }
 
-        Ok(document.admin_datas.alloc(admin_data))
+        Ok(document.admin_datas.insert(admin_data))
     }
 
     /// py `getSdg` — reads one `SDG` element (recursively) and returns its id.
-    fn read_sdg(&mut self, element: &Node, document: &mut Document) -> Result<Id<Sdg>, ParseError> {
+    fn read_sdg(&mut self, element: &Node, document: &mut Document) -> Result<SdgId, ParseError> {
         let mut sdg = Sdg::new();
         self.read_ar_object(element, sdg.base_mut());
         if let Some(gid) = element.attrs.get("GID") {
@@ -230,7 +229,7 @@ impl ARXMLParser {
             if find(caption_node, "DESC").is_some() {
                 self.not_implemented("SDG-CAPTION/DESC is not supported in P0".to_string())?;
             }
-            let caption_id = document.sdg_captions.alloc(caption);
+            let caption_id = document.sdg_captions.insert(caption);
             sdg.set_sdg_caption(caption_id);
         }
 
@@ -250,7 +249,7 @@ impl ARXMLParser {
             if let Some(value) = &sd_node.text {
                 sd.set_value(value.as_str());
             }
-            let sd_id = document.sds.alloc(sd);
+            let sd_id = document.sds.insert(sd);
             contents.push_sd(sd_id);
         }
 
@@ -263,7 +262,7 @@ impl ARXMLParser {
             if let Some(value) = &sdf_node.text {
                 sdf.set_value(value.as_str());
             }
-            let sdf_id = document.sdfs.alloc(sdf);
+            let sdf_id = document.sdfs.insert(sdf);
             contents.push_sdf(sdf_id);
         }
 
@@ -273,11 +272,11 @@ impl ARXMLParser {
         }
 
         if !contents.is_empty() {
-            let contents_id = document.sdg_contents.alloc(contents);
+            let contents_id = document.sdg_contents.insert(contents);
             sdg.set_sdg_contents_type(contents_id);
         }
 
-        Ok(document.sdgs.alloc(sdg))
+        Ok(document.sdgs.insert(sdg))
     }
 
     /// py `readARPackages` — recurses into nested AR-PACKAGES. `parent` is
@@ -285,7 +284,7 @@ impl ARXMLParser {
     fn read_ar_packages(
         &mut self,
         element: &Node,
-        parent: Option<Id<ARPackage>>,
+        parent: Option<ARPackageId>,
         document: &mut Document,
     ) -> Result<(), ParseError> {
         if let Some(packages_node) = find(element, "AR-PACKAGES") {
@@ -306,9 +305,9 @@ impl ARXMLParser {
     fn read_ar_package(
         &mut self,
         element: &Node,
-        parent: Option<Id<ARPackage>>,
+        parent: Option<ARPackageId>,
         document: &mut Document,
-    ) -> Result<Id<ARPackage>, ParseError> {
+    ) -> Result<ARPackageId, ParseError> {
         let short_name = get_short_name(element)?;
         let id = document.add_ar_package(parent, &short_name);
 

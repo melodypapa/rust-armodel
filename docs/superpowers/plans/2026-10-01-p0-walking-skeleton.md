@@ -27,7 +27,7 @@
 **Files:**
 - Modify: `Cargo.toml`
 
-- [ ] **Step 1: Add thiserror to `[dependencies]`**
+- [x] **Step 1: Add thiserror to `[dependencies]`**
 
 Edit `Cargo.toml` so the dependency block reads exactly:
 
@@ -43,12 +43,12 @@ thiserror = "2"
 dead stubs — those are already gone from `Cargo.toml`, and the module tree is
 already scaffolded. Nothing else to do here.)
 
-- [ ] **Step 2: Verify the build is green**
+- [x] **Step 2: Verify the build is green**
 
 Run: `cargo build`
 Expected: `Finished` — no errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add Cargo.toml Cargo.lock
@@ -62,7 +62,7 @@ git commit -m "build: add thiserror dependency for P0 error model"
 **Files:**
 - Modify: `src/m2/autosar_templates/generic_structure/general_template_classes/ar_object.rs`
 
-- [ ] **Step 1: Replace the stub with ARObject and its test**
+- [x] **Step 1: Replace the stub with ARObject and its test**
 
 Replace the file's stub comment with (the `ElementRef` enum is added here in
 Task 5, once `ar_package::ARPackage` exists — this task only needs `ARObject`):
@@ -125,12 +125,12 @@ mod tests {
 }
 ```
 
-- [ ] **Step 2: Run the test**
+- [x] **Step 2: Run the test**
 
 Run: `cargo test --lib ar_object`
 Expected: PASS (1 test).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/m2/autosar_templates/generic_structure/general_template_classes/ar_object.rs
@@ -144,7 +144,7 @@ git commit -m "feat(m2): ARObject base struct with checksum/timestamp accessors"
 **Files:**
 - Modify: `src/m2/autosar_templates/generic_structure/general_template_classes/identifiable.rs`
 
-- [ ] **Step 1: Replace the stub with the two structs and tests**
+- [x] **Step 1: Replace the stub with the two structs and tests**
 
 ```rust
 //! spec: M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::Identifiable
@@ -241,12 +241,12 @@ mod tests {
 }
 ```
 
-- [ ] **Step 2: Run the tests**
+- [x] **Step 2: Run the tests**
 
 Run: `cargo test --lib identifiable`
 Expected: PASS (2 tests).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/m2/autosar_templates/generic_structure/general_template_classes/identifiable.rs
@@ -260,7 +260,7 @@ git commit -m "feat(m2): Referrable and MultilanguageReferrable composition stru
 **Files:**
 - Modify: `src/m2/autosar_templates/generic_structure/general_template_classes/identifiable.rs`
 
-- [ ] **Step 1: Add imports, the Identifiable struct, and a test**
+- [x] **Step 1: Add imports, the Identifiable struct, and a test**
 
 Add to the file's import block at the top:
 
@@ -395,12 +395,12 @@ Add to `identifiable.rs`'s `mod tests`:
     }
 ```
 
-- [ ] **Step 2: Run the tests**
+- [x] **Step 2: Run the tests**
 
 Run: `cargo test --lib identifiable`
 Expected: PASS (3 tests).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/m2/autosar_templates/generic_structure/general_template_classes/identifiable.rs src/m2/msr/asam_hdo/admin_data.rs
@@ -417,7 +417,7 @@ git commit -m "feat(m2): Identifiable with uuid/category/admin_data accessors"
 - Create: `src/m2/autosar_templates/generic_structure/general_template_classes/element_collection.rs` (fill the stub)
 - Create: `src/m2/autosar_templates/generic_structure/general_template_classes/ar_package.rs` (fill the stub)
 
-- [ ] **Step 1: Add `ElementRef` and the `parent` field**
+- [x] **Step 1: Add `ElementRef` and the `parent` field**
 
 Append to `ar_object.rs` (after the `ARObject` impl, before `#[cfg(test)]`):
 
@@ -475,7 +475,7 @@ Extend the `referrable_accessors` test with:
         assert!(referrable.get_parent().is_none());
 ```
 
-- [ ] **Step 2: Fill element_collection.rs**
+- [x] **Step 2: Fill element_collection.rs**
 
 ```rust
 //! spec: M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ElementCollection
@@ -527,7 +527,7 @@ mod tests {
 }
 ```
 
-- [ ] **Step 3: Fill ar_package.rs**
+- [x] **Step 3: Fill ar_package.rs**
 
 ```rust
 //! spec: M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ARPackage
@@ -767,12 +767,12 @@ mod tests {
 }
 ```
 
-- [ ] **Step 4: Run all tests**
+- [x] **Step 4: Run all tests**
 
 Run: `cargo test`
 Expected: PASS (all tests so far).
 
-- [ ] **Step 5: Format, lint, commit**
+- [x] **Step 5: Format, lint, commit**
 
 ```bash
 cargo fmt
@@ -790,7 +790,7 @@ git commit -m "feat(m2): complete base chain with ARPackage, ReferenceBase, Elem
 - Modify: `src/m2/msr/documentation/text_model/multilanguage_data.rs`
 - Modify: `src/m2/msr/asam_hdo/special_data.rs`
 
-- [ ] **Step 1: Fill language_data_model.rs**
+- [x] **Step 1: Fill language_data_model.rs**
 
 ```rust
 //! spec: M2::MSR::Documentation::TextModel::LanguageDataModel
@@ -904,7 +904,7 @@ mod tests {
 }
 ```
 
-- [ ] **Step 2: Fill multilanguage_data.rs**
+- [x] **Step 2: Fill multilanguage_data.rs**
 
 ```rust
 //! spec: M2::MSR::Documentation::TextModel::MultilanguageData
@@ -964,7 +964,7 @@ mod tests {
 }
 ```
 
-- [ ] **Step 3: Fill special_data.rs (Sd, Sdf — Sdg trio follows in Task 7)**
+- [x] **Step 3: Fill special_data.rs (Sd, Sdf — Sdg trio follows in Task 7)**
 
 ```rust
 //! spec: M2::MSR::AsamHdo::SpecialData
@@ -1093,7 +1093,7 @@ mod tests {
 }
 ```
 
-- [ ] **Step 4: Run all tests, format, lint, commit**
+- [x] **Step 4: Run all tests, format, lint, commit**
 
 ```bash
 cargo test
@@ -1113,7 +1113,7 @@ Expected: all tests PASS.
 - Modify: `src/m2/msr/asam_hdo/special_data.rs`
 - Modify: `src/m2/msr/asam_hdo/admin_data.rs`
 
-- [ ] **Step 1: Append SdgCaption, SdgContents, Sdg to special_data.rs**
+- [x] **Step 1: Append SdgCaption, SdgContents, Sdg to special_data.rs**
 
 Update the import block at the top of the file to:
 
@@ -1299,7 +1299,7 @@ Extend the test module (with `use id_arena::Arena;` alongside `use super::*;`):
 the Document tests in Task 8 — at this task's level the structs are exercised
 value-by-value.)
 
-- [ ] **Step 2: Complete admin_data.rs (content fields + DocRevision)**
+- [x] **Step 2: Complete admin_data.rs (content fields + DocRevision)**
 
 Replace the Task-4 stub body with:
 
@@ -1406,7 +1406,7 @@ mod tests {
 }
 ```
 
-- [ ] **Step 3: Run all tests, format, lint, commit**
+- [x] **Step 3: Run all tests, format, lint, commit**
 
 ```bash
 cargo test
@@ -1426,7 +1426,7 @@ Expected: all tests PASS.
 - Modify: `src/m2/autosar_templates/autosar_top_level_structure.rs`
 - Modify: `src/lib.rs`
 
-- [ ] **Step 1: Implement Document**
+- [x] **Step 1: Implement Document**
 
 Replace the stub comment with:
 
@@ -1997,7 +1997,7 @@ mod tests {
 }
 ```
 
-- [ ] **Step 2: Re-export the public surface in lib.rs**
+- [x] **Step 2: Re-export the public surface in lib.rs**
 
 `src/lib.rs` becomes:
 
@@ -2009,12 +2009,12 @@ pub mod writer;
 pub use m2::autosar_templates::autosar_top_level_structure::Document;
 ```
 
-- [ ] **Step 3: Run all tests**
+- [x] **Step 3: Run all tests**
 
 Run: `cargo test`
 Expected: PASS (all tasks' tests).
 
-- [ ] **Step 4: Format, lint, commit**
+- [x] **Step 4: Format, lint, commit**
 
 ```bash
 cargo fmt
@@ -2030,7 +2030,7 @@ git commit -m "feat(m2): Document with arenas, factories, resolvers, structural 
 **Files:**
 - Modify: `src/parser/abstract_arxml_parser.rs`
 
-- [ ] **Step 1: Implement Node, ParseError, the DOM builder, and find helpers**
+- [x] **Step 1: Implement Node, ParseError, the DOM builder, and find helpers**
 
 Replace the stub comment with:
 
@@ -2322,12 +2322,12 @@ mod tests {
 }
 ```
 
-- [ ] **Step 2: Run the tests**
+- [x] **Step 2: Run the tests**
 
 Run: `cargo test --lib abstract_arxml_parser`
 Expected: PASS (4 tests).
 
-- [ ] **Step 3: Format, lint, commit**
+- [x] **Step 3: Format, lint, commit**
 
 ```bash
 cargo fmt
@@ -2344,7 +2344,7 @@ git commit -m "feat(parser): Node DOM with xml:space-aware whitespace rule and f
 - Modify: `src/parser/arxml_parser.rs`
 - Modify: `src/lib.rs`
 
-- [ ] **Step 1: Implement the parser**
+- [x] **Step 1: Implement the parser**
 
 Replace the stub comment with:
 
@@ -2837,12 +2837,12 @@ pub use parser::abstract_arxml_parser::ParseError;
 pub use parser::arxml_parser::{ARXMLParser, ParserOptions, default_options};
 ```
 
-- [ ] **Step 2: Run the tests**
+- [x] **Step 2: Run the tests**
 
 Run: `cargo test --lib arxml_parser`
 Expected: PASS (4 tests).
 
-- [ ] **Step 3: Format, lint, commit**
+- [x] **Step 3: Format, lint, commit**
 
 ```bash
 cargo fmt
@@ -2860,7 +2860,7 @@ git commit -m "feat(parser): ARXMLParser with release detection, admin data and 
 - Modify: `src/writer/arxml_writer.rs`
 - Modify: `src/lib.rs`
 
-- [ ] **Step 1: WriteError + the shared text-element emitter**
+- [x] **Step 1: WriteError + the shared text-element emitter**
 
 Replace the stub comment in `abstract_arxml_writer.rs` with:
 
@@ -2931,7 +2931,7 @@ mod tests {
 }
 ```
 
-- [ ] **Step 2: Implement ARXMLWriter::save in arxml_writer.rs**
+- [x] **Step 2: Implement ARXMLWriter::save in arxml_writer.rs**
 
 Replace the stub comment with:
 
@@ -3280,12 +3280,12 @@ pub use writer::abstract_arxml_writer::WriteError;
 pub use writer::arxml_writer::ARXMLWriter;
 ```
 
-- [ ] **Step 3: Run the tests**
+- [x] **Step 3: Run the tests**
 
 Run: `cargo test --lib arxml_writer`
 Expected: PASS (3 tests: 2 in abstract, 1 here).
 
-- [ ] **Step 4: Format, lint, commit**
+- [x] **Step 4: Format, lint, commit**
 
 ```bash
 cargo fmt
@@ -3302,7 +3302,7 @@ git commit -m "feat(writer): ARXMLWriter::save with namespaces, ADMIN-DATA and A
 - Create: `tests/integration/test_files/AdminDataWhitespace.arxml` (verbatim copy from py-armodel — never regenerate)
 - Create: `tests/integration/roundtrip.rs`
 
-- [ ] **Step 1: Copy the fixture verbatim**
+- [x] **Step 1: Copy the fixture verbatim**
 
 ```bash
 mkdir -p tests/integration/test_files
@@ -3336,7 +3336,7 @@ it must be byte-identical (UTF-8, LF endings, trailing newline):
 </AUTOSAR>
 ```
 
-- [ ] **Step 2: Write the round-trip test**
+- [x] **Step 2: Write the round-trip test**
 
 `tests/integration/roundtrip.rs`:
 
@@ -3402,12 +3402,12 @@ fn admin_data_whitespace_roundtrip() {
 Note: cargo runs integration tests with the package root as CWD, so the
 relative fixture path works.
 
-- [ ] **Step 3: Run the integration test**
+- [x] **Step 3: Run the integration test**
 
 Run: `cargo test --test roundtrip -- --nocapture`
 Expected: PASS (1 test).
 
-- [ ] **Step 4: Run everything, format, lint, commit**
+- [x] **Step 4: Run everything, format, lint, commit**
 
 ```bash
 cargo test
@@ -3424,7 +3424,7 @@ git commit -m "test: P0 round-trip over AdminDataWhitespace.arxml"
 **Files:**
 - Modify: `src/bin/arxml-dump.rs`
 
-- [ ] **Step 1: Wire the binary to the new API**
+- [x] **Step 1: Wire the binary to the new API**
 
 Replace `src/bin/arxml-dump.rs` with:
 
@@ -3491,7 +3491,7 @@ utility with the same `-a`/`-h` options; loading and printing top-level
 package names is the minimal compile-against-the-API validation, and errors
 now print + `exit(1)` instead of panicking, per `docs/code_guide.md` §7.)
 
-- [ ] **Step 2: Manual CLI check**
+- [x] **Step 2: Manual CLI check**
 
 ```bash
 cargo run --bin arxml-dump -- -a tests/integration/test_files/AdminDataWhitespace.arxml
@@ -3512,7 +3512,7 @@ cargo run --bin arxml-dump -- -a /nonexistent.arxml; echo "exit=$?"
 
 Expected: `Failed to parse …` on stderr and `exit=1`.
 
-- [ ] **Step 3: Full verification sweep**
+- [x] **Step 3: Full verification sweep**
 
 ```bash
 cargo build
@@ -3523,7 +3523,7 @@ cargo clippy -- -D warnings
 
 Expected: all green.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/bin/arxml-dump.rs
@@ -3534,13 +3534,13 @@ git commit -m "feat(bin): arxml-dump loads ARXML through the new Document API"
 
 ## Acceptance checklist (maps to spec §2)
 
-- [ ] `cargo test --test roundtrip` passes: parse → write → re-parse → `assert_structurally_equal`.
-- [ ] SD text assertion holds: `Some("special   data")` with `xml:space == Preserve`.
-- [ ] `cargo build` and `cargo test` clean (Travis's gates).
-- [ ] `cargo fmt --check` and `cargo clippy -- -D warnings` clean.
-- [ ] No `unwrap`/`expect`/`panic!` in library code (allowed in `#[cfg(test)]` and `src/bin/`).
-- [ ] No `PartialEq` derived on arena-linked model types; equality only via `Document::assert_structurally_equal`.
-- [ ] Fixture is a byte-identical copy of py-armodel's `AdminDataWhitespace.arxml`.
+- [x] `cargo test --test roundtrip` passes: parse → write → re-parse → `assert_structurally_equal`.
+- [x] SD text assertion holds: `Some("special   data")` with `xml:space == Preserve`.
+- [x] `cargo build` and `cargo test` clean (Travis's gates).
+- [x] `cargo fmt --check` and `cargo clippy -- -D warnings` clean.
+- [x] No `unwrap`/`expect`/`panic!` in library code (allowed in `#[cfg(test)]` and `src/bin/`).
+- [x] No `PartialEq` derived on arena-linked model types; equality only via `Document::assert_structurally_equal`.
+- [x] Fixture is a byte-identical copy of py-armodel's `AdminDataWhitespace.arxml`.
 
 ## Deliberate P0 simplifications (documented divergences)
 

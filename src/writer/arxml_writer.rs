@@ -2,8 +2,7 @@
 //! namespaces, `ADMIN-DATA`, `AR-PACKAGES` (P0 design §9 step 5).
 //! Mirrors py's `arxml_writer.py`.
 
-use std::fs::File;
-use std::io::{BufWriter, Write};
+use std::io::Write;
 use std::path::Path;
 
 use quick_xml::events::{BytesDecl, BytesEnd, BytesStart, Event};
@@ -22,21 +21,37 @@ use crate::writer::abstract_arxml_writer::{write_text_element, WriteError};
 const DEFAULT_NAMESPACE: &str = "http://autosar.org/schema/r4.0";
 const XSI_NAMESPACE: &str = "http://www.w3.org/2001/XMLSchema-instance";
 
+/// py `ARXMLWriter(options)` — `unescape_entities` mirrors py's `patch_xml`
+/// post-pass; `warning`/`version` exist in py's option table but do not
+/// affect its serialization.
+#[derive(Debug, Clone, Default)]
+pub struct WriterOptions {
+    pub unescape_entities: bool,
+}
+
 /// py `ARXMLWriter`
 #[derive(Debug, Default)]
-pub struct ARXMLWriter;
+pub struct ARXMLWriter {
+    options: WriterOptions,
+}
 
 impl ARXMLWriter {
     pub fn new() -> Self {
-        Self
+        Self::default()
+    }
+
+    pub fn with_options(options: WriterOptions) -> Self {
+        Self { options }
     }
 
     /// py `save` — 2-space indentation; element order follows py
     /// (`ADMIN-DATA`, then `AR-PACKAGES`; FILE-INFO-COMMENT/INTRODUCTION are
     /// P1).
     pub fn save(&self, path: &Path, document: &Document) -> Result<(), WriteError> {
-        let file = BufWriter::new(File::create(path)?);
-        let mut writer = Writer::new_with_indent(file, b' ', 2);
+        // py saveToFile serializes to a string, runs patch_xml, then writes
+        // the file; buffering here gives the post-pass the same reach.
+        let mut buffer = Vec::new();
+        let mut writer = Writer::new_with_indent(&mut buffer, b' ', 2);
 
         writer.write_event(Event::Decl(BytesDecl::new("1.0", Some("UTF-8"), None)))?;
 
@@ -67,7 +82,23 @@ impl ARXMLWriter {
         writer.write_event(Event::End(BytesEnd::new("AUTOSAR")))?;
         // py saveToFile's minidom toprettyxml terminates the document with a
         // final newline after the root element
-        writer.into_inner().write_all(b"\n")?;
+        buffer.push(b'\n');
+
+        // py patch_xml — the self-closing-tag expansion (`<tag/>` →
+        // `<tag></tag>`) is a no-op by construction here: the indent writer
+        // already expands empty elements, so only the entity unescape applies.
+        if self.options.unescape_entities {
+            let text = String::from_utf8(buffer).map_err(|_| {
+                WriteError::Io(std::io::Error::new(
+                    std::io::ErrorKind::InvalidData,
+                    "serialized ARXML is not UTF-8",
+                ))
+            })?;
+            let text = text.replace("&quot;", "\"").replace("&apos;", "'");
+            buffer = text.into_bytes();
+        }
+
+        std::fs::write(path, buffer)?;
         Ok(())
     }
 
@@ -373,5 +404,33 @@ mod tests {
         assert!(text.contains("<L-10 L=\"EN\" xml:space=\"preserve\">English</L-10>"));
         assert!(text.contains("<SD GID=\"purpose\" xml:space=\"preserve\">special   data</SD>"));
         assert!(text.contains("<SHORT-NAME>WhitespaceDemo</SHORT-NAME>"));
+    }
+
+    /// py: ElementTree escapes quotes in attribute values and `--unescape-entities`
+    /// (patch_xml) unescapes exactly `&quot;`/`&apos;` in the final text.
+    #[test]
+    fn unescape_entities_option_unescapes_attribute_quotes() {
+        let mut document = Document::new();
+        document.set_schema_location("http://autosar.org/schema/r4.0 AUTOSAR_00050.xsd");
+        let package_id = document.add_ar_package(None, "Pkg");
+        document
+            .ar_packages
+            .get_mut(package_id)
+            .unwrap()
+            .set_uuid("a\"b'c");
+
+        let escaped = tempfile::NamedTempFile::new().unwrap();
+        ARXMLWriter::new().save(escaped.path(), &document).unwrap();
+        let text = std::fs::read_to_string(escaped.path()).unwrap();
+        assert!(text.contains("UUID=\"a&quot;b&apos;c\""), "{text}");
+
+        let unescaped = tempfile::NamedTempFile::new().unwrap();
+        ARXMLWriter::with_options(WriterOptions {
+            unescape_entities: true,
+        })
+        .save(unescaped.path(), &document)
+        .unwrap();
+        let text = std::fs::read_to_string(unescaped.path()).unwrap();
+        assert!(text.contains("UUID=\"a\"b'c\""), "{text}");
     }
 }

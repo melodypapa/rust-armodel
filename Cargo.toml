@@ -26,3 +26,7 @@ path = "tests/integration/roundtrip.rs"
 [[test]]
 name = "all_fixtures"
 path = "tests/integration/all_fixtures.rs"
+
+[[test]]
+name = "arxml_format"
+path = "tests/integration/arxml_format.rs"

@@ -6,10 +6,11 @@ from dataclasses import dataclass, field
 
 
 def snake_case(name: str) -> str:
-    # lowercase first letter, then insert _ between lower/digit and upper
-    name = name[0].lower() + name[1:] if name else name
-    name = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", name)
-    return name.replace("__", "_").lower()
+    """usedLanguages → used_languages; DocRevisions → doc_revisions;
+    acronyms stay one word: MSR → msr, AUTOSARTemplates → autosar_templates."""
+    s1 = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1 \2", name)
+    s2 = re.sub(r"([a-z0-9])([A-Z])", r"\1 \2", s1)
+    return "_".join(part.lower() for part in s2.split())
 
 
 @dataclass

@@ -14,6 +14,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::{
     ARPackage, ARPackageId,
 };
+use crate::m2::element_registry;
 use crate::m2::msr::asam_hdo::admin_data::AdminData;
 use crate::m2::msr::asam_hdo::special_data::{Sd, Sdg};
 use crate::writer::abstract_arxml_writer::{write_text_element, WriteError};
@@ -254,8 +255,50 @@ impl ARXMLWriter {
             write_text_element(writer, "SHORT-NAME", short_name_element, Some(short_name))?;
         }
 
-        // py writeReferenceBases / writeARPackageElements — nothing to emit in
-        // P0 (both lists are empty for this file).
+        // py writeIdentifiable: CATEGORY, then ADMIN-DATA, before the children
+        if let Some(category) = package.get_category() {
+            let category_element = BytesStart::new("CATEGORY");
+            write_text_element(writer, "CATEGORY", category_element, Some(category))?;
+        }
+        if let Some(admin_data) = package
+            .get_admin_data()
+            .and_then(|id| document.admin_datas.get(id))
+        {
+            self.write_admin_data(writer, admin_data, document)?;
+        }
+
+        // py writeARPackageElements — one <TAG> per element carrying the
+        // common Identifiable parts; per-class payload is the P2–P4 port.
+        let elements = package.get_elements();
+        if !elements.is_empty() {
+            writer.write_event(Event::Start(BytesStart::new("ELEMENTS")))?;
+            for element_ref in elements {
+                let tag = element_registry::element_tag(element_ref);
+                let mut element = BytesStart::new(tag);
+                if let Some(checksum) = element_registry::element_checksum(document, element_ref) {
+                    element.push_attribute(("S", checksum));
+                }
+                if let Some(timestamp) = element_registry::element_timestamp(document, element_ref)
+                {
+                    element.push_attribute(("T", timestamp));
+                }
+                if let Some(uuid) = element_registry::element_uuid(document, element_ref) {
+                    element.push_attribute(("UUID", uuid));
+                }
+                writer.write_event(Event::Start(element))?;
+                let short_name = element_registry::element_short_name(document, element_ref);
+                let short_name_element = BytesStart::new("SHORT-NAME");
+                write_text_element(writer, "SHORT-NAME", short_name_element, short_name)?;
+                if let Some(category) = element_registry::element_category(document, element_ref) {
+                    let category_element = BytesStart::new("CATEGORY");
+                    write_text_element(writer, "CATEGORY", category_element, Some(category))?;
+                }
+                writer.write_event(Event::End(BytesEnd::new(tag)))?;
+            }
+            writer.write_event(Event::End(BytesEnd::new("ELEMENTS")))?;
+        }
+
+        // py writeReferenceBases — nothing to emit in P0 (the list is empty).
 
         // py writeARPackages (nested packages last)
         self.write_ar_packages(writer, package.get_ar_packages(), document)?;

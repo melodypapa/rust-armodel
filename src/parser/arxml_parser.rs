@@ -10,6 +10,10 @@ use quick_xml::reader::Reader;
 use crate::m2::autosar_templates::autosar_top_level_structure::Document;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARPackageId;
+use crate::m2::element_registry::{
+    element_factory_for_tag, element_set_category, element_set_checksum, element_set_timestamp,
+    element_set_uuid,
+};
 use crate::m2::msr::asam_hdo::admin_data::{AdminData, AdminDataId};
 use crate::m2::msr::asam_hdo::special_data::{Sd, Sdf, Sdg, SdgCaption, SdgContents, SdgId};
 use crate::m2::msr::documentation::text_model::language_data_model::{LPlainText, XmlSpace};
@@ -223,7 +227,9 @@ impl ARXMLParser {
         // py readSdgCaption — SDG-CAPTION with a required SHORT-NAME.
         if let Some(caption_node) = find(element, "SDG-CAPTION") {
             let mut caption = SdgCaption::new();
-            self.read_ar_object(caption_node, caption.base_mut().base_mut());
+            // py chain SdgCaption -> MultilanguageReferrable -> Referrable -> ARObject:
+            // the generated model keeps every link, so the ARObject base is three hops out
+            self.read_ar_object(caption_node, caption.base_mut().base_mut().base_mut());
             let caption_short_name = get_short_name(caption_node)?;
             caption.set_short_name(caption_short_name);
             if find(caption_node, "DESC").is_some() {
@@ -271,7 +277,11 @@ impl ARXMLParser {
             contents.push_sdg(nested_id);
         }
 
-        if !contents.is_empty() {
+        // py SdgContents has no is_empty; contents exist iff any of SD/SDF/nested SDG was read
+        if !(contents.get_sd().is_empty()
+            && contents.get_sdf().is_empty()
+            && contents.get_sdg().is_empty())
+        {
             let contents_id = document.sdg_contents.insert(contents);
             sdg.set_sdg_contents_type(contents_id);
         }
@@ -332,11 +342,36 @@ impl ARXMLParser {
             }
         }
 
-        // py readARPackageElements / readReferenceBases — no element kinds are
-        // dispatched in P0; flag unexpected content instead of dropping it.
+        // py readARPackageElements — dispatch through the P1 tag→constructor
+        // registry. The common Identifiable parts (S/T attributes, UUID,
+        // SHORT-NAME, CATEGORY) are read; per-class payload (DESC, ADMIN-DATA,
+        // fields) is the P2–P4 mass port.
         if let Some(elements_node) = find(element, "ELEMENTS") {
-            if !find_all(elements_node, "*").is_empty() {
-                self.not_implemented("AR-PACKAGE/ELEMENTS are not supported in P0".to_string())?;
+            for child in find_all(elements_node, "*") {
+                let factory = match element_factory_for_tag(&child.name) {
+                    Some(factory) => factory,
+                    None => {
+                        self.not_implemented(format!(
+                            "Unsupported ARPackage element <{}>",
+                            child.name
+                        ))?;
+                        continue;
+                    }
+                };
+                let short_name = get_short_name(child)?;
+                let element_ref = factory(document, Some(id), &short_name);
+                if let Some(checksum) = child.attrs.get("S") {
+                    element_set_checksum(document, &element_ref, checksum);
+                }
+                if let Some(timestamp) = child.attrs.get("T") {
+                    element_set_timestamp(document, &element_ref, timestamp);
+                }
+                if let Some(uuid) = child.attrs.get("UUID") {
+                    element_set_uuid(document, &element_ref, uuid);
+                }
+                if let Some(category) = get_child_element_string(child, "CATEGORY") {
+                    element_set_category(document, &element_ref, category);
+                }
             }
         }
         if let Some(reference_bases_node) = find(element, "REFERENCE-BASES") {

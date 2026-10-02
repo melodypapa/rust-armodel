@@ -28,6 +28,11 @@ for the design, and `docs/code_guide.md` for the coding guidelines.
 ## How to perform the testing
 1. Run `cargo test` to verify the library
 
+## tools/py2rust
+1. `src/m2/**` is generated: `python3 tools/py2rust/main.py --py-armodel target/py-armodel --out src`
+2. Regeneration guard: append `--check` — must exit 0
+3. Never hand-edit `src/m2/**`; change the tool or `overrides.py` (see `docs/code_guide.md` §2)
+
 ## How to publish to crates.io
 1. Run `cargo test` to verify all the tests are passed
 2. Run `cargo publish` to upload the crate to crates.io

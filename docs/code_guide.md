@@ -42,6 +42,13 @@ Never leave a file outside the module tree (the current `identifier.rs` /
 `autosar_top_level_structure.rs` orphans are dead code the compiler cannot
 check).
 
+- `src/m2/**` is **generated** by `tools/py2rust` (banner-marked). Never hand-edit;
+  change the tool or `overrides.py` and re-run:
+  `python3 tools/py2rust/main.py --py-armodel target/py-armodel --out src`.
+  Regeneration guard: append `--check` — must exit 0. The pinned base chain,
+  `Document` root, and `XmlSpace` live in `tools/py2rust/templates.py`; edit
+  there, never in the output.
+
 ## 3. Modelling: composition instead of inheritance
 
 Python uses a deep base-class chain

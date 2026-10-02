@@ -30,3 +30,7 @@ path = "tests/integration/all_fixtures.rs"
 [[test]]
 name = "arxml_format"
 path = "tests/integration/arxml_format.rs"
+
+[[test]]
+name = "format_byte_roundtrip"
+path = "tests/integration/format_byte_roundtrip.rs"

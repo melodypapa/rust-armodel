@@ -129,6 +129,23 @@ class TestEmitModule(unittest.TestCase):
         self.assertIn("use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;",
                       out)
 
+    def test_remove_accessors_own_and_forwarded(self):
+        # py Identifiable.removeAdminData: own accessor on the field owner,
+        # forwarded along the base chain like every other inherited accessor
+        self.ir.add(ClassIr(name="AdminData", module_py="m", bases=["ARObject"]))
+        owner = ClassIr(name="Removable", module_py="m", bases=["ARObject"])
+        owner.fields = [
+            FieldIr(name="adminData", type_expr="Optional[AdminData]", kind="optional",
+                    inner="AdminData", has_remover=True),
+        ]
+        self.ir.add(owner)
+        child = ClassIr(name="RemovableChild", module_py="m", bases=["Removable"])
+        self.ir.add(child)
+        out = emit_module(self.ir, self.overrides, PLACEMENT, [owner, child], ["m2", "test"])
+        self.assertIn("pub fn remove_admin_data(&mut self) -> &mut Self", out)
+        self.assertIn("self.admin_data = None;", out)
+        self.assertIn("self.base_mut().remove_admin_data();", out)
+
 
 from emit_document import build_element_variants, emit_document_root, emit_equality, emit_registry
 

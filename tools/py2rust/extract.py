@@ -78,6 +78,14 @@ def _getter_doc(node: ast.ClassDef, field_name: str) -> str:
     return ""
 
 
+def _has_remover(node: ast.ClassDef, field_name: str) -> bool:
+    """py classes model optional-field clearing as remove<Field> methods
+    (e.g. Identifiable.removeAdminData); the emitted Rust mirrors them."""
+    remover = "remove" + field_name[0].upper() + field_name[1:]
+    return any(isinstance(stmt, ast.FunctionDef) and stmt.name == remover
+               for stmt in node.body)
+
+
 def _extract_fields(node: ast.ClassDef, source_lines: list[str]) -> list[FieldIr]:
     fields: list[FieldIr] = []
 
@@ -94,6 +102,7 @@ def _extract_fields(node: ast.ClassDef, source_lines: list[str]) -> list[FieldIr
             kind=kind,
             inner=inner,
             doc=_getter_doc(node, name) or _preceding_doc(source_lines, declared_at),
+            has_remover=_has_remover(node, name),
         ))
 
     for stmt in node.body:  # class-level annotated assignments (mixins)

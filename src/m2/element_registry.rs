@@ -6574,6 +6574,829 @@ pub(crate) fn element_set_timestamp(d: &mut Document, element: &ElementRef, valu
     }
 }
 
+pub(crate) fn element_remove_admin_data(d: &mut Document, element: &ElementRef) {
+    match element {
+        ElementRef::ARPackage(id) => {
+            if let Some(e) = d.ar_packages.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::AclObjectSet(id) => {
+            if let Some(e) = d.acl_object_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::AclOperation(id) => {
+            if let Some(e) = d.acl_operations.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::AclPermission(id) => {
+            if let Some(e) = d.acl_permissions.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::AclRole(id) => {
+            if let Some(e) = d.acl_roles.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ApplicationArrayDataType(id) => {
+            if let Some(e) = d.application_array_data_types.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ApplicationDeferredDataType(id) => {
+            if let Some(e) = d.application_deferred_data_types.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ApplicationPrimitiveDataType(id) => {
+            if let Some(e) = d.application_primitive_data_types.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ApplicationRecordDataType(id) => {
+            if let Some(e) = d.application_record_data_types.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ApplicationSwComponentType(id) => {
+            if let Some(e) = d.application_sw_component_types.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::BlueprintMappingSet(id) => {
+            if let Some(e) = d.blueprint_mapping_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::BswEntryRelationshipSet(id) => {
+            if let Some(e) = d.bsw_entry_relationship_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::BswImplementation(id) => {
+            if let Some(e) = d.bsw_implementations.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::BswModuleDescription(id) => {
+            if let Some(e) = d.bsw_module_descriptions.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::BswModuleEntry(id) => {
+            if let Some(e) = d.bsw_module_entrys.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::BuildActionManifest(id) => {
+            if let Some(e) = d.build_action_manifests.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::CanCluster(id) => {
+            if let Some(e) = d.can_clusters.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::CanFrame(id) => {
+            if let Some(e) = d.can_frames.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::CanTpConfig(id) => {
+            if let Some(e) = d.can_tp_configs.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::CanXlProps(id) => {
+            if let Some(e) = d.can_xl_props.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ClientIdDefinitionSet(id) => {
+            if let Some(e) = d.client_id_definition_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ClientServerInterface(id) => {
+            if let Some(e) = d.client_server_interfaces.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::Collection(id) => {
+            if let Some(e) = d.collections.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ComplexDeviceDriverSwComponentType(id) => {
+            if let Some(e) = d.complex_device_driver_sw_component_types.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::CompositionSwComponentType(id) => {
+            if let Some(e) = d.composition_sw_component_types.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::CompuMethod(id) => {
+            if let Some(e) = d.compu_methods.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ConsistencyNeeds(id) => {
+            if let Some(e) = d.consistency_needs.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ConstantSpecification(id) => {
+            if let Some(e) = d.constant_specifications.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ConstantSpecificationMappingSet(id) => {
+            if let Some(e) = d.constant_specification_mapping_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ConsumedProvidedServiceInstanceGroup(id) => {
+            if let Some(e) = d.consumed_provided_service_instance_groups.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::CpSoftwareCluster(id) => {
+            if let Some(e) = d.cp_software_clusters.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::CryptoEllipticCurveProps(id) => {
+            if let Some(e) = d.crypto_elliptic_curve_props.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::CryptoServiceCertificate(id) => {
+            if let Some(e) = d.crypto_service_certificates.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::CryptoServicePrimitive(id) => {
+            if let Some(e) = d.crypto_service_primitives.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::CryptoSignatureScheme(id) => {
+            if let Some(e) = d.crypto_signature_schemes.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DataConstr(id) => {
+            if let Some(e) = d.data_constrs.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DataPrototypeGroup(id) => {
+            if let Some(e) = d.data_prototype_groups.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DataTransformationSet(id) => {
+            if let Some(e) = d.data_transformation_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DataTypeMappingSet(id) => {
+            if let Some(e) = d.data_type_mapping_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DcmIPdu(id) => {
+            if let Some(e) = d.dcm_i_pdus.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticAccessPermission(id) => {
+            if let Some(e) = d.diagnostic_access_permissions.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticAuthRole(id) => {
+            if let Some(e) = d.diagnostic_auth_roles.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticAuthTransmitCertificate(id) => {
+            if let Some(e) = d.diagnostic_auth_transmit_certificates.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticAuthenticationClass(id) => {
+            if let Some(e) = d.diagnostic_authentication_class.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticAuthenticationConfiguration(id) => {
+            if let Some(e) = d.diagnostic_authentication_configurations.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticComControl(id) => {
+            if let Some(e) = d.diagnostic_com_controls.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticConnection(id) => {
+            if let Some(e) = d.diagnostic_connections.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticContributionSet(id) => {
+            if let Some(e) = d.diagnostic_contribution_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticCustomServiceClass(id) => {
+            if let Some(e) = d.diagnostic_custom_service_class.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticCustomServiceInstance(id) => {
+            if let Some(e) = d.diagnostic_custom_service_instances.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticDataIdentifier(id) => {
+            if let Some(e) = d.diagnostic_data_identifiers.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticDeAuthentication(id) => {
+            if let Some(e) = d.diagnostic_de_authentications.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticDynamicDataIdentifier(id) => {
+            if let Some(e) = d.diagnostic_dynamic_data_identifiers.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticEcuReset(id) => {
+            if let Some(e) = d.diagnostic_ecu_resets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticEcuResetClass(id) => {
+            if let Some(e) = d.diagnostic_ecu_reset_class.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticEnvironmentalCondition(id) => {
+            if let Some(e) = d.diagnostic_environmental_conditions.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticProofOfOwnership(id) => {
+            if let Some(e) = d.diagnostic_proof_of_ownerships.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticProtocol(id) => {
+            if let Some(e) = d.diagnostic_protocols.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticSecurityAccess(id) => {
+            if let Some(e) = d.diagnostic_security_access.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticSecurityAccessClass(id) => {
+            if let Some(e) = d.diagnostic_security_access_class.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticSecurityLevel(id) => {
+            if let Some(e) = d.diagnostic_security_levels.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticServiceTable(id) => {
+            if let Some(e) = d.diagnostic_service_tables.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticSession(id) => {
+            if let Some(e) = d.diagnostic_sessions.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticSessionControl(id) => {
+            if let Some(e) = d.diagnostic_session_controls.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticSessionControlClass(id) => {
+            if let Some(e) = d.diagnostic_session_control_class.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticVerifyCertificateBidirectional(id) => {
+            if let Some(e) = d.diagnostic_verify_certificate_bidirectionals.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DiagnosticVerifyCertificateUnidirectional(id) => {
+            if let Some(e) = d.diagnostic_verify_certificate_unidirectionals.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DltContext(id) => {
+            if let Some(e) = d.dlt_contexts.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DltEcu(id) => {
+            if let Some(e) = d.dlt_ecus.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::DoIpTpConfig(id) => {
+            if let Some(e) = d.do_ip_tp_configs.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::Documentation(id) => {
+            if let Some(e) = d.documentations.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::E2EProfileCompatibilityProps(id) => {
+            if let Some(e) = d.e2_e_profile_compatibility_props.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::EcuAbstractionSwComponentType(id) => {
+            if let Some(e) = d.ecu_abstraction_sw_component_types.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::EcuInstance(id) => {
+            if let Some(e) = d.ecu_instances.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::EcucDefinitionCollection(id) => {
+            if let Some(e) = d.ecuc_definition_collections.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::EcucDestinationUriDefSet(id) => {
+            if let Some(e) = d.ecuc_destination_uri_def_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::EcucModuleConfigurationValues(id) => {
+            if let Some(e) = d.ecuc_module_configuration_values.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::EcucModuleDef(id) => {
+            if let Some(e) = d.ecuc_module_defs.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::EcucValueCollection(id) => {
+            if let Some(e) = d.ecuc_value_collections.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::EndToEndProtectionSet(id) => {
+            if let Some(e) = d.end_to_end_protection_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::EthTcpIpIcmpProps(id) => {
+            if let Some(e) = d.eth_tcp_ip_icmp_props.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::EthTcpIpProps(id) => {
+            if let Some(e) = d.eth_tcp_ip_props.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::EthernetCluster(id) => {
+            if let Some(e) = d.ethernet_clusters.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::EvaluatedVariantSet(id) => {
+            if let Some(e) = d.evaluated_variant_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::FirewallRule(id) => {
+            if let Some(e) = d.firewall_rules.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::FlatMap(id) => {
+            if let Some(e) = d.flat_maps.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::FlexrayCluster(id) => {
+            if let Some(e) = d.flexray_clusters.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::FlexrayFrame(id) => {
+            if let Some(e) = d.flexray_frames.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::Gateway(id) => {
+            if let Some(e) = d.gateways.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::GeneralPurposeIPdu(id) => {
+            if let Some(e) = d.general_purpose_i_pdus.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::GeneralPurposePdu(id) => {
+            if let Some(e) = d.general_purpose_pdus.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::GenericEthernetFrame(id) => {
+            if let Some(e) = d.generic_ethernet_frames.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::HwCategory(id) => {
+            if let Some(e) = d.hw_categorys.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::HwElement(id) => {
+            if let Some(e) = d.hw_elements.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::HwType(id) => {
+            if let Some(e) = d.hw_types.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::IPSecConfigProps(id) => {
+            if let Some(e) = d.ip_sec_config_props.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ISignal(id) => {
+            if let Some(e) = d.i_signals.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ISignalGroup(id) => {
+            if let Some(e) = d.i_signal_groups.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ISignalIPdu(id) => {
+            if let Some(e) = d.i_signal_i_pdus.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ISignalIPduGroup(id) => {
+            if let Some(e) = d.i_signal_i_pdu_groups.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ImplementationDataType(id) => {
+            if let Some(e) = d.implementation_data_types.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::InterpolationRoutineMappingSet(id) => {
+            if let Some(e) = d.interpolation_routine_mapping_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::J1939Cluster(id) => {
+            if let Some(e) = d.j1939_clusters.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::KeywordSet(id) => {
+            if let Some(e) = d.keyword_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::LifeCycleInfoSet(id) => {
+            if let Some(e) = d.life_cycle_info_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::LifeCycleStateDefinitionGroup(id) => {
+            if let Some(e) = d.life_cycle_state_definition_groups.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::LinCluster(id) => {
+            if let Some(e) = d.lin_clusters.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::LinTpConfig(id) => {
+            if let Some(e) = d.lin_tp_configs.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::LinUnconditionalFrame(id) => {
+            if let Some(e) = d.lin_unconditional_frames.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::McFunction(id) => {
+            if let Some(e) = d.mc_functions.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::McGroup(id) => {
+            if let Some(e) = d.mc_groups.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ModeDeclarationGroup(id) => {
+            if let Some(e) = d.mode_declaration_groups.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ModeDeclarationMappingSet(id) => {
+            if let Some(e) = d.mode_declaration_mapping_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ModeSwitchInterface(id) => {
+            if let Some(e) = d.mode_switch_interfaces.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ModuleConfiguration(id) => {
+            if let Some(e) = d.module_configurations.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::MultiplexedIPdu(id) => {
+            if let Some(e) = d.multiplexed_i_pdus.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::NPdu(id) => {
+            if let Some(e) = d.n_pdus.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::NmConfig(id) => {
+            if let Some(e) = d.nm_configs.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::NmPdu(id) => {
+            if let Some(e) = d.nm_pdus.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::NvBlockSwComponentType(id) => {
+            if let Some(e) = d.nv_block_sw_component_types.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::NvDataInterface(id) => {
+            if let Some(e) = d.nv_data_interfaces.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::OsTaskProxy(id) => {
+            if let Some(e) = d.os_task_proxys.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ParameterInterface(id) => {
+            if let Some(e) = d.parameter_interfaces.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::PdurIPduGroup(id) => {
+            if let Some(e) = d.pdur_i_pdu_groups.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::PhysicalDimension(id) => {
+            if let Some(e) = d.physical_dimensions.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::PlatformModuleEthernetEndpointConfiguration(id) => {
+            if let Some(e) = d
+                .platform_module_ethernet_endpoint_configurations
+                .get_mut(*id)
+            {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::PortInterfaceMappingSet(id) => {
+            if let Some(e) = d.port_interface_mapping_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::PortPrototypeBlueprint(id) => {
+            if let Some(e) = d.port_prototype_blueprints.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::PostBuildVariantCriterion(id) => {
+            if let Some(e) = d.post_build_variant_criterions.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::PredefinedVariant(id) => {
+            if let Some(e) = d.predefined_variants.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::RunnableEntityGroup(id) => {
+            if let Some(e) = d.runnable_entity_groups.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SdgDef(id) => {
+            if let Some(e) = d.sdg_defs.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SecureCommunicationPropsSet(id) => {
+            if let Some(e) = d.secure_communication_props_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SecuredIPdu(id) => {
+            if let Some(e) = d.secured_i_pdus.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SenderReceiverInterface(id) => {
+            if let Some(e) = d.sender_receiver_interfaces.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SensorActuatorSwComponentType(id) => {
+            if let Some(e) = d.sensor_actuator_sw_component_types.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ServiceProxySwComponentType(id) => {
+            if let Some(e) = d.service_proxy_sw_component_types.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ServiceSwComponentType(id) => {
+            if let Some(e) = d.service_sw_component_types.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SignalServiceTranslationPropsSet(id) => {
+            if let Some(e) = d.signal_service_translation_props_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SoAdRoutingGroup(id) => {
+            if let Some(e) = d.so_ad_routing_groups.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SomeipSdClientEventGroupTimingConfig(id) => {
+            if let Some(e) = d.someip_sd_client_event_group_timing_configs.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SomeipSdClientServiceInstanceConfig(id) => {
+            if let Some(e) = d.someip_sd_client_service_instance_configs.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SomeipSdServerEventGroupTimingConfig(id) => {
+            if let Some(e) = d.someip_sd_server_event_group_timing_configs.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::StateDependentFirewall(id) => {
+            if let Some(e) = d.state_dependent_firewalls.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SwAddrMethod(id) => {
+            if let Some(e) = d.sw_addr_methods.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SwBaseType(id) => {
+            if let Some(e) = d.sw_base_types.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SwRecordLayout(id) => {
+            if let Some(e) = d.sw_record_layouts.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SwSystemconst(id) => {
+            if let Some(e) = d.sw_systemconsts.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SwSystemconstantValueSet(id) => {
+            if let Some(e) = d.sw_systemconstant_value_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SwcBswMapping(id) => {
+            if let Some(e) = d.swc_bsw_mappings.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SwcImplementation(id) => {
+            if let Some(e) = d.swc_implementations.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SwcTiming(id) => {
+            if let Some(e) = d.swc_timings.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::System(id) => {
+            if let Some(e) = d.systems.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SystemSignal(id) => {
+            if let Some(e) = d.system_signals.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::SystemSignalGroup(id) => {
+            if let Some(e) = d.system_signal_groups.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::TcpOptionFilterSet(id) => {
+            if let Some(e) = d.tcp_option_filter_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::TlvDataIdDefinitionSet(id) => {
+            if let Some(e) = d.tlv_data_id_definition_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::TriggerInterface(id) => {
+            if let Some(e) = d.trigger_interfaces.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::Unit(id) => {
+            if let Some(e) = d.units.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::UnitGroup(id) => {
+            if let Some(e) = d.unit_groups.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::UserDefinedIPdu(id) => {
+            if let Some(e) = d.user_defined_i_pdus.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::UserDefinedPdu(id) => {
+            if let Some(e) = d.user_defined_pdus.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+        ElementRef::ViewMapSet(id) => {
+            if let Some(e) = d.view_map_sets.get_mut(*id) {
+                e.remove_admin_data();
+            }
+        }
+    }
+}
+
 pub(crate) fn compare_element(
     d: &Document,
     other: &Document,

@@ -65,6 +65,9 @@ impl ARXMLWriter {
         self.write_ar_packages(&mut writer, document.get_ar_packages(), document)?;
 
         writer.write_event(Event::End(BytesEnd::new("AUTOSAR")))?;
+        // py saveToFile's minidom toprettyxml terminates the document with a
+        // final newline after the root element
+        writer.into_inner().write_all(b"\n")?;
         Ok(())
     }
 

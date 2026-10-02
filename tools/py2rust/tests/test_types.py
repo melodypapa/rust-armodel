@@ -45,7 +45,12 @@ class TestMapField(unittest.TestCase):
         self.assertEqual(mapped.wrapper, "list")
         self.assertEqual(mapped.link, "Sdg")
 
-    def test_unknown_inner_is_reported_not_crashed(self):
+    def test_unknown_inner_maps_to_string_and_is_reported(self):
+        # py-armodel ships placeholder references (e.g. V2xSupportEnum) that are
+        # never defined — mirror them as String and surface them in the report
+        import typemap
+        typemap.UNKNOWN_LOG.clear()
         field = FieldIr(name="weird", type_expr="Optional[Mystery]", kind="optional", inner="Mystery")
-        with self.assertRaisesRegex(KeyError, "Mystery"):
-            map_field(field, self.ir, self.overrides)
+        mapped = map_field(field, self.ir, self.overrides)
+        self.assertEqual(mapped.rust_type, "String")
+        self.assertEqual(typemap.unknown_types(), ["Mystery"])

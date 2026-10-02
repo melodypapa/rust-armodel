@@ -32,16 +32,26 @@ class RustField:
     link: str | None    # None for owned scalars/enums; "<T>" for arena links
 
 
+# types referenced by py-armodel but never defined there (upstream placeholders,
+# e.g. V2xSupportEnum "Rule 0001.10 placeholder") -> String, reported by main()
+UNKNOWN_LOG: list[str] = []
+
+
+def unknown_types() -> list[str]:
+    return sorted(set(UNKNOWN_LOG))
+
+
 def map_field(field: FieldIr, ir: Ir, overrides: Overrides) -> RustField:
     inner = field.inner
     alias = overrides.type_alias(inner)
     if alias:
         return RustField(FieldIr.rust_name_for(field.name), alias, field.kind, link=None)
-    if inner in PRIMITIVES:
+    if inner in PRIMITIVES or inner in ("str", "int", "float", "bool", "Any"):
         return RustField(FieldIr.rust_name_for(field.name), "String", field.kind, link=None)
     cls = ir.get(inner)
     if cls is None:
-        raise KeyError(f"unknown field type {inner!r} (field {field.name}); add to PRIMITIVES or overrides")
+        UNKNOWN_LOG.append(inner)
+        return RustField(FieldIr.rust_name_for(field.name), "String", field.kind, link=None)
     if cls.is_enum:
         return RustField(FieldIr.rust_name_for(field.name), inner, field.kind, link=None)
     if cls.is_primitive:

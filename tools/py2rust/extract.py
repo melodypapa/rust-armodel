@@ -144,6 +144,26 @@ def extract_source(source: str, module_py: str) -> Ir:
     return ir
 
 
+def propagate_flags(ir: Ir) -> None:
+    """Primitive/enum-ness is transitive: Float(Numerical), Numerical(ARLiteral) …
+    Without this, second-generation primitives would be emitted as full structs."""
+    primitive_roots = PRIMITIVE_BASES
+    changed = True
+    while changed:
+        changed = False
+        for cls in ir.classes():
+            for base_name in cls.bases:
+                base = ir.get(base_name)
+                if base is None:
+                    continue
+                if not cls.is_primitive and (base.is_primitive or base_name in primitive_roots):
+                    cls.is_primitive = True
+                    changed = True
+                if not cls.is_enum and base.is_enum:
+                    cls.is_enum = True
+                    changed = True
+
+
 def extract_repo(root: str) -> Ir:
     """Extract every models/M2/**/*.py under a py-armodel checkout root."""
     ir = Ir()
@@ -151,8 +171,9 @@ def extract_repo(root: str) -> Ir:
     for path in sorted(base.rglob("*.py")):
         if path.name.startswith("test_"):
             continue
-        rel = path.relative_to(base.parent.parent)          # src/...
+        rel = path.relative_to(base.parents[2])               # armodel/models/M2/... under src/
         module_py = ".".join(rel.with_suffix("").parts)
         for cls in extract_source(path.read_text(), module_py).classes():
             ir.add(cls)
+    propagate_flags(ir)
     return ir

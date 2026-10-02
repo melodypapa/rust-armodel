@@ -8,6 +8,8 @@ from ir import snake_case
 
 CLASS_ROW = re.compile(r"^\|\s*Class\s*\|\s*([A-Za-z][A-Za-z0-9_]*)(\s*\(abstract\))?\s*\|")
 PRIMITIVE_ROW = re.compile(r"^\|\s*Primitive\s*\|\s*([A-Za-z][A-Za-z0-9_]*)\s*\|")
+ENUMERATION_ROW = re.compile(r"^\|\s*Enumeration\s*\|\s*([A-Za-z][A-Za-z0-9_]*)\s*\|")
+LITERAL_ROW = re.compile(r"^\|\s*Literal\s*\|\s*([A-Za-z][A-Za-z0-9_]*)\s*\|")
 PACKAGE_ROW = re.compile(r"^\|\s*Package\s*\|\s*(M2::[A-Za-z0-9:]+)\s*\|")
 
 
@@ -31,7 +33,8 @@ def parse_markdown(files: dict[str, str]) -> Placement:
     for content in files.values():
         current: str | None = None
         for line in content.splitlines():
-            match = CLASS_ROW.match(line) or PRIMITIVE_ROW.match(line)
+            match = (CLASS_ROW.match(line) or PRIMITIVE_ROW.match(line)
+                     or ENUMERATION_ROW.match(line) or LITERAL_ROW.match(line))
             if match:
                 current = match.group(1)
                 continue

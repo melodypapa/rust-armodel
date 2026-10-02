@@ -53,7 +53,10 @@ PLACEMENT = Placement({
     "SdgContents": "M2::Test::SpecialData",
     "SdgCaption": "M2::Other",
     "Sdf": "M2::Other",
+    "ApplicationSwComponentType": "M2::Swc",
     "ARObject": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ArObject",
+    "ARPackage": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ARPackage",
+    "CollectableElement": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ElementCollection",
 })
 
 
@@ -125,6 +128,61 @@ class TestEmitModule(unittest.TestCase):
         self.assertIn("self.base().set_parent(parent);", out)
         self.assertIn("use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;",
                       out)
+
+
+from emit_document import build_element_variants, emit_document_root, emit_equality, emit_registry
+
+
+class TestEmitDocument(unittest.TestCase):
+    def setUp(self):
+        ir = extract_source(FIXTURE, "m")
+        arobject = ClassIr(name="ARObject", module_py="m", bases=[])
+        ir.add(arobject)
+        ir.add(ClassIr(name="Sdf", module_py="m", bases=["ARObject"]))
+        ir.add(ClassIr(name="ApplicationSwComponentType", module_py="m", bases=["ARObject"]))
+        arpackage = ClassIr(name="ARPackage", module_py="m", bases=["CollectableElement"])
+        arpackage.creates = {
+            "createARPackage": "ARPackage",
+            "createApplicationSwComponentType": "ApplicationSwComponentType",
+        }
+        ir.add(arpackage)
+        self.ir = ir
+
+    def test_element_variants_from_create_directory(self):
+        variants = build_element_variants(self.ir)
+        self.assertEqual(variants, ["ARPackage", "ApplicationSwComponentType"])
+
+    def test_registry_maps_kebab_tags(self):
+        code = emit_registry(self.ir, Overrides.default(), PLACEMENT, build_element_variants(self.ir))
+        self.assertIn('"APPLICATION-SW-COMPONENT-TYPE" =>', code)
+        self.assertIn("ElementRef::ApplicationSwComponentType(d.add_application_sw_component_type(p, n))", code)
+        self.assertIn('"AR-PACKAGE" =>', code)
+
+    def test_equality_emits_scalar_and_link_compare(self):
+        code = emit_equality(self.ir, Overrides.default(), self.ir.get("SdgContents"))
+        self.assertIn("fn compare_sdg_contents(", code)
+        self.assertIn("let list_a = a.get_sd();", code)
+        self.assertIn("if list_a.len() != list_b.len() {", code)
+        self.assertIn('format!("{path}.SD[{index}]: id not found in own arena"', code)
+        self.assertIn("self.compare_sd(other, x, y,", code)
+
+    def test_document_root_surgery(self):
+        code = emit_document_root(self.ir, Overrides.default(), PLACEMENT)
+        # P0 compares that moved to generated modules are gone as definitions…
+        self.assertNotIn("fn compare_admin_data(", code)
+        self.assertNotIn("fn compare_sdg_contents(", code)
+        # …but the assert skeleton still dispatches to them
+        self.assertIn('self.compare_admin_data(other, admin_a, admin_b, "ADMIN-DATA")', code)
+        self.assertIn("fn compare_ar_package(", code)  # P0-kept
+        # uniform resolver + arena for a generated class
+        self.assertIn("pub fn get_sdg_contents(&self, id: SdgContentsId) -> Option<&SdgContents>", code)
+        self.assertIn("pub(crate) sdgs: SlotMap<SdgId, Sdg>,", code)
+        # element factory generated, ARPackage factory kept
+        self.assertIn("pub fn add_application_sw_component_type(", code)
+        self.assertIn("pub fn add_ar_package(", code)
+        # P0 tests survive the surgery
+        self.assertIn("fn add_ar_package_links_parent_and_root(", code)
+        self.assertIn("#[cfg(test)]", code)
 
 
 if __name__ == "__main__":

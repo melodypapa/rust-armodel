@@ -801,6 +801,11 @@ impl BswMgrNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -968,6 +973,11 @@ impl ComMgrUserNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -1125,6 +1135,11 @@ impl CryptoKeyManagementNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -1279,6 +1294,11 @@ impl CryptoServiceJobNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -1479,6 +1499,11 @@ impl CryptoServiceNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -1645,6 +1670,11 @@ impl DevelopmentError {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -1799,6 +1829,11 @@ impl DiagEventDebounceAlgorithm {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().remove_admin_data();
         self
     }
 
@@ -2041,6 +2076,11 @@ impl DiagEventDebounceCounterBased {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -2195,6 +2235,11 @@ impl DiagEventDebounceMonitorInternal {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -2388,6 +2433,11 @@ impl DiagEventDebounceTimeBased {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -2571,6 +2621,11 @@ impl DiagnosticCapabilityElement {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -2769,6 +2824,11 @@ impl DiagnosticCommunicationManagerNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -2984,6 +3044,11 @@ impl DiagnosticComponentNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().get_annotations()
     }
@@ -3193,6 +3258,11 @@ impl DiagnosticControlNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -3415,6 +3485,11 @@ impl DiagnosticEnableConditionNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -3660,6 +3735,11 @@ impl DiagnosticEventInfoNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().get_annotations()
     }
@@ -3869,6 +3949,11 @@ impl DiagnosticEventManagerNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -4145,6 +4230,11 @@ impl DiagnosticEventNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().get_annotations()
     }
@@ -4397,6 +4487,11 @@ impl DiagnosticIoControlNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().get_annotations()
     }
@@ -4619,6 +4714,11 @@ impl DiagnosticOperationCycleNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().get_annotations()
     }
@@ -4828,6 +4928,11 @@ impl DiagnosticRequestFileTransferNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -5063,6 +5168,11 @@ impl DiagnosticRoutineNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().get_annotations()
     }
@@ -5285,6 +5395,11 @@ impl DiagnosticStorageConditionNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().get_annotations()
     }
@@ -5494,6 +5609,11 @@ impl DiagnosticUploadDownloadNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -5759,6 +5879,11 @@ impl DiagnosticValueNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().get_annotations()
     }
@@ -5971,6 +6096,11 @@ impl DiagnosticsCommunicationSecurityNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().get_annotations()
     }
@@ -6157,6 +6287,11 @@ impl DltUserNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -6311,6 +6446,11 @@ impl DoIpActivationLineNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -6500,6 +6640,11 @@ impl DoIpGidNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().get_annotations()
     }
@@ -6686,6 +6831,11 @@ impl DoIpGidSynchronizationNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().get_annotations()
     }
@@ -6869,6 +7019,11 @@ impl DoIpPowerModeStatusNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -7088,6 +7243,11 @@ impl DoIpRoutingActivationAuthenticationNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().get_annotations()
     }
@@ -7304,6 +7464,11 @@ impl DoIpRoutingActivationConfirmationNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().get_annotations()
     }
@@ -7487,6 +7652,11 @@ impl DoIpServiceNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -7696,6 +7866,11 @@ impl DtcStatusChangeNotificationNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().get_annotations()
     }
@@ -7882,6 +8057,11 @@ impl EcuStateMgrUserNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -8045,6 +8225,11 @@ impl ErrorTracerNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -8215,6 +8400,11 @@ impl FunctionInhibitionAvailabilityNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -8372,6 +8562,11 @@ impl FunctionInhibitionNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -8526,6 +8721,11 @@ impl FurtherActionByteNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -8715,6 +8915,11 @@ impl GlobalSupervisionNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -8872,6 +9077,11 @@ impl HardwareTestNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -9026,6 +9236,11 @@ impl IdsMgrCustomTimestampNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -9196,6 +9411,11 @@ impl IdsMgrNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -9363,6 +9583,11 @@ impl IndicatorStatusNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -9517,6 +9742,11 @@ impl J1939DcmDm19Support {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -9677,6 +9907,11 @@ impl J1939RmIncomingRequestServiceNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -9831,6 +10066,11 @@ impl J1939RmOutgoingRequestServiceNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -10212,6 +10452,11 @@ impl NvBlockNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -10392,6 +10637,11 @@ impl ObdControlServiceNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -10604,6 +10854,11 @@ impl ObdInfoServiceNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -10859,6 +11114,11 @@ impl ObdMonitorServiceNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().get_annotations()
     }
@@ -11071,6 +11331,11 @@ impl ObdPidServiceNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().get_annotations()
     }
@@ -11267,6 +11532,11 @@ impl ObdRatioDenominatorNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -11483,6 +11753,11 @@ impl ObdRatioServiceNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().get_annotations()
     }
@@ -11676,6 +11951,11 @@ impl PossibleErrorReaction {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().remove_admin_data();
         self
     }
 
@@ -11932,6 +12212,11 @@ impl RuntimeError {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -12101,6 +12386,11 @@ impl SecureOnBoardCommunicationNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -12332,6 +12622,11 @@ impl ServiceNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().get_annotations()
     }
@@ -12475,6 +12770,11 @@ impl SupervisedEntityCheckpointNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -12701,6 +13001,11 @@ impl SupervisedEntityNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -12937,6 +13242,11 @@ impl SyncTimeBaseMgrUserNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -13110,6 +13420,11 @@ impl TracedFailure {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().remove_admin_data();
         self
     }
 
@@ -13287,6 +13602,11 @@ impl TransientFault {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -13441,6 +13761,11 @@ impl V2xDataManagerNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -13601,6 +13926,11 @@ impl V2xFacUserNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -13755,6 +14085,11 @@ impl V2xMUserNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -13915,6 +14250,11 @@ impl VendorSpecificServiceNeeds {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -14069,6 +14409,11 @@ impl WarningIndicatorRequestedBitNeeds {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
         self
     }
 

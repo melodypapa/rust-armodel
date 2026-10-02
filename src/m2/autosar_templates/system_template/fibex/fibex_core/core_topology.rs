@@ -223,6 +223,16 @@ impl AbstractCanCluster {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().base().base().get_annotations()
     }
@@ -545,6 +555,17 @@ impl CanCluster {
             .base_mut()
             .base_mut()
             .set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
         self
     }
 
@@ -921,6 +942,11 @@ impl CommConnectorPort {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().get_annotations()
     }
@@ -1117,6 +1143,15 @@ impl CommunicationCluster {
             .base_mut()
             .base_mut()
             .set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
         self
     }
 
@@ -1412,6 +1447,11 @@ impl CommunicationConnector {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().get_annotations()
     }
@@ -1584,6 +1624,11 @@ impl CommunicationController {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().remove_admin_data();
         self
     }
 
@@ -2152,6 +2197,15 @@ impl EcuInstance {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().base().get_annotations()
     }
@@ -2428,6 +2482,11 @@ impl PhysicalChannel {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().get_annotations()
     }
@@ -2654,6 +2713,17 @@ impl TtcanCluster {
             .base_mut()
             .base_mut()
             .set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
         self
     }
 
@@ -2989,6 +3059,16 @@ impl UserDefinedCluster {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().base().base().get_annotations()
     }
@@ -3245,6 +3325,11 @@ impl UserDefinedCommunicationController {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
         self
     }
 

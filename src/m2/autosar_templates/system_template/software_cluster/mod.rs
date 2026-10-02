@@ -144,6 +144,15 @@ impl CpSoftwareCluster {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().base().get_annotations()
     }
@@ -365,6 +374,11 @@ impl CpSoftwareClusterCommunicationResource {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().get_annotations()
     }
@@ -560,6 +574,15 @@ impl CpSoftwareClusterMappingSet {
             .base_mut()
             .base_mut()
             .set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
         self
     }
 
@@ -784,6 +807,11 @@ impl CpSoftwareClusterResource {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().get_annotations()
     }
@@ -930,6 +958,15 @@ impl CpSoftwareClusterResourcePool {
             .base_mut()
             .base_mut()
             .set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
         self
     }
 
@@ -1154,6 +1191,11 @@ impl CpSoftwareClusterResourceToApplicationPartitionMapping {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().get_annotations()
     }
@@ -1296,6 +1338,11 @@ impl CpSoftwareClusterServiceResource {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -1455,6 +1502,11 @@ impl CpSoftwareClusterToApplicationPartitionMapping {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().get_annotations()
     }
@@ -1600,6 +1652,11 @@ impl CpSoftwareClusterToEcuInstanceMapping {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().get_annotations()
     }
@@ -1742,6 +1799,11 @@ impl CpSoftwareClusterToResourceMapping {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().remove_admin_data();
         self
     }
 
@@ -2034,6 +2096,11 @@ impl SystemSignalGroupToCommunicationResourceMapping {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().get_annotations()
     }
@@ -2176,6 +2243,11 @@ impl SystemSignalToCommunicationResourceMapping {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().remove_admin_data();
         self
     }
 

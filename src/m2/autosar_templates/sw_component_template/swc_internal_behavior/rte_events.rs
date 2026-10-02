@@ -115,6 +115,15 @@ impl AsynchronousServerCallReturnsEvent {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().base().get_annotations()
     }
@@ -366,6 +375,15 @@ impl BackgroundEvent {
             .base_mut()
             .base_mut()
             .set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
         self
     }
 
@@ -634,6 +652,15 @@ impl DataReceiveErrorEvent {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().base().get_annotations()
     }
@@ -896,6 +923,15 @@ impl DataReceivedEvent {
             .base_mut()
             .base_mut()
             .set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
         self
     }
 
@@ -1164,6 +1200,15 @@ impl DataSendCompletedEvent {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().base().get_annotations()
     }
@@ -1429,6 +1474,15 @@ impl DataWriteCompletedEvent {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().base().get_annotations()
     }
@@ -1679,6 +1733,15 @@ impl ExternalTriggerOccurredEvent {
             .base_mut()
             .base_mut()
             .set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
         self
     }
 
@@ -1933,6 +1996,15 @@ impl InitEvent {
             .base_mut()
             .base_mut()
             .set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
         self
     }
 
@@ -2201,6 +2273,15 @@ impl InternalTriggerOccurredEvent {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().base().get_annotations()
     }
@@ -2453,6 +2534,15 @@ impl ModeSwitchedAckEvent {
             .base_mut()
             .base_mut()
             .set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
         self
     }
 
@@ -2721,6 +2811,15 @@ impl OperationInvokedEvent {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().base().get_annotations()
     }
@@ -2971,6 +3070,15 @@ impl OsTaskExecutionEvent {
             .base_mut()
             .base_mut()
             .set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
         self
     }
 
@@ -3238,6 +3346,11 @@ impl RTEEvent {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().base_mut().base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().base_mut().base_mut().remove_admin_data();
         self
     }
 
@@ -3540,6 +3653,15 @@ impl SwcModeSwitchEvent {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().base().get_annotations()
     }
@@ -3792,6 +3914,15 @@ impl TimingEvent {
             .base_mut()
             .base_mut()
             .set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
         self
     }
 
@@ -4048,6 +4179,15 @@ impl TransformerHardErrorEvent {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().base().get_annotations()
     }
@@ -4287,6 +4427,11 @@ impl WaitPoint {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().remove_admin_data();
         self
     }
 

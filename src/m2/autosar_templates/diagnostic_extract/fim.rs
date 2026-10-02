@@ -62,6 +62,16 @@ impl DiagnosticFimAliasEvent {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().base().base().get_annotations()
     }
@@ -314,6 +324,16 @@ impl DiagnosticFimAliasEventGroup {
             .base_mut()
             .base_mut()
             .set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
         self
     }
 
@@ -571,6 +591,15 @@ impl DiagnosticFimEventGroup {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().base().get_annotations()
     }
@@ -793,6 +822,15 @@ impl DiagnosticFunctionIdentifier {
             .base_mut()
             .base_mut()
             .set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
         self
     }
 
@@ -1052,6 +1090,11 @@ impl DiagnosticFunctionInhibitSource {
 
     pub fn set_admin_data(&mut self, value: AdminDataId) -> &mut Self {
         self.base_mut().set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut().remove_admin_data();
         self
     }
 

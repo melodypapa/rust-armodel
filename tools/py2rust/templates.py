@@ -242,6 +242,12 @@ impl Identifiable {
         self
     }
 
+    /// py `removeAdminData`
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.admin_data = None;
+        self
+    }
+
     pub fn get_desc(&self) -> Option<MultiLanguageOverviewParagraphId> {
         self.desc
     }
@@ -322,6 +328,9 @@ mod tests {
         assert_eq!(identifiable.get_category(), Some("STD"));
         assert_eq!(identifiable.get_short_name(), Some("Ident"));
         assert_eq!(identifiable.get_admin_data(), Some(admin_data_id));
+
+        identifiable.remove_admin_data();
+        assert_eq!(identifiable.get_admin_data(), None);
     }
 }
 '''
@@ -567,6 +576,12 @@ impl ARPackage {
         self
     }
 
+    /// py `removeAdminData` (inherited from Identifiable)
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base.base_mut().remove_admin_data();
+        self
+    }
+
     // — own fields —
 
     pub fn get_elements(&self) -> &[ElementRef] {
@@ -736,6 +751,12 @@ impl Document {
 
     pub fn set_admin_data(&mut self, admin_data: AdminDataId) -> &mut Self {
         self.admin_data = Some(admin_data);
+        self
+    }
+
+    /// py `removeAdminData` (spec class `AUTOSAR`)
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.admin_data = None;
         self
     }
 

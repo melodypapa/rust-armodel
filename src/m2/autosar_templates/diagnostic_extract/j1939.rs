@@ -53,6 +53,15 @@ impl DiagnosticJ1939ExpandedFreezeFrame {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().base().get_annotations()
     }
@@ -275,6 +284,15 @@ impl DiagnosticJ1939FreezeFrame {
             .base_mut()
             .base_mut()
             .set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
         self
     }
 
@@ -503,6 +521,15 @@ impl DiagnosticJ1939Node {
         self
     }
 
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
+        self
+    }
+
     pub fn get_annotations(&self) -> &[AnnotationId] {
         self.base().base().base().base().get_annotations()
     }
@@ -725,6 +752,15 @@ impl DiagnosticJ1939Spn {
             .base_mut()
             .base_mut()
             .set_admin_data(value);
+        self
+    }
+
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .remove_admin_data();
         self
     }
 

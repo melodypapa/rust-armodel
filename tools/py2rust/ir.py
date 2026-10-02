@@ -38,6 +38,7 @@ class FieldIr:
     kind: str                       # "optional" | "list"
     inner: str                      # element type name
     doc: str = ""                   # getter docstring (carries the xml.* tags)
+    has_remover: bool = False       # the defining py class also defines remove<Field>
 
     @staticmethod
     def rust_name_for(name: str) -> str:

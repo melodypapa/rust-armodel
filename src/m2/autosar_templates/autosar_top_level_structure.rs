@@ -2449,6 +2449,12 @@ impl Document {
         self
     }
 
+    /// py `removeAdminData` (spec class `AUTOSAR`)
+    pub fn remove_admin_data(&mut self) -> &mut Self {
+        self.admin_data = None;
+        self
+    }
+
     pub fn get_ar_packages(&self) -> &[ARPackageId] {
         &self.root_ar_packages
     }

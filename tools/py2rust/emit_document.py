@@ -220,6 +220,32 @@ def emit_registry(ir: Ir, overrides: Overrides, placement: Placement, variants: 
                 lines.append("        _ => {}")
             lines += ["    }", "}", ""]
 
+    # element_remove_admin_data: py's AdminDataTransformer clears ADMIN-DATA
+    # on every Describable/Identifiable element; capable = the variant's base
+    # chain reaches a class that owns the py `adminData` field
+    admin_data_definers = {c.name for c in ir.classes()
+                           if any(f.name == "adminData" for f in c.fields)}
+    capable = [name for name in variants if admin_data_definers & _base_closure(ir, name)]
+    lines += [
+        "pub(crate) fn element_remove_admin_data(",
+        "    d: &mut Document,",
+        "    element: &ElementRef,",
+        ") {",
+        "    match element {",
+    ]
+    for name in capable:
+        arena = arena_names[name]
+        lines += [
+            f"        ElementRef::{name}(id) => {{",
+            f"            if let Some(e) = d.{arena}.get_mut(*id) {{",
+            "                e.remove_admin_data();",
+            "            }",
+            "        }",
+        ]
+    if len(capable) < len(variants):
+        lines.append("        _ => {}")
+    lines += ["    }", "}", ""]
+
     # kind + common-part comparison for the P0 package compare
     lines += [
         "pub(crate) fn compare_element(",

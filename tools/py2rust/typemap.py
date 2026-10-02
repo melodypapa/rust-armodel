@@ -33,6 +33,7 @@ class RustField:
     rust_type: str      # element type as written in Rust: String / <Enum> / <T>Id
     wrapper: str        # "optional" | "list"
     link: str | None    # None for owned scalars/enums; "<T>" for arena links
+    has_remover: bool = False  # the py field's class defines remove<Field>
 
 
 # types referenced by py-armodel but never defined there (upstream placeholders,
@@ -48,22 +49,30 @@ def map_field(field: FieldIr, ir: Ir, overrides: Overrides) -> RustField:
     inner = field.inner
     alias = overrides.type_alias(inner)
     if alias:
-        return RustField(FieldIr.rust_name_for(field.name), alias, field.kind, link=None)
+        return RustField(FieldIr.rust_name_for(field.name), alias, field.kind, link=None,
+                         has_remover=field.has_remover)
     if inner == "ElementRef":
         # type-erased handle (CollectableElement/ARPackage element lists)
-        return RustField(FieldIr.rust_name_for(field.name), "ElementRef", field.kind, link=None)
+        return RustField(FieldIr.rust_name_for(field.name), "ElementRef", field.kind, link=None,
+                         has_remover=field.has_remover)
     if inner in PRIMITIVES or inner in ("str", "int", "float", "bool", "Any"):
-        return RustField(FieldIr.rust_name_for(field.name), "String", field.kind, link=None)
+        return RustField(FieldIr.rust_name_for(field.name), "String", field.kind, link=None,
+                         has_remover=field.has_remover)
     cls = ir.get(inner)
     if cls is None:
         UNKNOWN_LOG.append(inner)
-        return RustField(FieldIr.rust_name_for(field.name), "String", field.kind, link=None)
+        return RustField(FieldIr.rust_name_for(field.name), "String", field.kind, link=None,
+                         has_remover=field.has_remover)
     if cls.is_enum:
-        return RustField(FieldIr.rust_name_for(field.name), inner, field.kind, link=None)
+        return RustField(FieldIr.rust_name_for(field.name), inner, field.kind, link=None,
+                         has_remover=field.has_remover)
     if cls.is_primitive:
-        return RustField(FieldIr.rust_name_for(field.name), "String", field.kind, link=None)
+        return RustField(FieldIr.rust_name_for(field.name), "String", field.kind, link=None,
+                         has_remover=field.has_remover)
     if cls.is_abstract:
         # abstract targets have no arena; P0 models such links as the type-erased
         # ElementRef handle (P0 design §5: ElementRef replaces py's untyped parent)
-        return RustField(FieldIr.rust_name_for(field.name), "ElementRef", field.kind, link=None)
-    return RustField(FieldIr.rust_name_for(field.name), f"{inner}Id", field.kind, link=inner)
+        return RustField(FieldIr.rust_name_for(field.name), "ElementRef", field.kind, link=None,
+                         has_remover=field.has_remover)
+    return RustField(FieldIr.rust_name_for(field.name), f"{inner}Id", field.kind, link=inner,
+                     has_remover=field.has_remover)

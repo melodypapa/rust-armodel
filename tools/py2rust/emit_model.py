@@ -66,6 +66,25 @@ def _emit_struct_field(rf: RustField, field_ident: str | None = None) -> str:
     return f"    {ident}: Option<{rf.rust_type}>,"
 
 
+def _remover_accessors(rf: RustField, recv_set: str | None, mut_path: str | None) -> list[str]:
+    """py `remove<Field>` methods clear the optional field; emitted for fields
+    whose defining py class declares the remover (`docs/code_guide.md` §3)."""
+    if not rf.has_remover or rf.wrapper == "list":
+        return []
+    name = method_stem(rf.rust_name)
+    if recv_set is not None:
+        body = f"        {recv_set} = None;"
+    else:
+        body = f"        {mut_path}.remove_{name}();"
+    return [
+        f"    pub fn remove_{name}(&mut self) -> &mut Self {{",
+        body,
+        "        self",
+        "    }",
+        "",
+    ]
+
+
 def _accessors_for(rf: RustField, recv: str) -> list[str]:
     """Accessors for a field reached via `recv` (e.g. `self.gid` or `self.r#base`)."""
     name, t = method_stem(rf.rust_name), rf.rust_type
@@ -92,6 +111,7 @@ def _accessors_for(rf: RustField, recv: str) -> list[str]:
             "        self",
             "    }",
             "",
+            *_remover_accessors(rf, recv, None),
         ]
     # Copy enum or arena link: both are Option<T> with plain get/set; the
     # bare place expression copies (Option<Copy> is Copy), keeping clippy's
@@ -106,6 +126,7 @@ def _accessors_for(rf: RustField, recv: str) -> list[str]:
         "        self",
         "    }",
         "",
+        *_remover_accessors(rf, recv, None),
     ]
 
 
@@ -135,6 +156,7 @@ def _forwarded_accessors(rf: RustField, get_path: str, mut_path: str) -> list[st
             "        self",
             "    }",
             "",
+            *_remover_accessors(rf, None, mut_path),
         ]
     return [
         f"    pub fn get_{name}(&self) -> Option<{t}> {{",
@@ -146,6 +168,7 @@ def _forwarded_accessors(rf: RustField, get_path: str, mut_path: str) -> list[st
         "        self",
         "    }",
         "",
+        *_remover_accessors(rf, None, mut_path),
     ]
 
 

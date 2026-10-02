@@ -91,6 +91,16 @@ class AdminData(ARObject):
         return self.usedLanguages
 
 
+class Identifiable(ARObject):
+    def __init__(self):
+        super().__init__()
+        self.adminData: Optional[AdminData] = None
+
+    def removeAdminData(self) -> None:
+        """Removes the administrative data for this identifiable element."""
+        self.adminData = None
+
+
 class SdgCaption(ARObject):
     def __init__(self, parent, short_name):
         super().__init__(parent, short_name)
@@ -150,6 +160,12 @@ class TestExtractFields(unittest.TestCase):
         creates = self.ir.get("ARPackage").creates
         self.assertEqual(creates["createARPackage"], "ARPackage")
         self.assertEqual(creates["createApplicationSwComponentType"], "ApplicationSwComponentType")
+
+    def test_remove_methods_mark_fields_with_remover(self):
+        fields = {f.name: f for f in self.ir.get("Identifiable").fields}
+        self.assertTrue(fields["adminData"].has_remover)
+        admin = {f.name: f for f in self.ir.get("AdminData").fields}
+        self.assertFalse(admin["usedLanguages"].has_remover)
 
 
 if __name__ == "__main__":

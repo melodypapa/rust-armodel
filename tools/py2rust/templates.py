@@ -94,6 +94,7 @@ pub struct Referrable {
     base: ARObject,
     parent: Option<ElementRef>,
     short_name: Option<String>,
+    short_name_fragments: Vec<ShortNameFragmentId>,
 }
 
 impl Referrable {
@@ -126,6 +127,14 @@ impl Referrable {
         self.short_name = Some(value.into());
         self
     }
+
+    pub fn get_short_name_fragments(&self) -> &[ShortNameFragmentId] {
+        &self.short_name_fragments
+    }
+
+    pub fn push_short_name_fragments(&mut self, value: ShortNameFragmentId) {
+        self.short_name_fragments.push(value);
+    }
 }
 
 /// spec class `MultilanguageReferrable` — `MultilanguageReferrable : Referrable`.
@@ -133,6 +142,7 @@ impl Referrable {
 #[derive(Debug, Default)]
 pub struct MultilanguageReferrable {
     base: Referrable,
+    long_name: Option<MultilanguageLongNameId>,
 }
 
 impl MultilanguageReferrable {
@@ -156,6 +166,15 @@ impl MultilanguageReferrable {
         self.base.set_short_name(value);
         self
     }
+
+    pub fn get_long_name(&self) -> Option<MultilanguageLongNameId> {
+        self.long_name
+    }
+
+    pub fn set_long_name(&mut self, value: MultilanguageLongNameId) -> &mut Self {
+        self.long_name = Some(value);
+        self
+    }
 }
 
 /// spec class `Identifiable` — `Identifiable : MultilanguageReferrable`.
@@ -168,6 +187,10 @@ pub struct Identifiable {
     uuid: Option<String>,
     category: Option<String>,
     admin_data: Option<AdminDataId>,
+    desc: Option<MultiLanguageOverviewParagraphId>,
+    introduction: Option<DocumentationBlockId>,
+    annotations: Vec<AnnotationId>,
+    elements: Vec<ElementRef>,
 }
 
 impl Identifiable {
@@ -217,6 +240,40 @@ impl Identifiable {
     pub fn set_admin_data(&mut self, admin_data: AdminDataId) -> &mut Self {
         self.admin_data = Some(admin_data);
         self
+    }
+
+    pub fn get_desc(&self) -> Option<MultiLanguageOverviewParagraphId> {
+        self.desc
+    }
+
+    pub fn set_desc(&mut self, desc: MultiLanguageOverviewParagraphId) -> &mut Self {
+        self.desc = Some(desc);
+        self
+    }
+
+    pub fn get_introduction(&self) -> Option<DocumentationBlockId> {
+        self.introduction
+    }
+
+    pub fn set_introduction(&mut self, introduction: DocumentationBlockId) -> &mut Self {
+        self.introduction = Some(introduction);
+        self
+    }
+
+    pub fn get_annotations(&self) -> &[AnnotationId] {
+        &self.annotations
+    }
+
+    pub fn push_annotations(&mut self, value: AnnotationId) {
+        self.annotations.push(value);
+    }
+
+    pub fn get_elements(&self) -> &[ElementRef] {
+        &self.elements
+    }
+
+    pub fn push_elements(&mut self, value: ElementRef) {
+        self.elements.push(value);
     }
 }
 
@@ -798,7 +855,7 @@ impl Document {
         Ok(())
     }
 
-    fn compare_ar_object(a: &ARObject, b: &ARObject, path: &str) -> Result<(), String> {
+    pub(crate) fn compare_ar_object(a: &ARObject, b: &ARObject, path: &str) -> Result<(), String> {
         if a.get_checksum() != b.get_checksum() {
             return Err(format!("{path}: checksum mismatch"));
         }
@@ -808,7 +865,7 @@ impl Document {
         Ok(())
     }
 
-    fn compare_ar_package(
+    pub(crate) fn compare_ar_package(
         &self,
         other: &Document,
         a: &ARPackage,

@@ -496,6 +496,27 @@ impl ARPackage {
         self.base.base().base().base().base().get_timestamp()
     }
 
+    pub fn set_checksum(&mut self, value: impl Into<String>) -> &mut Self {
+        // four base_mut hops reach ARObject, mirroring get_checksum
+        self.base
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .set_checksum(value);
+        self
+    }
+
+    pub fn set_timestamp(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .set_timestamp(value);
+        self
+    }
+
     pub fn get_parent(&self) -> Option<ElementRef> {
         self.base.base().base().base().get_parent()
     }
@@ -951,13 +972,16 @@ impl Document {
                         &format!("{path}.ELEMENTS[{index}]"),
                     )?;
                 }
-                _ => {
-                    // the generated ElementRef enum has one variant per
-                    // ARPackage create-directory entry; kind mismatches are
-                    // structural differences
-                    return Err(format!(
-                        "{path}.ELEMENTS[{index}]: element kind mismatch"
-                    ));
+                (element_a, element_b) => {
+                    // the registry compares kind and the common Identifiable
+                    // parts; per-class payload equality is the P2-P4 port
+                    crate::m2::element_registry::compare_element(
+                        self,
+                        other,
+                        element_a,
+                        element_b,
+                        &format!("{path}.ELEMENTS[{index}]"),
+                    )?;
                 }
             }
         }

@@ -2051,6 +2051,27 @@ impl ARPackage {
         self.base.base().base().base().base().get_timestamp()
     }
 
+    pub fn set_checksum(&mut self, value: impl Into<String>) -> &mut Self {
+        // four base_mut hops reach ARObject, mirroring get_checksum
+        self.base
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .set_checksum(value);
+        self
+    }
+
+    pub fn set_timestamp(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .base_mut()
+            .set_timestamp(value);
+        self
+    }
+
     pub fn get_parent(&self) -> Option<ElementRef> {
         self.base.base().base().base().get_parent()
     }

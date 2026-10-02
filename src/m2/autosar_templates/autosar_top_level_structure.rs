@@ -2653,11 +2653,16 @@ impl Document {
                         &format!("{path}.ELEMENTS[{index}]"),
                     )?;
                 }
-                _ => {
-                    // the generated ElementRef enum has one variant per
-                    // ARPackage create-directory entry; kind mismatches are
-                    // structural differences
-                    return Err(format!("{path}.ELEMENTS[{index}]: element kind mismatch"));
+                (element_a, element_b) => {
+                    // the registry compares kind and the common Identifiable
+                    // parts; per-class payload equality is the P2-P4 port
+                    crate::m2::element_registry::compare_element(
+                        self,
+                        other,
+                        element_a,
+                        element_b,
+                        &format!("{path}.ELEMENTS[{index}]"),
+                    )?;
                 }
             }
         }

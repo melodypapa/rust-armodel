@@ -19,3 +19,4 @@ Cargo.lock
 
 # Python bytecode
 __pycache__/
+.zcodeignore

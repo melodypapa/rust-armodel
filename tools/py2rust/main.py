@@ -149,7 +149,10 @@ def render(ir, overrides: Overrides, placement) -> dict[str, str]:
     template_leaves = {tuple(path[: -len(".rs")].split("/")): content
                        for path, content in TEMPLATE_FILES.items()}
     doc_leaf = {tuple(DOCUMENT_RS_PATH[:-len(".rs")].split("/")): None}
-    all_segments = list(grouped) + list(template_leaves) + list(doc_leaf)
+    # the registry file is emitted directly (no class group) but must still
+    # appear in m2's mod.rs chain (pub(crate))
+    all_segments = (list(grouped) + list(template_leaves) + list(doc_leaf)
+                    + [("m2", "element_registry")])
 
     def has_deeper(s):
         return any(o[:len(s)] == s and len(o) > len(s) for o in all_segments)
@@ -191,10 +194,12 @@ def render(ir, overrides: Overrides, placement) -> dict[str, str]:
         children = sorted({s[len(d)] for s in all_segments if s[:len(d)] == d and len(s) > len(d)})
         lines = ["//! @generated module chain — do not edit.", ""]
         for child in children:
-            lines.append("#[allow(dead_code)]")
             if d == ("m2",) and child == "element_registry":
+                # the registry file carries its own #![allow(dead_code)];
+                # duplicating the attr here trips clippy's duplicated_attributes
                 lines.append("pub(crate) mod element_registry;")
             else:
+                lines.append("#[allow(dead_code)]")
                 lines.append(f"pub mod {child};")
         files[path] = "\n".join(lines) + "\n"
 

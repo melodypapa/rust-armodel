@@ -22,3 +22,7 @@ tempfile = "3"
 [[test]]
 name = "roundtrip"
 path = "tests/integration/roundtrip.rs"
+
+[[test]]
+name = "all_fixtures"
+path = "tests/integration/all_fixtures.rs"

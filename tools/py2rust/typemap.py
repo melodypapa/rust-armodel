@@ -56,4 +56,8 @@ def map_field(field: FieldIr, ir: Ir, overrides: Overrides) -> RustField:
         return RustField(FieldIr.rust_name_for(field.name), inner, field.kind, link=None)
     if cls.is_primitive:
         return RustField(FieldIr.rust_name_for(field.name), "String", field.kind, link=None)
+    if cls.is_abstract:
+        # abstract targets have no arena; P0 models such links as the type-erased
+        # ElementRef handle (P0 design §5: ElementRef replaces py's untyped parent)
+        return RustField(FieldIr.rust_name_for(field.name), "ElementRef", field.kind, link=None)
     return RustField(FieldIr.rust_name_for(field.name), f"{inner}Id", field.kind, link=inner)

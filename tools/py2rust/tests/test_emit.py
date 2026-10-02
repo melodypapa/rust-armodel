@@ -125,7 +125,7 @@ class TestEmitModule(unittest.TestCase):
         self.ir.add(child)
         out = emit_module(self.ir, self.overrides, PLACEMENT, [child], ["m2", "test"])
         self.assertIn("pub fn set_parent(&mut self, parent: Option<ElementRef>) -> &mut Self", out)
-        self.assertIn("self.base().set_parent(parent);", out)
+        self.assertIn("self.base_mut().set_parent(parent);", out)
         self.assertIn("use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;",
                       out)
 

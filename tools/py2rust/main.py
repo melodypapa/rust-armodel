@@ -16,9 +16,9 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from emit_document import build_element_variants, emit_document_root, emit_equality, emit_registry
 from emit_model import BANNER, emit_module
 from extract import extract_repo
-from ir import ClassIr, snake_case
+from ir import ClassIr
 from overrides import Overrides
-from placement import parse_repo
+from placement import parse_repo, py_module_segments
 from templates import (AR_OBJECT_RS, AR_PACKAGE_RS, DOCUMENT_RS, ELEMENT_COLLECTION_RS,
                        IDENTIFIABLE_RS, XML_SPACE_BLOCK)
 
@@ -33,12 +33,33 @@ TEMPLATE_FILES = {
     f"{GTC}/ar_package.rs": AR_PACKAGE_RS,
 }
 
+# imports the pinned templates need; the merge strips the templates' own
+# (possibly duplicate or super::-relative) use lines and re-adds these
+TEMPLATE_EXTRA_IMPORTS = {
+    f"{GTC}/ar_object.rs": [f"use crate::{GTC}::ar_package::ARPackageId;"],
+    f"{GTC}/identifiable.rs": [
+        f"use crate::{GTC}::ar_object::{{ARObject, ElementRef}};",
+        "use crate::m2::msr::asam_hdo::admin_data::AdminDataId;",
+        "use crate::m2::msr::documentation::annotation::AnnotationId;",
+        "use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;",
+        "use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId;",
+    ],
+    f"{GTC}/element_collection.rs": [f"use crate::{GTC}::identifiable::Identifiable;"],
+    f"{GTC}/ar_package.rs": [
+        f"use crate::{GTC}::ar_object::{{ARObject, ElementRef}};",
+        f"use crate::{GTC}::element_collection::CollectableElement;",
+        "use crate::m2::msr::asam_hdo::admin_data::AdminDataId;",
+    ],
+}
 
-def py_module_segments(module_py: str) -> list[str]:
-    """Fallback placement: py-armodel's file layout mirrors the spec packages
-    (`armodel.models.M2.MSR.AsamHdo.AdminData` -> m2/msr/asam_hdo/admin_data)."""
-    assert module_py.startswith("armodel.models."), module_py
-    return [snake_case(part) for part in module_py.removeprefix("armodel.models.").split(".")]
+
+def _merge_template(generated: str, template: str, path: str) -> str:
+    """Template structs/tests concatenated after the generated module body.
+    Template use-lines are dropped (duplicates/super::-relative); the extra
+    imports the templates need are re-added explicitly."""
+    body_lines = [l for l in template.splitlines() if not l.startswith("use ")]
+    extras = "\n".join(TEMPLATE_EXTRA_IMPORTS.get(path, []))
+    return generated + "\n" + extras + "\n" + "\n".join(body_lines) + "\n"
 
 
 def group_by_module(ir, overrides, placement):
@@ -73,17 +94,8 @@ def render(ir, overrides: Overrides, placement) -> dict[str, str]:
     doc_leaf = {tuple(DOCUMENT_RS_PATH[:-len(".rs")].split("/")): None}
     all_segments = list(grouped) + list(template_leaves) + list(doc_leaf)
 
-    dirs = {s[:i] for s in all_segments for i in range(1, len(s))}
-    for d in sorted(dirs):
-        children = sorted({s[len(d)] for s in all_segments if s[:len(d)] == d and len(s) > len(d)})
-        lines = ["//! @generated module chain — do not edit.", ""]
-        for child in children:
-            lines.append("#[allow(dead_code)]")
-            if d == ("m2",) and child == "element_registry":
-                lines.append("pub(crate) mod element_registry;")
-            else:
-                lines.append(f"pub mod {child};")
-        files["/".join(d) + "/mod.rs"] = "\n".join(lines) + "\n"
+    def has_deeper(s):
+        return any(o[:len(s)] == s and len(o) > len(s) for o in all_segments)
 
     variants = build_element_variants(ir)
     for segments, classes in sorted(grouped.items()):
@@ -97,9 +109,60 @@ def render(ir, overrides: Overrides, placement) -> dict[str, str]:
             compare_blocks.append(emit_equality(ir, overrides, cls))
         if compare_blocks:
             body += "\nimpl Document {\n" + "\n\n".join(compare_blocks) + "\n}\n"
-        files["/".join(segments) + ".rs"] = body
+        if has_deeper(segments):
+            # group is also a parent dir: its classes live in mod.rs next to pub mod lines
+            children = sorted({o[len(segments)] for o in all_segments
+                               if o[:len(segments)] == segments and len(o) > len(segments)})
+            header = ["//! @generated module chain — do not edit.", ""]
+            for child in children:
+                header.append("#[allow(dead_code)]")
+                header.append(f"pub mod {child};")
+            files["/".join(segments) + "/mod.rs"] = "\n".join(header) + "\n" + body
+        else:
+            files["/".join(segments) + ".rs"] = body
 
-    files.update(TEMPLATE_FILES)
+    # plain directories without their own group get a declarative mod.rs
+    dirs = {s[:i] for s in all_segments for i in range(1, len(s))}
+    for d in sorted(dirs):
+        path = "/".join(d) + "/mod.rs"
+        if path in files:
+            continue
+        children = sorted({s[len(d)] for s in all_segments if s[:len(d)] == d and len(s) > len(d)})
+        lines = ["//! @generated module chain — do not edit.", ""]
+        for child in children:
+            lines.append("#[allow(dead_code)]")
+            if d == ("m2",) and child == "element_registry":
+                lines.append("pub(crate) mod element_registry;")
+            else:
+                lines.append(f"pub mod {child};")
+        files[path] = "\n".join(lines) + "\n"
+
+    # pinned template leaves: merged with any generated group at the same path
+    for leaf_segments, template in template_leaves.items():
+        base_name = "/".join(leaf_segments) + ".rs"
+        group = grouped.get(leaf_segments)
+        if group is None:
+            files[base_name] = template
+            continue
+        body = emit_module(ir, overrides, placement, group, list(leaf_segments))
+        compare_blocks = []
+        for cls in sorted(group, key=lambda c: c.name):
+            if cls.is_enum or cls.is_primitive:
+                continue
+            compare_blocks.append(emit_equality(ir, overrides, cls))
+        if compare_blocks:
+            body += "\nimpl Document {\n" + "\n\n".join(compare_blocks) + "\n}\n"
+        if has_deeper(leaf_segments):
+            leaf_path = "/".join(leaf_segments) + "/mod.rs"
+            children = sorted({o[len(leaf_segments)] for o in all_segments
+                               if o[:len(leaf_segments)] == leaf_segments and len(o) > len(leaf_segments)})
+            header = ["//! @generated module chain — do not edit.", ""]
+            for child in children:
+                header.append("#[allow(dead_code)]")
+                header.append(f"pub mod {child};")
+            files[leaf_path] = "\n".join(header) + "\n" + _merge_template(body, template, base_name)
+        else:
+            files[base_name] = _merge_template(body, template, base_name)
     files["m2/element_registry.rs"] = emit_registry(ir, overrides, placement, variants)
     files[DOCUMENT_RS_PATH] = emit_document_root(ir, overrides, placement)
     return files

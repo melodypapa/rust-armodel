@@ -74,7 +74,7 @@ def emit_registry(ir: Ir, overrides: Overrides, placement: Placement, variants: 
 def emit_equality(ir: Ir, overrides: Overrides, cls: ClassIr) -> str:
     snake = snake_case(cls.name)
     out = [
-        "    fn compare_" + snake + "(",
+        "    pub(crate) fn compare_" + snake + "(",
         "        &self,",
         "        other: &Document,",
         f"        a: &{cls.name},",

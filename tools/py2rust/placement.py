@@ -13,6 +13,16 @@ LITERAL_ROW = re.compile(r"^\|\s*Literal\s*\|\s*([A-Za-z][A-Za-z0-9_]*)\s*\|")
 PACKAGE_ROW = re.compile(r"^\|\s*Package\s*\|\s*(M2::[A-Za-z0-9:]+)\s*\|")
 
 
+def py_module_segments(module_py: str) -> list[str] | None:
+    """Fallback placement: py-armodel's file layout mirrors the spec packages
+    (`armodel.models.M2.MSR.AsamHdo.AdminData` -> m2/msr/asam_hdo/admin_data).
+    Returns None for modules outside that layout (test fixtures)."""
+    prefix = "armodel.models."
+    if not module_py.startswith(prefix):
+        return None
+    return [snake_case(part) for part in module_py[len(prefix):].split(".")]
+
+
 class Placement:
     def __init__(self, class_to_package: dict[str, str]):
         self._by_class = class_to_package

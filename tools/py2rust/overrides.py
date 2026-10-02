@@ -28,10 +28,8 @@ class Overrides:
                 # pinned templates (base chain + root), copied verbatim in templates.py:
                 "ARObject", "Referrable", "MultilanguageReferrable", "Identifiable",
                 "CollectableElement", "PackageableElement", "ARElement", "ARPackage",
-                "ReferenceBase", "ShortNameFragment", "Describable",
+                "ReferenceBase",
                 "AUTOSAR", "AbstractAUTOSAR", "AUTOSARDoc", "FileInfoComment",
-                "SingleLanguageReferrable", "MultiLanguageParagraph", "MultilanguageLongName",
-                "MultiLanguageVerbatim",
             },
             # kebab rule misfires on digit/acronym runs; fixed tags verified against py parser in P2
             tag_overrides={},

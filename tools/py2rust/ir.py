@@ -5,12 +5,23 @@ import re
 from dataclasses import dataclass, field
 
 
+RUST_KEYWORDS = {
+    "as", "box", "break", "const", "continue", "dyn", "else", "enum", "extern", "fn", "for",
+    "if", "impl", "in", "let", "loop", "match", "mod", "move", "mut", "pub", "ref", "return",
+    "self", "static", "struct", "super", "trait", "true", "type", "unsafe", "use", "where",
+    "while", "async", "await",
+}
+
+
 def snake_case(name: str) -> str:
     """usedLanguages → used_languages; DocRevisions → doc_revisions;
     acronyms stay one word: MSR → msr, AUTOSARTemplates → autosar_templates."""
     s1 = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1 \2", name)
     s2 = re.sub(r"([a-z0-9])([A-Z])", r"\1 \2", s1)
-    return "_".join(part.lower() for part in s2.split())
+    out = "_".join(part.lower() for part in s2.split())
+    if out in RUST_KEYWORDS:
+        out = "r#" + out
+    return out
 
 
 @dataclass

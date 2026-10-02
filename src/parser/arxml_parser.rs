@@ -223,7 +223,9 @@ impl ARXMLParser {
         // py readSdgCaption — SDG-CAPTION with a required SHORT-NAME.
         if let Some(caption_node) = find(element, "SDG-CAPTION") {
             let mut caption = SdgCaption::new();
-            self.read_ar_object(caption_node, caption.base_mut().base_mut());
+            // py chain SdgCaption -> MultilanguageReferrable -> Referrable -> ARObject:
+            // the generated model keeps every link, so the ARObject base is three hops out
+            self.read_ar_object(caption_node, caption.base_mut().base_mut().base_mut());
             let caption_short_name = get_short_name(caption_node)?;
             caption.set_short_name(caption_short_name);
             if find(caption_node, "DESC").is_some() {
@@ -271,7 +273,11 @@ impl ARXMLParser {
             contents.push_sdg(nested_id);
         }
 
-        if !contents.is_empty() {
+        // py SdgContents has no is_empty; contents exist iff any of SD/SDF/nested SDG was read
+        if !(contents.get_sd().is_empty()
+            && contents.get_sdf().is_empty()
+            && contents.get_sdg().is_empty())
+        {
             let contents_id = document.sdg_contents.insert(contents);
             sdg.set_sdg_contents_type(contents_id);
         }

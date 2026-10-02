@@ -54,6 +54,12 @@ def _enum_literals(node: ast.ClassDef, source_lines: list[str]) -> list[EnumLite
 
 def _annotation_parts(annotation) -> tuple[str, str] | None:
     """Return (kind, inner) for Optional[T] / List[T]; None otherwise."""
+    if isinstance(annotation, ast.Name):
+        # bare builtin scalars (LanguageSpecific.value: str) — P0 stores them
+        # as Option<String> (P0 design §5)
+        if annotation.id in ("str", "int", "float", "bool"):
+            return "optional", annotation.id
+        return None
     if not (isinstance(annotation, ast.Subscript)
             and isinstance(annotation.value, ast.Name)
             and annotation.value.id in ("Optional", "List")):
@@ -156,11 +162,14 @@ def propagate_flags(ir: Ir) -> None:
                 base = ir.get(base_name)
                 if base is None:
                     continue
-                if not cls.is_primitive and (base.is_primitive or base_name in primitive_roots):
+                if base.is_enum or cls.is_enum:
+                    # enum-ness wins over primitive-ness; enums are never
+                    # primitives even though AREnum(ARLiteral) would leak it in
+                    if not cls.is_enum:
+                        cls.is_enum = True
+                        changed = True
+                elif not cls.is_primitive and (base.is_primitive or base_name in primitive_roots):
                     cls.is_primitive = True
-                    changed = True
-                if not cls.is_enum and base.is_enum:
-                    cls.is_enum = True
                     changed = True
 
 
@@ -172,7 +181,10 @@ def extract_repo(root: str) -> Ir:
         if path.name.startswith("test_"):
             continue
         rel = path.relative_to(base.parents[2])               # armodel/models/M2/... under src/
-        module_py = ".".join(rel.with_suffix("").parts)
+        parts = list(rel.with_suffix("").parts)
+        if parts[-1] == "__init__":                           # Foo/__init__.py -> module Foo
+            parts.pop()
+        module_py = ".".join(parts)
         for cls in extract_source(path.read_text(), module_py).classes():
             ir.add(cls)
     propagate_flags(ir)

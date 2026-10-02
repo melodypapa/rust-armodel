@@ -41,7 +41,9 @@ class FieldIr:
 
     @staticmethod
     def rust_name_for(name: str) -> str:
-        return snake_case(name)
+        # py `_vf` -> rust `vf`: a leading underscore reads as the
+        # unused-variable convention (get__vf is also non-snake-case)
+        return snake_case(name.lstrip("_"))
 
 
 @dataclass

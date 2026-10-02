@@ -1,3 +1,4 @@
+// @generated — pinned P0 template (see tools/py2rust/templates.py). Do not edit.
 //! spec: M2::AUTOSARTemplates::AutosarTopLevelStructure
 //!
 //! Home of the spec class `AUTOSAR`. The Rust root type is `Document`
@@ -6,21 +7,245 @@
 
 use slotmap::SlotMap;
 
-use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::{
-    ARObject, ElementRef,
-};
-use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::{
-    ARPackage, ARPackageId, ReferenceBase, ReferenceBaseId,
-};
-use crate::m2::msr::asam_hdo::admin_data::{AdminData, AdminDataId, DocRevision, DocRevisionId};
-use crate::m2::msr::asam_hdo::special_data::{
-    Sd, SdId, Sdf, SdfId, Sdg, SdgCaption, SdgCaptionId, SdgContents, SdgContentsId, SdgId,
-};
-use crate::m2::msr::documentation::text_model::language_data_model::{LPlainText, LPlainTextId};
-use crate::m2::msr::documentation::text_model::multilanguage_data::{
-    MultiLanguageOverviewParagraph, MultiLanguageOverviewParagraphId, MultiLanguagePlainText,
-    MultiLanguagePlainTextId,
-};
+use crate::m2::autosar_templates::abstract_platform::{ApplicationDeferredDataType, ApplicationDeferredDataTypeId, ApplicationInterface, ApplicationInterfaceId};
+use crate::m2::autosar_templates::adaptive_platform::application_design::port_interface::{Field, FieldId};
+use crate::m2::autosar_templates::adaptive_platform::platform_module_deployment::adaptive_module_implementation::{PlatformModuleEthernetEndpointConfiguration, PlatformModuleEthernetEndpointConfigurationId};
+use crate::m2::autosar_templates::adaptive_platform::platform_module_deployment::crypto_deployment::{CryptoKeySlot, CryptoKeySlotAllowedModification, CryptoKeySlotAllowedModificationId, CryptoKeySlotContentAllowedUsage, CryptoKeySlotContentAllowedUsageId, CryptoKeySlotId};
+use crate::m2::autosar_templates::adaptive_platform::platform_module_deployment::firewall::{DataLinkLayerRule, DataLinkLayerRuleId, DdsRule, DdsRuleId, DoIpRule, DoIpRuleId, FirewallRule, FirewallRuleId, FirewallRuleProps, FirewallRulePropsId, IcmpRule, IcmpRuleId, Ipv4Rule, Ipv4RuleId, Ipv6Rule, Ipv6RuleId, NetworkLayerRule, NetworkLayerRuleId, PayloadBytePatternRule, PayloadBytePatternRuleId, PayloadBytePatternRulePart, PayloadBytePatternRulePartId, SomeipProtocolRule, SomeipProtocolRuleId, SomeipSdRule, SomeipSdRuleId, StateDependentFirewall, StateDependentFirewallId, TcpRule, TcpRuleId, TransportLayerRule, TransportLayerRuleId, UdpRule, UdpRuleId};
+use crate::m2::autosar_templates::adaptive_platform::platform_module_deployment::intrusion_detection_system::{IdsmModuleInstantiation, IdsmModuleInstantiationId};
+use crate::m2::autosar_templates::bsw_module_template::bsw_behavior::{BswAsynchronousServerCallPoint, BswAsynchronousServerCallPointId, BswAsynchronousServerCallResultPoint, BswAsynchronousServerCallResultPointId, BswAsynchronousServerCallReturnsEvent, BswAsynchronousServerCallReturnsEventId, BswBackgroundEvent, BswBackgroundEventId, BswCalledEntity, BswCalledEntityId, BswClientPolicy, BswClientPolicyId, BswDataReceivedEvent, BswDataReceivedEventId, BswDataSendPolicy, BswDataSendPolicyId, BswDirectCallPoint, BswDirectCallPointId, BswDistinguishedPartition, BswDistinguishedPartitionId, BswExclusiveAreaPolicy, BswExclusiveAreaPolicyId, BswExternalTriggerOccurredEvent, BswExternalTriggerOccurredEventId, BswInternalBehavior, BswInternalBehaviorId, BswInternalTriggerOccurredEvent, BswInternalTriggerOccurredEventId, BswInternalTriggeringPoint, BswInternalTriggeringPointId, BswInternalTriggeringPointPolicy, BswInternalTriggeringPointPolicyId, BswInterruptEntity, BswInterruptEntityId, BswInterruptEvent, BswInterruptEventId, BswModeManagerErrorEvent, BswModeManagerErrorEventId, BswModeReceiverPolicy, BswModeReceiverPolicyId, BswModeSenderPolicy, BswModeSenderPolicyId, BswModeSwitchAckRequest, BswModeSwitchAckRequestId, BswModeSwitchEvent, BswModeSwitchEventId, BswModeSwitchedAckEvent, BswModeSwitchedAckEventId, BswOperationInvokedEvent, BswOperationInvokedEventId, BswOsTaskExecutionEvent, BswOsTaskExecutionEventId, BswParameterPolicy, BswParameterPolicyId, BswPerInstanceMemoryPolicy, BswPerInstanceMemoryPolicyId, BswQueuedDataReceptionPolicy, BswQueuedDataReceptionPolicyId, BswReleasedTriggerPolicy, BswReleasedTriggerPolicyId, BswSchedulableEntity, BswSchedulableEntityId, BswSchedulerNamePrefix, BswSchedulerNamePrefixId, BswServiceDependency, BswServiceDependencyId, BswSynchronousServerCallPoint, BswSynchronousServerCallPointId, BswTimingEvent, BswTimingEventId, BswTriggerDirectImplementation, BswTriggerDirectImplementationId, BswVariableAccess, BswVariableAccessId, RoleBasedBswModuleEntryAssignment, RoleBasedBswModuleEntryAssignmentId};
+use crate::m2::autosar_templates::bsw_module_template::bsw_implementation::{BswImplementation, BswImplementationId};
+use crate::m2::autosar_templates::bsw_module_template::bsw_interfaces::{BswEntryRelationship, BswEntryRelationshipId, BswEntryRelationshipSet, BswEntryRelationshipSetId, BswModuleClientServerEntry, BswModuleClientServerEntryId, BswModuleDependency, BswModuleDependencyId, BswModuleEntry, BswModuleEntryId};
+use crate::m2::autosar_templates::bsw_module_template::bsw_overview::{BswModuleDescription, BswModuleDescriptionId};
+use crate::m2::autosar_templates::bsw_module_template::bsw_overview::instance_refs::{ModeInBswModuleDescriptionInstanceRef, ModeInBswModuleDescriptionInstanceRefId};
+use crate::m2::autosar_templates::common_structure::constants::{ApplicationRuleBasedValueSpecification, ApplicationRuleBasedValueSpecificationId, ApplicationValueSpecification, ApplicationValueSpecificationId, ArrayValueSpecification, ArrayValueSpecificationId, CompositeRuleBasedValueSpecification, CompositeRuleBasedValueSpecificationId, ConstantReference, ConstantReferenceId, ConstantSpecification, ConstantSpecificationId, ConstantSpecificationMapping, ConstantSpecificationMappingId, ConstantSpecificationMappingSet, ConstantSpecificationMappingSetId, NotAvailableValueSpecification, NotAvailableValueSpecificationId, NumericalOrText, NumericalOrTextId, NumericalRuleBasedValueSpecification, NumericalRuleBasedValueSpecificationId, NumericalValueSpecification, NumericalValueSpecificationId, RecordValueSpecification, RecordValueSpecificationId, ReferenceValueSpecification, ReferenceValueSpecificationId, RuleArguments, RuleArgumentsId, RuleBasedAxisCont, RuleBasedAxisContId, RuleBasedValueCont, RuleBasedValueContId, RuleBasedValueSpecification, RuleBasedValueSpecificationId, TextValueSpecification, TextValueSpecificationId};
+use crate::m2::autosar_templates::common_structure::filter::{DataFilter, DataFilterId};
+use crate::m2::autosar_templates::common_structure::flat_map::{AliasNameAssignment, AliasNameAssignmentId, AliasNameSet, AliasNameSetId, FlatInstanceDescriptor, FlatInstanceDescriptorId, FlatMap, FlatMapId, RtePluginProps, RtePluginPropsId};
+use crate::m2::autosar_templates::common_structure::implementation::{Code, CodeId, Compiler, CompilerId, DependencyOnArtifact, DependencyOnArtifactId, Linker, LinkerId};
+use crate::m2::autosar_templates::common_structure::implementation_data_types::{ImplementationDataType, ImplementationDataTypeElement, ImplementationDataTypeElementId, ImplementationDataTypeId};
+use crate::m2::autosar_templates::common_structure::internal_behavior::{ExclusiveArea, ExclusiveAreaId, ExclusiveAreaNestingOrder, ExclusiveAreaNestingOrderId, ExecutableEntityActivationReason, ExecutableEntityActivationReasonId};
+use crate::m2::autosar_templates::common_structure::mc_groups::{McGroup, McGroupDataRefSet, McGroupDataRefSetId, McGroupId};
+use crate::m2::autosar_templates::common_structure::measurement_calibration_support::{ImplementationElementInParameterInstanceRef, ImplementationElementInParameterInstanceRefId, McDataAccessDetails, McDataAccessDetailsId, McDataInstance, McDataInstanceId, McFunction, McFunctionId, McParameterElementGroup, McParameterElementGroupId, McSupportData, McSupportDataId, McSwEmulationMethodSupport, McSwEmulationMethodSupportId, RoleBasedMcDataAssignment, RoleBasedMcDataAssignmentId, RteEventInEcuInstanceRef, RteEventInEcuInstanceRefId, VariableAccessInEcuInstanceRef, VariableAccessInEcuInstanceRefId};
+use crate::m2::autosar_templates::common_structure::measurement_calibration_support::rpt_support::{McFunctionDataRefSet, McFunctionDataRefSetId, RptComponent, RptComponentId, RptExecutableEntity, RptExecutableEntityEvent, RptExecutableEntityEventId, RptExecutableEntityId, RptExecutionContext, RptExecutionContextId, RptServicePoint, RptServicePointId, RptSupportData, RptSupportDataId, RptSwPrototypingAccess, RptSwPrototypingAccessId};
+use crate::m2::autosar_templates::common_structure::mode_declaration::{ModeDeclaration, ModeDeclarationGroup, ModeDeclarationGroupId, ModeDeclarationGroupPrototype, ModeDeclarationGroupPrototypeId, ModeDeclarationGroupPrototypeMapping, ModeDeclarationGroupPrototypeMappingId, ModeDeclarationId, ModeErrorBehavior, ModeErrorBehaviorId, ModeRequestTypeMap, ModeRequestTypeMapId, ModeTransition, ModeTransitionId};
+use crate::m2::autosar_templates::common_structure::resource_consumption::{HardwareConfiguration, HardwareConfigurationId, ResourceConsumption, ResourceConsumptionId, SoftwareContext, SoftwareContextId};
+use crate::m2::autosar_templates::common_structure::resource_consumption::execution_time::{AnalyzedExecutionTime, AnalyzedExecutionTimeId, MeasuredExecutionTime, MeasuredExecutionTimeId, MemorySectionLocation, MemorySectionLocationId, RoughEstimateOfExecutionTime, RoughEstimateOfExecutionTimeId, SimulatedExecutionTime, SimulatedExecutionTimeId};
+use crate::m2::autosar_templates::common_structure::resource_consumption::heap_usage::{MeasuredHeapUsage, MeasuredHeapUsageId, RoughEstimateHeapUsage, RoughEstimateHeapUsageId, WorstCaseHeapUsage, WorstCaseHeapUsageId};
+use crate::m2::autosar_templates::common_structure::resource_consumption::memory_section_usage::{MemorySection, MemorySectionId, SectionNamePrefix, SectionNamePrefixId};
+use crate::m2::autosar_templates::common_structure::resource_consumption::stack_usage::{MeasuredStackUsage, MeasuredStackUsageId, RoughEstimateStackUsage, RoughEstimateStackUsageId, WorstCaseStackUsage, WorstCaseStackUsageId};
+use crate::m2::autosar_templates::common_structure::service_needs::{BswMgrNeeds, BswMgrNeedsId, ComMgrUserNeeds, ComMgrUserNeedsId, CryptoKeyManagementNeeds, CryptoKeyManagementNeedsId, CryptoServiceJobNeeds, CryptoServiceJobNeedsId, CryptoServiceNeeds, CryptoServiceNeedsId, DevelopmentError, DevelopmentErrorId, DiagEventDebounceCounterBased, DiagEventDebounceCounterBasedId, DiagEventDebounceMonitorInternal, DiagEventDebounceMonitorInternalId, DiagEventDebounceTimeBased, DiagEventDebounceTimeBasedId, DiagnosticCommunicationManagerNeeds, DiagnosticCommunicationManagerNeedsId, DiagnosticComponentNeeds, DiagnosticComponentNeedsId, DiagnosticControlNeeds, DiagnosticControlNeedsId, DiagnosticEnableConditionNeeds, DiagnosticEnableConditionNeedsId, DiagnosticEventInfoNeeds, DiagnosticEventInfoNeedsId, DiagnosticEventManagerNeeds, DiagnosticEventManagerNeedsId, DiagnosticEventNeeds, DiagnosticEventNeedsId, DiagnosticIoControlNeeds, DiagnosticIoControlNeedsId, DiagnosticOperationCycleNeeds, DiagnosticOperationCycleNeedsId, DiagnosticRequestFileTransferNeeds, DiagnosticRequestFileTransferNeedsId, DiagnosticRoutineNeeds, DiagnosticRoutineNeedsId, DiagnosticStorageConditionNeeds, DiagnosticStorageConditionNeedsId, DiagnosticUploadDownloadNeeds, DiagnosticUploadDownloadNeedsId, DiagnosticValueNeeds, DiagnosticValueNeedsId, DiagnosticsCommunicationSecurityNeeds, DiagnosticsCommunicationSecurityNeedsId, DltUserNeeds, DltUserNeedsId, DoIpActivationLineNeeds, DoIpActivationLineNeedsId, DoIpGidNeeds, DoIpGidNeedsId, DoIpGidSynchronizationNeeds, DoIpGidSynchronizationNeedsId, DoIpPowerModeStatusNeeds, DoIpPowerModeStatusNeedsId, DoIpRoutingActivationAuthenticationNeeds, DoIpRoutingActivationAuthenticationNeedsId, DoIpRoutingActivationConfirmationNeeds, DoIpRoutingActivationConfirmationNeedsId, DtcStatusChangeNotificationNeeds, DtcStatusChangeNotificationNeedsId, EcuStateMgrUserNeeds, EcuStateMgrUserNeedsId, ErrorTracerNeeds, ErrorTracerNeedsId, FunctionInhibitionAvailabilityNeeds, FunctionInhibitionAvailabilityNeedsId, FunctionInhibitionNeeds, FunctionInhibitionNeedsId, FurtherActionByteNeeds, FurtherActionByteNeedsId, GlobalSupervisionNeeds, GlobalSupervisionNeedsId, HardwareTestNeeds, HardwareTestNeedsId, IdsMgrCustomTimestampNeeds, IdsMgrCustomTimestampNeedsId, IdsMgrNeeds, IdsMgrNeedsId, IndicatorStatusNeeds, IndicatorStatusNeedsId, J1939DcmDm19Support, J1939DcmDm19SupportId, J1939RmIncomingRequestServiceNeeds, J1939RmIncomingRequestServiceNeedsId, J1939RmOutgoingRequestServiceNeeds, J1939RmOutgoingRequestServiceNeedsId, NvBlockNeeds, NvBlockNeedsId, ObdControlServiceNeeds, ObdControlServiceNeedsId, ObdInfoServiceNeeds, ObdInfoServiceNeedsId, ObdMonitorServiceNeeds, ObdMonitorServiceNeedsId, ObdPidServiceNeeds, ObdPidServiceNeedsId, ObdRatioDenominatorNeeds, ObdRatioDenominatorNeedsId, ObdRatioServiceNeeds, ObdRatioServiceNeedsId, PossibleErrorReaction, PossibleErrorReactionId, RoleBasedDataAssignment, RoleBasedDataAssignmentId, RuntimeError, RuntimeErrorId, SecureOnBoardCommunicationNeeds, SecureOnBoardCommunicationNeedsId, SupervisedEntityCheckpointNeeds, SupervisedEntityCheckpointNeedsId, SupervisedEntityNeeds, SupervisedEntityNeedsId, SymbolicNameProps, SymbolicNamePropsId, SyncTimeBaseMgrUserNeeds, SyncTimeBaseMgrUserNeedsId, TransientFault, TransientFaultId, V2xDataManagerNeeds, V2xDataManagerNeedsId, V2xFacUserNeeds, V2xFacUserNeedsId, V2xMUserNeeds, V2xMUserNeedsId, VendorSpecificServiceNeeds, VendorSpecificServiceNeedsId, WarningIndicatorRequestedBitNeeds, WarningIndicatorRequestedBitNeedsId};
+use crate::m2::autosar_templates::common_structure::signal_service_translation::{SignalServiceTranslationElementProps, SignalServiceTranslationElementPropsId, SignalServiceTranslationEventProps, SignalServiceTranslationEventPropsId, SignalServiceTranslationProps, SignalServiceTranslationPropsId, SignalServiceTranslationPropsSet, SignalServiceTranslationPropsSetId};
+use crate::m2::autosar_templates::common_structure::standardization_template::blueprint_dedicated::port_interface_blueprint::{PortInterfaceBlueprintMapping, PortInterfaceBlueprintMappingId};
+use crate::m2::autosar_templates::common_structure::standardization_template::blueprint_dedicated::port_prototype_blueprint::{PortPrototypeBlueprint, PortPrototypeBlueprintId, PortPrototypeBlueprintInitValue, PortPrototypeBlueprintInitValueId, PortPrototypeBlueprintMapping, PortPrototypeBlueprintMappingId};
+use crate::m2::autosar_templates::common_structure::standardization_template::blueprint_formula::{BlueprintFormula, BlueprintFormulaId};
+use crate::m2::autosar_templates::common_structure::standardization_template::blueprint_generator::{BlueprintGenerator, BlueprintGeneratorId};
+use crate::m2::autosar_templates::common_structure::standardization_template::blueprint_mapping::{BlueprintMapping, BlueprintMappingId, BlueprintMappingSet, BlueprintMappingSetId};
+use crate::m2::autosar_templates::common_structure::standardization_template::data_exchange_point::{Baseline, BaselineId, DataExchangePoint, DataExchangePointId};
+use crate::m2::autosar_templates::common_structure::standardization_template::keyword::{Keyword, KeywordId, KeywordSet, KeywordSetId};
+use crate::m2::autosar_templates::common_structure::swc_bsw_mapping::{SwcBswMapping, SwcBswMappingId, SwcBswRunnableMapping, SwcBswRunnableMappingId, SwcBswSynchronizedModeGroupPrototype, SwcBswSynchronizedModeGroupPrototypeId, SwcBswSynchronizedTrigger, SwcBswSynchronizedTriggerId};
+use crate::m2::autosar_templates::common_structure::timing::timing_clock::{TDLETZoneClock, TDLETZoneClockId, TimingClockSyncAccuracy, TimingClockSyncAccuracyId};
+use crate::m2::autosar_templates::common_structure::timing::timing_condition::{ModeInBswInstanceRef, ModeInBswInstanceRefId, ModeInSwcInstanceRef, ModeInSwcInstanceRefId, TimingCondition, TimingConditionFormula, TimingConditionFormulaId, TimingConditionId, TimingExtensionResource, TimingExtensionResourceId, TimingModeInstance, TimingModeInstanceId};
+use crate::m2::autosar_templates::common_structure::timing::timing_constraint::age_constraint::{AgeConstraint, AgeConstraintId};
+use crate::m2::autosar_templates::common_structure::timing::timing_constraint::event_triggering_constraint::{ArbitraryEventTriggering, ArbitraryEventTriggeringId, BurstPatternEventTriggering, BurstPatternEventTriggeringId, ConcretePatternEventTriggering, ConcretePatternEventTriggeringId, ConfidenceInterval, ConfidenceIntervalId, PeriodicEventTriggering, PeriodicEventTriggeringId, SporadicEventTriggering, SporadicEventTriggeringId};
+use crate::m2::autosar_templates::common_structure::timing::timing_constraint::execution_order_constraint::{EOCEventRef, EOCEventRefId, EOCExecutableEntityRef, EOCExecutableEntityRefGroup, EOCExecutableEntityRefGroupId, EOCExecutableEntityRefId, ExecutionOrderConstraint, ExecutionOrderConstraintId};
+use crate::m2::autosar_templates::common_structure::timing::timing_constraint::execution_time_constraint::{ExecutionTimeConstraint, ExecutionTimeConstraintId};
+use crate::m2::autosar_templates::common_structure::timing::timing_constraint::latency_timing_constraint::{LatencyTimingConstraint, LatencyTimingConstraintId};
+use crate::m2::autosar_templates::common_structure::timing::timing_constraint::offset_constraint::{OffsetTimingConstraint, OffsetTimingConstraintId};
+use crate::m2::autosar_templates::common_structure::timing::timing_constraint::synchronization_point_constraint::{SynchronizationPointConstraint, SynchronizationPointConstraintId};
+use crate::m2::autosar_templates::common_structure::timing::timing_constraint::synchronization_timing::{SynchronizationTimingConstraint, SynchronizationTimingConstraintId};
+use crate::m2::autosar_templates::common_structure::timing::timing_cp_software_cluster::{TDCpSoftwareClusterMapping, TDCpSoftwareClusterMappingId, TDCpSoftwareClusterMappingSet, TDCpSoftwareClusterMappingSetId, TDCpSoftwareClusterResourceMapping, TDCpSoftwareClusterResourceMappingId};
+use crate::m2::autosar_templates::common_structure::timing::timing_description::{TimingDescriptionEventChain, TimingDescriptionEventChainId};
+use crate::m2::autosar_templates::common_structure::timing::timing_description::timing_description_events::td_event_bsw::{TDEventBswModeDeclaration, TDEventBswModeDeclarationId, TDEventBswModule, TDEventBswModuleId};
+use crate::m2::autosar_templates::common_structure::timing::timing_description::timing_description_events::td_event_bsw_internal_behavior::{TDEventBswInternalBehavior, TDEventBswInternalBehaviorId};
+use crate::m2::autosar_templates::common_structure::timing::timing_description::timing_description_events::td_event_com::{TDEventFrClusterCycleStart, TDEventFrClusterCycleStartId, TDEventFrame, TDEventFrameEthernet, TDEventFrameEthernetId, TDEventFrameId, TDEventIPdu, TDEventIPduId, TDEventISignal, TDEventISignalId, TDEventTTCanCycleStart, TDEventTTCanCycleStartId, TDHeaderIdRange, TDHeaderIdRangeId};
+use crate::m2::autosar_templates::common_structure::timing::timing_description::timing_description_events::td_event_complex::{TDEventComplex, TDEventComplexId};
+use crate::m2::autosar_templates::common_structure::timing::timing_description::timing_description_events::td_event_occurrence_expression::{AutosarOperationArgumentInstance, AutosarOperationArgumentInstanceId, AutosarVariableInstance, AutosarVariableInstanceId, OperationArgumentInComponentInstanceRef, OperationArgumentInComponentInstanceRefId, TDEventOccurrenceExpression, TDEventOccurrenceExpressionFormula, TDEventOccurrenceExpressionFormulaId, TDEventOccurrenceExpressionId, VariableInComponentInstanceRef, VariableInComponentInstanceRefId};
+use crate::m2::autosar_templates::common_structure::timing::timing_description::timing_description_events::td_event_sllet::{TDEventSLLETPort, TDEventSLLETPortId};
+use crate::m2::autosar_templates::common_structure::timing::timing_description::timing_description_events::td_event_swc_internal_behavior::{TDEventSwcInternalBehavior, TDEventSwcInternalBehaviorId, TDEventSwcInternalBehaviorReference, TDEventSwcInternalBehaviorReferenceId};
+use crate::m2::autosar_templates::common_structure::timing::timing_description::timing_description_events::td_event_vfb::{TDEventModeDeclaration, TDEventModeDeclarationId, TDEventOperation, TDEventOperationId, TDEventTrigger, TDEventTriggerId, TDEventVariableDataPrototype, TDEventVariableDataPrototypeId, TDEventVfb, TDEventVfbId, TDEventVfbReference, TDEventVfbReferenceId};
+use crate::m2::autosar_templates::common_structure::timing::timing_extensions::{BswCompositionTiming, BswCompositionTimingId, BswModuleTiming, BswModuleTimingId, EcuTiming, EcuTimingId, SwcTiming, SwcTimingId, SystemTiming, SystemTimingId, VfbTiming, VfbTimingId};
+use crate::m2::autosar_templates::common_structure::trigger_declaration::{Trigger, TriggerId, TriggerMapping, TriggerMappingId};
+use crate::m2::autosar_templates::diagnostic_extract::common_diagnostics::{DiagnosticDataElement, DiagnosticDataElementId, DiagnosticDataIdentifier, DiagnosticDataIdentifierId, DiagnosticDynamicDataIdentifier, DiagnosticDynamicDataIdentifierId, DiagnosticInfoType, DiagnosticInfoTypeId, DiagnosticParameter, DiagnosticParameterElement, DiagnosticParameterElementId, DiagnosticParameterId, DiagnosticParameterIdent, DiagnosticParameterIdentId, DiagnosticParameterIdentifier, DiagnosticParameterIdentifierId, DiagnosticParameterSupportInfo, DiagnosticParameterSupportInfoId, DiagnosticRequestRoutineResults, DiagnosticRequestRoutineResultsId, DiagnosticRoutine, DiagnosticRoutineId, DiagnosticStartRoutine, DiagnosticStartRoutineId, DiagnosticStopRoutine, DiagnosticStopRoutineId, DiagnosticSupportInfoByte, DiagnosticSupportInfoByteId};
+use crate::m2::autosar_templates::diagnostic_extract::common_service::{DiagnosticClearResetEmissionRelatedInfoClass, DiagnosticClearResetEmissionRelatedInfoClassId, DiagnosticRequestControlOfOnBoardDeviceClass, DiagnosticRequestControlOfOnBoardDeviceClassId, DiagnosticRequestCurrentPowertrainDataClass, DiagnosticRequestCurrentPowertrainDataClassId, DiagnosticRequestEmissionRelatedDTCClass, DiagnosticRequestEmissionRelatedDTCClassId, DiagnosticRequestEmissionRelatedDTCPermanentStatusClass, DiagnosticRequestEmissionRelatedDTCPermanentStatusClassId, DiagnosticRequestPowertrainFreezeFrameDataClass, DiagnosticRequestPowertrainFreezeFrameDataClassId, DiagnosticRequestVehicleInfoClass, DiagnosticRequestVehicleInfoClassId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::{DiagnosticAccessPermission, DiagnosticAccessPermissionId, DiagnosticAuthRole, DiagnosticAuthRoleId, DiagnosticAuthRoleProxy, DiagnosticAuthRoleProxyId, DiagnosticSecurityLevel, DiagnosticSecurityLevelId, DiagnosticSession, DiagnosticSessionId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::authentication::{DiagnosticAuthTransmitCertificate, DiagnosticAuthTransmitCertificateEvaluation, DiagnosticAuthTransmitCertificateEvaluationId, DiagnosticAuthTransmitCertificateId, DiagnosticAuthenticationClass, DiagnosticAuthenticationClassId, DiagnosticAuthenticationConfiguration, DiagnosticAuthenticationConfigurationId, DiagnosticDeAuthentication, DiagnosticDeAuthenticationId, DiagnosticProofOfOwnership, DiagnosticProofOfOwnershipId, DiagnosticVerifyCertificateBidirectional, DiagnosticVerifyCertificateBidirectionalId, DiagnosticVerifyCertificateUnidirectional, DiagnosticVerifyCertificateUnidirectionalId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::clear_diagnostic_info::{DiagnosticClearDiagnosticInformation, DiagnosticClearDiagnosticInformationClass, DiagnosticClearDiagnosticInformationClassId, DiagnosticClearDiagnosticInformationId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::common_service::{DiagnosticCustomServiceClass, DiagnosticCustomServiceClassId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::communication_control::{DiagnosticComControl, DiagnosticComControlClass, DiagnosticComControlClassId, DiagnosticComControlId, DiagnosticComControlSpecificChannel, DiagnosticComControlSpecificChannelId, DiagnosticComControlSubNodeChannel, DiagnosticComControlSubNodeChannelId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::control_dtc_setting::{DiagnosticControlDTCSetting, DiagnosticControlDTCSettingClass, DiagnosticControlDTCSettingClassId, DiagnosticControlDTCSettingId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::custom_service_instance::{DiagnosticCustomServiceInstance, DiagnosticCustomServiceInstanceId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::data_by_identifier::{DiagnosticReadDataByIdentifier, DiagnosticReadDataByIdentifierClass, DiagnosticReadDataByIdentifierClassId, DiagnosticReadDataByIdentifierId, DiagnosticReadScalingDataByIdentifier, DiagnosticReadScalingDataByIdentifierClass, DiagnosticReadScalingDataByIdentifierClassId, DiagnosticReadScalingDataByIdentifierId, DiagnosticWriteDataByIdentifier, DiagnosticWriteDataByIdentifierClass, DiagnosticWriteDataByIdentifierClassId, DiagnosticWriteDataByIdentifierId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::dynamically_define_data_identifier::{DiagnosticDynamicallyDefineDataIdentifier, DiagnosticDynamicallyDefineDataIdentifierClass, DiagnosticDynamicallyDefineDataIdentifierClassId, DiagnosticDynamicallyDefineDataIdentifierId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::ecu_reset::{DiagnosticEcuReset, DiagnosticEcuResetClass, DiagnosticEcuResetClassId, DiagnosticEcuResetId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::io_control::{DiagnosticControlEnableMaskBit, DiagnosticControlEnableMaskBitId, DiagnosticIOControl, DiagnosticIOControlId, DiagnosticIoControlClass, DiagnosticIoControlClassId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::memory_by_address::{DiagnosticDataTransfer, DiagnosticDataTransferClass, DiagnosticDataTransferClassId, DiagnosticDataTransferId, DiagnosticMemoryIdentifier, DiagnosticMemoryIdentifierId, DiagnosticReadMemoryByAddress, DiagnosticReadMemoryByAddressClass, DiagnosticReadMemoryByAddressClassId, DiagnosticReadMemoryByAddressId, DiagnosticRequestDownload, DiagnosticRequestDownloadClass, DiagnosticRequestDownloadClassId, DiagnosticRequestDownloadId, DiagnosticRequestUpload, DiagnosticRequestUploadClass, DiagnosticRequestUploadClassId, DiagnosticRequestUploadId, DiagnosticTransferExit, DiagnosticTransferExitClass, DiagnosticTransferExitClassId, DiagnosticTransferExitId, DiagnosticWriteMemoryByAddress, DiagnosticWriteMemoryByAddressClass, DiagnosticWriteMemoryByAddressClassId, DiagnosticWriteMemoryByAddressId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::read_data_by_periodic_id::{DiagnosticPeriodicRate, DiagnosticPeriodicRateId, DiagnosticReadDataByPeriodicID, DiagnosticReadDataByPeriodicIDClass, DiagnosticReadDataByPeriodicIDClassId, DiagnosticReadDataByPeriodicIDId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::read_dtc_information::{DiagnosticReadDTCInformation, DiagnosticReadDTCInformationClass, DiagnosticReadDTCInformationClassId, DiagnosticReadDTCInformationId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::request_file_transfer::{DiagnosticRequestFileTransfer, DiagnosticRequestFileTransferClass, DiagnosticRequestFileTransferClassId, DiagnosticRequestFileTransferId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::response_on_event::{DiagnosticEventWindow, DiagnosticEventWindowId, DiagnosticResponseOnEvent, DiagnosticResponseOnEventClass, DiagnosticResponseOnEventClassId, DiagnosticResponseOnEventId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::routine_control::{DiagnosticRoutineControl, DiagnosticRoutineControlClass, DiagnosticRoutineControlClassId, DiagnosticRoutineControlId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::security_access::{DiagnosticSecurityAccess, DiagnosticSecurityAccessClass, DiagnosticSecurityAccessClassId, DiagnosticSecurityAccessId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::session_control::{DiagnosticSessionControl, DiagnosticSessionControlClass, DiagnosticSessionControlClassId, DiagnosticSessionControlId};
+use crate::m2::autosar_templates::diagnostic_extract::dcm::environmental_condition::{DiagnosticEnvBswModeElement, DiagnosticEnvBswModeElementId, DiagnosticEnvConditionFormula, DiagnosticEnvConditionFormulaId, DiagnosticEnvDataCondition, DiagnosticEnvDataConditionId, DiagnosticEnvDataElementCondition, DiagnosticEnvDataElementConditionId, DiagnosticEnvModeCondition, DiagnosticEnvModeConditionId, DiagnosticEnvSwcModeElement, DiagnosticEnvSwcModeElementId, DiagnosticEnvironmentalCondition, DiagnosticEnvironmentalConditionId};
+use crate::m2::autosar_templates::diagnostic_extract::dem::diagnostic_aging::{DiagnosticAging, DiagnosticAgingId};
+use crate::m2::autosar_templates::diagnostic_extract::dem::diagnostic_condition::{DiagnosticEnableCondition, DiagnosticEnableConditionId, DiagnosticStorageCondition, DiagnosticStorageConditionId};
+use crate::m2::autosar_templates::diagnostic_extract::dem::diagnostic_condition_group::{DiagnosticEnableConditionGroup, DiagnosticEnableConditionGroupId, DiagnosticStorageConditionGroup, DiagnosticStorageConditionGroupId};
+use crate::m2::autosar_templates::diagnostic_extract::dem::diagnostic_debouncing_algorithm::{DiagnosticDebounceAlgorithmProps, DiagnosticDebounceAlgorithmPropsId};
+use crate::m2::autosar_templates::diagnostic_extract::dem::diagnostic_event::{DiagnosticConnectedIndicator, DiagnosticConnectedIndicatorId, DiagnosticEvent, DiagnosticEventId, DiagnosticFimAliasEventMapping, DiagnosticFimAliasEventMappingId, DiagnosticIumpr, DiagnosticIumprDenominatorGroup, DiagnosticIumprDenominatorGroupId, DiagnosticIumprGroup, DiagnosticIumprGroupId, DiagnosticIumprGroupIdentifier, DiagnosticIumprGroupIdentifierId, DiagnosticIumprId};
+use crate::m2::autosar_templates::diagnostic_extract::dem::diagnostic_extended_data_record::{DiagnosticExtendedDataRecord, DiagnosticExtendedDataRecordId};
+use crate::m2::autosar_templates::diagnostic_extract::dem::diagnostic_freeze_frame::{DiagnosticFreezeFrame, DiagnosticFreezeFrameId};
+use crate::m2::autosar_templates::diagnostic_extract::dem::diagnostic_indicator::{DiagnosticIndicator, DiagnosticIndicatorId};
+use crate::m2::autosar_templates::diagnostic_extract::dem::diagnostic_memory_destination::{DiagnosticMemoryDestinationPrimary, DiagnosticMemoryDestinationPrimaryId, DiagnosticMemoryDestinationUserDefined, DiagnosticMemoryDestinationUserDefinedId};
+use crate::m2::autosar_templates::diagnostic_extract::dem::diagnostic_operation_cycle::{DiagnosticOperationCycle, DiagnosticOperationCycleId};
+use crate::m2::autosar_templates::diagnostic_extract::dem::diagnostic_test_result::{DiagnosticMeasurementIdentifier, DiagnosticMeasurementIdentifierId, DiagnosticTestIdentifier, DiagnosticTestIdentifierId, DiagnosticTestResult, DiagnosticTestResultId};
+use crate::m2::autosar_templates::diagnostic_extract::dem::diagnostic_trouble_code::{DiagnosticDataIdentifierSet, DiagnosticDataIdentifierSetId, DiagnosticTroubleCodeGroup, DiagnosticTroubleCodeGroupId, DiagnosticTroubleCodeJ1939, DiagnosticTroubleCodeJ1939Id, DiagnosticTroubleCodeObd, DiagnosticTroubleCodeObdId, DiagnosticTroubleCodeProps, DiagnosticTroubleCodePropsId, DiagnosticTroubleCodeUds, DiagnosticTroubleCodeUdsId, EventObdReadinessGroup, EventObdReadinessGroupId};
+use crate::m2::autosar_templates::diagnostic_extract::diagnostic_contribution::{DiagnosticContributionSet, DiagnosticContributionSetId, DiagnosticEcuInstanceProps, DiagnosticEcuInstancePropsId, DiagnosticProtocol, DiagnosticProtocolId, DiagnosticServiceTable, DiagnosticServiceTableId};
+use crate::m2::autosar_templates::diagnostic_extract::diagnostic_mapping::{DiagnosticAuthTransmitCertificateMapping, DiagnosticAuthTransmitCertificateMappingId, DiagnosticEnableConditionPortMapping, DiagnosticEnableConditionPortMappingId, DiagnosticEventPortMapping, DiagnosticEventPortMappingId, DiagnosticEventToDebounceAlgorithmMapping, DiagnosticEventToDebounceAlgorithmMappingId, DiagnosticEventToEnableConditionGroupMapping, DiagnosticEventToEnableConditionGroupMappingId, DiagnosticEventToOperationCycleMapping, DiagnosticEventToOperationCycleMappingId, DiagnosticEventToSecurityEventMapping, DiagnosticEventToSecurityEventMappingId, DiagnosticEventToStorageConditionGroupMapping, DiagnosticEventToStorageConditionGroupMappingId, DiagnosticEventToTroubleCodeUdsMapping, DiagnosticEventToTroubleCodeUdsMappingId, DiagnosticIumprToFunctionIdentifierMapping, DiagnosticIumprToFunctionIdentifierMappingId, DiagnosticMasterToSlaveEventMapping, DiagnosticMasterToSlaveEventMappingId, DiagnosticOperationCyclePortMapping, DiagnosticOperationCyclePortMappingId, DiagnosticStorageConditionPortMapping, DiagnosticStorageConditionPortMappingId, DiagnosticTroubleCodeUdsToTroubleCodeObdMapping, DiagnosticTroubleCodeUdsToTroubleCodeObdMappingId};
+use crate::m2::autosar_templates::diagnostic_extract::diagnostic_mapping::cp_software_cluster::{CpSwClusterResourceToDiagDataElemMapping, CpSwClusterResourceToDiagDataElemMappingId, CpSwClusterResourceToDiagFunctionIdMapping, CpSwClusterResourceToDiagFunctionIdMappingId, CpSwClusterToDiagEventMapping, CpSwClusterToDiagEventMappingId, CpSwClusterToDiagRoutineSubfunctionMapping, CpSwClusterToDiagRoutineSubfunctionMappingId};
+use crate::m2::autosar_templates::diagnostic_extract::diagnostic_mapping::diagnostic_j1939_mapping::{DiagnosticEventToTroubleCodeJ1939Mapping, DiagnosticEventToTroubleCodeJ1939MappingId, DiagnosticJ1939SpnMapping, DiagnosticJ1939SpnMappingId, DiagnosticJ1939SwMapping, DiagnosticJ1939SwMappingId};
+use crate::m2::autosar_templates::diagnostic_extract::diagnostic_mapping::fim_mapping::{DiagnosticFimAliasEventGroupMapping, DiagnosticFimAliasEventGroupMappingId, DiagnosticInhibitSourceEventMapping, DiagnosticInhibitSourceEventMappingId};
+use crate::m2::autosar_templates::diagnostic_extract::diagnostic_mapping::service_mapping::{BswServiceDependencyIdent, BswServiceDependencyIdentId, DiagnosticDemProvidedDataMapping, DiagnosticDemProvidedDataMappingId, DiagnosticFimFunctionMapping, DiagnosticFimFunctionMappingId, DiagnosticParameterElementAccess, DiagnosticParameterElementAccessId, DiagnosticSecurityEventReportingModeMapping, DiagnosticSecurityEventReportingModeMappingId, DiagnosticServiceDataMapping, DiagnosticServiceDataMappingId, DiagnosticServiceSwMapping, DiagnosticServiceSwMappingId};
+use crate::m2::autosar_templates::diagnostic_extract::fim::{DiagnosticFimAliasEvent, DiagnosticFimAliasEventGroup, DiagnosticFimAliasEventGroupId, DiagnosticFimAliasEventId, DiagnosticFimEventGroup, DiagnosticFimEventGroupId, DiagnosticFunctionIdentifier, DiagnosticFunctionIdentifierId, DiagnosticFunctionIdentifierInhibit, DiagnosticFunctionIdentifierInhibitId, DiagnosticFunctionInhibitSource, DiagnosticFunctionInhibitSourceId};
+use crate::m2::autosar_templates::diagnostic_extract::j1939::{DiagnosticJ1939ExpandedFreezeFrame, DiagnosticJ1939ExpandedFreezeFrameId, DiagnosticJ1939FreezeFrame, DiagnosticJ1939FreezeFrameId, DiagnosticJ1939Node, DiagnosticJ1939NodeId, DiagnosticJ1939Spn, DiagnosticJ1939SpnId};
+use crate::m2::autosar_templates::ecu_resource_template::{HwElement, HwElementConnector, HwElementConnectorId, HwElementId, HwPin, HwPinConnector, HwPinConnectorId, HwPinGroup, HwPinGroupConnector, HwPinGroupConnectorId, HwPinGroupContent, HwPinGroupContentId, HwPinGroupId, HwPinId};
+use crate::m2::autosar_templates::ecu_resource_template::hw_element_category::{HwAttributeDef, HwAttributeDefId, HwAttributeLiteralDef, HwAttributeLiteralDefId, HwAttributeValue, HwAttributeValueId, HwCategory, HwCategoryId, HwType, HwTypeId};
+use crate::m2::autosar_templates::ecuc_description_template::{BooleanValue, BooleanValueId, Container, ContainerId, EcucAddInfoParamValue, EcucAddInfoParamValueId, EcucContainerValue, EcucContainerValueId, EcucInstanceReferenceValue, EcucInstanceReferenceValueId, EcucModuleConfigurationValues, EcucModuleConfigurationValuesId, EcucNumericalParamValue, EcucNumericalParamValueId, EcucReferenceValue, EcucReferenceValueId, EcucTextualParamValue, EcucTextualParamValueId, EcucValueCollection, EcucValueCollectionId, EnumerationValue, EnumerationValueId, FloatValue, FloatValueId, FunctionNameValue, FunctionNameValueId, InstanceReferenceValue, InstanceReferenceValueId, IntegerValue, IntegerValueId, LinkerSymbolValue, LinkerSymbolValueId, ModuleConfiguration, ModuleConfigurationId, ReferenceValue, ReferenceValueId, StringValue, StringValueId};
+use crate::m2::autosar_templates::ecuc_parameter_def_template::{EcucAddInfoParamDef, EcucAddInfoParamDefId, EcucBooleanParamDef, EcucBooleanParamDefId, EcucChoiceContainerDef, EcucChoiceContainerDefId, EcucChoiceReferenceDef, EcucChoiceReferenceDefId, EcucConditionFormula, EcucConditionFormulaId, EcucConditionSpecification, EcucConditionSpecificationId, EcucDefinitionCollection, EcucDefinitionCollectionId, EcucDerivationSpecification, EcucDerivationSpecificationId, EcucDestinationUriDef, EcucDestinationUriDefId, EcucDestinationUriDefRefType, EcucDestinationUriDefRefTypeId, EcucDestinationUriDefSet, EcucDestinationUriDefSetId, EcucDestinationUriPolicy, EcucDestinationUriPolicyId, EcucEnumerationLiteralDef, EcucEnumerationLiteralDefId, EcucEnumerationParamDef, EcucEnumerationParamDefId, EcucFloatParamDef, EcucFloatParamDefId, EcucForeignReferenceDef, EcucForeignReferenceDefId, EcucFunctionNameDef, EcucFunctionNameDefId, EcucInstanceReferenceDef, EcucInstanceReferenceDefId, EcucIntegerParamDef, EcucIntegerParamDefId, EcucLinkerSymbolDef, EcucLinkerSymbolDefId, EcucModuleDef, EcucModuleDefId, EcucMultilineStringParamDef, EcucMultilineStringParamDefId, EcucMultiplicityConfigurationClass, EcucMultiplicityConfigurationClassId, EcucParamConfContainerDef, EcucParamConfContainerDefId, EcucParameterDerivationFormula, EcucParameterDerivationFormulaId, EcucQuery, EcucQueryExpression, EcucQueryExpressionId, EcucQueryId, EcucReferenceDef, EcucReferenceDefId, EcucStringParamDef, EcucStringParamDefId, EcucSymbolicNameReferenceDef, EcucSymbolicNameReferenceDefId, EcucUriReferenceDef, EcucUriReferenceDefId, EcucValidationCondition, EcucValidationConditionId, EcucValueConfigurationClass, EcucValueConfigurationClassId};
+use crate::m2::autosar_templates::feature_model_template::{FMAttributeDef, FMAttributeDefId, FMAttributeValue, FMAttributeValueId, FMConditionByFeaturesAndAttributes, FMConditionByFeaturesAndAttributesId, FMConditionByFeaturesAndSwSystemconsts, FMConditionByFeaturesAndSwSystemconstsId, FMFeature, FMFeatureDecomposition, FMFeatureDecompositionId, FMFeatureId, FMFeatureMap, FMFeatureMapAssertion, FMFeatureMapAssertionId, FMFeatureMapCondition, FMFeatureMapConditionId, FMFeatureMapElement, FMFeatureMapElementId, FMFeatureMapId, FMFeatureModel, FMFeatureModelId, FMFeatureRelation, FMFeatureRelationId, FMFeatureRestriction, FMFeatureRestrictionId, FMFeatureSelection, FMFeatureSelectionId, FMFeatureSelectionSet, FMFeatureSelectionSetId};
+use crate::m2::autosar_templates::generic_structure::build_action_manifest::{BuildAction, BuildActionEnvironment, BuildActionEnvironmentId, BuildActionId, BuildActionInvocator, BuildActionInvocatorId, BuildActionIoElement, BuildActionIoElementId, BuildActionManifest, BuildActionManifestId, BuildEngineeringObject, BuildEngineeringObjectId};
+use crate::m2::autosar_templates::generic_structure::documentation_on_m1::{Documentation, DocumentationContext, DocumentationContextId, DocumentationId};
+use crate::m2::autosar_templates::generic_structure::general_template_classes::any_instance_ref::{AnyInstanceRef, AnyInstanceRefId};
+use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::{ARObject, AggregationCondition, AggregationConditionId, CalibrationParameterValue, CalibrationParameterValueId, ClientServerOperationBlueprintMapping, ClientServerOperationBlueprintMappingId, DiagnosticClearResetEmissionRelatedInfo, DiagnosticClearResetEmissionRelatedInfoId, DiagnosticCommonProps, DiagnosticCommonPropsId, DiagnosticRequestCurrentPowertrainData, DiagnosticRequestCurrentPowertrainDataId, DiagnosticRequestEmissionRelatedDTC, DiagnosticRequestEmissionRelatedDTCId, DiagnosticRequestOnBoardMonitoringTestResultsClass, DiagnosticRequestOnBoardMonitoringTestResultsClassId, ElementRef, InvertCondition, InvertConditionId, MultiplicityRestrictionWithSeverity, MultiplicityRestrictionWithSeverityId, PrimitiveAttributeCondition, PrimitiveAttributeConditionId, ReferenceCondition, ReferenceConditionId, SpecificationScope, SpecificationScopeId, TextualCondition, TextualConditionId, TtcanCommunicationController, TtcanCommunicationControllerId};
+use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::{ARPackage, ARPackageId, CalibrationParameterValueSet, CalibrationParameterValueSetId, DiagnosticPowertrainFreezeFrame, DiagnosticPowertrainFreezeFrameId, DiagnosticRequestControlOfOnBoardDevice, DiagnosticRequestControlOfOnBoardDeviceId, DiagnosticRequestEmissionRelatedDTCPermanentStatus, DiagnosticRequestEmissionRelatedDTCPermanentStatusId, DiagnosticRequestOnBoardMonitoringTestResults, DiagnosticRequestOnBoardMonitoringTestResultsId, DiagnosticRequestPowertrainFreezeFrameData, DiagnosticRequestPowertrainFreezeFrameDataId, DiagnosticRequestVehicleInfo, DiagnosticRequestVehicleInfoId, DiagnosticTestRoutineIdentifier, DiagnosticTestRoutineIdentifierId, ReferenceBase, ReferenceBaseId};
+use crate::m2::autosar_templates::generic_structure::general_template_classes::element_collection::{Collection, CollectionId};
+use crate::m2::autosar_templates::generic_structure::general_template_classes::engineering_object::{AutosarEngineeringObject, AutosarEngineeringObjectId};
+use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::{AbstractClassTailoring, AbstractClassTailoringId, AggregationTailoring, AggregationTailoringId, ClassContentConditional, ClassContentConditionalId, ConcreteClassTailoring, ConcreteClassTailoringId, ConstraintTailoring, ConstraintTailoringId, DocumentElementScope, DocumentElementScopeId, PrimitiveAttributeTailoring, PrimitiveAttributeTailoringId, ReferenceTailoring, ReferenceTailoringId, RptContainer, RptContainerId, SdgTailoring, SdgTailoringId, ShortNameFragment, ShortNameFragmentId, SpecificationDocumentScope, SpecificationDocumentScopeId};
+use crate::m2::autosar_templates::generic_structure::general_template_classes::model_restriction_types::{ValueRestrictionWithSeverity, ValueRestrictionWithSeverityId, VariationRestrictionWithSeverity, VariationRestrictionWithSeverityId};
+use crate::m2::autosar_templates::generic_structure::general_template_classes::multidimensional_time::{MultidimensionalTime, MultidimensionalTimeId};
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::{Limit, LimitId, RefType, RefTypeId, TRefType, TRefTypeId};
+use crate::m2::autosar_templates::generic_structure::general_template_classes::special_data_def::{SdgAggregationWithVariation, SdgAggregationWithVariationId, SdgClass, SdgClassId, SdgDef, SdgDefId, SdgForeignReference, SdgForeignReferenceId, SdgForeignReferenceWithVariation, SdgForeignReferenceWithVariationId, SdgPrimitiveAttribute, SdgPrimitiveAttributeId, SdgPrimitiveAttributeWithVariation, SdgPrimitiveAttributeWithVariationId, SdgReference, SdgReferenceId};
+use crate::m2::autosar_templates::generic_structure::general_template_classes::tag_with_optional_value::{TagWithOptionalValue, TagWithOptionalValueId};
+use crate::m2::autosar_templates::generic_structure::life_cycles::{LifeCycleInfo, LifeCycleInfoId, LifeCycleInfoSet, LifeCycleInfoSetId, LifeCyclePeriod, LifeCyclePeriodId, LifeCycleState, LifeCycleStateDefinitionGroup, LifeCycleStateDefinitionGroupId, LifeCycleStateId};
+use crate::m2::autosar_templates::generic_structure::roles_and_rights::{AclObjectSet, AclObjectSetId, AclOperation, AclOperationId, AclPermission, AclPermissionId, AclRole, AclRoleId};
+use crate::m2::autosar_templates::generic_structure::variant_handling::{ConditionByFormula, ConditionByFormulaId, EvaluatedVariantSet, EvaluatedVariantSetId, PostBuildVariantCondition, PostBuildVariantConditionId, PostBuildVariantCriterion, PostBuildVariantCriterionId, PostBuildVariantCriterionValue, PostBuildVariantCriterionValueId, PostBuildVariantCriterionValueSet, PostBuildVariantCriterionValueSetId, PredefinedVariant, PredefinedVariantId, SwSystemconstValue, SwSystemconstValueId, SwSystemconstantValueSet, SwSystemconstantValueSetId, VariationPoint, VariationPointId};
+use crate::m2::autosar_templates::generic_structure::variant_handling::attribute_value_variation_points::{BooleanValueVariationPoint, BooleanValueVariationPointId, FloatValueVariationPoint, FloatValueVariationPointId, IntegerValueVariationPoint, IntegerValueVariationPointId, LimitValueVariationPoint, LimitValueVariationPointId, NumericalValueVariationPoint, NumericalValueVariationPointId, PositiveIntegerValueVariationPoint, PositiveIntegerValueVariationPointId, TimeValueValueVariationPoint, TimeValueValueVariationPointId, UnlimitedIntegerValueVariationPoint, UnlimitedIntegerValueVariationPointId};
+use crate::m2::autosar_templates::generic_structure::view_map_set::{ViewMap, ViewMapId, ViewMapSet, ViewMapSetId};
+use crate::m2::autosar_templates::log_and_trace_extract::{DltApplication, DltApplicationId, DltArgument, DltArgumentId, DltContext, DltContextId, DltEcu, DltEcuId, DltMessage, DltMessageId, LogAndTraceMessageCollectionSet, LogAndTraceMessageCollectionSetId, PrivacyLevel, PrivacyLevelId};
+use crate::m2::autosar_templates::security_extract_template::{BlockState, BlockStateId, IdsDesign, IdsDesignId, IdsmInstance, IdsmInstanceId, IdsmRateLimitation, IdsmRateLimitationId, IdsmTrafficLimitation, IdsmTrafficLimitationId, SecurityEventAggregationFilter, SecurityEventAggregationFilterId, SecurityEventContextMappingApplication, SecurityEventContextMappingApplicationId, SecurityEventContextMappingBswModule, SecurityEventContextMappingBswModuleId, SecurityEventContextMappingCommConnector, SecurityEventContextMappingCommConnectorId, SecurityEventContextMappingFunctionalCluster, SecurityEventContextMappingFunctionalClusterId, SecurityEventContextProps, SecurityEventContextPropsId, SecurityEventDefinition, SecurityEventDefinitionId, SecurityEventFilterChain, SecurityEventFilterChainId, SecurityEventOneEveryNFilter, SecurityEventOneEveryNFilterId, SecurityEventStateFilter, SecurityEventStateFilterId, SecurityEventThresholdFilter, SecurityEventThresholdFilterId};
+use crate::m2::autosar_templates::sw_component_template::application_attributes::{ClientServerAnnotation, ClientServerAnnotationId, DelegatedPortAnnotation, DelegatedPortAnnotationId, IoHwAbstractionServerAnnotation, IoHwAbstractionServerAnnotationId, ModePortAnnotation, ModePortAnnotationId, NvDataPortAnnotation, NvDataPortAnnotationId, ParameterPortAnnotation, ParameterPortAnnotationId, ReceiverAnnotation, ReceiverAnnotationId, SenderAnnotation, SenderAnnotationId, SenderReceiverAnnotation, SenderReceiverAnnotationId, TriggerPortAnnotation, TriggerPortAnnotationId};
+use crate::m2::autosar_templates::sw_component_template::communication::{ClientComSpec, ClientComSpecId, CompositeNetworkRepresentation, CompositeNetworkRepresentationId, ModeSwitchReceiverComSpec, ModeSwitchReceiverComSpecId, ModeSwitchSenderComSpec, ModeSwitchSenderComSpecId, ModeSwitchedAckRequest, ModeSwitchedAckRequestId, NonqueuedReceiverComSpec, NonqueuedReceiverComSpecId, NonqueuedSenderComSpec, NonqueuedSenderComSpecId, NvProvideComSpec, NvProvideComSpecId, NvRequireComSpec, NvRequireComSpecId, ParameterProvideComSpec, ParameterProvideComSpecId, ParameterRequireComSpec, ParameterRequireComSpecId, QueuedReceiverComSpec, QueuedReceiverComSpecId, QueuedSenderComSpec, QueuedSenderComSpecId, ReceptionComSpecProps, ReceptionComSpecPropsId, ServerComSpec, ServerComSpecId, TransmissionAcknowledgementRequest, TransmissionAcknowledgementRequestId, TransmissionComSpecProps, TransmissionComSpecPropsId, UserDefinedTransformationComSpecProps, UserDefinedTransformationComSpecPropsId};
+use crate::m2::autosar_templates::sw_component_template::components::{ApplicationSwComponentType, ApplicationSwComponentTypeId, ComplexDeviceDriverSwComponentType, ComplexDeviceDriverSwComponentTypeId, EcuAbstractionSwComponentType, EcuAbstractionSwComponentTypeId, NvBlockSwComponentType, NvBlockSwComponentTypeId, PPortPrototype, PPortPrototypeId, PRPortPrototype, PRPortPrototypeId, ParameterSwComponentType, ParameterSwComponentTypeId, PortGroup, PortGroupId, RPortPrototype, RPortPrototypeId, SensorActuatorSwComponentType, SensorActuatorSwComponentTypeId, ServiceProxySwComponentType, ServiceProxySwComponentTypeId, ServiceSwComponentType, ServiceSwComponentTypeId, SymbolProps, SymbolPropsId};
+use crate::m2::autosar_templates::sw_component_template::components::instance_refs::{InnerPortGroupInCompositionInstanceRef, InnerPortGroupInCompositionInstanceRefId, PModeGroupInAtomicSwcInstanceRef, PModeGroupInAtomicSwcInstanceRefId, POperationInAtomicSwcInstanceRef, POperationInAtomicSwcInstanceRefId, PTriggerInAtomicSwcTypeInstanceRef, PTriggerInAtomicSwcTypeInstanceRefId, RModeGroupInAtomicSWCInstanceRef, RModeGroupInAtomicSWCInstanceRefId, RModeInAtomicSwcInstanceRef, RModeInAtomicSwcInstanceRefId, ROperationInAtomicSwcInstanceRef, ROperationInAtomicSwcInstanceRefId, RVariableInAtomicSwcInstanceRef, RVariableInAtomicSwcInstanceRefId};
+use crate::m2::autosar_templates::sw_component_template::composition::{AssemblySwConnector, AssemblySwConnectorId, CompositionSwComponentType, CompositionSwComponentTypeId, DelegationSwConnector, DelegationSwConnectorId, InstantiationTimingEventProps, InstantiationTimingEventPropsId, PassThroughSwConnector, PassThroughSwConnectorId, SwComponentPrototype, SwComponentPrototypeId};
+use crate::m2::autosar_templates::sw_component_template::composition::instance_refs::{ComponentInCompositionInstanceRef, ComponentInCompositionInstanceRefId, InstanceEventInCompositionInstanceRef, InstanceEventInCompositionInstanceRefId, PPortInCompositionInstanceRef, PPortInCompositionInstanceRefId, RPortInCompositionInstanceRef, RPortInCompositionInstanceRefId};
+use crate::m2::autosar_templates::sw_component_template::datatype::data_prototypes::{ApplicationArrayElement, ApplicationArrayElementId, ApplicationRecordElement, ApplicationRecordElementId, ParameterDataPrototype, ParameterDataPrototypeId, VariableDataPrototype, VariableDataPrototypeId};
+use crate::m2::autosar_templates::sw_component_template::datatype::datatypes::{ApplicationArrayDataType, ApplicationArrayDataTypeId, ApplicationPrimitiveDataType, ApplicationPrimitiveDataTypeId, ApplicationRecordDataType, ApplicationRecordDataTypeId, DataTypeMap, DataTypeMapId, DataTypeMappingSet, DataTypeMappingSetId};
+use crate::m2::autosar_templates::sw_component_template::end_to_end_protection::{EndToEndDescription, EndToEndDescriptionId, EndToEndProtection, EndToEndProtectionId, EndToEndProtectionSet, EndToEndProtectionSetId, EndToEndProtectionVariablePrototype, EndToEndProtectionVariablePrototypeId};
+use crate::m2::autosar_templates::sw_component_template::implicit_communication_behavior::{ConsistencyNeeds, ConsistencyNeedsId, DataPrototypeGroup, DataPrototypeGroupId, RunnableEntityGroup, RunnableEntityGroupId};
+use crate::m2::autosar_templates::sw_component_template::implicit_communication_behavior::instance_ref::{InnerDataPrototypeGroupInCompositionInstanceRef, InnerDataPrototypeGroupInCompositionInstanceRefId, InnerRunnableEntityGroupInCompositionInstanceRef, InnerRunnableEntityGroupInCompositionInstanceRefId, RunnableEntityInCompositionInstanceRef, RunnableEntityInCompositionInstanceRefId, VariableDataPrototypeInCompositionInstanceRef, VariableDataPrototypeInCompositionInstanceRefId};
+use crate::m2::autosar_templates::sw_component_template::measurement_and_calibration::interpolation_routine_mapping_set::{InterpolationRoutine, InterpolationRoutineId, InterpolationRoutineMapping, InterpolationRoutineMappingId, InterpolationRoutineMappingSet, InterpolationRoutineMappingSetId};
+use crate::m2::autosar_templates::sw_component_template::nv_block_component::{BulkNvDataDescriptor, BulkNvDataDescriptorId, ModeSwitchEventTriggeredActivity, ModeSwitchEventTriggeredActivityId, NvBlockDataMapping, NvBlockDataMappingId, NvBlockDescriptor, NvBlockDescriptorId};
+use crate::m2::autosar_templates::sw_component_template::port_interface::{ApplicationCompositeDataTypeSubElementRef, ApplicationCompositeDataTypeSubElementRefId, ApplicationError, ApplicationErrorId, ArgumentDataPrototype, ArgumentDataPrototypeId, ClientServerApplicationErrorMapping, ClientServerApplicationErrorMappingId, ClientServerInterface, ClientServerInterfaceId, ClientServerInterfaceMapping, ClientServerInterfaceMappingId, ClientServerOperation, ClientServerOperationId, ClientServerOperationMapping, ClientServerOperationMappingId, DataPrototypeMapping, DataPrototypeMappingId, ImplementationDataTypeSubElementRef, ImplementationDataTypeSubElementRefId, InvalidationPolicy, InvalidationPolicyId, MetaDataItem, MetaDataItemId, MetaDataItemSet, MetaDataItemSetId, ModeDeclarationMapping, ModeDeclarationMappingId, ModeDeclarationMappingSet, ModeDeclarationMappingSetId, ModeInterfaceMapping, ModeInterfaceMappingId, ModeSwitchInterface, ModeSwitchInterfaceId, NvDataInterface, NvDataInterfaceId, ParameterInterface, ParameterInterfaceId, PortInterfaceMappingSet, PortInterfaceMappingSetId, SenderReceiverInterface, SenderReceiverInterfaceId, SubElementMapping, SubElementMappingId, TextTableMapping, TextTableMappingId, TextTableValuePair, TextTableValuePairId, TriggerInterface, TriggerInterfaceId, TriggerInterfaceMapping, TriggerInterfaceMappingId, VariableAndParameterInterfaceMapping, VariableAndParameterInterfaceMappingId};
+use crate::m2::autosar_templates::sw_component_template::port_interface::instance_refs::{ApplicationCompositeElementInPortInterfaceInstanceRef, ApplicationCompositeElementInPortInterfaceInstanceRefId};
+use crate::m2::autosar_templates::sw_component_template::rpt_scenario::{ExternalTriggeringPointIdent, ExternalTriggeringPointIdentId, ModeAccessPointIdent, ModeAccessPointIdentId, RapidPrototypingScenario, RapidPrototypingScenarioId, RptExecutableEntityProperties, RptExecutableEntityPropertiesId, RptHook, RptHookId, RptImplPolicy, RptImplPolicyId, RptProfile, RptProfileId};
+use crate::m2::autosar_templates::sw_component_template::software_component_documentation::{SwComponentDocumentation, SwComponentDocumentationId};
+use crate::m2::autosar_templates::sw_component_template::swc_implementation::{PerInstanceMemorySize, PerInstanceMemorySizeId, SwcImplementation, SwcImplementationId};
+use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::{RunnableEntity, RunnableEntityId, SwcExclusiveAreaPolicy, SwcExclusiveAreaPolicyId, SwcInternalBehavior, SwcInternalBehaviorId};
+use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::access_count::{AccessCount, AccessCountId, AccessCountSet, AccessCountSetId};
+use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::data_elements::{ArParameterInImplementationDataInstanceRef, ArParameterInImplementationDataInstanceRefId, ArVariableInImplementationDataInstanceRef, ArVariableInImplementationDataInstanceRefId, AutosarParameterRef, AutosarParameterRefId, AutosarVariableRef, AutosarVariableRefId, ParameterAccess, ParameterAccessId, VariableAccess, VariableAccessId};
+use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::data_elements::instance_refs_usage::{ParameterInAtomicSWCTypeInstanceRef, ParameterInAtomicSWCTypeInstanceRefId, VariableInAtomicSWCTypeInstanceRef, VariableInAtomicSWCTypeInstanceRefId};
+use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::included_data_types::{IncludedDataTypeSet, IncludedDataTypeSetId};
+use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::instantiation_data_def_props::{InstantiationDataDefProps, InstantiationDataDefPropsId};
+use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::mode_declaration_group::{IncludedModeDeclarationGroupSet, IncludedModeDeclarationGroupSetId, ModeAccessPoint, ModeAccessPointId, ModeSwitchPoint, ModeSwitchPointId};
+use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::per_instance_memory::{PerInstanceMemory, PerInstanceMemoryId};
+use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::port_api_options::{CommunicationBufferLocking, CommunicationBufferLockingId, PortAPIOption, PortAPIOptionId, PortDefinedArgumentValue, PortDefinedArgumentValueId};
+use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::rte_events::{AsynchronousServerCallReturnsEvent, AsynchronousServerCallReturnsEventId, BackgroundEvent, BackgroundEventId, DataReceiveErrorEvent, DataReceiveErrorEventId, DataReceivedEvent, DataReceivedEventId, DataSendCompletedEvent, DataSendCompletedEventId, DataWriteCompletedEvent, DataWriteCompletedEventId, ExternalTriggerOccurredEvent, ExternalTriggerOccurredEventId, InitEvent, InitEventId, InternalTriggerOccurredEvent, InternalTriggerOccurredEventId, ModeSwitchedAckEvent, ModeSwitchedAckEventId, OperationInvokedEvent, OperationInvokedEventId, OsTaskExecutionEvent, OsTaskExecutionEventId, SwcModeManagerErrorEvent, SwcModeManagerErrorEventId, SwcModeSwitchEvent, SwcModeSwitchEventId, TimingEvent, TimingEventId, TransformerHardErrorEvent, TransformerHardErrorEventId, WaitPoint, WaitPointId};
+use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::runnable_entity::{RunnableEntityArgument, RunnableEntityArgumentId};
+use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::server_call::{AsynchronousServerCallPoint, AsynchronousServerCallPointId, AsynchronousServerCallResultPoint, AsynchronousServerCallResultPointId, SynchronousServerCallPoint, SynchronousServerCallPointId};
+use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::service_mapping::{RoleBasedDataTypeAssignment, RoleBasedDataTypeAssignmentId, RoleBasedPortAssignment, RoleBasedPortAssignmentId, SwcServiceDependency, SwcServiceDependencyId};
+use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::trigger::{ExternalTriggeringPoint, ExternalTriggeringPointId, InternalTriggeringPoint, InternalTriggeringPointId};
+use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::variant_handling::{VariationPointProxy, VariationPointProxyId};
+use crate::m2::autosar_templates::system_template::{ClientIdDefinition, ClientIdDefinitionId, ClientIdDefinitionSet, ClientIdDefinitionSetId, ComManagementMapping, ComManagementMappingId, J1939SharedAddressCluster, J1939SharedAddressClusterId, PortElementToCommunicationResourceMapping, PortElementToCommunicationResourceMappingId, RootSwCompositionPrototype, RootSwCompositionPrototypeId, System, SystemId, SystemMapping, SystemMappingId};
+use crate::m2::autosar_templates::system_template::bus_mirror::{BusMirrorCanIdRangeMapping, BusMirrorCanIdRangeMappingId, BusMirrorCanIdToCanIdMapping, BusMirrorCanIdToCanIdMappingId, BusMirrorChannel, BusMirrorChannelId, BusMirrorChannelMappingCan, BusMirrorChannelMappingCanId, BusMirrorChannelMappingFlexray, BusMirrorChannelMappingFlexrayId, BusMirrorChannelMappingIp, BusMirrorChannelMappingIpId, BusMirrorChannelMappingUserDefined, BusMirrorChannelMappingUserDefinedId, BusMirrorLinPidToCanIdMapping, BusMirrorLinPidToCanIdMappingId};
+use crate::m2::autosar_templates::system_template::data_mapping::{ClientServerToSignalMapping, ClientServerToSignalMappingId, IndexedArrayElement, IndexedArrayElementId, SenderRecArrayElementMapping, SenderRecArrayElementMappingId, SenderRecArrayTypeMapping, SenderRecArrayTypeMappingId, SenderRecRecordElementMapping, SenderRecRecordElementMappingId, SenderRecRecordTypeMapping, SenderRecRecordTypeMappingId, SenderReceiverCompositeElementToSignalMapping, SenderReceiverCompositeElementToSignalMappingId, SenderReceiverToSignalGroupMapping, SenderReceiverToSignalGroupMappingId, SenderReceiverToSignalMapping, SenderReceiverToSignalMappingId, TriggerToSignalMapping, TriggerToSignalMappingId};
+use crate::m2::autosar_templates::system_template::diagnostic_connection::{DiagnosticConnection, DiagnosticConnectionId, DoIpTpConnection, DoIpTpConnectionId, TpConnectionIdent, TpConnectionIdentId};
+use crate::m2::autosar_templates::system_template::dlt::{DltConfig, DltConfigId, DltLogChannel, DltLogChannelId};
+use crate::m2::autosar_templates::system_template::do_ip::{DoIpConfig, DoIpConfigId, DoIpInterface, DoIpInterfaceId, DoIpLogicTargetAddressProps, DoIpLogicTargetAddressPropsId, DoIpLogicTesterAddressProps, DoIpLogicTesterAddressPropsId, DoIpRoutingActivation, DoIpRoutingActivationId};
+use crate::m2::autosar_templates::system_template::ecu_resource_mapping::{CommunicationControllerMapping, CommunicationControllerMappingId, ECUMapping, ECUMappingId, HwPortMapping, HwPortMappingId};
+use crate::m2::autosar_templates::system_template::end_to_end_protection::{EndToEndProtectionISignalIPdu, EndToEndProtectionISignalIPduId};
+use crate::m2::autosar_templates::system_template::fibex::cdd_support::{UserDefinedCommunicationConnector, UserDefinedCommunicationConnectorId, UserDefinedPhysicalChannel, UserDefinedPhysicalChannelId};
+use crate::m2::autosar_templates::system_template::fibex::fibex4_can::can_communication::{CanFrame, CanFrameId, CanFrameTriggering, CanFrameTriggeringId, CanXlFrameTriggeringProps, CanXlFrameTriggeringPropsId, RxIdentifierRange, RxIdentifierRangeId};
+use crate::m2::autosar_templates::system_template::fibex::fibex4_can::can_topology::{CanClusterBusOffRecovery, CanClusterBusOffRecoveryId, CanCommunicationConnector, CanCommunicationConnectorId, CanCommunicationController, CanCommunicationControllerId, CanControllerConfiguration, CanControllerConfigurationId, CanControllerConfigurationRequirements, CanControllerConfigurationRequirementsId, CanControllerFdConfiguration, CanControllerFdConfigurationId, CanControllerFdConfigurationRequirements, CanControllerFdConfigurationRequirementsId, CanControllerXlConfiguration, CanControllerXlConfigurationId, CanControllerXlConfigurationRequirements, CanControllerXlConfigurationRequirementsId, CanPhysicalChannel, CanPhysicalChannelId, CanXlProps, CanXlPropsId, J1939Cluster, J1939ClusterId};
+use crate::m2::autosar_templates::system_template::fibex::fibex4_ethernet::dds::{DdsCpConfig, DdsCpConfigId, DdsCpConsumedServiceInstance, DdsCpConsumedServiceInstanceId, DdsCpDomain, DdsCpDomainId, DdsCpISignalToDdsTopicMapping, DdsCpISignalToDdsTopicMappingId, DdsCpPartition, DdsCpPartitionId, DdsCpProvidedServiceInstance, DdsCpProvidedServiceInstanceId, DdsCpQosProfile, DdsCpQosProfileId, DdsCpServiceInstanceEvent, DdsCpServiceInstanceEventId, DdsCpServiceInstanceOperation, DdsCpServiceInstanceOperationId, DdsCpTopic, DdsCpTopicId, DdsDeadline, DdsDeadlineId, DdsDestinationOrder, DdsDestinationOrderId, DdsDurability, DdsDurabilityId, DdsDurabilityService, DdsDurabilityServiceId, DdsHistory, DdsHistoryId, DdsLatencyBudget, DdsLatencyBudgetId, DdsLifespan, DdsLifespanId, DdsLiveliness, DdsLivelinessId, DdsOwnership, DdsOwnershipId, DdsOwnershipStrength, DdsOwnershipStrengthId, DdsReliability, DdsReliabilityId, DdsResourceLimits, DdsResourceLimitsId, DdsTopicData, DdsTopicDataId, DdsTransportPriority, DdsTransportPriorityId};
+use crate::m2::autosar_templates::system_template::fibex::fibex4_ethernet::ethernet_communication::{SocketConnectionBundle, SocketConnectionBundleId, SocketConnectionIpduIdentifier, SocketConnectionIpduIdentifierId};
+use crate::m2::autosar_templates::system_template::fibex::fibex4_ethernet::ethernet_frame::{EthernetFrameTriggering, EthernetFrameTriggeringId, GenericEthernetFrame, GenericEthernetFrameId, Ieee1722TpEthernetFrame, Ieee1722TpEthernetFrameId, UserDefinedEthernetFrame, UserDefinedEthernetFrameId};
+use crate::m2::autosar_templates::system_template::fibex::fibex4_ethernet::ethernet_topology::{ApplicationEndpoint, ApplicationEndpointId, CouplingElement, CouplingElementId, CouplingElementSwitchDetails, CouplingElementSwitchDetailsId, CouplingPort, CouplingPortConnection, CouplingPortConnectionId, CouplingPortDetails, CouplingPortDetailsId, CouplingPortFifo, CouplingPortFifoId, CouplingPortId, CouplingPortRatePolicy, CouplingPortRatePolicyId, CouplingPortScheduler, CouplingPortSchedulerId, CouplingPortShaper, CouplingPortShaperId, CouplingPortTrafficClassAssignment, CouplingPortTrafficClassAssignmentId, DhcpServerConfiguration, DhcpServerConfigurationId, Dhcpv6Props, Dhcpv6PropsId, DoIpEntity, DoIpEntityId, EthIpProps, EthIpPropsId, EthTcpIpIcmpProps, EthTcpIpIcmpPropsId, EthTcpIpProps, EthTcpIpPropsId, EthernetCluster, EthernetClusterId, EthernetCommunicationConnector, EthernetCommunicationConnectorId, EthernetCommunicationController, EthernetCommunicationControllerId, EthernetPhysicalChannel, EthernetPhysicalChannelId, EthernetPriorityRegeneration, EthernetPriorityRegenerationId, EthernetWakeupSleepOnDatalineConfig, EthernetWakeupSleepOnDatalineConfigId, EthernetWakeupSleepOnDatalineConfigSet, EthernetWakeupSleepOnDatalineConfigSetId, GenericTp, GenericTpId, GlobalTimeCouplingPortProps, GlobalTimeCouplingPortPropsId, HttpTp, HttpTpId, Ieee1722Tp, Ieee1722TpId, InfrastructureServices, InfrastructureServicesId, Ipv4ArpProps, Ipv4ArpPropsId, Ipv4AutoIpProps, Ipv4AutoIpPropsId, Ipv4Configuration, Ipv4ConfigurationId, Ipv4DhcpServerConfiguration, Ipv4DhcpServerConfigurationId, Ipv4FragmentationProps, Ipv4FragmentationPropsId, Ipv4Props, Ipv4PropsId, Ipv6Configuration, Ipv6ConfigurationId, Ipv6DhcpServerConfiguration, Ipv6DhcpServerConfigurationId, Ipv6FragmentationProps, Ipv6FragmentationPropsId, Ipv6NdpProps, Ipv6NdpPropsId, Ipv6Props, Ipv6PropsId, MacMulticastConfiguration, MacMulticastConfigurationId, MacMulticastGroup, MacMulticastGroupId, NetworkEndpoint, NetworkEndpointId, OrderedMaster, OrderedMasterId, PlcaProps, PlcaPropsId, RtpTp, RtpTpId, SdClientConfig, SdClientConfigId, StreamFilterIEEE1722Tp, StreamFilterIEEE1722TpId, StreamFilterIpv4Address, StreamFilterIpv4AddressId, StreamFilterIpv6Address, StreamFilterIpv6AddressId, StreamFilterMACAddress, StreamFilterMACAddressId, StreamFilterPortRange, StreamFilterPortRangeId, StreamFilterRuleDataLinkLayer, StreamFilterRuleDataLinkLayerId, StreamFilterRuleIpTp, StreamFilterRuleIpTpId, SwitchAsynchronousTrafficShaperGroupEntry, SwitchAsynchronousTrafficShaperGroupEntryId, SwitchFlowMeteringEntry, SwitchFlowMeteringEntryId, SwitchStreamFilterActionDestPortModification, SwitchStreamFilterActionDestPortModificationId, SwitchStreamFilterEntry, SwitchStreamFilterEntryId, SwitchStreamFilterRule, SwitchStreamFilterRuleId, SwitchStreamGateEntry, SwitchStreamGateEntryId, SwitchStreamIdentification, SwitchStreamIdentificationId, TcpIpIcmpv4Props, TcpIpIcmpv4PropsId, TcpIpIcmpv6Props, TcpIpIcmpv6PropsId, TcpProps, TcpPropsId, TcpTp, TcpTpId, TimeSyncClientConfiguration, TimeSyncClientConfigurationId, TimeSyncServerConfiguration, TimeSyncServerConfigurationId, TimeSynchronization, TimeSynchronizationId, TpPort, TpPortId, UdpProps, UdpPropsId, UdpTp, UdpTpId, VlanConfig, VlanConfigId, VlanMembership, VlanMembershipId};
+use crate::m2::autosar_templates::system_template::fibex::fibex4_ethernet::i_pv6_header_filter_list::{IPv6ExtHeaderFilterList, IPv6ExtHeaderFilterListId, IPv6ExtHeaderFilterSet, IPv6ExtHeaderFilterSetId};
+use crate::m2::autosar_templates::system_template::fibex::fibex4_ethernet::obsolete_model::{SoAdRoutingGroup, SoAdRoutingGroupId, SocketConnection, SocketConnectionId};
+use crate::m2::autosar_templates::system_template::fibex::fibex4_ethernet::service_instances::{ConsumedEventGroup, ConsumedEventGroupId, ConsumedProvidedServiceInstanceGroup, ConsumedProvidedServiceInstanceGroupId, ConsumedServiceInstance, ConsumedServiceInstanceId, EventHandler, EventHandlerId, InitialSdDelayConfig, InitialSdDelayConfigId, PduActivationRoutingGroup, PduActivationRoutingGroupId, ProvidedServiceInstance, ProvidedServiceInstanceId, RequestResponseDelay, RequestResponseDelayId, SdServerConfig, SdServerConfigId, ServiceInstanceCollectionSet, ServiceInstanceCollectionSetId, SoAdConfig, SoAdConfigId, SoConIPduIdentifier, SoConIPduIdentifierId, SocketAddress, SocketAddressId, SocketConnectionIpduIdentifierSet, SocketConnectionIpduIdentifierSetId, SomeipSdClientEventGroupTimingConfig, SomeipSdClientEventGroupTimingConfigId, SomeipSdClientServiceInstanceConfig, SomeipSdClientServiceInstanceConfigId, SomeipSdServerEventGroupTimingConfig, SomeipSdServerEventGroupTimingConfigId, SomeipSdServerServiceInstanceConfig, SomeipSdServerServiceInstanceConfigId, SomeipServiceVersion, SomeipServiceVersionId, StaticSocketConnection, StaticSocketConnectionId};
+use crate::m2::autosar_templates::system_template::fibex::fibex4_ethernet::tcp_option_filter_set::{TcpOptionFilterList, TcpOptionFilterListId, TcpOptionFilterSet, TcpOptionFilterSetId};
+use crate::m2::autosar_templates::system_template::fibex::fibex4_flexray::flexray_communication::{FlexrayAbsolutelyScheduledTiming, FlexrayAbsolutelyScheduledTimingId, FlexrayFrame, FlexrayFrameId, FlexrayFrameTriggering, FlexrayFrameTriggeringId};
+use crate::m2::autosar_templates::system_template::fibex::fibex4_flexray::flexray_topology::{FlexrayCluster, FlexrayClusterId, FlexrayCommunicationConnector, FlexrayCommunicationConnectorId, FlexrayCommunicationController, FlexrayCommunicationControllerId, FlexrayFifoConfiguration, FlexrayFifoConfigurationId, FlexrayFifoRange, FlexrayFifoRangeId, FlexrayPhysicalChannel, FlexrayPhysicalChannelId};
+use crate::m2::autosar_templates::system_template::fibex::fibex4_lin::lin_communication::{ApplicationEntry, ApplicationEntryId, AssignFrameId, AssignFrameIdId, AssignFrameIdRange, AssignFrameIdRangeId, AssignNad, AssignNadId, ConditionalChangeNad, ConditionalChangeNadId, DataDumpEntry, DataDumpEntryId, FramePid, FramePidId, FreeFormat, FreeFormatId, LinErrorResponse, LinErrorResponseId, LinEventTriggeredFrame, LinEventTriggeredFrameId, LinFrameTriggering, LinFrameTriggeringId, LinScheduleTable, LinScheduleTableId, LinSporadicFrame, LinSporadicFrameId, LinUnconditionalFrame, LinUnconditionalFrameId, SaveConfigurationEntry, SaveConfigurationEntryId, UnassignFrameId, UnassignFrameIdId};
+use crate::m2::autosar_templates::system_template::fibex::fibex4_lin::lin_topology::{LinCluster, LinClusterId, LinCommunicationConnector, LinCommunicationConnectorId, LinConfigurableFrame, LinConfigurableFrameId, LinMaster, LinMasterId, LinOrderedConfigurableFrame, LinOrderedConfigurableFrameId, LinPhysicalChannel, LinPhysicalChannelId, LinSlave, LinSlaveConfig, LinSlaveConfigId, LinSlaveConfigIdent, LinSlaveConfigIdentId, LinSlaveId};
+use crate::m2::autosar_templates::system_template::fibex::fibex4_multiplatform::{DefaultValueElement, DefaultValueElementId, FrameMapping, FrameMappingId, Gateway, GatewayId, IPduMapping, IPduMappingId, ISignalMapping, ISignalMappingId, PduMappingDefaultValue, PduMappingDefaultValueId, TargetIPduRef, TargetIPduRefId};
+use crate::m2::autosar_templates::system_template::fibex::fibex4_ttcan::ttcan_communication::{TtcanAbsolutelyScheduledTiming, TtcanAbsolutelyScheduledTimingId};
+use crate::m2::autosar_templates::system_template::fibex::fibex4_ttcan::ttcan_topology::{TtcanCommunicationConnector, TtcanCommunicationConnectorId, TtcanPhysicalChannel, TtcanPhysicalChannelId};
+use crate::m2::autosar_templates::system_template::fibex::fibex_core::core_communication::{ContainedIPduProps, ContainedIPduPropsId, ContainerIPdu, ContainerIPduId, DcmIPdu, DcmIPduId, DynamicPart, DynamicPartAlternative, DynamicPartAlternativeId, DynamicPartId, FramePort, FramePortId, GeneralPurposeIPdu, GeneralPurposeIPduId, GeneralPurposePdu, GeneralPurposePduId, IPduPort, IPduPortId, IPduTiming, IPduTimingId, ISignal, ISignalGroup, ISignalGroupId, ISignalIPdu, ISignalIPduGroup, ISignalIPduGroupId, ISignalIPduId, ISignalId, ISignalPort, ISignalPortId, ISignalProps, ISignalPropsId, ISignalToIPduMapping, ISignalToIPduMappingId, ISignalTriggering, ISignalTriggeringId, J1939DcmIPdu, J1939DcmIPduId, MultiplexedIPdu, MultiplexedIPduId, NPdu, NPduId, NmPdu, NmPduId, PduToFrameMapping, PduToFrameMappingId, PduTriggering, PduTriggeringId, PdurIPduGroup, PdurIPduGroupId, SecureCommunicationAuthenticationProps, SecureCommunicationAuthenticationPropsId, SecureCommunicationFreshnessProps, SecureCommunicationFreshnessPropsId, SecureCommunicationProps, SecureCommunicationPropsId, SecureCommunicationPropsSet, SecureCommunicationPropsSetId, SecuredIPdu, SecuredIPduId, SegmentPosition, SegmentPositionId, StaticPart, StaticPartId, SystemSignal, SystemSignalGroup, SystemSignalGroupId, SystemSignalId, UserDefinedIPdu, UserDefinedIPduId, UserDefinedPdu, UserDefinedPduId};
+use crate::m2::autosar_templates::system_template::fibex::fibex_core::core_communication::timing::{AbsoluteTolerance, AbsoluteToleranceId, CyclicTiming, CyclicTimingId, EventControlledTiming, EventControlledTimingId, ModeDrivenTransmissionModeCondition, ModeDrivenTransmissionModeConditionId, RelativeTolerance, RelativeToleranceId, TimeRangeType, TimeRangeTypeId, TimeRangeTypeTolerance, TimeRangeTypeToleranceId, TransmissionModeCondition, TransmissionModeConditionId, TransmissionModeDeclaration, TransmissionModeDeclarationId, TransmissionModeTiming, TransmissionModeTimingId, TriggerIPduSendCondition, TriggerIPduSendConditionId};
+use crate::m2::autosar_templates::system_template::fibex::fibex_core::core_topology::{CanCluster, CanClusterId, ClientIdRange, ClientIdRangeId, CycleCounter, CycleCounterId, CycleRepetition, CycleRepetitionId, EcuInstance, EcuInstanceId, TtcanCluster, TtcanClusterId, UserDefinedCluster, UserDefinedClusterId, UserDefinedCommunicationController, UserDefinedCommunicationControllerId};
+use crate::m2::autosar_templates::system_template::general_purpose_connection::{GeneralPurposeConnection, GeneralPurposeConnectionId};
+use crate::m2::autosar_templates::system_template::global_time::{GlobalTimeCorrectionProps, GlobalTimeCorrectionPropsId, GlobalTimeDomain, GlobalTimeDomainId, GlobalTimeGateway, GlobalTimeGatewayId, NetworkSegmentIdentification, NetworkSegmentIdentificationId};
+use crate::m2::autosar_templates::system_template::global_time::can::{CanGlobalTimeDomainProps, CanGlobalTimeDomainPropsId, GlobalTimeCanMaster, GlobalTimeCanMasterId, GlobalTimeCanSlave, GlobalTimeCanSlaveId};
+use crate::m2::autosar_templates::system_template::global_time::eth::{EthGlobalTimeDomainProps, EthGlobalTimeDomainPropsId, EthGlobalTimeManagedCouplingPort, EthGlobalTimeManagedCouplingPortId, EthTSynCrcFlags, EthTSynCrcFlagsId, EthTSynSubTlvConfig, EthTSynSubTlvConfigId, GlobalTimeEthMaster, GlobalTimeEthMasterId, GlobalTimeEthSlave, GlobalTimeEthSlaveId};
+use crate::m2::autosar_templates::system_template::global_time::fr::{FrGlobalTimeDomainProps, FrGlobalTimeDomainPropsId, GlobalTimeFrMaster, GlobalTimeFrMasterId, GlobalTimeFrSlave, GlobalTimeFrSlaveId};
+use crate::m2::autosar_templates::system_template::global_time::user_defined::{UserDefinedGlobalTimeMaster, UserDefinedGlobalTimeMasterId, UserDefinedGlobalTimeSlave, UserDefinedGlobalTimeSlaveId};
+use crate::m2::autosar_templates::system_template::instance_refs::{ComponentInSystemInstanceRef, ComponentInSystemInstanceRefId, OperationInSystemInstanceRef, OperationInSystemInstanceRefId, PortGroupInSystemInstanceRef, PortGroupInSystemInstanceRefId, VariableDataPrototypeInSystemInstanceRef, VariableDataPrototypeInSystemInstanceRefId};
+use crate::m2::autosar_templates::system_template::network_management::{CanNmCluster, CanNmClusterCoupling, CanNmClusterCouplingId, CanNmClusterId, CanNmEcu, CanNmEcuId, CanNmNode, CanNmNodeId, FlexrayNmCluster, FlexrayNmClusterCoupling, FlexrayNmClusterCouplingId, FlexrayNmClusterId, FlexrayNmEcu, FlexrayNmEcuId, FlexrayNmNode, FlexrayNmNodeId, J1939NmCluster, J1939NmClusterId, J1939NmEcu, J1939NmEcuId, J1939NmNode, J1939NmNodeId, J1939NodeName, J1939NodeNameId, NmConfig, NmConfigId, NmCoordinator, NmCoordinatorId, NmEcu, NmEcuId, UdpNmCluster, UdpNmClusterCoupling, UdpNmClusterCouplingId, UdpNmClusterId, UdpNmEcu, UdpNmEcuId, UdpNmNode, UdpNmNodeId};
+use crate::m2::autosar_templates::system_template::pnc_mapping::{PncMapping, PncMappingId};
+use crate::m2::autosar_templates::system_template::rte_event_to_os_task_mapping::{AppOsTaskProxyToEcuTaskProxyMapping, AppOsTaskProxyToEcuTaskProxyMappingId, OsTaskProxy, OsTaskProxyId, RteEventInCompositionSeparation, RteEventInCompositionSeparationId, RteEventInCompositionToOsTaskProxyMapping, RteEventInCompositionToOsTaskProxyMappingId, RteEventInSystemSeparation, RteEventInSystemSeparationId, RteEventInSystemToOsTaskProxyMapping, RteEventInSystemToOsTaskProxyMappingId};
+use crate::m2::autosar_templates::system_template::s_wmapping::{ApplicationPartition, ApplicationPartitionId, ApplicationPartitionToEcuPartitionMapping, ApplicationPartitionToEcuPartitionMappingId, ComponentClustering, ComponentClusteringId, ComponentSeparation, ComponentSeparationId, EcuPartition, EcuPartitionId, EcuResourceEstimation, EcuResourceEstimationId, J1939ControllerApplication, J1939ControllerApplicationId, J1939ControllerApplicationToJ1939NmNodeMapping, J1939ControllerApplicationToJ1939NmNodeMappingId, SwcToApplicationPartitionMapping, SwcToApplicationPartitionMappingId, SwcToEcuMapping, SwcToEcuMappingId, SwcToImplMapping, SwcToImplMappingId};
+use crate::m2::autosar_templates::system_template::secure_communication::{CryptoEllipticCurveProps, CryptoEllipticCurvePropsId, CryptoServiceCertificate, CryptoServiceCertificateId, CryptoServiceKey, CryptoServiceKeyId, CryptoServicePrimitive, CryptoServicePrimitiveId, CryptoServiceQueue, CryptoServiceQueueId, CryptoSignatureScheme, CryptoSignatureSchemeId, IPSecConfig, IPSecConfigId, IPSecConfigProps, IPSecConfigPropsId, IPSecRule, IPSecRuleId, MacSecCipherSuiteConfig, MacSecCipherSuiteConfigId, MacSecCryptoAlgoConfig, MacSecCryptoAlgoConfigId, MacSecGlobalKayProps, MacSecGlobalKayPropsId, MacSecKayParticipant, MacSecKayParticipantId, MacSecLocalKayProps, MacSecLocalKayPropsId, MacSecParticipantSet, MacSecParticipantSetId, MacSecProps, MacSecPropsId, SecOcCryptoServiceMapping, SecOcCryptoServiceMappingId, TlsCryptoCipherSuite, TlsCryptoCipherSuiteId, TlsCryptoCipherSuiteProps, TlsCryptoCipherSuitePropsId, TlsCryptoServiceMapping, TlsCryptoServiceMappingId, TlsPskIdentity, TlsPskIdentityId};
+use crate::m2::autosar_templates::system_template::signal_paths::{CommonSignalPath, CommonSignalPathId, ForbiddenSignalPath, ForbiddenSignalPathId, PermissibleSignalPath, PermissibleSignalPathId, SeparateSignalPath, SeparateSignalPathId, SwcToSwcOperationArguments, SwcToSwcOperationArgumentsId, SwcToSwcSignal, SwcToSwcSignalId};
+use crate::m2::autosar_templates::system_template::software_cluster::{ClientServerOperationComProps, ClientServerOperationComPropsId, CpSoftwareCluster, CpSoftwareClusterCommunicationResource, CpSoftwareClusterCommunicationResourceId, CpSoftwareClusterId, CpSoftwareClusterMappingSet, CpSoftwareClusterMappingSetId, CpSoftwareClusterResourcePool, CpSoftwareClusterResourcePoolId, CpSoftwareClusterResourceToApplicationPartitionMapping, CpSoftwareClusterResourceToApplicationPartitionMappingId, CpSoftwareClusterServiceResource, CpSoftwareClusterServiceResourceId, CpSoftwareClusterToApplicationPartitionMapping, CpSoftwareClusterToApplicationPartitionMappingId, CpSoftwareClusterToEcuInstanceMapping, CpSoftwareClusterToEcuInstanceMappingId, CpSoftwareClusterToResourceMapping, CpSoftwareClusterToResourceMappingId, DataComProps, DataComPropsId, RoleBasedResourceDependency, RoleBasedResourceDependencyId, SwComponentPrototypeAssignment, SwComponentPrototypeAssignmentId, SystemSignalGroupToCommunicationResourceMapping, SystemSignalGroupToCommunicationResourceMappingId, SystemSignalToCommunicationResourceMapping, SystemSignalToCommunicationResourceMappingId};
+use crate::m2::autosar_templates::system_template::software_cluster::binary_manifest::{BinaryManifestItem, BinaryManifestItemDefinition, BinaryManifestItemDefinitionId, BinaryManifestItemId, BinaryManifestItemNumericalValue, BinaryManifestItemNumericalValueId, BinaryManifestItemPointerValue, BinaryManifestItemPointerValueId, BinaryManifestMetaDataField, BinaryManifestMetaDataFieldId, BinaryManifestProvideResource, BinaryManifestProvideResourceId, BinaryManifestRequireResource, BinaryManifestRequireResourceId, BinaryManifestResourceDefinition, BinaryManifestResourceDefinitionId, CpSoftwareClusterBinaryManifestDescriptor, CpSoftwareClusterBinaryManifestDescriptorId};
+use crate::m2::autosar_templates::system_template::transformer::{BufferProperties, BufferPropertiesId, DataPrototypeInPortInterfaceRef, DataPrototypeInPortInterfaceRefId, DataPrototypeTransformationProps, DataPrototypeTransformationPropsId, DataTransformation, DataTransformationId, DataTransformationSet, DataTransformationSetId, E2EProfileCompatibilityProps, E2EProfileCompatibilityPropsId, EndToEndTransformationComSpecProps, EndToEndTransformationComSpecPropsId, EndToEndTransformationDescription, EndToEndTransformationDescriptionId, EndToEndTransformationISignalProps, EndToEndTransformationISignalPropsId, SOMEIPTransformationDescription, SOMEIPTransformationDescriptionId, SOMEIPTransformationISignalProps, SOMEIPTransformationISignalPropsId, SOMEIPTransformationProps, SOMEIPTransformationPropsId, TlvDataIdDefinition, TlvDataIdDefinitionId, TlvDataIdDefinitionSet, TlvDataIdDefinitionSetId, TransformationPropsSet, TransformationPropsSetId, TransformationTechnology, TransformationTechnologyId, UserDefinedTransformationDescription, UserDefinedTransformationDescriptionId, UserDefinedTransformationISignalProps, UserDefinedTransformationISignalPropsId, UserDefinedTransformationProps, UserDefinedTransformationPropsId};
+use crate::m2::autosar_templates::system_template::transformer::instance_ref::{DataPrototypeInClientServerInterfaceInstanceRef, DataPrototypeInClientServerInterfaceInstanceRefId, DataPrototypeInSenderReceiverInterfaceInstanceRef, DataPrototypeInSenderReceiverInterfaceInstanceRefId, ImplementationDataTypeElementInPortInterfaceRef, ImplementationDataTypeElementInPortInterfaceRefId};
+use crate::m2::autosar_templates::system_template::transport_protocols::{CanTpAddress, CanTpAddressId, CanTpChannel, CanTpChannelId, CanTpConfig, CanTpConfigId, CanTpConnection, CanTpConnectionId, CanTpEcu, CanTpEcuId, CanTpNode, CanTpNodeId, DoIpLogicAddress, DoIpLogicAddressId, DoIpTpConfig, DoIpTpConfigId, EthTpConfig, EthTpConfigId, EthTpConnection, EthTpConnectionId, FlexrayArTpChannel, FlexrayArTpChannelId, FlexrayArTpConfig, FlexrayArTpConfigId, FlexrayArTpConnection, FlexrayArTpConnectionId, FlexrayArTpNode, FlexrayArTpNodeId, FlexrayTpConfig, FlexrayTpConfigId, FlexrayTpConnection, FlexrayTpConnectionControl, FlexrayTpConnectionControlId, FlexrayTpConnectionId, FlexrayTpEcu, FlexrayTpEcuId, FlexrayTpNode, FlexrayTpNodeId, FlexrayTpPduPool, FlexrayTpPduPoolId, J1939TpConfig, J1939TpConfigId, J1939TpConnection, J1939TpConnectionId, J1939TpNode, J1939TpNodeId, J1939TpPg, J1939TpPgId, LinTpConfig, LinTpConfigId, LinTpConnection, LinTpConnectionId, LinTpNode, LinTpNodeId, SomeipTpChannel, SomeipTpChannelId, SomeipTpConfig, SomeipTpConfigId, SomeipTpConnection, SomeipTpConnectionId, TpAddress, TpAddressId};
+use crate::m2::autosar_templates::system_template::transport_protocols::ieee1722_tp::{IEEE1722TpAcfConnection, IEEE1722TpAcfConnectionId, IEEE1722TpConfig, IEEE1722TpConfigId};
+use crate::m2::autosar_templates::system_template::transport_protocols::ieee1722_tp::ieee1722_tp_acf::{IEEE1722TpAcfCan, IEEE1722TpAcfCanId, IEEE1722TpAcfCanPart, IEEE1722TpAcfCanPartId, IEEE1722TpAcfLin, IEEE1722TpAcfLinId, IEEE1722TpAcfLinPart, IEEE1722TpAcfLinPartId};
+use crate::m2::autosar_templates::system_template::transport_protocols::ieee1722_tp::ieee1722_tp_av::{IEEE1722TpAafConnection, IEEE1722TpAafConnectionId, IEEE1722TpCrfConnection, IEEE1722TpCrfConnectionId, IEEE1722TpIidcConnection, IEEE1722TpIidcConnectionId, IEEE1722TpRvfConnection, IEEE1722TpRvfConnectionId};
+use crate::m2::msr::asam_hdo::admin_data::{AdminData, AdminDataId, DocRevision, DocRevisionId, Modification, ModificationId};
+use crate::m2::msr::asam_hdo::base_types::{BaseTypeDirectDefinition, BaseTypeDirectDefinitionId, SwBaseType, SwBaseTypeId};
+use crate::m2::msr::asam_hdo::computation_method::{Compu, CompuConst, CompuConstFormulaContent, CompuConstFormulaContentId, CompuConstId, CompuConstNumericContent, CompuConstNumericContentId, CompuConstTextContent, CompuConstTextContentId, CompuGenericMath, CompuGenericMathId, CompuId, CompuMethod, CompuMethodId, CompuNominatorDenominator, CompuNominatorDenominatorId, CompuRationalCoeffs, CompuRationalCoeffsId, CompuScale, CompuScaleConstantContents, CompuScaleConstantContentsId, CompuScaleId, CompuScaleRationalFormula, CompuScaleRationalFormulaId, CompuScales, CompuScalesId};
+use crate::m2::msr::asam_hdo::constraints::global_constraints::{DataConstr, DataConstrId, DataConstrRule, DataConstrRuleId, InternalConstrs, InternalConstrsId, PhysConstrs, PhysConstrsId, ScaleConstr, ScaleConstrId};
+use crate::m2::msr::asam_hdo::special_data::{Sd, SdId, Sdf, SdfId, Sdg, SdgCaption, SdgCaptionId, SdgContents, SdgContentsId, SdgId};
+use crate::m2::msr::asam_hdo::units::{PhysicalDimension, PhysicalDimensionId, PhysicalDimensionMapping, PhysicalDimensionMappingId, PhysicalDimensionMappingSet, PhysicalDimensionMappingSetId, SingleLanguageUnitNames, SingleLanguageUnitNamesId, Unit, UnitGroup, UnitGroupId, UnitId};
+use crate::m2::msr::calibration_data::calibration_value::{SwAxisCont, SwAxisContId, SwValueCont, SwValueContId, SwValues, SwValuesId, ValueGroup, ValueGroupId};
+use crate::m2::msr::data_dictionary::auxillary_objects::{SwAddrMethod, SwAddrMethodId};
+use crate::m2::msr::data_dictionary::axis::{SwAxisGeneric, SwAxisGenericId, SwAxisGrouped, SwAxisGroupedId, SwAxisIndividual, SwAxisIndividualId, SwAxisType, SwAxisTypeId, SwGenericAxisParam, SwGenericAxisParamId, SwGenericAxisParamType, SwGenericAxisParamTypeId};
+use crate::m2::msr::data_dictionary::calibration_parameter::{SwCalprmAxis, SwCalprmAxisId, SwCalprmAxisSet, SwCalprmAxisSetId};
+use crate::m2::msr::data_dictionary::data_def_properties::{SwBitRepresentation, SwBitRepresentationId, SwDataDefProps, SwDataDefPropsId, SwDataDependency, SwDataDependencyArgs, SwDataDependencyArgsId, SwDataDependencyId, SwPointerTargetProps, SwPointerTargetPropsId, SwTextProps, SwTextPropsId, ValueList, ValueListId};
+use crate::m2::msr::data_dictionary::datadictionary_proxies::{SwCalprmRefProxy, SwCalprmRefProxyId, SwVariableRefProxy, SwVariableRefProxyId};
+use crate::m2::msr::data_dictionary::record_layout::{SwRecordLayout, SwRecordLayoutGroup, SwRecordLayoutGroupContent, SwRecordLayoutGroupContentId, SwRecordLayoutGroupId, SwRecordLayoutId, SwRecordLayoutV, SwRecordLayoutVId};
+use crate::m2::msr::data_dictionary::service_process_task::{SwServiceArg, SwServiceArgId};
+use crate::m2::msr::data_dictionary::system_constant::{SwSystemconst, SwSystemconstId};
+use crate::m2::msr::documentation::annotation::{Annotation, AnnotationId};
+use crate::m2::msr::documentation::block_elements::{Caption, CaptionId, Url, UrlId};
+use crate::m2::msr::documentation::block_elements::figure::{Area, AreaId, Graphic, GraphicId, LGraphic, LGraphicId, Map, MapId, MlFigure, MlFigureId};
+use crate::m2::msr::documentation::block_elements::formula::{MlFormula, MlFormulaId};
+use crate::m2::msr::documentation::block_elements::gerneral_parameters::{GeneralParameter, GeneralParameterId, PrmChar, PrmCharAbsTol, PrmCharAbsTolId, PrmCharId, PrmCharMinTypMax, PrmCharMinTypMaxId, PrmCharNumericalContents, PrmCharNumericalContentsId, PrmCharTextualContents, PrmCharTextualContentsId, Prms, PrmsId};
+use crate::m2::msr::documentation::block_elements::list_elements::{ARList, ARListId, DefItem, DefItemId, DefList, DefListId, IndentSample, IndentSampleId, Item, ItemId, LabeledItem, LabeledItemId, LabeledList, LabeledListId};
+use crate::m2::msr::documentation::block_elements::note::{Note, NoteId};
+use crate::m2::msr::documentation::block_elements::oasis_exchange_table::{Colspec, ColspecId, Entry, EntryId, Row, RowId, Table, TableId, Tbody, TbodyId, Tgroup, TgroupId};
+use crate::m2::msr::documentation::block_elements::requirements_tracing::{StructuredReq, StructuredReqId, TraceableTable, TraceableTableId, TraceableText, TraceableTextId};
+use crate::m2::msr::documentation::chapters::{Chapter, ChapterContent, ChapterContentId, ChapterId, ChapterModel, ChapterModelId, ChapterOrMsrQuery, ChapterOrMsrQueryId, PredefinedChapter, PredefinedChapterId, Topic1, Topic1Id, TopicContent, TopicContentId, TopicContentOrMsrQuery, TopicContentOrMsrQueryId, TopicOrMsrQuery, TopicOrMsrQueryId};
+use crate::m2::msr::documentation::msr_query::{MsrQueryArg, MsrQueryArgId, MsrQueryChapter, MsrQueryChapterId, MsrQueryP1, MsrQueryP1Id, MsrQueryP2, MsrQueryP2Id, MsrQueryProps, MsrQueryPropsId, MsrQueryResultChapter, MsrQueryResultChapterId, MsrQueryResultTopic1, MsrQueryResultTopic1Id, MsrQueryTopic1, MsrQueryTopic1Id};
+use crate::m2::msr::documentation::text_model::block_elements::{DocumentationBlock, DocumentationBlockId};
+use crate::m2::msr::documentation::text_model::inline_text_elements::{Br, BrId, EmphasisText, EmphasisTextId, IndexEntry, IndexEntryId, Std, StdId, Tt, TtId, Xdoc, XdocId, Xfile, XfileId, Xref, XrefId, XrefTarget, XrefTargetId};
+use crate::m2::msr::documentation::text_model::language_data_model::{LLongName, LLongNameId, LOverviewParagraph, LOverviewParagraphId, LParagraph, LParagraphId, LPlainText, LPlainTextId, LVerbatim, LVerbatimId, SlParagraph, SlParagraphId};
+use crate::m2::msr::documentation::text_model::multilanguage_data::{MultiLanguageOverviewParagraph, MultiLanguageOverviewParagraphId, MultiLanguageParagraph, MultiLanguageParagraphId, MultiLanguagePlainText, MultiLanguagePlainTextId, MultiLanguageVerbatim, MultiLanguageVerbatimId, MultilanguageLongName, MultilanguageLongNameId};
+use crate::m2::msr::documentation::text_model::single_language_data::{SingleLanguageLongName, SingleLanguageLongNameId, SlOverviewParagraph, SlOverviewParagraphId};
 
 /// Root type, in place of py-armodel's `AUTOSAR`.
 ///
@@ -30,26 +255,2176 @@ use crate::m2::msr::documentation::text_model::multilanguage_data::{
 #[derive(Debug, Default)]
 pub struct Document {
     // — arenas (one per concrete class) —
+    pub(crate) ar_lists: SlotMap<ARListId, ARList>,
     pub(crate) ar_packages: SlotMap<ARPackageId, ARPackage>,
-    /// P0 placeholder arena: nothing allocates `ReferenceBase`s until P1.
-    #[allow(dead_code)]
-    pub(crate) reference_bases: SlotMap<ReferenceBaseId, ReferenceBase>,
+    pub(crate) absolute_tolerances: SlotMap<AbsoluteToleranceId, AbsoluteTolerance>,
+    pub(crate) abstract_class_tailorings: SlotMap<AbstractClassTailoringId, AbstractClassTailoring>,
+    pub(crate) access_counts: SlotMap<AccessCountId, AccessCount>,
+    pub(crate) access_count_sets: SlotMap<AccessCountSetId, AccessCountSet>,
+    pub(crate) acl_object_sets: SlotMap<AclObjectSetId, AclObjectSet>,
+    pub(crate) acl_operations: SlotMap<AclOperationId, AclOperation>,
+    pub(crate) acl_permissions: SlotMap<AclPermissionId, AclPermission>,
+    pub(crate) acl_roles: SlotMap<AclRoleId, AclRole>,
     pub(crate) admin_datas: SlotMap<AdminDataId, AdminData>,
-    /// P0 placeholder arena: nothing allocates `DocRevision`s until P1.
-    #[allow(dead_code)]
+    pub(crate) age_constraints: SlotMap<AgeConstraintId, AgeConstraint>,
+    pub(crate) aggregation_conditions: SlotMap<AggregationConditionId, AggregationCondition>,
+    pub(crate) aggregation_tailorings: SlotMap<AggregationTailoringId, AggregationTailoring>,
+    pub(crate) alias_name_assignments: SlotMap<AliasNameAssignmentId, AliasNameAssignment>,
+    pub(crate) alias_name_sets: SlotMap<AliasNameSetId, AliasNameSet>,
+    pub(crate) analyzed_execution_times: SlotMap<AnalyzedExecutionTimeId, AnalyzedExecutionTime>,
+    pub(crate) annotations: SlotMap<AnnotationId, Annotation>,
+    pub(crate) any_instance_refs: SlotMap<AnyInstanceRefId, AnyInstanceRef>,
+    pub(crate) app_os_task_proxy_to_ecu_task_proxy_mappings:
+        SlotMap<AppOsTaskProxyToEcuTaskProxyMappingId, AppOsTaskProxyToEcuTaskProxyMapping>,
+    pub(crate) application_array_data_types:
+        SlotMap<ApplicationArrayDataTypeId, ApplicationArrayDataType>,
+    pub(crate) application_array_elements:
+        SlotMap<ApplicationArrayElementId, ApplicationArrayElement>,
+    pub(crate) application_composite_data_type_sub_element_refs: SlotMap<
+        ApplicationCompositeDataTypeSubElementRefId,
+        ApplicationCompositeDataTypeSubElementRef,
+    >,
+    pub(crate) application_composite_element_in_port_interface_instance_refs: SlotMap<
+        ApplicationCompositeElementInPortInterfaceInstanceRefId,
+        ApplicationCompositeElementInPortInterfaceInstanceRef,
+    >,
+    pub(crate) application_deferred_data_types:
+        SlotMap<ApplicationDeferredDataTypeId, ApplicationDeferredDataType>,
+    pub(crate) application_endpoints: SlotMap<ApplicationEndpointId, ApplicationEndpoint>,
+    pub(crate) application_entrys: SlotMap<ApplicationEntryId, ApplicationEntry>,
+    pub(crate) application_errors: SlotMap<ApplicationErrorId, ApplicationError>,
+    pub(crate) application_interfaces: SlotMap<ApplicationInterfaceId, ApplicationInterface>,
+    pub(crate) application_partitions: SlotMap<ApplicationPartitionId, ApplicationPartition>,
+    pub(crate) application_partition_to_ecu_partition_mappings: SlotMap<
+        ApplicationPartitionToEcuPartitionMappingId,
+        ApplicationPartitionToEcuPartitionMapping,
+    >,
+    pub(crate) application_primitive_data_types:
+        SlotMap<ApplicationPrimitiveDataTypeId, ApplicationPrimitiveDataType>,
+    pub(crate) application_record_data_types:
+        SlotMap<ApplicationRecordDataTypeId, ApplicationRecordDataType>,
+    pub(crate) application_record_elements:
+        SlotMap<ApplicationRecordElementId, ApplicationRecordElement>,
+    pub(crate) application_rule_based_value_specifications:
+        SlotMap<ApplicationRuleBasedValueSpecificationId, ApplicationRuleBasedValueSpecification>,
+    pub(crate) application_sw_component_types:
+        SlotMap<ApplicationSwComponentTypeId, ApplicationSwComponentType>,
+    pub(crate) application_value_specifications:
+        SlotMap<ApplicationValueSpecificationId, ApplicationValueSpecification>,
+    pub(crate) ar_parameter_in_implementation_data_instance_refs: SlotMap<
+        ArParameterInImplementationDataInstanceRefId,
+        ArParameterInImplementationDataInstanceRef,
+    >,
+    pub(crate) ar_variable_in_implementation_data_instance_refs: SlotMap<
+        ArVariableInImplementationDataInstanceRefId,
+        ArVariableInImplementationDataInstanceRef,
+    >,
+    pub(crate) arbitrary_event_triggerings:
+        SlotMap<ArbitraryEventTriggeringId, ArbitraryEventTriggering>,
+    pub(crate) areas: SlotMap<AreaId, Area>,
+    pub(crate) argument_data_prototypes: SlotMap<ArgumentDataPrototypeId, ArgumentDataPrototype>,
+    pub(crate) array_value_specifications:
+        SlotMap<ArrayValueSpecificationId, ArrayValueSpecification>,
+    pub(crate) assembly_sw_connectors: SlotMap<AssemblySwConnectorId, AssemblySwConnector>,
+    pub(crate) assign_frame_ids: SlotMap<AssignFrameIdId, AssignFrameId>,
+    pub(crate) assign_frame_id_ranges: SlotMap<AssignFrameIdRangeId, AssignFrameIdRange>,
+    pub(crate) assign_nads: SlotMap<AssignNadId, AssignNad>,
+    pub(crate) asynchronous_server_call_points:
+        SlotMap<AsynchronousServerCallPointId, AsynchronousServerCallPoint>,
+    pub(crate) asynchronous_server_call_result_points:
+        SlotMap<AsynchronousServerCallResultPointId, AsynchronousServerCallResultPoint>,
+    pub(crate) asynchronous_server_call_returns_events:
+        SlotMap<AsynchronousServerCallReturnsEventId, AsynchronousServerCallReturnsEvent>,
+    pub(crate) autosar_engineering_objects:
+        SlotMap<AutosarEngineeringObjectId, AutosarEngineeringObject>,
+    pub(crate) autosar_operation_argument_instances:
+        SlotMap<AutosarOperationArgumentInstanceId, AutosarOperationArgumentInstance>,
+    pub(crate) autosar_parameter_refs: SlotMap<AutosarParameterRefId, AutosarParameterRef>,
+    pub(crate) autosar_variable_instances:
+        SlotMap<AutosarVariableInstanceId, AutosarVariableInstance>,
+    pub(crate) autosar_variable_refs: SlotMap<AutosarVariableRefId, AutosarVariableRef>,
+    pub(crate) background_events: SlotMap<BackgroundEventId, BackgroundEvent>,
+    pub(crate) base_type_direct_definitions:
+        SlotMap<BaseTypeDirectDefinitionId, BaseTypeDirectDefinition>,
+    pub(crate) baselines: SlotMap<BaselineId, Baseline>,
+    pub(crate) binary_manifest_items: SlotMap<BinaryManifestItemId, BinaryManifestItem>,
+    pub(crate) binary_manifest_item_definitions:
+        SlotMap<BinaryManifestItemDefinitionId, BinaryManifestItemDefinition>,
+    pub(crate) binary_manifest_item_numerical_values:
+        SlotMap<BinaryManifestItemNumericalValueId, BinaryManifestItemNumericalValue>,
+    pub(crate) binary_manifest_item_pointer_values:
+        SlotMap<BinaryManifestItemPointerValueId, BinaryManifestItemPointerValue>,
+    pub(crate) binary_manifest_meta_data_fields:
+        SlotMap<BinaryManifestMetaDataFieldId, BinaryManifestMetaDataField>,
+    pub(crate) binary_manifest_provide_resources:
+        SlotMap<BinaryManifestProvideResourceId, BinaryManifestProvideResource>,
+    pub(crate) binary_manifest_require_resources:
+        SlotMap<BinaryManifestRequireResourceId, BinaryManifestRequireResource>,
+    pub(crate) binary_manifest_resource_definitions:
+        SlotMap<BinaryManifestResourceDefinitionId, BinaryManifestResourceDefinition>,
+    pub(crate) block_states: SlotMap<BlockStateId, BlockState>,
+    pub(crate) blueprint_formulas: SlotMap<BlueprintFormulaId, BlueprintFormula>,
+    pub(crate) blueprint_generators: SlotMap<BlueprintGeneratorId, BlueprintGenerator>,
+    pub(crate) blueprint_mappings: SlotMap<BlueprintMappingId, BlueprintMapping>,
+    pub(crate) blueprint_mapping_sets: SlotMap<BlueprintMappingSetId, BlueprintMappingSet>,
+    pub(crate) boolean_values: SlotMap<BooleanValueId, BooleanValue>,
+    pub(crate) boolean_value_variation_points:
+        SlotMap<BooleanValueVariationPointId, BooleanValueVariationPoint>,
+    pub(crate) brs: SlotMap<BrId, Br>,
+    pub(crate) bsw_asynchronous_server_call_points:
+        SlotMap<BswAsynchronousServerCallPointId, BswAsynchronousServerCallPoint>,
+    pub(crate) bsw_asynchronous_server_call_result_points:
+        SlotMap<BswAsynchronousServerCallResultPointId, BswAsynchronousServerCallResultPoint>,
+    pub(crate) bsw_asynchronous_server_call_returns_events:
+        SlotMap<BswAsynchronousServerCallReturnsEventId, BswAsynchronousServerCallReturnsEvent>,
+    pub(crate) bsw_background_events: SlotMap<BswBackgroundEventId, BswBackgroundEvent>,
+    pub(crate) bsw_called_entitys: SlotMap<BswCalledEntityId, BswCalledEntity>,
+    pub(crate) bsw_client_policys: SlotMap<BswClientPolicyId, BswClientPolicy>,
+    pub(crate) bsw_composition_timings: SlotMap<BswCompositionTimingId, BswCompositionTiming>,
+    pub(crate) bsw_data_received_events: SlotMap<BswDataReceivedEventId, BswDataReceivedEvent>,
+    pub(crate) bsw_data_send_policys: SlotMap<BswDataSendPolicyId, BswDataSendPolicy>,
+    pub(crate) bsw_direct_call_points: SlotMap<BswDirectCallPointId, BswDirectCallPoint>,
+    pub(crate) bsw_distinguished_partitions:
+        SlotMap<BswDistinguishedPartitionId, BswDistinguishedPartition>,
+    pub(crate) bsw_entry_relationships: SlotMap<BswEntryRelationshipId, BswEntryRelationship>,
+    pub(crate) bsw_entry_relationship_sets:
+        SlotMap<BswEntryRelationshipSetId, BswEntryRelationshipSet>,
+    pub(crate) bsw_exclusive_area_policys:
+        SlotMap<BswExclusiveAreaPolicyId, BswExclusiveAreaPolicy>,
+    pub(crate) bsw_external_trigger_occurred_events:
+        SlotMap<BswExternalTriggerOccurredEventId, BswExternalTriggerOccurredEvent>,
+    pub(crate) bsw_implementations: SlotMap<BswImplementationId, BswImplementation>,
+    pub(crate) bsw_internal_behaviors: SlotMap<BswInternalBehaviorId, BswInternalBehavior>,
+    pub(crate) bsw_internal_trigger_occurred_events:
+        SlotMap<BswInternalTriggerOccurredEventId, BswInternalTriggerOccurredEvent>,
+    pub(crate) bsw_internal_triggering_points:
+        SlotMap<BswInternalTriggeringPointId, BswInternalTriggeringPoint>,
+    pub(crate) bsw_internal_triggering_point_policys:
+        SlotMap<BswInternalTriggeringPointPolicyId, BswInternalTriggeringPointPolicy>,
+    pub(crate) bsw_interrupt_entitys: SlotMap<BswInterruptEntityId, BswInterruptEntity>,
+    pub(crate) bsw_interrupt_events: SlotMap<BswInterruptEventId, BswInterruptEvent>,
+    pub(crate) bsw_mgr_needs: SlotMap<BswMgrNeedsId, BswMgrNeeds>,
+    pub(crate) bsw_mode_manager_error_events:
+        SlotMap<BswModeManagerErrorEventId, BswModeManagerErrorEvent>,
+    pub(crate) bsw_mode_receiver_policys: SlotMap<BswModeReceiverPolicyId, BswModeReceiverPolicy>,
+    pub(crate) bsw_mode_sender_policys: SlotMap<BswModeSenderPolicyId, BswModeSenderPolicy>,
+    pub(crate) bsw_mode_switch_ack_requests:
+        SlotMap<BswModeSwitchAckRequestId, BswModeSwitchAckRequest>,
+    pub(crate) bsw_mode_switch_events: SlotMap<BswModeSwitchEventId, BswModeSwitchEvent>,
+    pub(crate) bsw_mode_switched_ack_events:
+        SlotMap<BswModeSwitchedAckEventId, BswModeSwitchedAckEvent>,
+    pub(crate) bsw_module_client_server_entrys:
+        SlotMap<BswModuleClientServerEntryId, BswModuleClientServerEntry>,
+    pub(crate) bsw_module_dependencys: SlotMap<BswModuleDependencyId, BswModuleDependency>,
+    pub(crate) bsw_module_descriptions: SlotMap<BswModuleDescriptionId, BswModuleDescription>,
+    pub(crate) bsw_module_entrys: SlotMap<BswModuleEntryId, BswModuleEntry>,
+    pub(crate) bsw_module_timings: SlotMap<BswModuleTimingId, BswModuleTiming>,
+    pub(crate) bsw_operation_invoked_events:
+        SlotMap<BswOperationInvokedEventId, BswOperationInvokedEvent>,
+    pub(crate) bsw_os_task_execution_events:
+        SlotMap<BswOsTaskExecutionEventId, BswOsTaskExecutionEvent>,
+    pub(crate) bsw_parameter_policys: SlotMap<BswParameterPolicyId, BswParameterPolicy>,
+    pub(crate) bsw_per_instance_memory_policys:
+        SlotMap<BswPerInstanceMemoryPolicyId, BswPerInstanceMemoryPolicy>,
+    pub(crate) bsw_queued_data_reception_policys:
+        SlotMap<BswQueuedDataReceptionPolicyId, BswQueuedDataReceptionPolicy>,
+    pub(crate) bsw_released_trigger_policys:
+        SlotMap<BswReleasedTriggerPolicyId, BswReleasedTriggerPolicy>,
+    pub(crate) bsw_schedulable_entitys: SlotMap<BswSchedulableEntityId, BswSchedulableEntity>,
+    pub(crate) bsw_scheduler_name_prefixs:
+        SlotMap<BswSchedulerNamePrefixId, BswSchedulerNamePrefix>,
+    pub(crate) bsw_service_dependencys: SlotMap<BswServiceDependencyId, BswServiceDependency>,
+    pub(crate) bsw_service_dependency_idents:
+        SlotMap<BswServiceDependencyIdentId, BswServiceDependencyIdent>,
+    pub(crate) bsw_synchronous_server_call_points:
+        SlotMap<BswSynchronousServerCallPointId, BswSynchronousServerCallPoint>,
+    pub(crate) bsw_timing_events: SlotMap<BswTimingEventId, BswTimingEvent>,
+    pub(crate) bsw_trigger_direct_implementations:
+        SlotMap<BswTriggerDirectImplementationId, BswTriggerDirectImplementation>,
+    pub(crate) bsw_variable_access: SlotMap<BswVariableAccessId, BswVariableAccess>,
+    pub(crate) buffer_properties: SlotMap<BufferPropertiesId, BufferProperties>,
+    pub(crate) build_actions: SlotMap<BuildActionId, BuildAction>,
+    pub(crate) build_action_environments: SlotMap<BuildActionEnvironmentId, BuildActionEnvironment>,
+    pub(crate) build_action_invocators: SlotMap<BuildActionInvocatorId, BuildActionInvocator>,
+    pub(crate) build_action_io_elements: SlotMap<BuildActionIoElementId, BuildActionIoElement>,
+    pub(crate) build_action_manifests: SlotMap<BuildActionManifestId, BuildActionManifest>,
+    pub(crate) build_engineering_objects: SlotMap<BuildEngineeringObjectId, BuildEngineeringObject>,
+    pub(crate) bulk_nv_data_descriptors: SlotMap<BulkNvDataDescriptorId, BulkNvDataDescriptor>,
+    pub(crate) burst_pattern_event_triggerings:
+        SlotMap<BurstPatternEventTriggeringId, BurstPatternEventTriggering>,
+    pub(crate) bus_mirror_can_id_range_mappings:
+        SlotMap<BusMirrorCanIdRangeMappingId, BusMirrorCanIdRangeMapping>,
+    pub(crate) bus_mirror_can_id_to_can_id_mappings:
+        SlotMap<BusMirrorCanIdToCanIdMappingId, BusMirrorCanIdToCanIdMapping>,
+    pub(crate) bus_mirror_channels: SlotMap<BusMirrorChannelId, BusMirrorChannel>,
+    pub(crate) bus_mirror_channel_mapping_cans:
+        SlotMap<BusMirrorChannelMappingCanId, BusMirrorChannelMappingCan>,
+    pub(crate) bus_mirror_channel_mapping_flexrays:
+        SlotMap<BusMirrorChannelMappingFlexrayId, BusMirrorChannelMappingFlexray>,
+    pub(crate) bus_mirror_channel_mapping_ips:
+        SlotMap<BusMirrorChannelMappingIpId, BusMirrorChannelMappingIp>,
+    pub(crate) bus_mirror_channel_mapping_user_defineds:
+        SlotMap<BusMirrorChannelMappingUserDefinedId, BusMirrorChannelMappingUserDefined>,
+    pub(crate) bus_mirror_lin_pid_to_can_id_mappings:
+        SlotMap<BusMirrorLinPidToCanIdMappingId, BusMirrorLinPidToCanIdMapping>,
+    pub(crate) calibration_parameter_values:
+        SlotMap<CalibrationParameterValueId, CalibrationParameterValue>,
+    pub(crate) calibration_parameter_value_sets:
+        SlotMap<CalibrationParameterValueSetId, CalibrationParameterValueSet>,
+    pub(crate) can_clusters: SlotMap<CanClusterId, CanCluster>,
+    pub(crate) can_cluster_bus_off_recoverys:
+        SlotMap<CanClusterBusOffRecoveryId, CanClusterBusOffRecovery>,
+    pub(crate) can_communication_connectors:
+        SlotMap<CanCommunicationConnectorId, CanCommunicationConnector>,
+    pub(crate) can_communication_controllers:
+        SlotMap<CanCommunicationControllerId, CanCommunicationController>,
+    pub(crate) can_controller_configurations:
+        SlotMap<CanControllerConfigurationId, CanControllerConfiguration>,
+    pub(crate) can_controller_configuration_requirements:
+        SlotMap<CanControllerConfigurationRequirementsId, CanControllerConfigurationRequirements>,
+    pub(crate) can_controller_fd_configurations:
+        SlotMap<CanControllerFdConfigurationId, CanControllerFdConfiguration>,
+    pub(crate) can_controller_fd_configuration_requirements: SlotMap<
+        CanControllerFdConfigurationRequirementsId,
+        CanControllerFdConfigurationRequirements,
+    >,
+    pub(crate) can_controller_xl_configurations:
+        SlotMap<CanControllerXlConfigurationId, CanControllerXlConfiguration>,
+    pub(crate) can_controller_xl_configuration_requirements: SlotMap<
+        CanControllerXlConfigurationRequirementsId,
+        CanControllerXlConfigurationRequirements,
+    >,
+    pub(crate) can_frames: SlotMap<CanFrameId, CanFrame>,
+    pub(crate) can_frame_triggerings: SlotMap<CanFrameTriggeringId, CanFrameTriggering>,
+    pub(crate) can_global_time_domain_props:
+        SlotMap<CanGlobalTimeDomainPropsId, CanGlobalTimeDomainProps>,
+    pub(crate) can_nm_clusters: SlotMap<CanNmClusterId, CanNmCluster>,
+    pub(crate) can_nm_cluster_couplings: SlotMap<CanNmClusterCouplingId, CanNmClusterCoupling>,
+    pub(crate) can_nm_ecus: SlotMap<CanNmEcuId, CanNmEcu>,
+    pub(crate) can_nm_nodes: SlotMap<CanNmNodeId, CanNmNode>,
+    pub(crate) can_physical_channels: SlotMap<CanPhysicalChannelId, CanPhysicalChannel>,
+    pub(crate) can_tp_address: SlotMap<CanTpAddressId, CanTpAddress>,
+    pub(crate) can_tp_channels: SlotMap<CanTpChannelId, CanTpChannel>,
+    pub(crate) can_tp_configs: SlotMap<CanTpConfigId, CanTpConfig>,
+    pub(crate) can_tp_connections: SlotMap<CanTpConnectionId, CanTpConnection>,
+    pub(crate) can_tp_ecus: SlotMap<CanTpEcuId, CanTpEcu>,
+    pub(crate) can_tp_nodes: SlotMap<CanTpNodeId, CanTpNode>,
+    pub(crate) can_xl_frame_triggering_props:
+        SlotMap<CanXlFrameTriggeringPropsId, CanXlFrameTriggeringProps>,
+    pub(crate) can_xl_props: SlotMap<CanXlPropsId, CanXlProps>,
+    pub(crate) captions: SlotMap<CaptionId, Caption>,
+    pub(crate) chapters: SlotMap<ChapterId, Chapter>,
+    pub(crate) chapter_contents: SlotMap<ChapterContentId, ChapterContent>,
+    pub(crate) chapter_models: SlotMap<ChapterModelId, ChapterModel>,
+    pub(crate) chapter_or_msr_querys: SlotMap<ChapterOrMsrQueryId, ChapterOrMsrQuery>,
+    pub(crate) class_content_conditionals:
+        SlotMap<ClassContentConditionalId, ClassContentConditional>,
+    pub(crate) client_com_specs: SlotMap<ClientComSpecId, ClientComSpec>,
+    pub(crate) client_id_definitions: SlotMap<ClientIdDefinitionId, ClientIdDefinition>,
+    pub(crate) client_id_definition_sets: SlotMap<ClientIdDefinitionSetId, ClientIdDefinitionSet>,
+    pub(crate) client_id_ranges: SlotMap<ClientIdRangeId, ClientIdRange>,
+    pub(crate) client_server_annotations: SlotMap<ClientServerAnnotationId, ClientServerAnnotation>,
+    pub(crate) client_server_application_error_mappings:
+        SlotMap<ClientServerApplicationErrorMappingId, ClientServerApplicationErrorMapping>,
+    pub(crate) client_server_interfaces: SlotMap<ClientServerInterfaceId, ClientServerInterface>,
+    pub(crate) client_server_interface_mappings:
+        SlotMap<ClientServerInterfaceMappingId, ClientServerInterfaceMapping>,
+    pub(crate) client_server_operations: SlotMap<ClientServerOperationId, ClientServerOperation>,
+    pub(crate) client_server_operation_blueprint_mappings:
+        SlotMap<ClientServerOperationBlueprintMappingId, ClientServerOperationBlueprintMapping>,
+    pub(crate) client_server_operation_com_props:
+        SlotMap<ClientServerOperationComPropsId, ClientServerOperationComProps>,
+    pub(crate) client_server_operation_mappings:
+        SlotMap<ClientServerOperationMappingId, ClientServerOperationMapping>,
+    pub(crate) client_server_to_signal_mappings:
+        SlotMap<ClientServerToSignalMappingId, ClientServerToSignalMapping>,
+    pub(crate) codes: SlotMap<CodeId, Code>,
+    pub(crate) collections: SlotMap<CollectionId, Collection>,
+    pub(crate) colspecs: SlotMap<ColspecId, Colspec>,
+    pub(crate) com_management_mappings: SlotMap<ComManagementMappingId, ComManagementMapping>,
+    pub(crate) com_mgr_user_needs: SlotMap<ComMgrUserNeedsId, ComMgrUserNeeds>,
+    pub(crate) common_signal_paths: SlotMap<CommonSignalPathId, CommonSignalPath>,
+    pub(crate) communication_buffer_lockings:
+        SlotMap<CommunicationBufferLockingId, CommunicationBufferLocking>,
+    pub(crate) communication_controller_mappings:
+        SlotMap<CommunicationControllerMappingId, CommunicationControllerMapping>,
+    pub(crate) compilers: SlotMap<CompilerId, Compiler>,
+    pub(crate) complex_device_driver_sw_component_types:
+        SlotMap<ComplexDeviceDriverSwComponentTypeId, ComplexDeviceDriverSwComponentType>,
+    pub(crate) component_clusterings: SlotMap<ComponentClusteringId, ComponentClustering>,
+    pub(crate) component_in_composition_instance_refs:
+        SlotMap<ComponentInCompositionInstanceRefId, ComponentInCompositionInstanceRef>,
+    pub(crate) component_in_system_instance_refs:
+        SlotMap<ComponentInSystemInstanceRefId, ComponentInSystemInstanceRef>,
+    pub(crate) component_separations: SlotMap<ComponentSeparationId, ComponentSeparation>,
+    pub(crate) composite_network_representations:
+        SlotMap<CompositeNetworkRepresentationId, CompositeNetworkRepresentation>,
+    pub(crate) composite_rule_based_value_specifications:
+        SlotMap<CompositeRuleBasedValueSpecificationId, CompositeRuleBasedValueSpecification>,
+    pub(crate) composition_sw_component_types:
+        SlotMap<CompositionSwComponentTypeId, CompositionSwComponentType>,
+    pub(crate) compus: SlotMap<CompuId, Compu>,
+    pub(crate) compu_consts: SlotMap<CompuConstId, CompuConst>,
+    pub(crate) compu_const_formula_contents:
+        SlotMap<CompuConstFormulaContentId, CompuConstFormulaContent>,
+    pub(crate) compu_const_numeric_contents:
+        SlotMap<CompuConstNumericContentId, CompuConstNumericContent>,
+    pub(crate) compu_const_text_contents: SlotMap<CompuConstTextContentId, CompuConstTextContent>,
+    pub(crate) compu_generic_maths: SlotMap<CompuGenericMathId, CompuGenericMath>,
+    pub(crate) compu_methods: SlotMap<CompuMethodId, CompuMethod>,
+    pub(crate) compu_nominator_denominators:
+        SlotMap<CompuNominatorDenominatorId, CompuNominatorDenominator>,
+    pub(crate) compu_rational_coeffs: SlotMap<CompuRationalCoeffsId, CompuRationalCoeffs>,
+    pub(crate) compu_scales: SlotMap<CompuScaleId, CompuScale>,
+    pub(crate) compu_scale_constant_contents:
+        SlotMap<CompuScaleConstantContentsId, CompuScaleConstantContents>,
+    pub(crate) compu_scale_rational_formulas:
+        SlotMap<CompuScaleRationalFormulaId, CompuScaleRationalFormula>,
+    pub(crate) compu_scales_arena: SlotMap<CompuScalesId, CompuScales>,
+    pub(crate) concrete_class_tailorings: SlotMap<ConcreteClassTailoringId, ConcreteClassTailoring>,
+    pub(crate) concrete_pattern_event_triggerings:
+        SlotMap<ConcretePatternEventTriggeringId, ConcretePatternEventTriggering>,
+    pub(crate) condition_by_formulas: SlotMap<ConditionByFormulaId, ConditionByFormula>,
+    pub(crate) conditional_change_nads: SlotMap<ConditionalChangeNadId, ConditionalChangeNad>,
+    pub(crate) confidence_intervals: SlotMap<ConfidenceIntervalId, ConfidenceInterval>,
+    pub(crate) consistency_needs: SlotMap<ConsistencyNeedsId, ConsistencyNeeds>,
+    pub(crate) constant_references: SlotMap<ConstantReferenceId, ConstantReference>,
+    pub(crate) constant_specifications: SlotMap<ConstantSpecificationId, ConstantSpecification>,
+    pub(crate) constant_specification_mappings:
+        SlotMap<ConstantSpecificationMappingId, ConstantSpecificationMapping>,
+    pub(crate) constant_specification_mapping_sets:
+        SlotMap<ConstantSpecificationMappingSetId, ConstantSpecificationMappingSet>,
+    pub(crate) constraint_tailorings: SlotMap<ConstraintTailoringId, ConstraintTailoring>,
+    pub(crate) consumed_event_groups: SlotMap<ConsumedEventGroupId, ConsumedEventGroup>,
+    pub(crate) consumed_provided_service_instance_groups:
+        SlotMap<ConsumedProvidedServiceInstanceGroupId, ConsumedProvidedServiceInstanceGroup>,
+    pub(crate) consumed_service_instances:
+        SlotMap<ConsumedServiceInstanceId, ConsumedServiceInstance>,
+    pub(crate) contained_i_pdu_props: SlotMap<ContainedIPduPropsId, ContainedIPduProps>,
+    pub(crate) containers: SlotMap<ContainerId, Container>,
+    pub(crate) container_i_pdus: SlotMap<ContainerIPduId, ContainerIPdu>,
+    pub(crate) coupling_elements: SlotMap<CouplingElementId, CouplingElement>,
+    pub(crate) coupling_element_switch_details:
+        SlotMap<CouplingElementSwitchDetailsId, CouplingElementSwitchDetails>,
+    pub(crate) coupling_ports: SlotMap<CouplingPortId, CouplingPort>,
+    pub(crate) coupling_port_connections: SlotMap<CouplingPortConnectionId, CouplingPortConnection>,
+    pub(crate) coupling_port_details: SlotMap<CouplingPortDetailsId, CouplingPortDetails>,
+    pub(crate) coupling_port_fifos: SlotMap<CouplingPortFifoId, CouplingPortFifo>,
+    pub(crate) coupling_port_rate_policys:
+        SlotMap<CouplingPortRatePolicyId, CouplingPortRatePolicy>,
+    pub(crate) coupling_port_schedulers: SlotMap<CouplingPortSchedulerId, CouplingPortScheduler>,
+    pub(crate) coupling_port_shapers: SlotMap<CouplingPortShaperId, CouplingPortShaper>,
+    pub(crate) coupling_port_traffic_class_assignments:
+        SlotMap<CouplingPortTrafficClassAssignmentId, CouplingPortTrafficClassAssignment>,
+    pub(crate) cp_software_clusters: SlotMap<CpSoftwareClusterId, CpSoftwareCluster>,
+    pub(crate) cp_software_cluster_binary_manifest_descriptors: SlotMap<
+        CpSoftwareClusterBinaryManifestDescriptorId,
+        CpSoftwareClusterBinaryManifestDescriptor,
+    >,
+    pub(crate) cp_software_cluster_communication_resources:
+        SlotMap<CpSoftwareClusterCommunicationResourceId, CpSoftwareClusterCommunicationResource>,
+    pub(crate) cp_software_cluster_mapping_sets:
+        SlotMap<CpSoftwareClusterMappingSetId, CpSoftwareClusterMappingSet>,
+    pub(crate) cp_software_cluster_resource_pools:
+        SlotMap<CpSoftwareClusterResourcePoolId, CpSoftwareClusterResourcePool>,
+    pub(crate) cp_software_cluster_resource_to_application_partition_mappings: SlotMap<
+        CpSoftwareClusterResourceToApplicationPartitionMappingId,
+        CpSoftwareClusterResourceToApplicationPartitionMapping,
+    >,
+    pub(crate) cp_software_cluster_service_resources:
+        SlotMap<CpSoftwareClusterServiceResourceId, CpSoftwareClusterServiceResource>,
+    pub(crate) cp_software_cluster_to_application_partition_mappings: SlotMap<
+        CpSoftwareClusterToApplicationPartitionMappingId,
+        CpSoftwareClusterToApplicationPartitionMapping,
+    >,
+    pub(crate) cp_software_cluster_to_ecu_instance_mappings:
+        SlotMap<CpSoftwareClusterToEcuInstanceMappingId, CpSoftwareClusterToEcuInstanceMapping>,
+    pub(crate) cp_software_cluster_to_resource_mappings:
+        SlotMap<CpSoftwareClusterToResourceMappingId, CpSoftwareClusterToResourceMapping>,
+    pub(crate) cp_sw_cluster_resource_to_diag_data_elem_mappings: SlotMap<
+        CpSwClusterResourceToDiagDataElemMappingId,
+        CpSwClusterResourceToDiagDataElemMapping,
+    >,
+    pub(crate) cp_sw_cluster_resource_to_diag_function_id_mappings: SlotMap<
+        CpSwClusterResourceToDiagFunctionIdMappingId,
+        CpSwClusterResourceToDiagFunctionIdMapping,
+    >,
+    pub(crate) cp_sw_cluster_to_diag_event_mappings:
+        SlotMap<CpSwClusterToDiagEventMappingId, CpSwClusterToDiagEventMapping>,
+    pub(crate) cp_sw_cluster_to_diag_routine_subfunction_mappings: SlotMap<
+        CpSwClusterToDiagRoutineSubfunctionMappingId,
+        CpSwClusterToDiagRoutineSubfunctionMapping,
+    >,
+    pub(crate) crypto_elliptic_curve_props:
+        SlotMap<CryptoEllipticCurvePropsId, CryptoEllipticCurveProps>,
+    pub(crate) crypto_key_management_needs:
+        SlotMap<CryptoKeyManagementNeedsId, CryptoKeyManagementNeeds>,
+    pub(crate) crypto_key_slots: SlotMap<CryptoKeySlotId, CryptoKeySlot>,
+    pub(crate) crypto_key_slot_allowed_modifications:
+        SlotMap<CryptoKeySlotAllowedModificationId, CryptoKeySlotAllowedModification>,
+    pub(crate) crypto_key_slot_content_allowed_usages:
+        SlotMap<CryptoKeySlotContentAllowedUsageId, CryptoKeySlotContentAllowedUsage>,
+    pub(crate) crypto_service_certificates:
+        SlotMap<CryptoServiceCertificateId, CryptoServiceCertificate>,
+    pub(crate) crypto_service_job_needs: SlotMap<CryptoServiceJobNeedsId, CryptoServiceJobNeeds>,
+    pub(crate) crypto_service_keys: SlotMap<CryptoServiceKeyId, CryptoServiceKey>,
+    pub(crate) crypto_service_needs: SlotMap<CryptoServiceNeedsId, CryptoServiceNeeds>,
+    pub(crate) crypto_service_primitives: SlotMap<CryptoServicePrimitiveId, CryptoServicePrimitive>,
+    pub(crate) crypto_service_queues: SlotMap<CryptoServiceQueueId, CryptoServiceQueue>,
+    pub(crate) crypto_signature_schemes: SlotMap<CryptoSignatureSchemeId, CryptoSignatureScheme>,
+    pub(crate) cycle_counters: SlotMap<CycleCounterId, CycleCounter>,
+    pub(crate) cycle_repetitions: SlotMap<CycleRepetitionId, CycleRepetition>,
+    pub(crate) cyclic_timings: SlotMap<CyclicTimingId, CyclicTiming>,
+    pub(crate) data_com_props: SlotMap<DataComPropsId, DataComProps>,
+    pub(crate) data_constrs: SlotMap<DataConstrId, DataConstr>,
+    pub(crate) data_constr_rules: SlotMap<DataConstrRuleId, DataConstrRule>,
+    pub(crate) data_dump_entrys: SlotMap<DataDumpEntryId, DataDumpEntry>,
+    pub(crate) data_exchange_points: SlotMap<DataExchangePointId, DataExchangePoint>,
+    pub(crate) data_filters: SlotMap<DataFilterId, DataFilter>,
+    pub(crate) data_link_layer_rules: SlotMap<DataLinkLayerRuleId, DataLinkLayerRule>,
+    pub(crate) data_prototype_groups: SlotMap<DataPrototypeGroupId, DataPrototypeGroup>,
+    pub(crate) data_prototype_in_client_server_interface_instance_refs: SlotMap<
+        DataPrototypeInClientServerInterfaceInstanceRefId,
+        DataPrototypeInClientServerInterfaceInstanceRef,
+    >,
+    pub(crate) data_prototype_in_port_interface_refs:
+        SlotMap<DataPrototypeInPortInterfaceRefId, DataPrototypeInPortInterfaceRef>,
+    pub(crate) data_prototype_in_sender_receiver_interface_instance_refs: SlotMap<
+        DataPrototypeInSenderReceiverInterfaceInstanceRefId,
+        DataPrototypeInSenderReceiverInterfaceInstanceRef,
+    >,
+    pub(crate) data_prototype_mappings: SlotMap<DataPrototypeMappingId, DataPrototypeMapping>,
+    pub(crate) data_prototype_transformation_props:
+        SlotMap<DataPrototypeTransformationPropsId, DataPrototypeTransformationProps>,
+    pub(crate) data_receive_error_events: SlotMap<DataReceiveErrorEventId, DataReceiveErrorEvent>,
+    pub(crate) data_received_events: SlotMap<DataReceivedEventId, DataReceivedEvent>,
+    pub(crate) data_send_completed_events:
+        SlotMap<DataSendCompletedEventId, DataSendCompletedEvent>,
+    pub(crate) data_transformations: SlotMap<DataTransformationId, DataTransformation>,
+    pub(crate) data_transformation_sets: SlotMap<DataTransformationSetId, DataTransformationSet>,
+    pub(crate) data_type_maps: SlotMap<DataTypeMapId, DataTypeMap>,
+    pub(crate) data_type_mapping_sets: SlotMap<DataTypeMappingSetId, DataTypeMappingSet>,
+    pub(crate) data_write_completed_events:
+        SlotMap<DataWriteCompletedEventId, DataWriteCompletedEvent>,
+    pub(crate) dcm_i_pdus: SlotMap<DcmIPduId, DcmIPdu>,
+    pub(crate) dds_cp_configs: SlotMap<DdsCpConfigId, DdsCpConfig>,
+    pub(crate) dds_cp_consumed_service_instances:
+        SlotMap<DdsCpConsumedServiceInstanceId, DdsCpConsumedServiceInstance>,
+    pub(crate) dds_cp_domains: SlotMap<DdsCpDomainId, DdsCpDomain>,
+    pub(crate) dds_cp_i_signal_to_dds_topic_mappings:
+        SlotMap<DdsCpISignalToDdsTopicMappingId, DdsCpISignalToDdsTopicMapping>,
+    pub(crate) dds_cp_partitions: SlotMap<DdsCpPartitionId, DdsCpPartition>,
+    pub(crate) dds_cp_provided_service_instances:
+        SlotMap<DdsCpProvidedServiceInstanceId, DdsCpProvidedServiceInstance>,
+    pub(crate) dds_cp_qos_profiles: SlotMap<DdsCpQosProfileId, DdsCpQosProfile>,
+    pub(crate) dds_cp_service_instance_events:
+        SlotMap<DdsCpServiceInstanceEventId, DdsCpServiceInstanceEvent>,
+    pub(crate) dds_cp_service_instance_operations:
+        SlotMap<DdsCpServiceInstanceOperationId, DdsCpServiceInstanceOperation>,
+    pub(crate) dds_cp_topics: SlotMap<DdsCpTopicId, DdsCpTopic>,
+    pub(crate) dds_deadlines: SlotMap<DdsDeadlineId, DdsDeadline>,
+    pub(crate) dds_destination_orders: SlotMap<DdsDestinationOrderId, DdsDestinationOrder>,
+    pub(crate) dds_durabilitys: SlotMap<DdsDurabilityId, DdsDurability>,
+    pub(crate) dds_durability_services: SlotMap<DdsDurabilityServiceId, DdsDurabilityService>,
+    pub(crate) dds_historys: SlotMap<DdsHistoryId, DdsHistory>,
+    pub(crate) dds_latency_budgets: SlotMap<DdsLatencyBudgetId, DdsLatencyBudget>,
+    pub(crate) dds_lifespans: SlotMap<DdsLifespanId, DdsLifespan>,
+    pub(crate) dds_liveliness: SlotMap<DdsLivelinessId, DdsLiveliness>,
+    pub(crate) dds_ownerships: SlotMap<DdsOwnershipId, DdsOwnership>,
+    pub(crate) dds_ownership_strengths: SlotMap<DdsOwnershipStrengthId, DdsOwnershipStrength>,
+    pub(crate) dds_reliabilitys: SlotMap<DdsReliabilityId, DdsReliability>,
+    pub(crate) dds_resource_limits: SlotMap<DdsResourceLimitsId, DdsResourceLimits>,
+    pub(crate) dds_rules: SlotMap<DdsRuleId, DdsRule>,
+    pub(crate) dds_topic_datas: SlotMap<DdsTopicDataId, DdsTopicData>,
+    pub(crate) dds_transport_prioritys: SlotMap<DdsTransportPriorityId, DdsTransportPriority>,
+    pub(crate) def_items: SlotMap<DefItemId, DefItem>,
+    pub(crate) def_lists: SlotMap<DefListId, DefList>,
+    pub(crate) default_value_elements: SlotMap<DefaultValueElementId, DefaultValueElement>,
+    pub(crate) delegated_port_annotations:
+        SlotMap<DelegatedPortAnnotationId, DelegatedPortAnnotation>,
+    pub(crate) delegation_sw_connectors: SlotMap<DelegationSwConnectorId, DelegationSwConnector>,
+    pub(crate) dependency_on_artifacts: SlotMap<DependencyOnArtifactId, DependencyOnArtifact>,
+    pub(crate) development_errors: SlotMap<DevelopmentErrorId, DevelopmentError>,
+    pub(crate) dhcp_server_configurations:
+        SlotMap<DhcpServerConfigurationId, DhcpServerConfiguration>,
+    pub(crate) dhcpv6_props: SlotMap<Dhcpv6PropsId, Dhcpv6Props>,
+    pub(crate) diag_event_debounce_counter_baseds:
+        SlotMap<DiagEventDebounceCounterBasedId, DiagEventDebounceCounterBased>,
+    pub(crate) diag_event_debounce_monitor_internals:
+        SlotMap<DiagEventDebounceMonitorInternalId, DiagEventDebounceMonitorInternal>,
+    pub(crate) diag_event_debounce_time_baseds:
+        SlotMap<DiagEventDebounceTimeBasedId, DiagEventDebounceTimeBased>,
+    pub(crate) diagnostic_access_permissions:
+        SlotMap<DiagnosticAccessPermissionId, DiagnosticAccessPermission>,
+    pub(crate) diagnostic_agings: SlotMap<DiagnosticAgingId, DiagnosticAging>,
+    pub(crate) diagnostic_auth_roles: SlotMap<DiagnosticAuthRoleId, DiagnosticAuthRole>,
+    pub(crate) diagnostic_auth_role_proxys:
+        SlotMap<DiagnosticAuthRoleProxyId, DiagnosticAuthRoleProxy>,
+    pub(crate) diagnostic_auth_transmit_certificates:
+        SlotMap<DiagnosticAuthTransmitCertificateId, DiagnosticAuthTransmitCertificate>,
+    pub(crate) diagnostic_auth_transmit_certificate_evaluations: SlotMap<
+        DiagnosticAuthTransmitCertificateEvaluationId,
+        DiagnosticAuthTransmitCertificateEvaluation,
+    >,
+    pub(crate) diagnostic_auth_transmit_certificate_mappings: SlotMap<
+        DiagnosticAuthTransmitCertificateMappingId,
+        DiagnosticAuthTransmitCertificateMapping,
+    >,
+    pub(crate) diagnostic_authentication_class:
+        SlotMap<DiagnosticAuthenticationClassId, DiagnosticAuthenticationClass>,
+    pub(crate) diagnostic_authentication_configurations:
+        SlotMap<DiagnosticAuthenticationConfigurationId, DiagnosticAuthenticationConfiguration>,
+    pub(crate) diagnostic_clear_diagnostic_informations:
+        SlotMap<DiagnosticClearDiagnosticInformationId, DiagnosticClearDiagnosticInformation>,
+    pub(crate) diagnostic_clear_diagnostic_information_class: SlotMap<
+        DiagnosticClearDiagnosticInformationClassId,
+        DiagnosticClearDiagnosticInformationClass,
+    >,
+    pub(crate) diagnostic_clear_reset_emission_related_infos:
+        SlotMap<DiagnosticClearResetEmissionRelatedInfoId, DiagnosticClearResetEmissionRelatedInfo>,
+    pub(crate) diagnostic_clear_reset_emission_related_info_class: SlotMap<
+        DiagnosticClearResetEmissionRelatedInfoClassId,
+        DiagnosticClearResetEmissionRelatedInfoClass,
+    >,
+    pub(crate) diagnostic_com_controls: SlotMap<DiagnosticComControlId, DiagnosticComControl>,
+    pub(crate) diagnostic_com_control_class:
+        SlotMap<DiagnosticComControlClassId, DiagnosticComControlClass>,
+    pub(crate) diagnostic_com_control_specific_channels:
+        SlotMap<DiagnosticComControlSpecificChannelId, DiagnosticComControlSpecificChannel>,
+    pub(crate) diagnostic_com_control_sub_node_channels:
+        SlotMap<DiagnosticComControlSubNodeChannelId, DiagnosticComControlSubNodeChannel>,
+    pub(crate) diagnostic_common_props: SlotMap<DiagnosticCommonPropsId, DiagnosticCommonProps>,
+    pub(crate) diagnostic_communication_manager_needs:
+        SlotMap<DiagnosticCommunicationManagerNeedsId, DiagnosticCommunicationManagerNeeds>,
+    pub(crate) diagnostic_component_needs:
+        SlotMap<DiagnosticComponentNeedsId, DiagnosticComponentNeeds>,
+    pub(crate) diagnostic_connected_indicators:
+        SlotMap<DiagnosticConnectedIndicatorId, DiagnosticConnectedIndicator>,
+    pub(crate) diagnostic_connections: SlotMap<DiagnosticConnectionId, DiagnosticConnection>,
+    pub(crate) diagnostic_contribution_sets:
+        SlotMap<DiagnosticContributionSetId, DiagnosticContributionSet>,
+    pub(crate) diagnostic_control_dtc_settings:
+        SlotMap<DiagnosticControlDTCSettingId, DiagnosticControlDTCSetting>,
+    pub(crate) diagnostic_control_dtc_setting_class:
+        SlotMap<DiagnosticControlDTCSettingClassId, DiagnosticControlDTCSettingClass>,
+    pub(crate) diagnostic_control_enable_mask_bits:
+        SlotMap<DiagnosticControlEnableMaskBitId, DiagnosticControlEnableMaskBit>,
+    pub(crate) diagnostic_control_needs: SlotMap<DiagnosticControlNeedsId, DiagnosticControlNeeds>,
+    pub(crate) diagnostic_custom_service_class:
+        SlotMap<DiagnosticCustomServiceClassId, DiagnosticCustomServiceClass>,
+    pub(crate) diagnostic_custom_service_instances:
+        SlotMap<DiagnosticCustomServiceInstanceId, DiagnosticCustomServiceInstance>,
+    pub(crate) diagnostic_data_elements: SlotMap<DiagnosticDataElementId, DiagnosticDataElement>,
+    pub(crate) diagnostic_data_identifiers:
+        SlotMap<DiagnosticDataIdentifierId, DiagnosticDataIdentifier>,
+    pub(crate) diagnostic_data_identifier_sets:
+        SlotMap<DiagnosticDataIdentifierSetId, DiagnosticDataIdentifierSet>,
+    pub(crate) diagnostic_data_transfers: SlotMap<DiagnosticDataTransferId, DiagnosticDataTransfer>,
+    pub(crate) diagnostic_data_transfer_class:
+        SlotMap<DiagnosticDataTransferClassId, DiagnosticDataTransferClass>,
+    pub(crate) diagnostic_de_authentications:
+        SlotMap<DiagnosticDeAuthenticationId, DiagnosticDeAuthentication>,
+    pub(crate) diagnostic_debounce_algorithm_props:
+        SlotMap<DiagnosticDebounceAlgorithmPropsId, DiagnosticDebounceAlgorithmProps>,
+    pub(crate) diagnostic_dem_provided_data_mappings:
+        SlotMap<DiagnosticDemProvidedDataMappingId, DiagnosticDemProvidedDataMapping>,
+    pub(crate) diagnostic_dynamic_data_identifiers:
+        SlotMap<DiagnosticDynamicDataIdentifierId, DiagnosticDynamicDataIdentifier>,
+    pub(crate) diagnostic_dynamically_define_data_identifiers: SlotMap<
+        DiagnosticDynamicallyDefineDataIdentifierId,
+        DiagnosticDynamicallyDefineDataIdentifier,
+    >,
+    pub(crate) diagnostic_dynamically_define_data_identifier_class: SlotMap<
+        DiagnosticDynamicallyDefineDataIdentifierClassId,
+        DiagnosticDynamicallyDefineDataIdentifierClass,
+    >,
+    pub(crate) diagnostic_ecu_instance_props:
+        SlotMap<DiagnosticEcuInstancePropsId, DiagnosticEcuInstanceProps>,
+    pub(crate) diagnostic_ecu_resets: SlotMap<DiagnosticEcuResetId, DiagnosticEcuReset>,
+    pub(crate) diagnostic_ecu_reset_class:
+        SlotMap<DiagnosticEcuResetClassId, DiagnosticEcuResetClass>,
+    pub(crate) diagnostic_enable_conditions:
+        SlotMap<DiagnosticEnableConditionId, DiagnosticEnableCondition>,
+    pub(crate) diagnostic_enable_condition_groups:
+        SlotMap<DiagnosticEnableConditionGroupId, DiagnosticEnableConditionGroup>,
+    pub(crate) diagnostic_enable_condition_needs:
+        SlotMap<DiagnosticEnableConditionNeedsId, DiagnosticEnableConditionNeeds>,
+    pub(crate) diagnostic_enable_condition_port_mappings:
+        SlotMap<DiagnosticEnableConditionPortMappingId, DiagnosticEnableConditionPortMapping>,
+    pub(crate) diagnostic_env_bsw_mode_elements:
+        SlotMap<DiagnosticEnvBswModeElementId, DiagnosticEnvBswModeElement>,
+    pub(crate) diagnostic_env_condition_formulas:
+        SlotMap<DiagnosticEnvConditionFormulaId, DiagnosticEnvConditionFormula>,
+    pub(crate) diagnostic_env_data_conditions:
+        SlotMap<DiagnosticEnvDataConditionId, DiagnosticEnvDataCondition>,
+    pub(crate) diagnostic_env_data_element_conditions:
+        SlotMap<DiagnosticEnvDataElementConditionId, DiagnosticEnvDataElementCondition>,
+    pub(crate) diagnostic_env_mode_conditions:
+        SlotMap<DiagnosticEnvModeConditionId, DiagnosticEnvModeCondition>,
+    pub(crate) diagnostic_env_swc_mode_elements:
+        SlotMap<DiagnosticEnvSwcModeElementId, DiagnosticEnvSwcModeElement>,
+    pub(crate) diagnostic_environmental_conditions:
+        SlotMap<DiagnosticEnvironmentalConditionId, DiagnosticEnvironmentalCondition>,
+    pub(crate) diagnostic_events: SlotMap<DiagnosticEventId, DiagnosticEvent>,
+    pub(crate) diagnostic_event_info_needs:
+        SlotMap<DiagnosticEventInfoNeedsId, DiagnosticEventInfoNeeds>,
+    pub(crate) diagnostic_event_manager_needs:
+        SlotMap<DiagnosticEventManagerNeedsId, DiagnosticEventManagerNeeds>,
+    pub(crate) diagnostic_event_needs: SlotMap<DiagnosticEventNeedsId, DiagnosticEventNeeds>,
+    pub(crate) diagnostic_event_port_mappings:
+        SlotMap<DiagnosticEventPortMappingId, DiagnosticEventPortMapping>,
+    pub(crate) diagnostic_event_to_debounce_algorithm_mappings: SlotMap<
+        DiagnosticEventToDebounceAlgorithmMappingId,
+        DiagnosticEventToDebounceAlgorithmMapping,
+    >,
+    pub(crate) diagnostic_event_to_enable_condition_group_mappings: SlotMap<
+        DiagnosticEventToEnableConditionGroupMappingId,
+        DiagnosticEventToEnableConditionGroupMapping,
+    >,
+    pub(crate) diagnostic_event_to_operation_cycle_mappings:
+        SlotMap<DiagnosticEventToOperationCycleMappingId, DiagnosticEventToOperationCycleMapping>,
+    pub(crate) diagnostic_event_to_security_event_mappings:
+        SlotMap<DiagnosticEventToSecurityEventMappingId, DiagnosticEventToSecurityEventMapping>,
+    pub(crate) diagnostic_event_to_storage_condition_group_mappings: SlotMap<
+        DiagnosticEventToStorageConditionGroupMappingId,
+        DiagnosticEventToStorageConditionGroupMapping,
+    >,
+    pub(crate) diagnostic_event_to_trouble_code_j1939_mappings: SlotMap<
+        DiagnosticEventToTroubleCodeJ1939MappingId,
+        DiagnosticEventToTroubleCodeJ1939Mapping,
+    >,
+    pub(crate) diagnostic_event_to_trouble_code_uds_mappings:
+        SlotMap<DiagnosticEventToTroubleCodeUdsMappingId, DiagnosticEventToTroubleCodeUdsMapping>,
+    pub(crate) diagnostic_event_windows: SlotMap<DiagnosticEventWindowId, DiagnosticEventWindow>,
+    pub(crate) diagnostic_extended_data_records:
+        SlotMap<DiagnosticExtendedDataRecordId, DiagnosticExtendedDataRecord>,
+    pub(crate) diagnostic_fim_alias_events:
+        SlotMap<DiagnosticFimAliasEventId, DiagnosticFimAliasEvent>,
+    pub(crate) diagnostic_fim_alias_event_groups:
+        SlotMap<DiagnosticFimAliasEventGroupId, DiagnosticFimAliasEventGroup>,
+    pub(crate) diagnostic_fim_alias_event_group_mappings:
+        SlotMap<DiagnosticFimAliasEventGroupMappingId, DiagnosticFimAliasEventGroupMapping>,
+    pub(crate) diagnostic_fim_alias_event_mappings:
+        SlotMap<DiagnosticFimAliasEventMappingId, DiagnosticFimAliasEventMapping>,
+    pub(crate) diagnostic_fim_event_groups:
+        SlotMap<DiagnosticFimEventGroupId, DiagnosticFimEventGroup>,
+    pub(crate) diagnostic_fim_function_mappings:
+        SlotMap<DiagnosticFimFunctionMappingId, DiagnosticFimFunctionMapping>,
+    pub(crate) diagnostic_freeze_frames: SlotMap<DiagnosticFreezeFrameId, DiagnosticFreezeFrame>,
+    pub(crate) diagnostic_function_identifiers:
+        SlotMap<DiagnosticFunctionIdentifierId, DiagnosticFunctionIdentifier>,
+    pub(crate) diagnostic_function_identifier_inhibits:
+        SlotMap<DiagnosticFunctionIdentifierInhibitId, DiagnosticFunctionIdentifierInhibit>,
+    pub(crate) diagnostic_function_inhibit_sources:
+        SlotMap<DiagnosticFunctionInhibitSourceId, DiagnosticFunctionInhibitSource>,
+    pub(crate) diagnostic_io_controls: SlotMap<DiagnosticIOControlId, DiagnosticIOControl>,
+    pub(crate) diagnostic_indicators: SlotMap<DiagnosticIndicatorId, DiagnosticIndicator>,
+    pub(crate) diagnostic_info_types: SlotMap<DiagnosticInfoTypeId, DiagnosticInfoType>,
+    pub(crate) diagnostic_inhibit_source_event_mappings:
+        SlotMap<DiagnosticInhibitSourceEventMappingId, DiagnosticInhibitSourceEventMapping>,
+    pub(crate) diagnostic_io_control_class:
+        SlotMap<DiagnosticIoControlClassId, DiagnosticIoControlClass>,
+    pub(crate) diagnostic_io_control_needs:
+        SlotMap<DiagnosticIoControlNeedsId, DiagnosticIoControlNeeds>,
+    pub(crate) diagnostic_iumprs: SlotMap<DiagnosticIumprId, DiagnosticIumpr>,
+    pub(crate) diagnostic_iumpr_denominator_groups:
+        SlotMap<DiagnosticIumprDenominatorGroupId, DiagnosticIumprDenominatorGroup>,
+    pub(crate) diagnostic_iumpr_groups: SlotMap<DiagnosticIumprGroupId, DiagnosticIumprGroup>,
+    pub(crate) diagnostic_iumpr_group_identifiers:
+        SlotMap<DiagnosticIumprGroupIdentifierId, DiagnosticIumprGroupIdentifier>,
+    pub(crate) diagnostic_iumpr_to_function_identifier_mappings: SlotMap<
+        DiagnosticIumprToFunctionIdentifierMappingId,
+        DiagnosticIumprToFunctionIdentifierMapping,
+    >,
+    pub(crate) diagnostic_j1939_expanded_freeze_frames:
+        SlotMap<DiagnosticJ1939ExpandedFreezeFrameId, DiagnosticJ1939ExpandedFreezeFrame>,
+    pub(crate) diagnostic_j1939_freeze_frames:
+        SlotMap<DiagnosticJ1939FreezeFrameId, DiagnosticJ1939FreezeFrame>,
+    pub(crate) diagnostic_j1939_nodes: SlotMap<DiagnosticJ1939NodeId, DiagnosticJ1939Node>,
+    pub(crate) diagnostic_j1939_spns: SlotMap<DiagnosticJ1939SpnId, DiagnosticJ1939Spn>,
+    pub(crate) diagnostic_j1939_spn_mappings:
+        SlotMap<DiagnosticJ1939SpnMappingId, DiagnosticJ1939SpnMapping>,
+    pub(crate) diagnostic_j1939_sw_mappings:
+        SlotMap<DiagnosticJ1939SwMappingId, DiagnosticJ1939SwMapping>,
+    pub(crate) diagnostic_master_to_slave_event_mappings:
+        SlotMap<DiagnosticMasterToSlaveEventMappingId, DiagnosticMasterToSlaveEventMapping>,
+    pub(crate) diagnostic_measurement_identifiers:
+        SlotMap<DiagnosticMeasurementIdentifierId, DiagnosticMeasurementIdentifier>,
+    pub(crate) diagnostic_memory_destination_primarys:
+        SlotMap<DiagnosticMemoryDestinationPrimaryId, DiagnosticMemoryDestinationPrimary>,
+    pub(crate) diagnostic_memory_destination_user_defineds:
+        SlotMap<DiagnosticMemoryDestinationUserDefinedId, DiagnosticMemoryDestinationUserDefined>,
+    pub(crate) diagnostic_memory_identifiers:
+        SlotMap<DiagnosticMemoryIdentifierId, DiagnosticMemoryIdentifier>,
+    pub(crate) diagnostic_operation_cycles:
+        SlotMap<DiagnosticOperationCycleId, DiagnosticOperationCycle>,
+    pub(crate) diagnostic_operation_cycle_needs:
+        SlotMap<DiagnosticOperationCycleNeedsId, DiagnosticOperationCycleNeeds>,
+    pub(crate) diagnostic_operation_cycle_port_mappings:
+        SlotMap<DiagnosticOperationCyclePortMappingId, DiagnosticOperationCyclePortMapping>,
+    pub(crate) diagnostic_parameters: SlotMap<DiagnosticParameterId, DiagnosticParameter>,
+    pub(crate) diagnostic_parameter_elements:
+        SlotMap<DiagnosticParameterElementId, DiagnosticParameterElement>,
+    pub(crate) diagnostic_parameter_element_access:
+        SlotMap<DiagnosticParameterElementAccessId, DiagnosticParameterElementAccess>,
+    pub(crate) diagnostic_parameter_idents:
+        SlotMap<DiagnosticParameterIdentId, DiagnosticParameterIdent>,
+    pub(crate) diagnostic_parameter_identifiers:
+        SlotMap<DiagnosticParameterIdentifierId, DiagnosticParameterIdentifier>,
+    pub(crate) diagnostic_parameter_support_infos:
+        SlotMap<DiagnosticParameterSupportInfoId, DiagnosticParameterSupportInfo>,
+    pub(crate) diagnostic_periodic_rates: SlotMap<DiagnosticPeriodicRateId, DiagnosticPeriodicRate>,
+    pub(crate) diagnostic_powertrain_freeze_frames:
+        SlotMap<DiagnosticPowertrainFreezeFrameId, DiagnosticPowertrainFreezeFrame>,
+    pub(crate) diagnostic_proof_of_ownerships:
+        SlotMap<DiagnosticProofOfOwnershipId, DiagnosticProofOfOwnership>,
+    pub(crate) diagnostic_protocols: SlotMap<DiagnosticProtocolId, DiagnosticProtocol>,
+    pub(crate) diagnostic_read_dtc_informations:
+        SlotMap<DiagnosticReadDTCInformationId, DiagnosticReadDTCInformation>,
+    pub(crate) diagnostic_read_dtc_information_class:
+        SlotMap<DiagnosticReadDTCInformationClassId, DiagnosticReadDTCInformationClass>,
+    pub(crate) diagnostic_read_data_by_identifiers:
+        SlotMap<DiagnosticReadDataByIdentifierId, DiagnosticReadDataByIdentifier>,
+    pub(crate) diagnostic_read_data_by_identifier_class:
+        SlotMap<DiagnosticReadDataByIdentifierClassId, DiagnosticReadDataByIdentifierClass>,
+    pub(crate) diagnostic_read_data_by_periodic_ids:
+        SlotMap<DiagnosticReadDataByPeriodicIDId, DiagnosticReadDataByPeriodicID>,
+    pub(crate) diagnostic_read_data_by_periodic_id_class:
+        SlotMap<DiagnosticReadDataByPeriodicIDClassId, DiagnosticReadDataByPeriodicIDClass>,
+    pub(crate) diagnostic_read_memory_by_address:
+        SlotMap<DiagnosticReadMemoryByAddressId, DiagnosticReadMemoryByAddress>,
+    pub(crate) diagnostic_read_memory_by_address_class:
+        SlotMap<DiagnosticReadMemoryByAddressClassId, DiagnosticReadMemoryByAddressClass>,
+    pub(crate) diagnostic_read_scaling_data_by_identifiers:
+        SlotMap<DiagnosticReadScalingDataByIdentifierId, DiagnosticReadScalingDataByIdentifier>,
+    pub(crate) diagnostic_read_scaling_data_by_identifier_class: SlotMap<
+        DiagnosticReadScalingDataByIdentifierClassId,
+        DiagnosticReadScalingDataByIdentifierClass,
+    >,
+    pub(crate) diagnostic_request_control_of_on_board_devices:
+        SlotMap<DiagnosticRequestControlOfOnBoardDeviceId, DiagnosticRequestControlOfOnBoardDevice>,
+    pub(crate) diagnostic_request_control_of_on_board_device_class: SlotMap<
+        DiagnosticRequestControlOfOnBoardDeviceClassId,
+        DiagnosticRequestControlOfOnBoardDeviceClass,
+    >,
+    pub(crate) diagnostic_request_current_powertrain_datas:
+        SlotMap<DiagnosticRequestCurrentPowertrainDataId, DiagnosticRequestCurrentPowertrainData>,
+    pub(crate) diagnostic_request_current_powertrain_data_class: SlotMap<
+        DiagnosticRequestCurrentPowertrainDataClassId,
+        DiagnosticRequestCurrentPowertrainDataClass,
+    >,
+    pub(crate) diagnostic_request_downloads:
+        SlotMap<DiagnosticRequestDownloadId, DiagnosticRequestDownload>,
+    pub(crate) diagnostic_request_download_class:
+        SlotMap<DiagnosticRequestDownloadClassId, DiagnosticRequestDownloadClass>,
+    pub(crate) diagnostic_request_emission_related_dtcs:
+        SlotMap<DiagnosticRequestEmissionRelatedDTCId, DiagnosticRequestEmissionRelatedDTC>,
+    pub(crate) diagnostic_request_emission_related_dtc_class: SlotMap<
+        DiagnosticRequestEmissionRelatedDTCClassId,
+        DiagnosticRequestEmissionRelatedDTCClass,
+    >,
+    pub(crate) diagnostic_request_emission_related_dtc_permanent_status: SlotMap<
+        DiagnosticRequestEmissionRelatedDTCPermanentStatusId,
+        DiagnosticRequestEmissionRelatedDTCPermanentStatus,
+    >,
+    pub(crate) diagnostic_request_emission_related_dtc_permanent_status_class: SlotMap<
+        DiagnosticRequestEmissionRelatedDTCPermanentStatusClassId,
+        DiagnosticRequestEmissionRelatedDTCPermanentStatusClass,
+    >,
+    pub(crate) diagnostic_request_file_transfers:
+        SlotMap<DiagnosticRequestFileTransferId, DiagnosticRequestFileTransfer>,
+    pub(crate) diagnostic_request_file_transfer_class:
+        SlotMap<DiagnosticRequestFileTransferClassId, DiagnosticRequestFileTransferClass>,
+    pub(crate) diagnostic_request_file_transfer_needs:
+        SlotMap<DiagnosticRequestFileTransferNeedsId, DiagnosticRequestFileTransferNeeds>,
+    pub(crate) diagnostic_request_on_board_monitoring_test_results: SlotMap<
+        DiagnosticRequestOnBoardMonitoringTestResultsId,
+        DiagnosticRequestOnBoardMonitoringTestResults,
+    >,
+    pub(crate) diagnostic_request_on_board_monitoring_test_results_class: SlotMap<
+        DiagnosticRequestOnBoardMonitoringTestResultsClassId,
+        DiagnosticRequestOnBoardMonitoringTestResultsClass,
+    >,
+    pub(crate) diagnostic_request_powertrain_freeze_frame_datas: SlotMap<
+        DiagnosticRequestPowertrainFreezeFrameDataId,
+        DiagnosticRequestPowertrainFreezeFrameData,
+    >,
+    pub(crate) diagnostic_request_powertrain_freeze_frame_data_class: SlotMap<
+        DiagnosticRequestPowertrainFreezeFrameDataClassId,
+        DiagnosticRequestPowertrainFreezeFrameDataClass,
+    >,
+    pub(crate) diagnostic_request_routine_results:
+        SlotMap<DiagnosticRequestRoutineResultsId, DiagnosticRequestRoutineResults>,
+    pub(crate) diagnostic_request_uploads:
+        SlotMap<DiagnosticRequestUploadId, DiagnosticRequestUpload>,
+    pub(crate) diagnostic_request_upload_class:
+        SlotMap<DiagnosticRequestUploadClassId, DiagnosticRequestUploadClass>,
+    pub(crate) diagnostic_request_vehicle_infos:
+        SlotMap<DiagnosticRequestVehicleInfoId, DiagnosticRequestVehicleInfo>,
+    pub(crate) diagnostic_request_vehicle_info_class:
+        SlotMap<DiagnosticRequestVehicleInfoClassId, DiagnosticRequestVehicleInfoClass>,
+    pub(crate) diagnostic_response_on_events:
+        SlotMap<DiagnosticResponseOnEventId, DiagnosticResponseOnEvent>,
+    pub(crate) diagnostic_response_on_event_class:
+        SlotMap<DiagnosticResponseOnEventClassId, DiagnosticResponseOnEventClass>,
+    pub(crate) diagnostic_routines: SlotMap<DiagnosticRoutineId, DiagnosticRoutine>,
+    pub(crate) diagnostic_routine_controls:
+        SlotMap<DiagnosticRoutineControlId, DiagnosticRoutineControl>,
+    pub(crate) diagnostic_routine_control_class:
+        SlotMap<DiagnosticRoutineControlClassId, DiagnosticRoutineControlClass>,
+    pub(crate) diagnostic_routine_needs: SlotMap<DiagnosticRoutineNeedsId, DiagnosticRoutineNeeds>,
+    pub(crate) diagnostic_security_access:
+        SlotMap<DiagnosticSecurityAccessId, DiagnosticSecurityAccess>,
+    pub(crate) diagnostic_security_access_class:
+        SlotMap<DiagnosticSecurityAccessClassId, DiagnosticSecurityAccessClass>,
+    pub(crate) diagnostic_security_event_reporting_mode_mappings: SlotMap<
+        DiagnosticSecurityEventReportingModeMappingId,
+        DiagnosticSecurityEventReportingModeMapping,
+    >,
+    pub(crate) diagnostic_security_levels:
+        SlotMap<DiagnosticSecurityLevelId, DiagnosticSecurityLevel>,
+    pub(crate) diagnostic_service_data_mappings:
+        SlotMap<DiagnosticServiceDataMappingId, DiagnosticServiceDataMapping>,
+    pub(crate) diagnostic_service_sw_mappings:
+        SlotMap<DiagnosticServiceSwMappingId, DiagnosticServiceSwMapping>,
+    pub(crate) diagnostic_service_tables: SlotMap<DiagnosticServiceTableId, DiagnosticServiceTable>,
+    pub(crate) diagnostic_sessions: SlotMap<DiagnosticSessionId, DiagnosticSession>,
+    pub(crate) diagnostic_session_controls:
+        SlotMap<DiagnosticSessionControlId, DiagnosticSessionControl>,
+    pub(crate) diagnostic_session_control_class:
+        SlotMap<DiagnosticSessionControlClassId, DiagnosticSessionControlClass>,
+    pub(crate) diagnostic_start_routines: SlotMap<DiagnosticStartRoutineId, DiagnosticStartRoutine>,
+    pub(crate) diagnostic_stop_routines: SlotMap<DiagnosticStopRoutineId, DiagnosticStopRoutine>,
+    pub(crate) diagnostic_storage_conditions:
+        SlotMap<DiagnosticStorageConditionId, DiagnosticStorageCondition>,
+    pub(crate) diagnostic_storage_condition_groups:
+        SlotMap<DiagnosticStorageConditionGroupId, DiagnosticStorageConditionGroup>,
+    pub(crate) diagnostic_storage_condition_needs:
+        SlotMap<DiagnosticStorageConditionNeedsId, DiagnosticStorageConditionNeeds>,
+    pub(crate) diagnostic_storage_condition_port_mappings:
+        SlotMap<DiagnosticStorageConditionPortMappingId, DiagnosticStorageConditionPortMapping>,
+    pub(crate) diagnostic_support_info_bytes:
+        SlotMap<DiagnosticSupportInfoByteId, DiagnosticSupportInfoByte>,
+    pub(crate) diagnostic_test_identifiers:
+        SlotMap<DiagnosticTestIdentifierId, DiagnosticTestIdentifier>,
+    pub(crate) diagnostic_test_results: SlotMap<DiagnosticTestResultId, DiagnosticTestResult>,
+    pub(crate) diagnostic_test_routine_identifiers:
+        SlotMap<DiagnosticTestRoutineIdentifierId, DiagnosticTestRoutineIdentifier>,
+    pub(crate) diagnostic_transfer_exits: SlotMap<DiagnosticTransferExitId, DiagnosticTransferExit>,
+    pub(crate) diagnostic_transfer_exit_class:
+        SlotMap<DiagnosticTransferExitClassId, DiagnosticTransferExitClass>,
+    pub(crate) diagnostic_trouble_code_groups:
+        SlotMap<DiagnosticTroubleCodeGroupId, DiagnosticTroubleCodeGroup>,
+    pub(crate) diagnostic_trouble_code_j1939s:
+        SlotMap<DiagnosticTroubleCodeJ1939Id, DiagnosticTroubleCodeJ1939>,
+    pub(crate) diagnostic_trouble_code_obds:
+        SlotMap<DiagnosticTroubleCodeObdId, DiagnosticTroubleCodeObd>,
+    pub(crate) diagnostic_trouble_code_props:
+        SlotMap<DiagnosticTroubleCodePropsId, DiagnosticTroubleCodeProps>,
+    pub(crate) diagnostic_trouble_code_uds:
+        SlotMap<DiagnosticTroubleCodeUdsId, DiagnosticTroubleCodeUds>,
+    pub(crate) diagnostic_trouble_code_uds_to_trouble_code_obd_mappings: SlotMap<
+        DiagnosticTroubleCodeUdsToTroubleCodeObdMappingId,
+        DiagnosticTroubleCodeUdsToTroubleCodeObdMapping,
+    >,
+    pub(crate) diagnostic_upload_download_needs:
+        SlotMap<DiagnosticUploadDownloadNeedsId, DiagnosticUploadDownloadNeeds>,
+    pub(crate) diagnostic_value_needs: SlotMap<DiagnosticValueNeedsId, DiagnosticValueNeeds>,
+    pub(crate) diagnostic_verify_certificate_bidirectionals: SlotMap<
+        DiagnosticVerifyCertificateBidirectionalId,
+        DiagnosticVerifyCertificateBidirectional,
+    >,
+    pub(crate) diagnostic_verify_certificate_unidirectionals: SlotMap<
+        DiagnosticVerifyCertificateUnidirectionalId,
+        DiagnosticVerifyCertificateUnidirectional,
+    >,
+    pub(crate) diagnostic_write_data_by_identifiers:
+        SlotMap<DiagnosticWriteDataByIdentifierId, DiagnosticWriteDataByIdentifier>,
+    pub(crate) diagnostic_write_data_by_identifier_class:
+        SlotMap<DiagnosticWriteDataByIdentifierClassId, DiagnosticWriteDataByIdentifierClass>,
+    pub(crate) diagnostic_write_memory_by_address:
+        SlotMap<DiagnosticWriteMemoryByAddressId, DiagnosticWriteMemoryByAddress>,
+    pub(crate) diagnostic_write_memory_by_address_class:
+        SlotMap<DiagnosticWriteMemoryByAddressClassId, DiagnosticWriteMemoryByAddressClass>,
+    pub(crate) diagnostics_communication_security_needs:
+        SlotMap<DiagnosticsCommunicationSecurityNeedsId, DiagnosticsCommunicationSecurityNeeds>,
+    pub(crate) dlt_applications: SlotMap<DltApplicationId, DltApplication>,
+    pub(crate) dlt_arguments: SlotMap<DltArgumentId, DltArgument>,
+    pub(crate) dlt_configs: SlotMap<DltConfigId, DltConfig>,
+    pub(crate) dlt_contexts: SlotMap<DltContextId, DltContext>,
+    pub(crate) dlt_ecus: SlotMap<DltEcuId, DltEcu>,
+    pub(crate) dlt_log_channels: SlotMap<DltLogChannelId, DltLogChannel>,
+    pub(crate) dlt_messages: SlotMap<DltMessageId, DltMessage>,
+    pub(crate) dlt_user_needs: SlotMap<DltUserNeedsId, DltUserNeeds>,
+    pub(crate) do_ip_activation_line_needs:
+        SlotMap<DoIpActivationLineNeedsId, DoIpActivationLineNeeds>,
+    pub(crate) do_ip_configs: SlotMap<DoIpConfigId, DoIpConfig>,
+    pub(crate) do_ip_entitys: SlotMap<DoIpEntityId, DoIpEntity>,
+    pub(crate) do_ip_gid_needs: SlotMap<DoIpGidNeedsId, DoIpGidNeeds>,
+    pub(crate) do_ip_gid_synchronization_needs:
+        SlotMap<DoIpGidSynchronizationNeedsId, DoIpGidSynchronizationNeeds>,
+    pub(crate) do_ip_interfaces: SlotMap<DoIpInterfaceId, DoIpInterface>,
+    pub(crate) do_ip_logic_address: SlotMap<DoIpLogicAddressId, DoIpLogicAddress>,
+    pub(crate) do_ip_logic_target_address_props:
+        SlotMap<DoIpLogicTargetAddressPropsId, DoIpLogicTargetAddressProps>,
+    pub(crate) do_ip_logic_tester_address_props:
+        SlotMap<DoIpLogicTesterAddressPropsId, DoIpLogicTesterAddressProps>,
+    pub(crate) do_ip_power_mode_status_needs:
+        SlotMap<DoIpPowerModeStatusNeedsId, DoIpPowerModeStatusNeeds>,
+    pub(crate) do_ip_routing_activations: SlotMap<DoIpRoutingActivationId, DoIpRoutingActivation>,
+    pub(crate) do_ip_routing_activation_authentication_needs: SlotMap<
+        DoIpRoutingActivationAuthenticationNeedsId,
+        DoIpRoutingActivationAuthenticationNeeds,
+    >,
+    pub(crate) do_ip_routing_activation_confirmation_needs:
+        SlotMap<DoIpRoutingActivationConfirmationNeedsId, DoIpRoutingActivationConfirmationNeeds>,
+    pub(crate) do_ip_rules: SlotMap<DoIpRuleId, DoIpRule>,
+    pub(crate) do_ip_tp_configs: SlotMap<DoIpTpConfigId, DoIpTpConfig>,
+    pub(crate) do_ip_tp_connections: SlotMap<DoIpTpConnectionId, DoIpTpConnection>,
     pub(crate) doc_revisions: SlotMap<DocRevisionId, DocRevision>,
-    pub(crate) multi_language_plain_texts:
-        SlotMap<MultiLanguagePlainTextId, MultiLanguagePlainText>,
-    /// P0 placeholder arena: nothing allocates overview paragraphs until P1.
-    #[allow(dead_code)]
+    pub(crate) document_element_scopes: SlotMap<DocumentElementScopeId, DocumentElementScope>,
+    pub(crate) documentations: SlotMap<DocumentationId, Documentation>,
+    pub(crate) documentation_blocks: SlotMap<DocumentationBlockId, DocumentationBlock>,
+    pub(crate) documentation_contexts: SlotMap<DocumentationContextId, DocumentationContext>,
+    pub(crate) dtc_status_change_notification_needs:
+        SlotMap<DtcStatusChangeNotificationNeedsId, DtcStatusChangeNotificationNeeds>,
+    pub(crate) dynamic_parts: SlotMap<DynamicPartId, DynamicPart>,
+    pub(crate) dynamic_part_alternatives: SlotMap<DynamicPartAlternativeId, DynamicPartAlternative>,
+    pub(crate) e2_e_profile_compatibility_props:
+        SlotMap<E2EProfileCompatibilityPropsId, E2EProfileCompatibilityProps>,
+    pub(crate) ecu_mappings: SlotMap<ECUMappingId, ECUMapping>,
+    pub(crate) eoc_event_refs: SlotMap<EOCEventRefId, EOCEventRef>,
+    pub(crate) eoc_executable_entity_refs:
+        SlotMap<EOCExecutableEntityRefId, EOCExecutableEntityRef>,
+    pub(crate) eoc_executable_entity_ref_groups:
+        SlotMap<EOCExecutableEntityRefGroupId, EOCExecutableEntityRefGroup>,
+    pub(crate) ecu_abstraction_sw_component_types:
+        SlotMap<EcuAbstractionSwComponentTypeId, EcuAbstractionSwComponentType>,
+    pub(crate) ecu_instances: SlotMap<EcuInstanceId, EcuInstance>,
+    pub(crate) ecu_partitions: SlotMap<EcuPartitionId, EcuPartition>,
+    pub(crate) ecu_resource_estimations: SlotMap<EcuResourceEstimationId, EcuResourceEstimation>,
+    pub(crate) ecu_state_mgr_user_needs: SlotMap<EcuStateMgrUserNeedsId, EcuStateMgrUserNeeds>,
+    pub(crate) ecu_timings: SlotMap<EcuTimingId, EcuTiming>,
+    pub(crate) ecuc_add_info_param_defs: SlotMap<EcucAddInfoParamDefId, EcucAddInfoParamDef>,
+    pub(crate) ecuc_add_info_param_values: SlotMap<EcucAddInfoParamValueId, EcucAddInfoParamValue>,
+    pub(crate) ecuc_boolean_param_defs: SlotMap<EcucBooleanParamDefId, EcucBooleanParamDef>,
+    pub(crate) ecuc_choice_container_defs:
+        SlotMap<EcucChoiceContainerDefId, EcucChoiceContainerDef>,
+    pub(crate) ecuc_choice_reference_defs:
+        SlotMap<EcucChoiceReferenceDefId, EcucChoiceReferenceDef>,
+    pub(crate) ecuc_condition_formulas: SlotMap<EcucConditionFormulaId, EcucConditionFormula>,
+    pub(crate) ecuc_condition_specifications:
+        SlotMap<EcucConditionSpecificationId, EcucConditionSpecification>,
+    pub(crate) ecuc_container_values: SlotMap<EcucContainerValueId, EcucContainerValue>,
+    pub(crate) ecuc_definition_collections:
+        SlotMap<EcucDefinitionCollectionId, EcucDefinitionCollection>,
+    pub(crate) ecuc_derivation_specifications:
+        SlotMap<EcucDerivationSpecificationId, EcucDerivationSpecification>,
+    pub(crate) ecuc_destination_uri_defs: SlotMap<EcucDestinationUriDefId, EcucDestinationUriDef>,
+    pub(crate) ecuc_destination_uri_def_ref_types:
+        SlotMap<EcucDestinationUriDefRefTypeId, EcucDestinationUriDefRefType>,
+    pub(crate) ecuc_destination_uri_def_sets:
+        SlotMap<EcucDestinationUriDefSetId, EcucDestinationUriDefSet>,
+    pub(crate) ecuc_destination_uri_policys:
+        SlotMap<EcucDestinationUriPolicyId, EcucDestinationUriPolicy>,
+    pub(crate) ecuc_enumeration_literal_defs:
+        SlotMap<EcucEnumerationLiteralDefId, EcucEnumerationLiteralDef>,
+    pub(crate) ecuc_enumeration_param_defs:
+        SlotMap<EcucEnumerationParamDefId, EcucEnumerationParamDef>,
+    pub(crate) ecuc_float_param_defs: SlotMap<EcucFloatParamDefId, EcucFloatParamDef>,
+    pub(crate) ecuc_foreign_reference_defs:
+        SlotMap<EcucForeignReferenceDefId, EcucForeignReferenceDef>,
+    pub(crate) ecuc_function_name_defs: SlotMap<EcucFunctionNameDefId, EcucFunctionNameDef>,
+    pub(crate) ecuc_instance_reference_defs:
+        SlotMap<EcucInstanceReferenceDefId, EcucInstanceReferenceDef>,
+    pub(crate) ecuc_instance_reference_values:
+        SlotMap<EcucInstanceReferenceValueId, EcucInstanceReferenceValue>,
+    pub(crate) ecuc_integer_param_defs: SlotMap<EcucIntegerParamDefId, EcucIntegerParamDef>,
+    pub(crate) ecuc_linker_symbol_defs: SlotMap<EcucLinkerSymbolDefId, EcucLinkerSymbolDef>,
+    pub(crate) ecuc_module_configuration_values:
+        SlotMap<EcucModuleConfigurationValuesId, EcucModuleConfigurationValues>,
+    pub(crate) ecuc_module_defs: SlotMap<EcucModuleDefId, EcucModuleDef>,
+    pub(crate) ecuc_multiline_string_param_defs:
+        SlotMap<EcucMultilineStringParamDefId, EcucMultilineStringParamDef>,
+    pub(crate) ecuc_multiplicity_configuration_class:
+        SlotMap<EcucMultiplicityConfigurationClassId, EcucMultiplicityConfigurationClass>,
+    pub(crate) ecuc_numerical_param_values:
+        SlotMap<EcucNumericalParamValueId, EcucNumericalParamValue>,
+    pub(crate) ecuc_param_conf_container_defs:
+        SlotMap<EcucParamConfContainerDefId, EcucParamConfContainerDef>,
+    pub(crate) ecuc_parameter_derivation_formulas:
+        SlotMap<EcucParameterDerivationFormulaId, EcucParameterDerivationFormula>,
+    pub(crate) ecuc_querys: SlotMap<EcucQueryId, EcucQuery>,
+    pub(crate) ecuc_query_expressions: SlotMap<EcucQueryExpressionId, EcucQueryExpression>,
+    pub(crate) ecuc_reference_defs: SlotMap<EcucReferenceDefId, EcucReferenceDef>,
+    pub(crate) ecuc_reference_values: SlotMap<EcucReferenceValueId, EcucReferenceValue>,
+    pub(crate) ecuc_string_param_defs: SlotMap<EcucStringParamDefId, EcucStringParamDef>,
+    pub(crate) ecuc_symbolic_name_reference_defs:
+        SlotMap<EcucSymbolicNameReferenceDefId, EcucSymbolicNameReferenceDef>,
+    pub(crate) ecuc_textual_param_values: SlotMap<EcucTextualParamValueId, EcucTextualParamValue>,
+    pub(crate) ecuc_uri_reference_defs: SlotMap<EcucUriReferenceDefId, EcucUriReferenceDef>,
+    pub(crate) ecuc_validation_conditions:
+        SlotMap<EcucValidationConditionId, EcucValidationCondition>,
+    pub(crate) ecuc_value_collections: SlotMap<EcucValueCollectionId, EcucValueCollection>,
+    pub(crate) ecuc_value_configuration_class:
+        SlotMap<EcucValueConfigurationClassId, EcucValueConfigurationClass>,
+    pub(crate) emphasis_texts: SlotMap<EmphasisTextId, EmphasisText>,
+    pub(crate) end_to_end_descriptions: SlotMap<EndToEndDescriptionId, EndToEndDescription>,
+    pub(crate) end_to_end_protections: SlotMap<EndToEndProtectionId, EndToEndProtection>,
+    pub(crate) end_to_end_protection_i_signal_i_pdus:
+        SlotMap<EndToEndProtectionISignalIPduId, EndToEndProtectionISignalIPdu>,
+    pub(crate) end_to_end_protection_sets: SlotMap<EndToEndProtectionSetId, EndToEndProtectionSet>,
+    pub(crate) end_to_end_protection_variable_prototypes:
+        SlotMap<EndToEndProtectionVariablePrototypeId, EndToEndProtectionVariablePrototype>,
+    pub(crate) end_to_end_transformation_com_spec_props:
+        SlotMap<EndToEndTransformationComSpecPropsId, EndToEndTransformationComSpecProps>,
+    pub(crate) end_to_end_transformation_descriptions:
+        SlotMap<EndToEndTransformationDescriptionId, EndToEndTransformationDescription>,
+    pub(crate) end_to_end_transformation_i_signal_props:
+        SlotMap<EndToEndTransformationISignalPropsId, EndToEndTransformationISignalProps>,
+    pub(crate) entrys: SlotMap<EntryId, Entry>,
+    pub(crate) enumeration_values: SlotMap<EnumerationValueId, EnumerationValue>,
+    pub(crate) error_tracer_needs: SlotMap<ErrorTracerNeedsId, ErrorTracerNeeds>,
+    pub(crate) eth_global_time_domain_props:
+        SlotMap<EthGlobalTimeDomainPropsId, EthGlobalTimeDomainProps>,
+    pub(crate) eth_global_time_managed_coupling_ports:
+        SlotMap<EthGlobalTimeManagedCouplingPortId, EthGlobalTimeManagedCouplingPort>,
+    pub(crate) eth_ip_props: SlotMap<EthIpPropsId, EthIpProps>,
+    pub(crate) eth_t_syn_crc_flags: SlotMap<EthTSynCrcFlagsId, EthTSynCrcFlags>,
+    pub(crate) eth_t_syn_sub_tlv_configs: SlotMap<EthTSynSubTlvConfigId, EthTSynSubTlvConfig>,
+    pub(crate) eth_tcp_ip_icmp_props: SlotMap<EthTcpIpIcmpPropsId, EthTcpIpIcmpProps>,
+    pub(crate) eth_tcp_ip_props: SlotMap<EthTcpIpPropsId, EthTcpIpProps>,
+    pub(crate) eth_tp_configs: SlotMap<EthTpConfigId, EthTpConfig>,
+    pub(crate) eth_tp_connections: SlotMap<EthTpConnectionId, EthTpConnection>,
+    pub(crate) ethernet_clusters: SlotMap<EthernetClusterId, EthernetCluster>,
+    pub(crate) ethernet_communication_connectors:
+        SlotMap<EthernetCommunicationConnectorId, EthernetCommunicationConnector>,
+    pub(crate) ethernet_communication_controllers:
+        SlotMap<EthernetCommunicationControllerId, EthernetCommunicationController>,
+    pub(crate) ethernet_frame_triggerings:
+        SlotMap<EthernetFrameTriggeringId, EthernetFrameTriggering>,
+    pub(crate) ethernet_physical_channels:
+        SlotMap<EthernetPhysicalChannelId, EthernetPhysicalChannel>,
+    pub(crate) ethernet_priority_regenerations:
+        SlotMap<EthernetPriorityRegenerationId, EthernetPriorityRegeneration>,
+    pub(crate) ethernet_wakeup_sleep_on_dataline_configs:
+        SlotMap<EthernetWakeupSleepOnDatalineConfigId, EthernetWakeupSleepOnDatalineConfig>,
+    pub(crate) ethernet_wakeup_sleep_on_dataline_config_sets:
+        SlotMap<EthernetWakeupSleepOnDatalineConfigSetId, EthernetWakeupSleepOnDatalineConfigSet>,
+    pub(crate) evaluated_variant_sets: SlotMap<EvaluatedVariantSetId, EvaluatedVariantSet>,
+    pub(crate) event_controlled_timings: SlotMap<EventControlledTimingId, EventControlledTiming>,
+    pub(crate) event_handlers: SlotMap<EventHandlerId, EventHandler>,
+    pub(crate) event_obd_readiness_groups:
+        SlotMap<EventObdReadinessGroupId, EventObdReadinessGroup>,
+    pub(crate) exclusive_areas: SlotMap<ExclusiveAreaId, ExclusiveArea>,
+    pub(crate) exclusive_area_nesting_orders:
+        SlotMap<ExclusiveAreaNestingOrderId, ExclusiveAreaNestingOrder>,
+    pub(crate) executable_entity_activation_reasons:
+        SlotMap<ExecutableEntityActivationReasonId, ExecutableEntityActivationReason>,
+    pub(crate) execution_order_constraints:
+        SlotMap<ExecutionOrderConstraintId, ExecutionOrderConstraint>,
+    pub(crate) execution_time_constraints:
+        SlotMap<ExecutionTimeConstraintId, ExecutionTimeConstraint>,
+    pub(crate) external_trigger_occurred_events:
+        SlotMap<ExternalTriggerOccurredEventId, ExternalTriggerOccurredEvent>,
+    pub(crate) external_triggering_points:
+        SlotMap<ExternalTriggeringPointId, ExternalTriggeringPoint>,
+    pub(crate) external_triggering_point_idents:
+        SlotMap<ExternalTriggeringPointIdentId, ExternalTriggeringPointIdent>,
+    pub(crate) fm_attribute_defs: SlotMap<FMAttributeDefId, FMAttributeDef>,
+    pub(crate) fm_attribute_values: SlotMap<FMAttributeValueId, FMAttributeValue>,
+    pub(crate) fm_condition_by_features_and_attributes:
+        SlotMap<FMConditionByFeaturesAndAttributesId, FMConditionByFeaturesAndAttributes>,
+    pub(crate) fm_condition_by_features_and_sw_systemconsts:
+        SlotMap<FMConditionByFeaturesAndSwSystemconstsId, FMConditionByFeaturesAndSwSystemconsts>,
+    pub(crate) fm_features: SlotMap<FMFeatureId, FMFeature>,
+    pub(crate) fm_feature_decompositions: SlotMap<FMFeatureDecompositionId, FMFeatureDecomposition>,
+    pub(crate) fm_feature_maps: SlotMap<FMFeatureMapId, FMFeatureMap>,
+    pub(crate) fm_feature_map_assertions: SlotMap<FMFeatureMapAssertionId, FMFeatureMapAssertion>,
+    pub(crate) fm_feature_map_conditions: SlotMap<FMFeatureMapConditionId, FMFeatureMapCondition>,
+    pub(crate) fm_feature_map_elements: SlotMap<FMFeatureMapElementId, FMFeatureMapElement>,
+    pub(crate) fm_feature_models: SlotMap<FMFeatureModelId, FMFeatureModel>,
+    pub(crate) fm_feature_relations: SlotMap<FMFeatureRelationId, FMFeatureRelation>,
+    pub(crate) fm_feature_restrictions: SlotMap<FMFeatureRestrictionId, FMFeatureRestriction>,
+    pub(crate) fm_feature_selections: SlotMap<FMFeatureSelectionId, FMFeatureSelection>,
+    pub(crate) fm_feature_selection_sets: SlotMap<FMFeatureSelectionSetId, FMFeatureSelectionSet>,
+    pub(crate) fields: SlotMap<FieldId, Field>,
+    pub(crate) firewall_rules: SlotMap<FirewallRuleId, FirewallRule>,
+    pub(crate) firewall_rule_props: SlotMap<FirewallRulePropsId, FirewallRuleProps>,
+    pub(crate) flat_instance_descriptors: SlotMap<FlatInstanceDescriptorId, FlatInstanceDescriptor>,
+    pub(crate) flat_maps: SlotMap<FlatMapId, FlatMap>,
+    pub(crate) flexray_absolutely_scheduled_timings:
+        SlotMap<FlexrayAbsolutelyScheduledTimingId, FlexrayAbsolutelyScheduledTiming>,
+    pub(crate) flexray_ar_tp_channels: SlotMap<FlexrayArTpChannelId, FlexrayArTpChannel>,
+    pub(crate) flexray_ar_tp_configs: SlotMap<FlexrayArTpConfigId, FlexrayArTpConfig>,
+    pub(crate) flexray_ar_tp_connections: SlotMap<FlexrayArTpConnectionId, FlexrayArTpConnection>,
+    pub(crate) flexray_ar_tp_nodes: SlotMap<FlexrayArTpNodeId, FlexrayArTpNode>,
+    pub(crate) flexray_clusters: SlotMap<FlexrayClusterId, FlexrayCluster>,
+    pub(crate) flexray_communication_connectors:
+        SlotMap<FlexrayCommunicationConnectorId, FlexrayCommunicationConnector>,
+    pub(crate) flexray_communication_controllers:
+        SlotMap<FlexrayCommunicationControllerId, FlexrayCommunicationController>,
+    pub(crate) flexray_fifo_configurations:
+        SlotMap<FlexrayFifoConfigurationId, FlexrayFifoConfiguration>,
+    pub(crate) flexray_fifo_ranges: SlotMap<FlexrayFifoRangeId, FlexrayFifoRange>,
+    pub(crate) flexray_frames: SlotMap<FlexrayFrameId, FlexrayFrame>,
+    pub(crate) flexray_frame_triggerings: SlotMap<FlexrayFrameTriggeringId, FlexrayFrameTriggering>,
+    pub(crate) flexray_nm_clusters: SlotMap<FlexrayNmClusterId, FlexrayNmCluster>,
+    pub(crate) flexray_nm_cluster_couplings:
+        SlotMap<FlexrayNmClusterCouplingId, FlexrayNmClusterCoupling>,
+    pub(crate) flexray_nm_ecus: SlotMap<FlexrayNmEcuId, FlexrayNmEcu>,
+    pub(crate) flexray_nm_nodes: SlotMap<FlexrayNmNodeId, FlexrayNmNode>,
+    pub(crate) flexray_physical_channels: SlotMap<FlexrayPhysicalChannelId, FlexrayPhysicalChannel>,
+    pub(crate) flexray_tp_configs: SlotMap<FlexrayTpConfigId, FlexrayTpConfig>,
+    pub(crate) flexray_tp_connections: SlotMap<FlexrayTpConnectionId, FlexrayTpConnection>,
+    pub(crate) flexray_tp_connection_controls:
+        SlotMap<FlexrayTpConnectionControlId, FlexrayTpConnectionControl>,
+    pub(crate) flexray_tp_ecus: SlotMap<FlexrayTpEcuId, FlexrayTpEcu>,
+    pub(crate) flexray_tp_nodes: SlotMap<FlexrayTpNodeId, FlexrayTpNode>,
+    pub(crate) flexray_tp_pdu_pools: SlotMap<FlexrayTpPduPoolId, FlexrayTpPduPool>,
+    pub(crate) float_values: SlotMap<FloatValueId, FloatValue>,
+    pub(crate) float_value_variation_points:
+        SlotMap<FloatValueVariationPointId, FloatValueVariationPoint>,
+    pub(crate) forbidden_signal_paths: SlotMap<ForbiddenSignalPathId, ForbiddenSignalPath>,
+    pub(crate) fr_global_time_domain_props:
+        SlotMap<FrGlobalTimeDomainPropsId, FrGlobalTimeDomainProps>,
+    pub(crate) frame_mappings: SlotMap<FrameMappingId, FrameMapping>,
+    pub(crate) frame_pids: SlotMap<FramePidId, FramePid>,
+    pub(crate) frame_ports: SlotMap<FramePortId, FramePort>,
+    pub(crate) free_formats: SlotMap<FreeFormatId, FreeFormat>,
+    pub(crate) function_inhibition_availability_needs:
+        SlotMap<FunctionInhibitionAvailabilityNeedsId, FunctionInhibitionAvailabilityNeeds>,
+    pub(crate) function_inhibition_needs:
+        SlotMap<FunctionInhibitionNeedsId, FunctionInhibitionNeeds>,
+    pub(crate) function_name_values: SlotMap<FunctionNameValueId, FunctionNameValue>,
+    pub(crate) further_action_byte_needs: SlotMap<FurtherActionByteNeedsId, FurtherActionByteNeeds>,
+    pub(crate) gateways: SlotMap<GatewayId, Gateway>,
+    pub(crate) general_parameters: SlotMap<GeneralParameterId, GeneralParameter>,
+    pub(crate) general_purpose_connections:
+        SlotMap<GeneralPurposeConnectionId, GeneralPurposeConnection>,
+    pub(crate) general_purpose_i_pdus: SlotMap<GeneralPurposeIPduId, GeneralPurposeIPdu>,
+    pub(crate) general_purpose_pdus: SlotMap<GeneralPurposePduId, GeneralPurposePdu>,
+    pub(crate) generic_ethernet_frames: SlotMap<GenericEthernetFrameId, GenericEthernetFrame>,
+    pub(crate) generic_tps: SlotMap<GenericTpId, GenericTp>,
+    pub(crate) global_supervision_needs: SlotMap<GlobalSupervisionNeedsId, GlobalSupervisionNeeds>,
+    pub(crate) global_time_can_masters: SlotMap<GlobalTimeCanMasterId, GlobalTimeCanMaster>,
+    pub(crate) global_time_can_slaves: SlotMap<GlobalTimeCanSlaveId, GlobalTimeCanSlave>,
+    pub(crate) global_time_correction_props:
+        SlotMap<GlobalTimeCorrectionPropsId, GlobalTimeCorrectionProps>,
+    pub(crate) global_time_coupling_port_props:
+        SlotMap<GlobalTimeCouplingPortPropsId, GlobalTimeCouplingPortProps>,
+    pub(crate) global_time_domains: SlotMap<GlobalTimeDomainId, GlobalTimeDomain>,
+    pub(crate) global_time_eth_masters: SlotMap<GlobalTimeEthMasterId, GlobalTimeEthMaster>,
+    pub(crate) global_time_eth_slaves: SlotMap<GlobalTimeEthSlaveId, GlobalTimeEthSlave>,
+    pub(crate) global_time_fr_masters: SlotMap<GlobalTimeFrMasterId, GlobalTimeFrMaster>,
+    pub(crate) global_time_fr_slaves: SlotMap<GlobalTimeFrSlaveId, GlobalTimeFrSlave>,
+    pub(crate) global_time_gateways: SlotMap<GlobalTimeGatewayId, GlobalTimeGateway>,
+    pub(crate) graphics: SlotMap<GraphicId, Graphic>,
+    pub(crate) hardware_configurations: SlotMap<HardwareConfigurationId, HardwareConfiguration>,
+    pub(crate) hardware_test_needs: SlotMap<HardwareTestNeedsId, HardwareTestNeeds>,
+    pub(crate) http_tps: SlotMap<HttpTpId, HttpTp>,
+    pub(crate) hw_attribute_defs: SlotMap<HwAttributeDefId, HwAttributeDef>,
+    pub(crate) hw_attribute_literal_defs: SlotMap<HwAttributeLiteralDefId, HwAttributeLiteralDef>,
+    pub(crate) hw_attribute_values: SlotMap<HwAttributeValueId, HwAttributeValue>,
+    pub(crate) hw_categorys: SlotMap<HwCategoryId, HwCategory>,
+    pub(crate) hw_elements: SlotMap<HwElementId, HwElement>,
+    pub(crate) hw_element_connectors: SlotMap<HwElementConnectorId, HwElementConnector>,
+    pub(crate) hw_pins: SlotMap<HwPinId, HwPin>,
+    pub(crate) hw_pin_connectors: SlotMap<HwPinConnectorId, HwPinConnector>,
+    pub(crate) hw_pin_groups: SlotMap<HwPinGroupId, HwPinGroup>,
+    pub(crate) hw_pin_group_connectors: SlotMap<HwPinGroupConnectorId, HwPinGroupConnector>,
+    pub(crate) hw_pin_group_contents: SlotMap<HwPinGroupContentId, HwPinGroupContent>,
+    pub(crate) hw_port_mappings: SlotMap<HwPortMappingId, HwPortMapping>,
+    pub(crate) hw_types: SlotMap<HwTypeId, HwType>,
+    pub(crate) ieee1722_tp_aaf_connections:
+        SlotMap<IEEE1722TpAafConnectionId, IEEE1722TpAafConnection>,
+    pub(crate) ieee1722_tp_acf_cans: SlotMap<IEEE1722TpAcfCanId, IEEE1722TpAcfCan>,
+    pub(crate) ieee1722_tp_acf_can_parts: SlotMap<IEEE1722TpAcfCanPartId, IEEE1722TpAcfCanPart>,
+    pub(crate) ieee1722_tp_acf_connections:
+        SlotMap<IEEE1722TpAcfConnectionId, IEEE1722TpAcfConnection>,
+    pub(crate) ieee1722_tp_acf_lins: SlotMap<IEEE1722TpAcfLinId, IEEE1722TpAcfLin>,
+    pub(crate) ieee1722_tp_acf_lin_parts: SlotMap<IEEE1722TpAcfLinPartId, IEEE1722TpAcfLinPart>,
+    pub(crate) ieee1722_tp_configs: SlotMap<IEEE1722TpConfigId, IEEE1722TpConfig>,
+    pub(crate) ieee1722_tp_crf_connections:
+        SlotMap<IEEE1722TpCrfConnectionId, IEEE1722TpCrfConnection>,
+    pub(crate) ieee1722_tp_iidc_connections:
+        SlotMap<IEEE1722TpIidcConnectionId, IEEE1722TpIidcConnection>,
+    pub(crate) ieee1722_tp_rvf_connections:
+        SlotMap<IEEE1722TpRvfConnectionId, IEEE1722TpRvfConnection>,
+    pub(crate) ip_sec_configs: SlotMap<IPSecConfigId, IPSecConfig>,
+    pub(crate) ip_sec_config_props: SlotMap<IPSecConfigPropsId, IPSecConfigProps>,
+    pub(crate) ip_sec_rules: SlotMap<IPSecRuleId, IPSecRule>,
+    pub(crate) i_pdu_mappings: SlotMap<IPduMappingId, IPduMapping>,
+    pub(crate) i_pdu_ports: SlotMap<IPduPortId, IPduPort>,
+    pub(crate) i_pdu_timings: SlotMap<IPduTimingId, IPduTiming>,
+    pub(crate) i_pv6_ext_header_filter_lists:
+        SlotMap<IPv6ExtHeaderFilterListId, IPv6ExtHeaderFilterList>,
+    pub(crate) i_pv6_ext_header_filter_sets:
+        SlotMap<IPv6ExtHeaderFilterSetId, IPv6ExtHeaderFilterSet>,
+    pub(crate) i_signals: SlotMap<ISignalId, ISignal>,
+    pub(crate) i_signal_groups: SlotMap<ISignalGroupId, ISignalGroup>,
+    pub(crate) i_signal_i_pdus: SlotMap<ISignalIPduId, ISignalIPdu>,
+    pub(crate) i_signal_i_pdu_groups: SlotMap<ISignalIPduGroupId, ISignalIPduGroup>,
+    pub(crate) i_signal_mappings: SlotMap<ISignalMappingId, ISignalMapping>,
+    pub(crate) i_signal_ports: SlotMap<ISignalPortId, ISignalPort>,
+    pub(crate) i_signal_props: SlotMap<ISignalPropsId, ISignalProps>,
+    pub(crate) i_signal_to_i_pdu_mappings: SlotMap<ISignalToIPduMappingId, ISignalToIPduMapping>,
+    pub(crate) i_signal_triggerings: SlotMap<ISignalTriggeringId, ISignalTriggering>,
+    pub(crate) icmp_rules: SlotMap<IcmpRuleId, IcmpRule>,
+    pub(crate) ids_designs: SlotMap<IdsDesignId, IdsDesign>,
+    pub(crate) ids_mgr_custom_timestamp_needs:
+        SlotMap<IdsMgrCustomTimestampNeedsId, IdsMgrCustomTimestampNeeds>,
+    pub(crate) ids_mgr_needs: SlotMap<IdsMgrNeedsId, IdsMgrNeeds>,
+    pub(crate) idsm_instances: SlotMap<IdsmInstanceId, IdsmInstance>,
+    pub(crate) idsm_module_instantiations:
+        SlotMap<IdsmModuleInstantiationId, IdsmModuleInstantiation>,
+    pub(crate) idsm_rate_limitations: SlotMap<IdsmRateLimitationId, IdsmRateLimitation>,
+    pub(crate) idsm_traffic_limitations: SlotMap<IdsmTrafficLimitationId, IdsmTrafficLimitation>,
+    pub(crate) ieee1722_tps: SlotMap<Ieee1722TpId, Ieee1722Tp>,
+    pub(crate) ieee1722_tp_ethernet_frames:
+        SlotMap<Ieee1722TpEthernetFrameId, Ieee1722TpEthernetFrame>,
+    pub(crate) implementation_data_types: SlotMap<ImplementationDataTypeId, ImplementationDataType>,
+    pub(crate) implementation_data_type_elements:
+        SlotMap<ImplementationDataTypeElementId, ImplementationDataTypeElement>,
+    pub(crate) implementation_data_type_element_in_port_interface_refs: SlotMap<
+        ImplementationDataTypeElementInPortInterfaceRefId,
+        ImplementationDataTypeElementInPortInterfaceRef,
+    >,
+    pub(crate) implementation_data_type_sub_element_refs:
+        SlotMap<ImplementationDataTypeSubElementRefId, ImplementationDataTypeSubElementRef>,
+    pub(crate) implementation_element_in_parameter_instance_refs: SlotMap<
+        ImplementationElementInParameterInstanceRefId,
+        ImplementationElementInParameterInstanceRef,
+    >,
+    pub(crate) included_data_type_sets: SlotMap<IncludedDataTypeSetId, IncludedDataTypeSet>,
+    pub(crate) included_mode_declaration_group_sets:
+        SlotMap<IncludedModeDeclarationGroupSetId, IncludedModeDeclarationGroupSet>,
+    pub(crate) indent_samples: SlotMap<IndentSampleId, IndentSample>,
+    pub(crate) index_entrys: SlotMap<IndexEntryId, IndexEntry>,
+    pub(crate) indexed_array_elements: SlotMap<IndexedArrayElementId, IndexedArrayElement>,
+    pub(crate) indicator_status_needs: SlotMap<IndicatorStatusNeedsId, IndicatorStatusNeeds>,
+    pub(crate) infrastructure_services: SlotMap<InfrastructureServicesId, InfrastructureServices>,
+    pub(crate) init_events: SlotMap<InitEventId, InitEvent>,
+    pub(crate) initial_sd_delay_configs: SlotMap<InitialSdDelayConfigId, InitialSdDelayConfig>,
+    pub(crate) inner_data_prototype_group_in_composition_instance_refs: SlotMap<
+        InnerDataPrototypeGroupInCompositionInstanceRefId,
+        InnerDataPrototypeGroupInCompositionInstanceRef,
+    >,
+    pub(crate) inner_port_group_in_composition_instance_refs:
+        SlotMap<InnerPortGroupInCompositionInstanceRefId, InnerPortGroupInCompositionInstanceRef>,
+    pub(crate) inner_runnable_entity_group_in_composition_instance_refs: SlotMap<
+        InnerRunnableEntityGroupInCompositionInstanceRefId,
+        InnerRunnableEntityGroupInCompositionInstanceRef,
+    >,
+    pub(crate) instance_event_in_composition_instance_refs:
+        SlotMap<InstanceEventInCompositionInstanceRefId, InstanceEventInCompositionInstanceRef>,
+    pub(crate) instance_reference_values: SlotMap<InstanceReferenceValueId, InstanceReferenceValue>,
+    pub(crate) instantiation_data_def_props:
+        SlotMap<InstantiationDataDefPropsId, InstantiationDataDefProps>,
+    pub(crate) instantiation_timing_event_props:
+        SlotMap<InstantiationTimingEventPropsId, InstantiationTimingEventProps>,
+    pub(crate) integer_values: SlotMap<IntegerValueId, IntegerValue>,
+    pub(crate) integer_value_variation_points:
+        SlotMap<IntegerValueVariationPointId, IntegerValueVariationPoint>,
+    pub(crate) internal_constrs: SlotMap<InternalConstrsId, InternalConstrs>,
+    pub(crate) internal_trigger_occurred_events:
+        SlotMap<InternalTriggerOccurredEventId, InternalTriggerOccurredEvent>,
+    pub(crate) internal_triggering_points:
+        SlotMap<InternalTriggeringPointId, InternalTriggeringPoint>,
+    pub(crate) interpolation_routines: SlotMap<InterpolationRoutineId, InterpolationRoutine>,
+    pub(crate) interpolation_routine_mappings:
+        SlotMap<InterpolationRoutineMappingId, InterpolationRoutineMapping>,
+    pub(crate) interpolation_routine_mapping_sets:
+        SlotMap<InterpolationRoutineMappingSetId, InterpolationRoutineMappingSet>,
+    pub(crate) invalidation_policys: SlotMap<InvalidationPolicyId, InvalidationPolicy>,
+    pub(crate) invert_conditions: SlotMap<InvertConditionId, InvertCondition>,
+    pub(crate) io_hw_abstraction_server_annotations:
+        SlotMap<IoHwAbstractionServerAnnotationId, IoHwAbstractionServerAnnotation>,
+    pub(crate) ipv4_arp_props: SlotMap<Ipv4ArpPropsId, Ipv4ArpProps>,
+    pub(crate) ipv4_auto_ip_props: SlotMap<Ipv4AutoIpPropsId, Ipv4AutoIpProps>,
+    pub(crate) ipv4_configurations: SlotMap<Ipv4ConfigurationId, Ipv4Configuration>,
+    pub(crate) ipv4_dhcp_server_configurations:
+        SlotMap<Ipv4DhcpServerConfigurationId, Ipv4DhcpServerConfiguration>,
+    pub(crate) ipv4_fragmentation_props: SlotMap<Ipv4FragmentationPropsId, Ipv4FragmentationProps>,
+    pub(crate) ipv4_props: SlotMap<Ipv4PropsId, Ipv4Props>,
+    pub(crate) ipv4_rules: SlotMap<Ipv4RuleId, Ipv4Rule>,
+    pub(crate) ipv6_configurations: SlotMap<Ipv6ConfigurationId, Ipv6Configuration>,
+    pub(crate) ipv6_dhcp_server_configurations:
+        SlotMap<Ipv6DhcpServerConfigurationId, Ipv6DhcpServerConfiguration>,
+    pub(crate) ipv6_fragmentation_props: SlotMap<Ipv6FragmentationPropsId, Ipv6FragmentationProps>,
+    pub(crate) ipv6_ndp_props: SlotMap<Ipv6NdpPropsId, Ipv6NdpProps>,
+    pub(crate) ipv6_props: SlotMap<Ipv6PropsId, Ipv6Props>,
+    pub(crate) ipv6_rules: SlotMap<Ipv6RuleId, Ipv6Rule>,
+    pub(crate) items: SlotMap<ItemId, Item>,
+    pub(crate) j1939_clusters: SlotMap<J1939ClusterId, J1939Cluster>,
+    pub(crate) j1939_controller_applications:
+        SlotMap<J1939ControllerApplicationId, J1939ControllerApplication>,
+    pub(crate) j1939_controller_application_to_j1939_nm_node_mappings: SlotMap<
+        J1939ControllerApplicationToJ1939NmNodeMappingId,
+        J1939ControllerApplicationToJ1939NmNodeMapping,
+    >,
+    pub(crate) j1939_dcm_dm19_supports: SlotMap<J1939DcmDm19SupportId, J1939DcmDm19Support>,
+    pub(crate) j1939_dcm_i_pdus: SlotMap<J1939DcmIPduId, J1939DcmIPdu>,
+    pub(crate) j1939_nm_clusters: SlotMap<J1939NmClusterId, J1939NmCluster>,
+    pub(crate) j1939_nm_ecus: SlotMap<J1939NmEcuId, J1939NmEcu>,
+    pub(crate) j1939_nm_nodes: SlotMap<J1939NmNodeId, J1939NmNode>,
+    pub(crate) j1939_node_names: SlotMap<J1939NodeNameId, J1939NodeName>,
+    pub(crate) j1939_rm_incoming_request_service_needs:
+        SlotMap<J1939RmIncomingRequestServiceNeedsId, J1939RmIncomingRequestServiceNeeds>,
+    pub(crate) j1939_rm_outgoing_request_service_needs:
+        SlotMap<J1939RmOutgoingRequestServiceNeedsId, J1939RmOutgoingRequestServiceNeeds>,
+    pub(crate) j1939_shared_address_clusters:
+        SlotMap<J1939SharedAddressClusterId, J1939SharedAddressCluster>,
+    pub(crate) j1939_tp_configs: SlotMap<J1939TpConfigId, J1939TpConfig>,
+    pub(crate) j1939_tp_connections: SlotMap<J1939TpConnectionId, J1939TpConnection>,
+    pub(crate) j1939_tp_nodes: SlotMap<J1939TpNodeId, J1939TpNode>,
+    pub(crate) j1939_tp_pgs: SlotMap<J1939TpPgId, J1939TpPg>,
+    pub(crate) keywords: SlotMap<KeywordId, Keyword>,
+    pub(crate) keyword_sets: SlotMap<KeywordSetId, KeywordSet>,
+    pub(crate) l_graphics: SlotMap<LGraphicId, LGraphic>,
+    pub(crate) l_long_names: SlotMap<LLongNameId, LLongName>,
+    pub(crate) l_overview_paragraphs: SlotMap<LOverviewParagraphId, LOverviewParagraph>,
+    pub(crate) l_paragraphs: SlotMap<LParagraphId, LParagraph>,
+    pub(crate) l_plain_texts: SlotMap<LPlainTextId, LPlainText>,
+    pub(crate) l_verbatims: SlotMap<LVerbatimId, LVerbatim>,
+    pub(crate) labeled_items: SlotMap<LabeledItemId, LabeledItem>,
+    pub(crate) labeled_lists: SlotMap<LabeledListId, LabeledList>,
+    pub(crate) latency_timing_constraints:
+        SlotMap<LatencyTimingConstraintId, LatencyTimingConstraint>,
+    pub(crate) life_cycle_infos: SlotMap<LifeCycleInfoId, LifeCycleInfo>,
+    pub(crate) life_cycle_info_sets: SlotMap<LifeCycleInfoSetId, LifeCycleInfoSet>,
+    pub(crate) life_cycle_periods: SlotMap<LifeCyclePeriodId, LifeCyclePeriod>,
+    pub(crate) life_cycle_states: SlotMap<LifeCycleStateId, LifeCycleState>,
+    pub(crate) life_cycle_state_definition_groups:
+        SlotMap<LifeCycleStateDefinitionGroupId, LifeCycleStateDefinitionGroup>,
+    pub(crate) limits: SlotMap<LimitId, Limit>,
+    pub(crate) limit_value_variation_points:
+        SlotMap<LimitValueVariationPointId, LimitValueVariationPoint>,
+    pub(crate) lin_clusters: SlotMap<LinClusterId, LinCluster>,
+    pub(crate) lin_communication_connectors:
+        SlotMap<LinCommunicationConnectorId, LinCommunicationConnector>,
+    pub(crate) lin_configurable_frames: SlotMap<LinConfigurableFrameId, LinConfigurableFrame>,
+    pub(crate) lin_error_responses: SlotMap<LinErrorResponseId, LinErrorResponse>,
+    pub(crate) lin_event_triggered_frames:
+        SlotMap<LinEventTriggeredFrameId, LinEventTriggeredFrame>,
+    pub(crate) lin_frame_triggerings: SlotMap<LinFrameTriggeringId, LinFrameTriggering>,
+    pub(crate) lin_masters: SlotMap<LinMasterId, LinMaster>,
+    pub(crate) lin_ordered_configurable_frames:
+        SlotMap<LinOrderedConfigurableFrameId, LinOrderedConfigurableFrame>,
+    pub(crate) lin_physical_channels: SlotMap<LinPhysicalChannelId, LinPhysicalChannel>,
+    pub(crate) lin_schedule_tables: SlotMap<LinScheduleTableId, LinScheduleTable>,
+    pub(crate) lin_slaves: SlotMap<LinSlaveId, LinSlave>,
+    pub(crate) lin_slave_configs: SlotMap<LinSlaveConfigId, LinSlaveConfig>,
+    pub(crate) lin_slave_config_idents: SlotMap<LinSlaveConfigIdentId, LinSlaveConfigIdent>,
+    pub(crate) lin_sporadic_frames: SlotMap<LinSporadicFrameId, LinSporadicFrame>,
+    pub(crate) lin_tp_configs: SlotMap<LinTpConfigId, LinTpConfig>,
+    pub(crate) lin_tp_connections: SlotMap<LinTpConnectionId, LinTpConnection>,
+    pub(crate) lin_tp_nodes: SlotMap<LinTpNodeId, LinTpNode>,
+    pub(crate) lin_unconditional_frames: SlotMap<LinUnconditionalFrameId, LinUnconditionalFrame>,
+    pub(crate) linkers: SlotMap<LinkerId, Linker>,
+    pub(crate) linker_symbol_values: SlotMap<LinkerSymbolValueId, LinkerSymbolValue>,
+    pub(crate) log_and_trace_message_collection_sets:
+        SlotMap<LogAndTraceMessageCollectionSetId, LogAndTraceMessageCollectionSet>,
+    pub(crate) mac_multicast_configurations:
+        SlotMap<MacMulticastConfigurationId, MacMulticastConfiguration>,
+    pub(crate) mac_multicast_groups: SlotMap<MacMulticastGroupId, MacMulticastGroup>,
+    pub(crate) mac_sec_cipher_suite_configs:
+        SlotMap<MacSecCipherSuiteConfigId, MacSecCipherSuiteConfig>,
+    pub(crate) mac_sec_crypto_algo_configs:
+        SlotMap<MacSecCryptoAlgoConfigId, MacSecCryptoAlgoConfig>,
+    pub(crate) mac_sec_global_kay_props: SlotMap<MacSecGlobalKayPropsId, MacSecGlobalKayProps>,
+    pub(crate) mac_sec_kay_participants: SlotMap<MacSecKayParticipantId, MacSecKayParticipant>,
+    pub(crate) mac_sec_local_kay_props: SlotMap<MacSecLocalKayPropsId, MacSecLocalKayProps>,
+    pub(crate) mac_sec_participant_sets: SlotMap<MacSecParticipantSetId, MacSecParticipantSet>,
+    pub(crate) mac_sec_props: SlotMap<MacSecPropsId, MacSecProps>,
+    pub(crate) maps: SlotMap<MapId, Map>,
+    pub(crate) mc_data_access_details: SlotMap<McDataAccessDetailsId, McDataAccessDetails>,
+    pub(crate) mc_data_instances: SlotMap<McDataInstanceId, McDataInstance>,
+    pub(crate) mc_functions: SlotMap<McFunctionId, McFunction>,
+    pub(crate) mc_function_data_ref_sets: SlotMap<McFunctionDataRefSetId, McFunctionDataRefSet>,
+    pub(crate) mc_groups: SlotMap<McGroupId, McGroup>,
+    pub(crate) mc_group_data_ref_sets: SlotMap<McGroupDataRefSetId, McGroupDataRefSet>,
+    pub(crate) mc_parameter_element_groups:
+        SlotMap<McParameterElementGroupId, McParameterElementGroup>,
+    pub(crate) mc_support_datas: SlotMap<McSupportDataId, McSupportData>,
+    pub(crate) mc_sw_emulation_method_supports:
+        SlotMap<McSwEmulationMethodSupportId, McSwEmulationMethodSupport>,
+    pub(crate) measured_execution_times: SlotMap<MeasuredExecutionTimeId, MeasuredExecutionTime>,
+    pub(crate) measured_heap_usages: SlotMap<MeasuredHeapUsageId, MeasuredHeapUsage>,
+    pub(crate) measured_stack_usages: SlotMap<MeasuredStackUsageId, MeasuredStackUsage>,
+    pub(crate) memory_sections: SlotMap<MemorySectionId, MemorySection>,
+    pub(crate) memory_section_locations: SlotMap<MemorySectionLocationId, MemorySectionLocation>,
+    pub(crate) meta_data_items: SlotMap<MetaDataItemId, MetaDataItem>,
+    pub(crate) meta_data_item_sets: SlotMap<MetaDataItemSetId, MetaDataItemSet>,
+    pub(crate) ml_figures: SlotMap<MlFigureId, MlFigure>,
+    pub(crate) ml_formulas: SlotMap<MlFormulaId, MlFormula>,
+    pub(crate) mode_access_points: SlotMap<ModeAccessPointId, ModeAccessPoint>,
+    pub(crate) mode_access_point_idents: SlotMap<ModeAccessPointIdentId, ModeAccessPointIdent>,
+    pub(crate) mode_declarations: SlotMap<ModeDeclarationId, ModeDeclaration>,
+    pub(crate) mode_declaration_groups: SlotMap<ModeDeclarationGroupId, ModeDeclarationGroup>,
+    pub(crate) mode_declaration_group_prototypes:
+        SlotMap<ModeDeclarationGroupPrototypeId, ModeDeclarationGroupPrototype>,
+    pub(crate) mode_declaration_group_prototype_mappings:
+        SlotMap<ModeDeclarationGroupPrototypeMappingId, ModeDeclarationGroupPrototypeMapping>,
+    pub(crate) mode_declaration_mappings: SlotMap<ModeDeclarationMappingId, ModeDeclarationMapping>,
+    pub(crate) mode_declaration_mapping_sets:
+        SlotMap<ModeDeclarationMappingSetId, ModeDeclarationMappingSet>,
+    pub(crate) mode_driven_transmission_mode_conditions:
+        SlotMap<ModeDrivenTransmissionModeConditionId, ModeDrivenTransmissionModeCondition>,
+    pub(crate) mode_error_behaviors: SlotMap<ModeErrorBehaviorId, ModeErrorBehavior>,
+    pub(crate) mode_in_bsw_instance_refs: SlotMap<ModeInBswInstanceRefId, ModeInBswInstanceRef>,
+    pub(crate) mode_in_bsw_module_description_instance_refs:
+        SlotMap<ModeInBswModuleDescriptionInstanceRefId, ModeInBswModuleDescriptionInstanceRef>,
+    pub(crate) mode_in_swc_instance_refs: SlotMap<ModeInSwcInstanceRefId, ModeInSwcInstanceRef>,
+    pub(crate) mode_interface_mappings: SlotMap<ModeInterfaceMappingId, ModeInterfaceMapping>,
+    pub(crate) mode_port_annotations: SlotMap<ModePortAnnotationId, ModePortAnnotation>,
+    pub(crate) mode_request_type_maps: SlotMap<ModeRequestTypeMapId, ModeRequestTypeMap>,
+    pub(crate) mode_switch_event_triggered_activitys:
+        SlotMap<ModeSwitchEventTriggeredActivityId, ModeSwitchEventTriggeredActivity>,
+    pub(crate) mode_switch_interfaces: SlotMap<ModeSwitchInterfaceId, ModeSwitchInterface>,
+    pub(crate) mode_switch_points: SlotMap<ModeSwitchPointId, ModeSwitchPoint>,
+    pub(crate) mode_switch_receiver_com_specs:
+        SlotMap<ModeSwitchReceiverComSpecId, ModeSwitchReceiverComSpec>,
+    pub(crate) mode_switch_sender_com_specs:
+        SlotMap<ModeSwitchSenderComSpecId, ModeSwitchSenderComSpec>,
+    pub(crate) mode_switched_ack_events: SlotMap<ModeSwitchedAckEventId, ModeSwitchedAckEvent>,
+    pub(crate) mode_switched_ack_requests:
+        SlotMap<ModeSwitchedAckRequestId, ModeSwitchedAckRequest>,
+    pub(crate) mode_transitions: SlotMap<ModeTransitionId, ModeTransition>,
+    pub(crate) modifications: SlotMap<ModificationId, Modification>,
+    pub(crate) module_configurations: SlotMap<ModuleConfigurationId, ModuleConfiguration>,
+    pub(crate) msr_query_args: SlotMap<MsrQueryArgId, MsrQueryArg>,
+    pub(crate) msr_query_chapters: SlotMap<MsrQueryChapterId, MsrQueryChapter>,
+    pub(crate) msr_query_p1s: SlotMap<MsrQueryP1Id, MsrQueryP1>,
+    pub(crate) msr_query_p2s: SlotMap<MsrQueryP2Id, MsrQueryP2>,
+    pub(crate) msr_query_props: SlotMap<MsrQueryPropsId, MsrQueryProps>,
+    pub(crate) msr_query_result_chapters: SlotMap<MsrQueryResultChapterId, MsrQueryResultChapter>,
+    pub(crate) msr_query_result_topic1s: SlotMap<MsrQueryResultTopic1Id, MsrQueryResultTopic1>,
+    pub(crate) msr_query_topic1s: SlotMap<MsrQueryTopic1Id, MsrQueryTopic1>,
     pub(crate) multi_language_overview_paragraphs:
         SlotMap<MultiLanguageOverviewParagraphId, MultiLanguageOverviewParagraph>,
-    pub(crate) l_plain_texts: SlotMap<LPlainTextId, LPlainText>,
+    pub(crate) multi_language_paragraphs: SlotMap<MultiLanguageParagraphId, MultiLanguageParagraph>,
+    pub(crate) multi_language_plain_texts:
+        SlotMap<MultiLanguagePlainTextId, MultiLanguagePlainText>,
+    pub(crate) multi_language_verbatims: SlotMap<MultiLanguageVerbatimId, MultiLanguageVerbatim>,
+    pub(crate) multidimensional_times: SlotMap<MultidimensionalTimeId, MultidimensionalTime>,
+    pub(crate) multilanguage_long_names: SlotMap<MultilanguageLongNameId, MultilanguageLongName>,
+    pub(crate) multiplexed_i_pdus: SlotMap<MultiplexedIPduId, MultiplexedIPdu>,
+    pub(crate) multiplicity_restriction_with_severitys:
+        SlotMap<MultiplicityRestrictionWithSeverityId, MultiplicityRestrictionWithSeverity>,
+    pub(crate) n_pdus: SlotMap<NPduId, NPdu>,
+    pub(crate) network_endpoints: SlotMap<NetworkEndpointId, NetworkEndpoint>,
+    pub(crate) network_layer_rules: SlotMap<NetworkLayerRuleId, NetworkLayerRule>,
+    pub(crate) network_segment_identifications:
+        SlotMap<NetworkSegmentIdentificationId, NetworkSegmentIdentification>,
+    pub(crate) nm_configs: SlotMap<NmConfigId, NmConfig>,
+    pub(crate) nm_coordinators: SlotMap<NmCoordinatorId, NmCoordinator>,
+    pub(crate) nm_ecus: SlotMap<NmEcuId, NmEcu>,
+    pub(crate) nm_pdus: SlotMap<NmPduId, NmPdu>,
+    pub(crate) nonqueued_receiver_com_specs:
+        SlotMap<NonqueuedReceiverComSpecId, NonqueuedReceiverComSpec>,
+    pub(crate) nonqueued_sender_com_specs:
+        SlotMap<NonqueuedSenderComSpecId, NonqueuedSenderComSpec>,
+    pub(crate) not_available_value_specifications:
+        SlotMap<NotAvailableValueSpecificationId, NotAvailableValueSpecification>,
+    pub(crate) notes: SlotMap<NoteId, Note>,
+    pub(crate) numerical_or_texts: SlotMap<NumericalOrTextId, NumericalOrText>,
+    pub(crate) numerical_rule_based_value_specifications:
+        SlotMap<NumericalRuleBasedValueSpecificationId, NumericalRuleBasedValueSpecification>,
+    pub(crate) numerical_value_specifications:
+        SlotMap<NumericalValueSpecificationId, NumericalValueSpecification>,
+    pub(crate) numerical_value_variation_points:
+        SlotMap<NumericalValueVariationPointId, NumericalValueVariationPoint>,
+    pub(crate) nv_block_data_mappings: SlotMap<NvBlockDataMappingId, NvBlockDataMapping>,
+    pub(crate) nv_block_descriptors: SlotMap<NvBlockDescriptorId, NvBlockDescriptor>,
+    pub(crate) nv_block_needs: SlotMap<NvBlockNeedsId, NvBlockNeeds>,
+    pub(crate) nv_block_sw_component_types:
+        SlotMap<NvBlockSwComponentTypeId, NvBlockSwComponentType>,
+    pub(crate) nv_data_interfaces: SlotMap<NvDataInterfaceId, NvDataInterface>,
+    pub(crate) nv_data_port_annotations: SlotMap<NvDataPortAnnotationId, NvDataPortAnnotation>,
+    pub(crate) nv_provide_com_specs: SlotMap<NvProvideComSpecId, NvProvideComSpec>,
+    pub(crate) nv_require_com_specs: SlotMap<NvRequireComSpecId, NvRequireComSpec>,
+    pub(crate) obd_control_service_needs: SlotMap<ObdControlServiceNeedsId, ObdControlServiceNeeds>,
+    pub(crate) obd_info_service_needs: SlotMap<ObdInfoServiceNeedsId, ObdInfoServiceNeeds>,
+    pub(crate) obd_monitor_service_needs: SlotMap<ObdMonitorServiceNeedsId, ObdMonitorServiceNeeds>,
+    pub(crate) obd_pid_service_needs: SlotMap<ObdPidServiceNeedsId, ObdPidServiceNeeds>,
+    pub(crate) obd_ratio_denominator_needs:
+        SlotMap<ObdRatioDenominatorNeedsId, ObdRatioDenominatorNeeds>,
+    pub(crate) obd_ratio_service_needs: SlotMap<ObdRatioServiceNeedsId, ObdRatioServiceNeeds>,
+    pub(crate) offset_timing_constraints: SlotMap<OffsetTimingConstraintId, OffsetTimingConstraint>,
+    pub(crate) operation_argument_in_component_instance_refs:
+        SlotMap<OperationArgumentInComponentInstanceRefId, OperationArgumentInComponentInstanceRef>,
+    pub(crate) operation_in_system_instance_refs:
+        SlotMap<OperationInSystemInstanceRefId, OperationInSystemInstanceRef>,
+    pub(crate) operation_invoked_events: SlotMap<OperationInvokedEventId, OperationInvokedEvent>,
+    pub(crate) ordered_masters: SlotMap<OrderedMasterId, OrderedMaster>,
+    pub(crate) os_task_execution_events: SlotMap<OsTaskExecutionEventId, OsTaskExecutionEvent>,
+    pub(crate) os_task_proxys: SlotMap<OsTaskProxyId, OsTaskProxy>,
+    pub(crate) p_mode_group_in_atomic_swc_instance_refs:
+        SlotMap<PModeGroupInAtomicSwcInstanceRefId, PModeGroupInAtomicSwcInstanceRef>,
+    pub(crate) p_operation_in_atomic_swc_instance_refs:
+        SlotMap<POperationInAtomicSwcInstanceRefId, POperationInAtomicSwcInstanceRef>,
+    pub(crate) p_port_in_composition_instance_refs:
+        SlotMap<PPortInCompositionInstanceRefId, PPortInCompositionInstanceRef>,
+    pub(crate) p_port_prototypes: SlotMap<PPortPrototypeId, PPortPrototype>,
+    pub(crate) pr_port_prototypes: SlotMap<PRPortPrototypeId, PRPortPrototype>,
+    pub(crate) p_trigger_in_atomic_swc_type_instance_refs:
+        SlotMap<PTriggerInAtomicSwcTypeInstanceRefId, PTriggerInAtomicSwcTypeInstanceRef>,
+    pub(crate) parameter_access: SlotMap<ParameterAccessId, ParameterAccess>,
+    pub(crate) parameter_data_prototypes: SlotMap<ParameterDataPrototypeId, ParameterDataPrototype>,
+    pub(crate) parameter_in_atomic_swc_type_instance_refs:
+        SlotMap<ParameterInAtomicSWCTypeInstanceRefId, ParameterInAtomicSWCTypeInstanceRef>,
+    pub(crate) parameter_interfaces: SlotMap<ParameterInterfaceId, ParameterInterface>,
+    pub(crate) parameter_port_annotations:
+        SlotMap<ParameterPortAnnotationId, ParameterPortAnnotation>,
+    pub(crate) parameter_provide_com_specs:
+        SlotMap<ParameterProvideComSpecId, ParameterProvideComSpec>,
+    pub(crate) parameter_require_com_specs:
+        SlotMap<ParameterRequireComSpecId, ParameterRequireComSpec>,
+    pub(crate) parameter_sw_component_types:
+        SlotMap<ParameterSwComponentTypeId, ParameterSwComponentType>,
+    pub(crate) pass_through_sw_connectors:
+        SlotMap<PassThroughSwConnectorId, PassThroughSwConnector>,
+    pub(crate) payload_byte_pattern_rules:
+        SlotMap<PayloadBytePatternRuleId, PayloadBytePatternRule>,
+    pub(crate) payload_byte_pattern_rule_parts:
+        SlotMap<PayloadBytePatternRulePartId, PayloadBytePatternRulePart>,
+    pub(crate) pdu_activation_routing_groups:
+        SlotMap<PduActivationRoutingGroupId, PduActivationRoutingGroup>,
+    pub(crate) pdu_mapping_default_values:
+        SlotMap<PduMappingDefaultValueId, PduMappingDefaultValue>,
+    pub(crate) pdu_to_frame_mappings: SlotMap<PduToFrameMappingId, PduToFrameMapping>,
+    pub(crate) pdu_triggerings: SlotMap<PduTriggeringId, PduTriggering>,
+    pub(crate) pdur_i_pdu_groups: SlotMap<PdurIPduGroupId, PdurIPduGroup>,
+    pub(crate) per_instance_memorys: SlotMap<PerInstanceMemoryId, PerInstanceMemory>,
+    pub(crate) per_instance_memory_sizes: SlotMap<PerInstanceMemorySizeId, PerInstanceMemorySize>,
+    pub(crate) periodic_event_triggerings:
+        SlotMap<PeriodicEventTriggeringId, PeriodicEventTriggering>,
+    pub(crate) permissible_signal_paths: SlotMap<PermissibleSignalPathId, PermissibleSignalPath>,
+    pub(crate) phys_constrs: SlotMap<PhysConstrsId, PhysConstrs>,
+    pub(crate) physical_dimensions: SlotMap<PhysicalDimensionId, PhysicalDimension>,
+    pub(crate) physical_dimension_mappings:
+        SlotMap<PhysicalDimensionMappingId, PhysicalDimensionMapping>,
+    pub(crate) physical_dimension_mapping_sets:
+        SlotMap<PhysicalDimensionMappingSetId, PhysicalDimensionMappingSet>,
+    pub(crate) platform_module_ethernet_endpoint_configurations: SlotMap<
+        PlatformModuleEthernetEndpointConfigurationId,
+        PlatformModuleEthernetEndpointConfiguration,
+    >,
+    pub(crate) plca_props: SlotMap<PlcaPropsId, PlcaProps>,
+    pub(crate) pnc_mappings: SlotMap<PncMappingId, PncMapping>,
+    pub(crate) port_api_options: SlotMap<PortAPIOptionId, PortAPIOption>,
+    pub(crate) port_defined_argument_values:
+        SlotMap<PortDefinedArgumentValueId, PortDefinedArgumentValue>,
+    pub(crate) port_element_to_communication_resource_mappings: SlotMap<
+        PortElementToCommunicationResourceMappingId,
+        PortElementToCommunicationResourceMapping,
+    >,
+    pub(crate) port_groups: SlotMap<PortGroupId, PortGroup>,
+    pub(crate) port_group_in_system_instance_refs:
+        SlotMap<PortGroupInSystemInstanceRefId, PortGroupInSystemInstanceRef>,
+    pub(crate) port_interface_blueprint_mappings:
+        SlotMap<PortInterfaceBlueprintMappingId, PortInterfaceBlueprintMapping>,
+    pub(crate) port_interface_mapping_sets:
+        SlotMap<PortInterfaceMappingSetId, PortInterfaceMappingSet>,
+    pub(crate) port_prototype_blueprints: SlotMap<PortPrototypeBlueprintId, PortPrototypeBlueprint>,
+    pub(crate) port_prototype_blueprint_init_values:
+        SlotMap<PortPrototypeBlueprintInitValueId, PortPrototypeBlueprintInitValue>,
+    pub(crate) port_prototype_blueprint_mappings:
+        SlotMap<PortPrototypeBlueprintMappingId, PortPrototypeBlueprintMapping>,
+    pub(crate) positive_integer_value_variation_points:
+        SlotMap<PositiveIntegerValueVariationPointId, PositiveIntegerValueVariationPoint>,
+    pub(crate) possible_error_reactions: SlotMap<PossibleErrorReactionId, PossibleErrorReaction>,
+    pub(crate) post_build_variant_conditions:
+        SlotMap<PostBuildVariantConditionId, PostBuildVariantCondition>,
+    pub(crate) post_build_variant_criterions:
+        SlotMap<PostBuildVariantCriterionId, PostBuildVariantCriterion>,
+    pub(crate) post_build_variant_criterion_values:
+        SlotMap<PostBuildVariantCriterionValueId, PostBuildVariantCriterionValue>,
+    pub(crate) post_build_variant_criterion_value_sets:
+        SlotMap<PostBuildVariantCriterionValueSetId, PostBuildVariantCriterionValueSet>,
+    pub(crate) predefined_chapters: SlotMap<PredefinedChapterId, PredefinedChapter>,
+    pub(crate) predefined_variants: SlotMap<PredefinedVariantId, PredefinedVariant>,
+    pub(crate) primitive_attribute_conditions:
+        SlotMap<PrimitiveAttributeConditionId, PrimitiveAttributeCondition>,
+    pub(crate) primitive_attribute_tailorings:
+        SlotMap<PrimitiveAttributeTailoringId, PrimitiveAttributeTailoring>,
+    pub(crate) privacy_levels: SlotMap<PrivacyLevelId, PrivacyLevel>,
+    pub(crate) prm_chars: SlotMap<PrmCharId, PrmChar>,
+    pub(crate) prm_char_abs_tols: SlotMap<PrmCharAbsTolId, PrmCharAbsTol>,
+    pub(crate) prm_char_min_typ_maxs: SlotMap<PrmCharMinTypMaxId, PrmCharMinTypMax>,
+    pub(crate) prm_char_numerical_contents:
+        SlotMap<PrmCharNumericalContentsId, PrmCharNumericalContents>,
+    pub(crate) prm_char_textual_contents: SlotMap<PrmCharTextualContentsId, PrmCharTextualContents>,
+    pub(crate) prms: SlotMap<PrmsId, Prms>,
+    pub(crate) provided_service_instances:
+        SlotMap<ProvidedServiceInstanceId, ProvidedServiceInstance>,
+    pub(crate) queued_receiver_com_specs: SlotMap<QueuedReceiverComSpecId, QueuedReceiverComSpec>,
+    pub(crate) queued_sender_com_specs: SlotMap<QueuedSenderComSpecId, QueuedSenderComSpec>,
+    pub(crate) r_mode_group_in_atomic_swc_instance_refs:
+        SlotMap<RModeGroupInAtomicSWCInstanceRefId, RModeGroupInAtomicSWCInstanceRef>,
+    pub(crate) r_mode_in_atomic_swc_instance_refs:
+        SlotMap<RModeInAtomicSwcInstanceRefId, RModeInAtomicSwcInstanceRef>,
+    pub(crate) r_operation_in_atomic_swc_instance_refs:
+        SlotMap<ROperationInAtomicSwcInstanceRefId, ROperationInAtomicSwcInstanceRef>,
+    pub(crate) r_port_in_composition_instance_refs:
+        SlotMap<RPortInCompositionInstanceRefId, RPortInCompositionInstanceRef>,
+    pub(crate) r_port_prototypes: SlotMap<RPortPrototypeId, RPortPrototype>,
+    pub(crate) r_variable_in_atomic_swc_instance_refs:
+        SlotMap<RVariableInAtomicSwcInstanceRefId, RVariableInAtomicSwcInstanceRef>,
+    pub(crate) rapid_prototyping_scenarios:
+        SlotMap<RapidPrototypingScenarioId, RapidPrototypingScenario>,
+    pub(crate) receiver_annotations: SlotMap<ReceiverAnnotationId, ReceiverAnnotation>,
+    pub(crate) reception_com_spec_props: SlotMap<ReceptionComSpecPropsId, ReceptionComSpecProps>,
+    pub(crate) record_value_specifications:
+        SlotMap<RecordValueSpecificationId, RecordValueSpecification>,
+    pub(crate) ref_types: SlotMap<RefTypeId, RefType>,
+    pub(crate) reference_bases: SlotMap<ReferenceBaseId, ReferenceBase>,
+    pub(crate) reference_conditions: SlotMap<ReferenceConditionId, ReferenceCondition>,
+    pub(crate) reference_tailorings: SlotMap<ReferenceTailoringId, ReferenceTailoring>,
+    pub(crate) reference_values: SlotMap<ReferenceValueId, ReferenceValue>,
+    pub(crate) reference_value_specifications:
+        SlotMap<ReferenceValueSpecificationId, ReferenceValueSpecification>,
+    pub(crate) relative_tolerances: SlotMap<RelativeToleranceId, RelativeTolerance>,
+    pub(crate) request_response_delays: SlotMap<RequestResponseDelayId, RequestResponseDelay>,
+    pub(crate) resource_consumptions: SlotMap<ResourceConsumptionId, ResourceConsumption>,
+    pub(crate) role_based_bsw_module_entry_assignments:
+        SlotMap<RoleBasedBswModuleEntryAssignmentId, RoleBasedBswModuleEntryAssignment>,
+    pub(crate) role_based_data_assignments:
+        SlotMap<RoleBasedDataAssignmentId, RoleBasedDataAssignment>,
+    pub(crate) role_based_data_type_assignments:
+        SlotMap<RoleBasedDataTypeAssignmentId, RoleBasedDataTypeAssignment>,
+    pub(crate) role_based_mc_data_assignments:
+        SlotMap<RoleBasedMcDataAssignmentId, RoleBasedMcDataAssignment>,
+    pub(crate) role_based_port_assignments:
+        SlotMap<RoleBasedPortAssignmentId, RoleBasedPortAssignment>,
+    pub(crate) role_based_resource_dependencys:
+        SlotMap<RoleBasedResourceDependencyId, RoleBasedResourceDependency>,
+    pub(crate) root_sw_composition_prototypes:
+        SlotMap<RootSwCompositionPrototypeId, RootSwCompositionPrototype>,
+    pub(crate) rough_estimate_heap_usages:
+        SlotMap<RoughEstimateHeapUsageId, RoughEstimateHeapUsage>,
+    pub(crate) rough_estimate_of_execution_times:
+        SlotMap<RoughEstimateOfExecutionTimeId, RoughEstimateOfExecutionTime>,
+    pub(crate) rough_estimate_stack_usages:
+        SlotMap<RoughEstimateStackUsageId, RoughEstimateStackUsage>,
+    pub(crate) rows: SlotMap<RowId, Row>,
+    pub(crate) rpt_components: SlotMap<RptComponentId, RptComponent>,
+    pub(crate) rpt_containers: SlotMap<RptContainerId, RptContainer>,
+    pub(crate) rpt_executable_entitys: SlotMap<RptExecutableEntityId, RptExecutableEntity>,
+    pub(crate) rpt_executable_entity_events:
+        SlotMap<RptExecutableEntityEventId, RptExecutableEntityEvent>,
+    pub(crate) rpt_executable_entity_properties:
+        SlotMap<RptExecutableEntityPropertiesId, RptExecutableEntityProperties>,
+    pub(crate) rpt_execution_contexts: SlotMap<RptExecutionContextId, RptExecutionContext>,
+    pub(crate) rpt_hooks: SlotMap<RptHookId, RptHook>,
+    pub(crate) rpt_impl_policys: SlotMap<RptImplPolicyId, RptImplPolicy>,
+    pub(crate) rpt_profiles: SlotMap<RptProfileId, RptProfile>,
+    pub(crate) rpt_service_points: SlotMap<RptServicePointId, RptServicePoint>,
+    pub(crate) rpt_support_datas: SlotMap<RptSupportDataId, RptSupportData>,
+    pub(crate) rpt_sw_prototyping_access: SlotMap<RptSwPrototypingAccessId, RptSwPrototypingAccess>,
+    pub(crate) rte_event_in_composition_separations:
+        SlotMap<RteEventInCompositionSeparationId, RteEventInCompositionSeparation>,
+    pub(crate) rte_event_in_composition_to_os_task_proxy_mappings: SlotMap<
+        RteEventInCompositionToOsTaskProxyMappingId,
+        RteEventInCompositionToOsTaskProxyMapping,
+    >,
+    pub(crate) rte_event_in_ecu_instance_refs:
+        SlotMap<RteEventInEcuInstanceRefId, RteEventInEcuInstanceRef>,
+    pub(crate) rte_event_in_system_separations:
+        SlotMap<RteEventInSystemSeparationId, RteEventInSystemSeparation>,
+    pub(crate) rte_event_in_system_to_os_task_proxy_mappings:
+        SlotMap<RteEventInSystemToOsTaskProxyMappingId, RteEventInSystemToOsTaskProxyMapping>,
+    pub(crate) rte_plugin_props: SlotMap<RtePluginPropsId, RtePluginProps>,
+    pub(crate) rtp_tps: SlotMap<RtpTpId, RtpTp>,
+    pub(crate) rule_arguments: SlotMap<RuleArgumentsId, RuleArguments>,
+    pub(crate) rule_based_axis_conts: SlotMap<RuleBasedAxisContId, RuleBasedAxisCont>,
+    pub(crate) rule_based_value_conts: SlotMap<RuleBasedValueContId, RuleBasedValueCont>,
+    pub(crate) rule_based_value_specifications:
+        SlotMap<RuleBasedValueSpecificationId, RuleBasedValueSpecification>,
+    pub(crate) runnable_entitys: SlotMap<RunnableEntityId, RunnableEntity>,
+    pub(crate) runnable_entity_arguments: SlotMap<RunnableEntityArgumentId, RunnableEntityArgument>,
+    pub(crate) runnable_entity_groups: SlotMap<RunnableEntityGroupId, RunnableEntityGroup>,
+    pub(crate) runnable_entity_in_composition_instance_refs:
+        SlotMap<RunnableEntityInCompositionInstanceRefId, RunnableEntityInCompositionInstanceRef>,
+    pub(crate) runtime_errors: SlotMap<RuntimeErrorId, RuntimeError>,
+    pub(crate) rx_identifier_ranges: SlotMap<RxIdentifierRangeId, RxIdentifierRange>,
+    pub(crate) someip_transformation_descriptions:
+        SlotMap<SOMEIPTransformationDescriptionId, SOMEIPTransformationDescription>,
+    pub(crate) someip_transformation_i_signal_props:
+        SlotMap<SOMEIPTransformationISignalPropsId, SOMEIPTransformationISignalProps>,
+    pub(crate) someip_transformation_props:
+        SlotMap<SOMEIPTransformationPropsId, SOMEIPTransformationProps>,
+    pub(crate) save_configuration_entrys: SlotMap<SaveConfigurationEntryId, SaveConfigurationEntry>,
+    pub(crate) scale_constrs: SlotMap<ScaleConstrId, ScaleConstr>,
     pub(crate) sds: SlotMap<SdId, Sd>,
+    pub(crate) sd_client_configs: SlotMap<SdClientConfigId, SdClientConfig>,
+    pub(crate) sd_server_configs: SlotMap<SdServerConfigId, SdServerConfig>,
     pub(crate) sdfs: SlotMap<SdfId, Sdf>,
-    pub(crate) sdg_captions: SlotMap<SdgCaptionId, SdgCaption>,
-    pub(crate) sdg_contents: SlotMap<SdgContentsId, SdgContents>,
     pub(crate) sdgs: SlotMap<SdgId, Sdg>,
+    pub(crate) sdg_aggregation_with_variations:
+        SlotMap<SdgAggregationWithVariationId, SdgAggregationWithVariation>,
+    pub(crate) sdg_captions: SlotMap<SdgCaptionId, SdgCaption>,
+    pub(crate) sdg_class: SlotMap<SdgClassId, SdgClass>,
+    pub(crate) sdg_contents: SlotMap<SdgContentsId, SdgContents>,
+    pub(crate) sdg_defs: SlotMap<SdgDefId, SdgDef>,
+    pub(crate) sdg_foreign_references: SlotMap<SdgForeignReferenceId, SdgForeignReference>,
+    pub(crate) sdg_foreign_reference_with_variations:
+        SlotMap<SdgForeignReferenceWithVariationId, SdgForeignReferenceWithVariation>,
+    pub(crate) sdg_primitive_attributes: SlotMap<SdgPrimitiveAttributeId, SdgPrimitiveAttribute>,
+    pub(crate) sdg_primitive_attribute_with_variations:
+        SlotMap<SdgPrimitiveAttributeWithVariationId, SdgPrimitiveAttributeWithVariation>,
+    pub(crate) sdg_references: SlotMap<SdgReferenceId, SdgReference>,
+    pub(crate) sdg_tailorings: SlotMap<SdgTailoringId, SdgTailoring>,
+    pub(crate) sec_oc_crypto_service_mappings:
+        SlotMap<SecOcCryptoServiceMappingId, SecOcCryptoServiceMapping>,
+    pub(crate) section_name_prefixs: SlotMap<SectionNamePrefixId, SectionNamePrefix>,
+    pub(crate) secure_communication_authentication_props:
+        SlotMap<SecureCommunicationAuthenticationPropsId, SecureCommunicationAuthenticationProps>,
+    pub(crate) secure_communication_freshness_props:
+        SlotMap<SecureCommunicationFreshnessPropsId, SecureCommunicationFreshnessProps>,
+    pub(crate) secure_communication_props:
+        SlotMap<SecureCommunicationPropsId, SecureCommunicationProps>,
+    pub(crate) secure_communication_props_sets:
+        SlotMap<SecureCommunicationPropsSetId, SecureCommunicationPropsSet>,
+    pub(crate) secure_on_board_communication_needs:
+        SlotMap<SecureOnBoardCommunicationNeedsId, SecureOnBoardCommunicationNeeds>,
+    pub(crate) secured_i_pdus: SlotMap<SecuredIPduId, SecuredIPdu>,
+    pub(crate) security_event_aggregation_filters:
+        SlotMap<SecurityEventAggregationFilterId, SecurityEventAggregationFilter>,
+    pub(crate) security_event_context_mapping_applications:
+        SlotMap<SecurityEventContextMappingApplicationId, SecurityEventContextMappingApplication>,
+    pub(crate) security_event_context_mapping_bsw_modules:
+        SlotMap<SecurityEventContextMappingBswModuleId, SecurityEventContextMappingBswModule>,
+    pub(crate) security_event_context_mapping_comm_connectors: SlotMap<
+        SecurityEventContextMappingCommConnectorId,
+        SecurityEventContextMappingCommConnector,
+    >,
+    pub(crate) security_event_context_mapping_functional_clusters: SlotMap<
+        SecurityEventContextMappingFunctionalClusterId,
+        SecurityEventContextMappingFunctionalCluster,
+    >,
+    pub(crate) security_event_context_props:
+        SlotMap<SecurityEventContextPropsId, SecurityEventContextProps>,
+    pub(crate) security_event_definitions:
+        SlotMap<SecurityEventDefinitionId, SecurityEventDefinition>,
+    pub(crate) security_event_filter_chains:
+        SlotMap<SecurityEventFilterChainId, SecurityEventFilterChain>,
+    pub(crate) security_event_one_every_n_filters:
+        SlotMap<SecurityEventOneEveryNFilterId, SecurityEventOneEveryNFilter>,
+    pub(crate) security_event_state_filters:
+        SlotMap<SecurityEventStateFilterId, SecurityEventStateFilter>,
+    pub(crate) security_event_threshold_filters:
+        SlotMap<SecurityEventThresholdFilterId, SecurityEventThresholdFilter>,
+    pub(crate) segment_positions: SlotMap<SegmentPositionId, SegmentPosition>,
+    pub(crate) sender_annotations: SlotMap<SenderAnnotationId, SenderAnnotation>,
+    pub(crate) sender_rec_array_element_mappings:
+        SlotMap<SenderRecArrayElementMappingId, SenderRecArrayElementMapping>,
+    pub(crate) sender_rec_array_type_mappings:
+        SlotMap<SenderRecArrayTypeMappingId, SenderRecArrayTypeMapping>,
+    pub(crate) sender_rec_record_element_mappings:
+        SlotMap<SenderRecRecordElementMappingId, SenderRecRecordElementMapping>,
+    pub(crate) sender_rec_record_type_mappings:
+        SlotMap<SenderRecRecordTypeMappingId, SenderRecRecordTypeMapping>,
+    pub(crate) sender_receiver_annotations:
+        SlotMap<SenderReceiverAnnotationId, SenderReceiverAnnotation>,
+    pub(crate) sender_receiver_composite_element_to_signal_mappings: SlotMap<
+        SenderReceiverCompositeElementToSignalMappingId,
+        SenderReceiverCompositeElementToSignalMapping,
+    >,
+    pub(crate) sender_receiver_interfaces:
+        SlotMap<SenderReceiverInterfaceId, SenderReceiverInterface>,
+    pub(crate) sender_receiver_to_signal_group_mappings:
+        SlotMap<SenderReceiverToSignalGroupMappingId, SenderReceiverToSignalGroupMapping>,
+    pub(crate) sender_receiver_to_signal_mappings:
+        SlotMap<SenderReceiverToSignalMappingId, SenderReceiverToSignalMapping>,
+    pub(crate) sensor_actuator_sw_component_types:
+        SlotMap<SensorActuatorSwComponentTypeId, SensorActuatorSwComponentType>,
+    pub(crate) separate_signal_paths: SlotMap<SeparateSignalPathId, SeparateSignalPath>,
+    pub(crate) server_com_specs: SlotMap<ServerComSpecId, ServerComSpec>,
+    pub(crate) service_instance_collection_sets:
+        SlotMap<ServiceInstanceCollectionSetId, ServiceInstanceCollectionSet>,
+    pub(crate) service_proxy_sw_component_types:
+        SlotMap<ServiceProxySwComponentTypeId, ServiceProxySwComponentType>,
+    pub(crate) service_sw_component_types:
+        SlotMap<ServiceSwComponentTypeId, ServiceSwComponentType>,
+    pub(crate) short_name_fragments: SlotMap<ShortNameFragmentId, ShortNameFragment>,
+    pub(crate) signal_service_translation_element_props:
+        SlotMap<SignalServiceTranslationElementPropsId, SignalServiceTranslationElementProps>,
+    pub(crate) signal_service_translation_event_props:
+        SlotMap<SignalServiceTranslationEventPropsId, SignalServiceTranslationEventProps>,
+    pub(crate) signal_service_translation_props:
+        SlotMap<SignalServiceTranslationPropsId, SignalServiceTranslationProps>,
+    pub(crate) signal_service_translation_props_sets:
+        SlotMap<SignalServiceTranslationPropsSetId, SignalServiceTranslationPropsSet>,
+    pub(crate) simulated_execution_times: SlotMap<SimulatedExecutionTimeId, SimulatedExecutionTime>,
+    pub(crate) single_language_long_names:
+        SlotMap<SingleLanguageLongNameId, SingleLanguageLongName>,
+    pub(crate) single_language_unit_names:
+        SlotMap<SingleLanguageUnitNamesId, SingleLanguageUnitNames>,
+    pub(crate) sl_overview_paragraphs: SlotMap<SlOverviewParagraphId, SlOverviewParagraph>,
+    pub(crate) sl_paragraphs: SlotMap<SlParagraphId, SlParagraph>,
+    pub(crate) so_ad_configs: SlotMap<SoAdConfigId, SoAdConfig>,
+    pub(crate) so_ad_routing_groups: SlotMap<SoAdRoutingGroupId, SoAdRoutingGroup>,
+    pub(crate) so_con_i_pdu_identifiers: SlotMap<SoConIPduIdentifierId, SoConIPduIdentifier>,
+    pub(crate) socket_address: SlotMap<SocketAddressId, SocketAddress>,
+    pub(crate) socket_connections: SlotMap<SocketConnectionId, SocketConnection>,
+    pub(crate) socket_connection_bundles: SlotMap<SocketConnectionBundleId, SocketConnectionBundle>,
+    pub(crate) socket_connection_ipdu_identifiers:
+        SlotMap<SocketConnectionIpduIdentifierId, SocketConnectionIpduIdentifier>,
+    pub(crate) socket_connection_ipdu_identifier_sets:
+        SlotMap<SocketConnectionIpduIdentifierSetId, SocketConnectionIpduIdentifierSet>,
+    pub(crate) software_contexts: SlotMap<SoftwareContextId, SoftwareContext>,
+    pub(crate) someip_protocol_rules: SlotMap<SomeipProtocolRuleId, SomeipProtocolRule>,
+    pub(crate) someip_sd_client_event_group_timing_configs:
+        SlotMap<SomeipSdClientEventGroupTimingConfigId, SomeipSdClientEventGroupTimingConfig>,
+    pub(crate) someip_sd_client_service_instance_configs:
+        SlotMap<SomeipSdClientServiceInstanceConfigId, SomeipSdClientServiceInstanceConfig>,
+    pub(crate) someip_sd_rules: SlotMap<SomeipSdRuleId, SomeipSdRule>,
+    pub(crate) someip_sd_server_event_group_timing_configs:
+        SlotMap<SomeipSdServerEventGroupTimingConfigId, SomeipSdServerEventGroupTimingConfig>,
+    pub(crate) someip_sd_server_service_instance_configs:
+        SlotMap<SomeipSdServerServiceInstanceConfigId, SomeipSdServerServiceInstanceConfig>,
+    pub(crate) someip_service_versions: SlotMap<SomeipServiceVersionId, SomeipServiceVersion>,
+    pub(crate) someip_tp_channels: SlotMap<SomeipTpChannelId, SomeipTpChannel>,
+    pub(crate) someip_tp_configs: SlotMap<SomeipTpConfigId, SomeipTpConfig>,
+    pub(crate) someip_tp_connections: SlotMap<SomeipTpConnectionId, SomeipTpConnection>,
+    pub(crate) specification_document_scopes:
+        SlotMap<SpecificationDocumentScopeId, SpecificationDocumentScope>,
+    pub(crate) specification_scopes: SlotMap<SpecificationScopeId, SpecificationScope>,
+    pub(crate) sporadic_event_triggerings:
+        SlotMap<SporadicEventTriggeringId, SporadicEventTriggering>,
+    pub(crate) state_dependent_firewalls: SlotMap<StateDependentFirewallId, StateDependentFirewall>,
+    pub(crate) static_parts: SlotMap<StaticPartId, StaticPart>,
+    pub(crate) static_socket_connections: SlotMap<StaticSocketConnectionId, StaticSocketConnection>,
+    pub(crate) stds: SlotMap<StdId, Std>,
+    pub(crate) stream_filter_ieee1722_tps:
+        SlotMap<StreamFilterIEEE1722TpId, StreamFilterIEEE1722Tp>,
+    pub(crate) stream_filter_ipv4_address:
+        SlotMap<StreamFilterIpv4AddressId, StreamFilterIpv4Address>,
+    pub(crate) stream_filter_ipv6_address:
+        SlotMap<StreamFilterIpv6AddressId, StreamFilterIpv6Address>,
+    pub(crate) stream_filter_mac_address: SlotMap<StreamFilterMACAddressId, StreamFilterMACAddress>,
+    pub(crate) stream_filter_port_ranges: SlotMap<StreamFilterPortRangeId, StreamFilterPortRange>,
+    pub(crate) stream_filter_rule_data_link_layers:
+        SlotMap<StreamFilterRuleDataLinkLayerId, StreamFilterRuleDataLinkLayer>,
+    pub(crate) stream_filter_rule_ip_tps: SlotMap<StreamFilterRuleIpTpId, StreamFilterRuleIpTp>,
+    pub(crate) string_values: SlotMap<StringValueId, StringValue>,
+    pub(crate) structured_reqs: SlotMap<StructuredReqId, StructuredReq>,
+    pub(crate) sub_element_mappings: SlotMap<SubElementMappingId, SubElementMapping>,
+    pub(crate) supervised_entity_checkpoint_needs:
+        SlotMap<SupervisedEntityCheckpointNeedsId, SupervisedEntityCheckpointNeeds>,
+    pub(crate) supervised_entity_needs: SlotMap<SupervisedEntityNeedsId, SupervisedEntityNeeds>,
+    pub(crate) sw_addr_methods: SlotMap<SwAddrMethodId, SwAddrMethod>,
+    pub(crate) sw_axis_conts: SlotMap<SwAxisContId, SwAxisCont>,
+    pub(crate) sw_axis_generics: SlotMap<SwAxisGenericId, SwAxisGeneric>,
+    pub(crate) sw_axis_groupeds: SlotMap<SwAxisGroupedId, SwAxisGrouped>,
+    pub(crate) sw_axis_individuals: SlotMap<SwAxisIndividualId, SwAxisIndividual>,
+    pub(crate) sw_axis_types: SlotMap<SwAxisTypeId, SwAxisType>,
+    pub(crate) sw_base_types: SlotMap<SwBaseTypeId, SwBaseType>,
+    pub(crate) sw_bit_representations: SlotMap<SwBitRepresentationId, SwBitRepresentation>,
+    pub(crate) sw_calprm_axis: SlotMap<SwCalprmAxisId, SwCalprmAxis>,
+    pub(crate) sw_calprm_axis_sets: SlotMap<SwCalprmAxisSetId, SwCalprmAxisSet>,
+    pub(crate) sw_calprm_ref_proxys: SlotMap<SwCalprmRefProxyId, SwCalprmRefProxy>,
+    pub(crate) sw_component_documentations:
+        SlotMap<SwComponentDocumentationId, SwComponentDocumentation>,
+    pub(crate) sw_component_prototypes: SlotMap<SwComponentPrototypeId, SwComponentPrototype>,
+    pub(crate) sw_component_prototype_assignments:
+        SlotMap<SwComponentPrototypeAssignmentId, SwComponentPrototypeAssignment>,
+    pub(crate) sw_data_def_props: SlotMap<SwDataDefPropsId, SwDataDefProps>,
+    pub(crate) sw_data_dependencys: SlotMap<SwDataDependencyId, SwDataDependency>,
+    pub(crate) sw_data_dependency_args: SlotMap<SwDataDependencyArgsId, SwDataDependencyArgs>,
+    pub(crate) sw_generic_axis_params: SlotMap<SwGenericAxisParamId, SwGenericAxisParam>,
+    pub(crate) sw_generic_axis_param_types:
+        SlotMap<SwGenericAxisParamTypeId, SwGenericAxisParamType>,
+    pub(crate) sw_pointer_target_props: SlotMap<SwPointerTargetPropsId, SwPointerTargetProps>,
+    pub(crate) sw_record_layouts: SlotMap<SwRecordLayoutId, SwRecordLayout>,
+    pub(crate) sw_record_layout_groups: SlotMap<SwRecordLayoutGroupId, SwRecordLayoutGroup>,
+    pub(crate) sw_record_layout_group_contents:
+        SlotMap<SwRecordLayoutGroupContentId, SwRecordLayoutGroupContent>,
+    pub(crate) sw_record_layout_vs: SlotMap<SwRecordLayoutVId, SwRecordLayoutV>,
+    pub(crate) sw_service_args: SlotMap<SwServiceArgId, SwServiceArg>,
+    pub(crate) sw_systemconsts: SlotMap<SwSystemconstId, SwSystemconst>,
+    pub(crate) sw_systemconst_values: SlotMap<SwSystemconstValueId, SwSystemconstValue>,
+    pub(crate) sw_systemconstant_value_sets:
+        SlotMap<SwSystemconstantValueSetId, SwSystemconstantValueSet>,
+    pub(crate) sw_text_props: SlotMap<SwTextPropsId, SwTextProps>,
+    pub(crate) sw_value_conts: SlotMap<SwValueContId, SwValueCont>,
+    pub(crate) sw_values: SlotMap<SwValuesId, SwValues>,
+    pub(crate) sw_variable_ref_proxys: SlotMap<SwVariableRefProxyId, SwVariableRefProxy>,
+    pub(crate) swc_bsw_mappings: SlotMap<SwcBswMappingId, SwcBswMapping>,
+    pub(crate) swc_bsw_runnable_mappings: SlotMap<SwcBswRunnableMappingId, SwcBswRunnableMapping>,
+    pub(crate) swc_bsw_synchronized_mode_group_prototypes:
+        SlotMap<SwcBswSynchronizedModeGroupPrototypeId, SwcBswSynchronizedModeGroupPrototype>,
+    pub(crate) swc_bsw_synchronized_triggers:
+        SlotMap<SwcBswSynchronizedTriggerId, SwcBswSynchronizedTrigger>,
+    pub(crate) swc_exclusive_area_policys:
+        SlotMap<SwcExclusiveAreaPolicyId, SwcExclusiveAreaPolicy>,
+    pub(crate) swc_implementations: SlotMap<SwcImplementationId, SwcImplementation>,
+    pub(crate) swc_internal_behaviors: SlotMap<SwcInternalBehaviorId, SwcInternalBehavior>,
+    pub(crate) swc_mode_manager_error_events:
+        SlotMap<SwcModeManagerErrorEventId, SwcModeManagerErrorEvent>,
+    pub(crate) swc_mode_switch_events: SlotMap<SwcModeSwitchEventId, SwcModeSwitchEvent>,
+    pub(crate) swc_service_dependencys: SlotMap<SwcServiceDependencyId, SwcServiceDependency>,
+    pub(crate) swc_timings: SlotMap<SwcTimingId, SwcTiming>,
+    pub(crate) swc_to_application_partition_mappings:
+        SlotMap<SwcToApplicationPartitionMappingId, SwcToApplicationPartitionMapping>,
+    pub(crate) swc_to_ecu_mappings: SlotMap<SwcToEcuMappingId, SwcToEcuMapping>,
+    pub(crate) swc_to_impl_mappings: SlotMap<SwcToImplMappingId, SwcToImplMapping>,
+    pub(crate) swc_to_swc_operation_arguments:
+        SlotMap<SwcToSwcOperationArgumentsId, SwcToSwcOperationArguments>,
+    pub(crate) swc_to_swc_signals: SlotMap<SwcToSwcSignalId, SwcToSwcSignal>,
+    pub(crate) switch_asynchronous_traffic_shaper_group_entrys: SlotMap<
+        SwitchAsynchronousTrafficShaperGroupEntryId,
+        SwitchAsynchronousTrafficShaperGroupEntry,
+    >,
+    pub(crate) switch_flow_metering_entrys:
+        SlotMap<SwitchFlowMeteringEntryId, SwitchFlowMeteringEntry>,
+    pub(crate) switch_stream_filter_action_dest_port_modifications: SlotMap<
+        SwitchStreamFilterActionDestPortModificationId,
+        SwitchStreamFilterActionDestPortModification,
+    >,
+    pub(crate) switch_stream_filter_entrys:
+        SlotMap<SwitchStreamFilterEntryId, SwitchStreamFilterEntry>,
+    pub(crate) switch_stream_filter_rules:
+        SlotMap<SwitchStreamFilterRuleId, SwitchStreamFilterRule>,
+    pub(crate) switch_stream_gate_entrys: SlotMap<SwitchStreamGateEntryId, SwitchStreamGateEntry>,
+    pub(crate) switch_stream_identifications:
+        SlotMap<SwitchStreamIdentificationId, SwitchStreamIdentification>,
+    pub(crate) symbol_props: SlotMap<SymbolPropsId, SymbolProps>,
+    pub(crate) symbolic_name_props: SlotMap<SymbolicNamePropsId, SymbolicNameProps>,
+    pub(crate) sync_time_base_mgr_user_needs:
+        SlotMap<SyncTimeBaseMgrUserNeedsId, SyncTimeBaseMgrUserNeeds>,
+    pub(crate) synchronization_point_constraints:
+        SlotMap<SynchronizationPointConstraintId, SynchronizationPointConstraint>,
+    pub(crate) synchronization_timing_constraints:
+        SlotMap<SynchronizationTimingConstraintId, SynchronizationTimingConstraint>,
+    pub(crate) synchronous_server_call_points:
+        SlotMap<SynchronousServerCallPointId, SynchronousServerCallPoint>,
+    pub(crate) systems: SlotMap<SystemId, System>,
+    pub(crate) system_mappings: SlotMap<SystemMappingId, SystemMapping>,
+    pub(crate) system_signals: SlotMap<SystemSignalId, SystemSignal>,
+    pub(crate) system_signal_groups: SlotMap<SystemSignalGroupId, SystemSignalGroup>,
+    pub(crate) system_signal_group_to_communication_resource_mappings: SlotMap<
+        SystemSignalGroupToCommunicationResourceMappingId,
+        SystemSignalGroupToCommunicationResourceMapping,
+    >,
+    pub(crate) system_signal_to_communication_resource_mappings: SlotMap<
+        SystemSignalToCommunicationResourceMappingId,
+        SystemSignalToCommunicationResourceMapping,
+    >,
+    pub(crate) system_timings: SlotMap<SystemTimingId, SystemTiming>,
+    pub(crate) td_cp_software_cluster_mappings:
+        SlotMap<TDCpSoftwareClusterMappingId, TDCpSoftwareClusterMapping>,
+    pub(crate) td_cp_software_cluster_mapping_sets:
+        SlotMap<TDCpSoftwareClusterMappingSetId, TDCpSoftwareClusterMappingSet>,
+    pub(crate) td_cp_software_cluster_resource_mappings:
+        SlotMap<TDCpSoftwareClusterResourceMappingId, TDCpSoftwareClusterResourceMapping>,
+    pub(crate) td_event_bsw_internal_behaviors:
+        SlotMap<TDEventBswInternalBehaviorId, TDEventBswInternalBehavior>,
+    pub(crate) td_event_bsw_mode_declarations:
+        SlotMap<TDEventBswModeDeclarationId, TDEventBswModeDeclaration>,
+    pub(crate) td_event_bsw_modules: SlotMap<TDEventBswModuleId, TDEventBswModule>,
+    pub(crate) td_event_complexs: SlotMap<TDEventComplexId, TDEventComplex>,
+    pub(crate) td_event_fr_cluster_cycle_starts:
+        SlotMap<TDEventFrClusterCycleStartId, TDEventFrClusterCycleStart>,
+    pub(crate) td_event_frames: SlotMap<TDEventFrameId, TDEventFrame>,
+    pub(crate) td_event_frame_ethernets: SlotMap<TDEventFrameEthernetId, TDEventFrameEthernet>,
+    pub(crate) td_event_i_pdus: SlotMap<TDEventIPduId, TDEventIPdu>,
+    pub(crate) td_event_i_signals: SlotMap<TDEventISignalId, TDEventISignal>,
+    pub(crate) td_event_mode_declarations:
+        SlotMap<TDEventModeDeclarationId, TDEventModeDeclaration>,
+    pub(crate) td_event_occurrence_expressions:
+        SlotMap<TDEventOccurrenceExpressionId, TDEventOccurrenceExpression>,
+    pub(crate) td_event_occurrence_expression_formulas:
+        SlotMap<TDEventOccurrenceExpressionFormulaId, TDEventOccurrenceExpressionFormula>,
+    pub(crate) td_event_operations: SlotMap<TDEventOperationId, TDEventOperation>,
+    pub(crate) td_event_sllet_ports: SlotMap<TDEventSLLETPortId, TDEventSLLETPort>,
+    pub(crate) td_event_swc_internal_behaviors:
+        SlotMap<TDEventSwcInternalBehaviorId, TDEventSwcInternalBehavior>,
+    pub(crate) td_event_swc_internal_behavior_references:
+        SlotMap<TDEventSwcInternalBehaviorReferenceId, TDEventSwcInternalBehaviorReference>,
+    pub(crate) td_event_tt_can_cycle_starts:
+        SlotMap<TDEventTTCanCycleStartId, TDEventTTCanCycleStart>,
+    pub(crate) td_event_triggers: SlotMap<TDEventTriggerId, TDEventTrigger>,
+    pub(crate) td_event_variable_data_prototypes:
+        SlotMap<TDEventVariableDataPrototypeId, TDEventVariableDataPrototype>,
+    pub(crate) td_event_vfbs: SlotMap<TDEventVfbId, TDEventVfb>,
+    pub(crate) td_event_vfb_references: SlotMap<TDEventVfbReferenceId, TDEventVfbReference>,
+    pub(crate) td_header_id_ranges: SlotMap<TDHeaderIdRangeId, TDHeaderIdRange>,
+    pub(crate) tdlet_zone_clocks: SlotMap<TDLETZoneClockId, TDLETZoneClock>,
+    pub(crate) t_ref_types: SlotMap<TRefTypeId, TRefType>,
+    pub(crate) tables: SlotMap<TableId, Table>,
+    pub(crate) tag_with_optional_values: SlotMap<TagWithOptionalValueId, TagWithOptionalValue>,
+    pub(crate) target_i_pdu_refs: SlotMap<TargetIPduRefId, TargetIPduRef>,
+    pub(crate) tbodys: SlotMap<TbodyId, Tbody>,
+    pub(crate) tcp_ip_icmpv4_props: SlotMap<TcpIpIcmpv4PropsId, TcpIpIcmpv4Props>,
+    pub(crate) tcp_ip_icmpv6_props: SlotMap<TcpIpIcmpv6PropsId, TcpIpIcmpv6Props>,
+    pub(crate) tcp_option_filter_lists: SlotMap<TcpOptionFilterListId, TcpOptionFilterList>,
+    pub(crate) tcp_option_filter_sets: SlotMap<TcpOptionFilterSetId, TcpOptionFilterSet>,
+    pub(crate) tcp_props: SlotMap<TcpPropsId, TcpProps>,
+    pub(crate) tcp_rules: SlotMap<TcpRuleId, TcpRule>,
+    pub(crate) tcp_tps: SlotMap<TcpTpId, TcpTp>,
+    pub(crate) text_table_mappings: SlotMap<TextTableMappingId, TextTableMapping>,
+    pub(crate) text_table_value_pairs: SlotMap<TextTableValuePairId, TextTableValuePair>,
+    pub(crate) text_value_specifications: SlotMap<TextValueSpecificationId, TextValueSpecification>,
+    pub(crate) textual_conditions: SlotMap<TextualConditionId, TextualCondition>,
+    pub(crate) tgroups: SlotMap<TgroupId, Tgroup>,
+    pub(crate) time_range_types: SlotMap<TimeRangeTypeId, TimeRangeType>,
+    pub(crate) time_range_type_tolerances:
+        SlotMap<TimeRangeTypeToleranceId, TimeRangeTypeTolerance>,
+    pub(crate) time_sync_client_configurations:
+        SlotMap<TimeSyncClientConfigurationId, TimeSyncClientConfiguration>,
+    pub(crate) time_sync_server_configurations:
+        SlotMap<TimeSyncServerConfigurationId, TimeSyncServerConfiguration>,
+    pub(crate) time_synchronizations: SlotMap<TimeSynchronizationId, TimeSynchronization>,
+    pub(crate) time_value_value_variation_points:
+        SlotMap<TimeValueValueVariationPointId, TimeValueValueVariationPoint>,
+    pub(crate) timing_clock_sync_accuracys:
+        SlotMap<TimingClockSyncAccuracyId, TimingClockSyncAccuracy>,
+    pub(crate) timing_conditions: SlotMap<TimingConditionId, TimingCondition>,
+    pub(crate) timing_condition_formulas: SlotMap<TimingConditionFormulaId, TimingConditionFormula>,
+    pub(crate) timing_description_event_chains:
+        SlotMap<TimingDescriptionEventChainId, TimingDescriptionEventChain>,
+    pub(crate) timing_events: SlotMap<TimingEventId, TimingEvent>,
+    pub(crate) timing_extension_resources:
+        SlotMap<TimingExtensionResourceId, TimingExtensionResource>,
+    pub(crate) timing_mode_instances: SlotMap<TimingModeInstanceId, TimingModeInstance>,
+    pub(crate) tls_crypto_cipher_suites: SlotMap<TlsCryptoCipherSuiteId, TlsCryptoCipherSuite>,
+    pub(crate) tls_crypto_cipher_suite_props:
+        SlotMap<TlsCryptoCipherSuitePropsId, TlsCryptoCipherSuiteProps>,
+    pub(crate) tls_crypto_service_mappings:
+        SlotMap<TlsCryptoServiceMappingId, TlsCryptoServiceMapping>,
+    pub(crate) tls_psk_identitys: SlotMap<TlsPskIdentityId, TlsPskIdentity>,
+    pub(crate) tlv_data_id_definitions: SlotMap<TlvDataIdDefinitionId, TlvDataIdDefinition>,
+    pub(crate) tlv_data_id_definition_sets:
+        SlotMap<TlvDataIdDefinitionSetId, TlvDataIdDefinitionSet>,
+    pub(crate) topic1s: SlotMap<Topic1Id, Topic1>,
+    pub(crate) topic_contents: SlotMap<TopicContentId, TopicContent>,
+    pub(crate) topic_content_or_msr_querys:
+        SlotMap<TopicContentOrMsrQueryId, TopicContentOrMsrQuery>,
+    pub(crate) topic_or_msr_querys: SlotMap<TopicOrMsrQueryId, TopicOrMsrQuery>,
+    pub(crate) tp_address: SlotMap<TpAddressId, TpAddress>,
+    pub(crate) tp_connection_idents: SlotMap<TpConnectionIdentId, TpConnectionIdent>,
+    pub(crate) tp_ports: SlotMap<TpPortId, TpPort>,
+    pub(crate) traceable_tables: SlotMap<TraceableTableId, TraceableTable>,
+    pub(crate) traceable_texts: SlotMap<TraceableTextId, TraceableText>,
+    pub(crate) transformation_props_sets: SlotMap<TransformationPropsSetId, TransformationPropsSet>,
+    pub(crate) transformation_technologys:
+        SlotMap<TransformationTechnologyId, TransformationTechnology>,
+    pub(crate) transformer_hard_error_events:
+        SlotMap<TransformerHardErrorEventId, TransformerHardErrorEvent>,
+    pub(crate) transient_faults: SlotMap<TransientFaultId, TransientFault>,
+    pub(crate) transmission_acknowledgement_requests:
+        SlotMap<TransmissionAcknowledgementRequestId, TransmissionAcknowledgementRequest>,
+    pub(crate) transmission_com_spec_props:
+        SlotMap<TransmissionComSpecPropsId, TransmissionComSpecProps>,
+    pub(crate) transmission_mode_conditions:
+        SlotMap<TransmissionModeConditionId, TransmissionModeCondition>,
+    pub(crate) transmission_mode_declarations:
+        SlotMap<TransmissionModeDeclarationId, TransmissionModeDeclaration>,
+    pub(crate) transmission_mode_timings: SlotMap<TransmissionModeTimingId, TransmissionModeTiming>,
+    pub(crate) transport_layer_rules: SlotMap<TransportLayerRuleId, TransportLayerRule>,
+    pub(crate) triggers: SlotMap<TriggerId, Trigger>,
+    pub(crate) trigger_i_pdu_send_conditions:
+        SlotMap<TriggerIPduSendConditionId, TriggerIPduSendCondition>,
+    pub(crate) trigger_interfaces: SlotMap<TriggerInterfaceId, TriggerInterface>,
+    pub(crate) trigger_interface_mappings:
+        SlotMap<TriggerInterfaceMappingId, TriggerInterfaceMapping>,
+    pub(crate) trigger_mappings: SlotMap<TriggerMappingId, TriggerMapping>,
+    pub(crate) trigger_port_annotations: SlotMap<TriggerPortAnnotationId, TriggerPortAnnotation>,
+    pub(crate) trigger_to_signal_mappings:
+        SlotMap<TriggerToSignalMappingId, TriggerToSignalMapping>,
+    pub(crate) tts: SlotMap<TtId, Tt>,
+    pub(crate) ttcan_absolutely_scheduled_timings:
+        SlotMap<TtcanAbsolutelyScheduledTimingId, TtcanAbsolutelyScheduledTiming>,
+    pub(crate) ttcan_clusters: SlotMap<TtcanClusterId, TtcanCluster>,
+    pub(crate) ttcan_communication_connectors:
+        SlotMap<TtcanCommunicationConnectorId, TtcanCommunicationConnector>,
+    pub(crate) ttcan_communication_controllers:
+        SlotMap<TtcanCommunicationControllerId, TtcanCommunicationController>,
+    pub(crate) ttcan_physical_channels: SlotMap<TtcanPhysicalChannelId, TtcanPhysicalChannel>,
+    pub(crate) udp_nm_clusters: SlotMap<UdpNmClusterId, UdpNmCluster>,
+    pub(crate) udp_nm_cluster_couplings: SlotMap<UdpNmClusterCouplingId, UdpNmClusterCoupling>,
+    pub(crate) udp_nm_ecus: SlotMap<UdpNmEcuId, UdpNmEcu>,
+    pub(crate) udp_nm_nodes: SlotMap<UdpNmNodeId, UdpNmNode>,
+    pub(crate) udp_props: SlotMap<UdpPropsId, UdpProps>,
+    pub(crate) udp_rules: SlotMap<UdpRuleId, UdpRule>,
+    pub(crate) udp_tps: SlotMap<UdpTpId, UdpTp>,
+    pub(crate) unassign_frame_ids: SlotMap<UnassignFrameIdId, UnassignFrameId>,
+    pub(crate) units: SlotMap<UnitId, Unit>,
+    pub(crate) unit_groups: SlotMap<UnitGroupId, UnitGroup>,
+    pub(crate) unlimited_integer_value_variation_points:
+        SlotMap<UnlimitedIntegerValueVariationPointId, UnlimitedIntegerValueVariationPoint>,
+    pub(crate) urls: SlotMap<UrlId, Url>,
+    pub(crate) user_defined_clusters: SlotMap<UserDefinedClusterId, UserDefinedCluster>,
+    pub(crate) user_defined_communication_connectors:
+        SlotMap<UserDefinedCommunicationConnectorId, UserDefinedCommunicationConnector>,
+    pub(crate) user_defined_communication_controllers:
+        SlotMap<UserDefinedCommunicationControllerId, UserDefinedCommunicationController>,
+    pub(crate) user_defined_ethernet_frames:
+        SlotMap<UserDefinedEthernetFrameId, UserDefinedEthernetFrame>,
+    pub(crate) user_defined_global_time_masters:
+        SlotMap<UserDefinedGlobalTimeMasterId, UserDefinedGlobalTimeMaster>,
+    pub(crate) user_defined_global_time_slaves:
+        SlotMap<UserDefinedGlobalTimeSlaveId, UserDefinedGlobalTimeSlave>,
+    pub(crate) user_defined_i_pdus: SlotMap<UserDefinedIPduId, UserDefinedIPdu>,
+    pub(crate) user_defined_pdus: SlotMap<UserDefinedPduId, UserDefinedPdu>,
+    pub(crate) user_defined_physical_channels:
+        SlotMap<UserDefinedPhysicalChannelId, UserDefinedPhysicalChannel>,
+    pub(crate) user_defined_transformation_com_spec_props:
+        SlotMap<UserDefinedTransformationComSpecPropsId, UserDefinedTransformationComSpecProps>,
+    pub(crate) user_defined_transformation_descriptions:
+        SlotMap<UserDefinedTransformationDescriptionId, UserDefinedTransformationDescription>,
+    pub(crate) user_defined_transformation_i_signal_props:
+        SlotMap<UserDefinedTransformationISignalPropsId, UserDefinedTransformationISignalProps>,
+    pub(crate) user_defined_transformation_props:
+        SlotMap<UserDefinedTransformationPropsId, UserDefinedTransformationProps>,
+    pub(crate) v2x_data_manager_needs: SlotMap<V2xDataManagerNeedsId, V2xDataManagerNeeds>,
+    pub(crate) v2x_fac_user_needs: SlotMap<V2xFacUserNeedsId, V2xFacUserNeeds>,
+    pub(crate) v2x_m_user_needs: SlotMap<V2xMUserNeedsId, V2xMUserNeeds>,
+    pub(crate) value_groups: SlotMap<ValueGroupId, ValueGroup>,
+    pub(crate) value_lists: SlotMap<ValueListId, ValueList>,
+    pub(crate) value_restriction_with_severitys:
+        SlotMap<ValueRestrictionWithSeverityId, ValueRestrictionWithSeverity>,
+    pub(crate) variable_access: SlotMap<VariableAccessId, VariableAccess>,
+    pub(crate) variable_access_in_ecu_instance_refs:
+        SlotMap<VariableAccessInEcuInstanceRefId, VariableAccessInEcuInstanceRef>,
+    pub(crate) variable_and_parameter_interface_mappings:
+        SlotMap<VariableAndParameterInterfaceMappingId, VariableAndParameterInterfaceMapping>,
+    pub(crate) variable_data_prototypes: SlotMap<VariableDataPrototypeId, VariableDataPrototype>,
+    pub(crate) variable_data_prototype_in_composition_instance_refs: SlotMap<
+        VariableDataPrototypeInCompositionInstanceRefId,
+        VariableDataPrototypeInCompositionInstanceRef,
+    >,
+    pub(crate) variable_data_prototype_in_system_instance_refs: SlotMap<
+        VariableDataPrototypeInSystemInstanceRefId,
+        VariableDataPrototypeInSystemInstanceRef,
+    >,
+    pub(crate) variable_in_atomic_swc_type_instance_refs:
+        SlotMap<VariableInAtomicSWCTypeInstanceRefId, VariableInAtomicSWCTypeInstanceRef>,
+    pub(crate) variable_in_component_instance_refs:
+        SlotMap<VariableInComponentInstanceRefId, VariableInComponentInstanceRef>,
+    pub(crate) variation_points: SlotMap<VariationPointId, VariationPoint>,
+    pub(crate) variation_point_proxys: SlotMap<VariationPointProxyId, VariationPointProxy>,
+    pub(crate) variation_restriction_with_severitys:
+        SlotMap<VariationRestrictionWithSeverityId, VariationRestrictionWithSeverity>,
+    pub(crate) vendor_specific_service_needs:
+        SlotMap<VendorSpecificServiceNeedsId, VendorSpecificServiceNeeds>,
+    pub(crate) vfb_timings: SlotMap<VfbTimingId, VfbTiming>,
+    pub(crate) view_maps: SlotMap<ViewMapId, ViewMap>,
+    pub(crate) view_map_sets: SlotMap<ViewMapSetId, ViewMapSet>,
+    pub(crate) vlan_configs: SlotMap<VlanConfigId, VlanConfig>,
+    pub(crate) vlan_memberships: SlotMap<VlanMembershipId, VlanMembership>,
+    pub(crate) wait_points: SlotMap<WaitPointId, WaitPoint>,
+    pub(crate) warning_indicator_requested_bit_needs:
+        SlotMap<WarningIndicatorRequestedBitNeedsId, WarningIndicatorRequestedBitNeeds>,
+    pub(crate) worst_case_heap_usages: SlotMap<WorstCaseHeapUsageId, WorstCaseHeapUsage>,
+    pub(crate) worst_case_stack_usages: SlotMap<WorstCaseStackUsageId, WorstCaseStackUsage>,
+    pub(crate) xdocs: SlotMap<XdocId, Xdoc>,
+    pub(crate) xfiles: SlotMap<XfileId, Xfile>,
+    pub(crate) xrefs: SlotMap<XrefId, Xref>,
+    pub(crate) xref_targets: SlotMap<XrefTargetId, XrefTarget>,
 
     // — root fields (spec class `AUTOSAR`) —
     admin_data: Option<AdminDataId>,
@@ -126,35 +2501,6 @@ impl Document {
         }
     }
 
-    // — id resolvers (read access from outside the crate) —
-
-    pub fn get_ar_package(&self, id: ARPackageId) -> Option<&ARPackage> {
-        self.ar_packages.get(id)
-    }
-
-    pub fn get_sdg(&self, id: SdgId) -> Option<&Sdg> {
-        self.sdgs.get(id)
-    }
-
-    pub fn get_sdg_contents(&self, id: SdgContentsId) -> Option<&SdgContents> {
-        self.sdg_contents.get(id)
-    }
-
-    pub fn get_sd(&self, id: SdId) -> Option<&Sd> {
-        self.sds.get(id)
-    }
-
-    pub fn get_multi_language_plain_text(
-        &self,
-        id: MultiLanguagePlainTextId,
-    ) -> Option<&MultiLanguagePlainText> {
-        self.multi_language_plain_texts.get(id)
-    }
-
-    pub fn get_l_plain_text(&self, id: LPlainTextId) -> Option<&LPlainText> {
-        self.l_plain_texts.get(id)
-    }
-
     // — structural equality (P0 design §7) —
 
     /// Structural equality: walk both models, resolving `Id<T>` links within
@@ -212,7 +2558,7 @@ impl Document {
         Ok(())
     }
 
-    fn compare_ar_object(a: &ARObject, b: &ARObject, path: &str) -> Result<(), String> {
+    pub(crate) fn compare_ar_object(a: &ARObject, b: &ARObject, path: &str) -> Result<(), String> {
         if a.get_checksum() != b.get_checksum() {
             return Err(format!("{path}: checksum mismatch"));
         }
@@ -222,7 +2568,7 @@ impl Document {
         Ok(())
     }
 
-    fn compare_ar_package(
+    pub(crate) fn compare_ar_package(
         &self,
         other: &Document,
         a: &ARPackage,
@@ -306,8 +2652,13 @@ impl Document {
                         package_b,
                         &format!("{path}.ELEMENTS[{index}]"),
                     )?;
-                } // (P0 has the single ARPackage variant; the P1 converter's
-                  // generated enum adds the kind-mismatch arm back.)
+                }
+                _ => {
+                    // the generated ElementRef enum has one variant per
+                    // ARPackage create-directory entry; kind mismatches are
+                    // structural differences
+                    return Err(format!("{path}.ELEMENTS[{index}]: element kind mismatch"));
+                }
             }
         }
 
@@ -318,238 +2669,11690 @@ impl Document {
         }
         Ok(())
     }
+}
 
-    fn compare_admin_data(
-        &self,
-        other: &Document,
-        a: &AdminData,
-        b: &AdminData,
-        path: &str,
-    ) -> Result<(), String> {
-        Self::compare_ar_object(a.base(), b.base(), path)?;
-        if a.get_language() != b.get_language() {
-            return Err(format!("{path}: LANGUAGE mismatch"));
-        }
+impl Document {
+    // — generated resolvers (one per concrete class) —
 
-        match (a.get_used_languages(), b.get_used_languages()) {
-            (None, None) => {}
-            (Some(mlpt_a), Some(mlpt_b)) => {
-                let mlpt_a = self
-                    .multi_language_plain_texts
-                    .get(mlpt_a)
-                    .ok_or_else(|| format!("{path}: USED-LANGUAGES id not found in own arena"))?;
-                let mlpt_b = other
-                    .multi_language_plain_texts
-                    .get(mlpt_b)
-                    .ok_or_else(|| format!("{path}: USED-LANGUAGES id not found in other arena"))?;
-                self.compare_multi_language_plain_text(
-                    other,
-                    mlpt_a,
-                    mlpt_b,
-                    &format!("{path}.USED-LANGUAGES"),
-                )?;
-            }
-            _ => {
-                return Err(format!(
-                    "{path}: USED-LANGUAGES present in one document only"
-                ))
-            }
-        }
-
-        let sdgs_a = a.get_sdgs();
-        let sdgs_b = b.get_sdgs();
-        if sdgs_a.len() != sdgs_b.len() {
-            return Err(format!("{path}: SDGS length mismatch"));
-        }
-        for (index, (sdg_a, sdg_b)) in sdgs_a.iter().zip(sdgs_b.iter()).enumerate() {
-            let sdg_a = self
-                .sdgs
-                .get(*sdg_a)
-                .ok_or_else(|| format!("{path}.SDGS[{index}]: id not found in own arena"))?;
-            let sdg_b = other
-                .sdgs
-                .get(*sdg_b)
-                .ok_or_else(|| format!("{path}.SDGS[{index}]: id not found in other arena"))?;
-            self.compare_sdg(other, sdg_a, sdg_b, &format!("{path}.SDGS[{index}]"))?;
-        }
-
-        // DocRevision is a P0 placeholder (no fields); list length is the
-        // whole comparison until P1 fills it in.
-        if a.get_doc_revisions().len() != b.get_doc_revisions().len() {
-            return Err(format!("{path}: DOC-REVISIONS length mismatch"));
-        }
-        Ok(())
+    pub fn get_ar_list(&self, id: ARListId) -> Option<&ARList> {
+        self.ar_lists.get(id)
     }
 
-    fn compare_multi_language_plain_text(
-        &self,
-        other: &Document,
-        a: &MultiLanguagePlainText,
-        b: &MultiLanguagePlainText,
-        path: &str,
-    ) -> Result<(), String> {
-        let l10s_a = a.get_l10s();
-        let l10s_b = b.get_l10s();
-        if l10s_a.len() != l10s_b.len() {
-            return Err(format!("{path}: L-10 length mismatch"));
-        }
-        for (index, (l10_a, l10_b)) in l10s_a.iter().zip(l10s_b.iter()).enumerate() {
-            let l10_a = self
-                .l_plain_texts
-                .get(*l10_a)
-                .ok_or_else(|| format!("{path}.L-10[{index}]: id not found in own arena"))?;
-            let l10_b = other
-                .l_plain_texts
-                .get(*l10_b)
-                .ok_or_else(|| format!("{path}.L-10[{index}]: id not found in other arena"))?;
-            let l10_path = format!("{path}.L-10[{index}]");
-            if l10_a.get_l() != l10_b.get_l() {
-                return Err(format!("{l10_path}: L attribute mismatch"));
-            }
-            if l10_a.get_xml_space() != l10_b.get_xml_space() {
-                return Err(format!("{l10_path}: xml:space mismatch"));
-            }
-            if l10_a.get_value() != l10_b.get_value() {
-                return Err(format!("{l10_path}: text mismatch"));
-            }
-        }
-        Ok(())
+    pub fn get_ar_package(&self, id: ARPackageId) -> Option<&ARPackage> {
+        self.ar_packages.get(id)
     }
 
-    fn compare_sdg(&self, other: &Document, a: &Sdg, b: &Sdg, path: &str) -> Result<(), String> {
-        Self::compare_ar_object(a.base(), b.base(), path)?;
-        if a.get_gid() != b.get_gid() {
-            return Err(format!("{path}: GID mismatch"));
-        }
-
-        match (a.get_sdg_caption(), b.get_sdg_caption()) {
-            (None, None) => {}
-            (Some(caption_a), Some(caption_b)) => {
-                let caption_a = self
-                    .sdg_captions
-                    .get(caption_a)
-                    .ok_or_else(|| format!("{path}: SDG-CAPTION id not found in own arena"))?;
-                let caption_b = other
-                    .sdg_captions
-                    .get(caption_b)
-                    .ok_or_else(|| format!("{path}: SDG-CAPTION id not found in other arena"))?;
-                let caption_path = format!("{path}.SDG-CAPTION");
-                // SdgCaption base chain: Referrable → ARObject.
-                Self::compare_ar_object(
-                    caption_a.base().base(),
-                    caption_b.base().base(),
-                    &caption_path,
-                )?;
-                if caption_a.get_short_name() != caption_b.get_short_name() {
-                    return Err(format!("{caption_path}: SHORT-NAME mismatch"));
-                }
-                // desc (MultiLanguageOverviewParagraph) is a P0 placeholder on
-                // both sides; presence equality is the whole comparison.
-                if caption_a.get_desc().is_some() != caption_b.get_desc().is_some() {
-                    return Err(format!("{caption_path}: DESC present in one side only"));
-                }
-            }
-            _ => return Err(format!("{path}: SDG-CAPTION present in one side only")),
-        }
-
-        match (a.get_sdg_contents_type(), b.get_sdg_contents_type()) {
-            (None, None) => {}
-            (Some(contents_a), Some(contents_b)) => {
-                let contents_a = self
-                    .sdg_contents
-                    .get(contents_a)
-                    .ok_or_else(|| format!("{path}: SDG contents id not found in own arena"))?;
-                let contents_b = other
-                    .sdg_contents
-                    .get(contents_b)
-                    .ok_or_else(|| format!("{path}: SDG contents id not found in other arena"))?;
-                self.compare_sdg_contents(
-                    other,
-                    contents_a,
-                    contents_b,
-                    &format!("{path}.contents"),
-                )?;
-            }
-            _ => return Err(format!("{path}: SDG contents present in one side only")),
-        }
-        Ok(())
+    pub fn get_absolute_tolerance(&self, id: AbsoluteToleranceId) -> Option<&AbsoluteTolerance> {
+        self.absolute_tolerances.get(id)
     }
 
-    fn compare_sdg_contents(
+    pub fn get_abstract_class_tailoring(
         &self,
-        other: &Document,
-        a: &SdgContents,
-        b: &SdgContents,
-        path: &str,
-    ) -> Result<(), String> {
-        let sds_a = a.get_sd();
-        let sds_b = b.get_sd();
-        if sds_a.len() != sds_b.len() {
-            return Err(format!("{path}: SD length mismatch"));
-        }
-        for (index, (sd_a, sd_b)) in sds_a.iter().zip(sds_b.iter()).enumerate() {
-            let sd_a = self
-                .sds
-                .get(*sd_a)
-                .ok_or_else(|| format!("{path}.SD[{index}]: id not found in own arena"))?;
-            let sd_b = other
-                .sds
-                .get(*sd_b)
-                .ok_or_else(|| format!("{path}.SD[{index}]: id not found in other arena"))?;
-            let sd_path = format!("{path}.SD[{index}]");
-            Self::compare_ar_object(sd_a.base(), sd_b.base(), &sd_path)?;
-            if sd_a.get_gid() != sd_b.get_gid() {
-                return Err(format!("{sd_path}: GID mismatch"));
-            }
-            if sd_a.get_xml_space() != sd_b.get_xml_space() {
-                return Err(format!("{sd_path}: xml:space mismatch"));
-            }
-            if sd_a.get_value() != sd_b.get_value() {
-                return Err(format!("{sd_path}: text mismatch"));
-            }
-        }
+        id: AbstractClassTailoringId,
+    ) -> Option<&AbstractClassTailoring> {
+        self.abstract_class_tailorings.get(id)
+    }
 
-        let sdfs_a = a.get_sdf();
-        let sdfs_b = b.get_sdf();
-        if sdfs_a.len() != sdfs_b.len() {
-            return Err(format!("{path}: SDF length mismatch"));
-        }
-        for (index, (sdf_a, sdf_b)) in sdfs_a.iter().zip(sdfs_b.iter()).enumerate() {
-            let sdf_a = self
-                .sdfs
-                .get(*sdf_a)
-                .ok_or_else(|| format!("{path}.SDF[{index}]: id not found in own arena"))?;
-            let sdf_b = other
-                .sdfs
-                .get(*sdf_b)
-                .ok_or_else(|| format!("{path}.SDF[{index}]: id not found in other arena"))?;
-            let sdf_path = format!("{path}.SDF[{index}]");
-            Self::compare_ar_object(sdf_a.base(), sdf_b.base(), &sdf_path)?;
-            if sdf_a.get_gid() != sdf_b.get_gid() {
-                return Err(format!("{sdf_path}: GID mismatch"));
-            }
-            if sdf_a.get_value() != sdf_b.get_value() {
-                return Err(format!("{sdf_path}: text mismatch"));
-            }
-        }
+    pub fn get_access_count(&self, id: AccessCountId) -> Option<&AccessCount> {
+        self.access_counts.get(id)
+    }
 
-        let sdgs_a = a.get_sdg();
-        let sdgs_b = b.get_sdg();
-        if sdgs_a.len() != sdgs_b.len() {
-            return Err(format!("{path}: nested SDG length mismatch"));
+    pub fn get_access_count_set(&self, id: AccessCountSetId) -> Option<&AccessCountSet> {
+        self.access_count_sets.get(id)
+    }
+
+    pub fn get_acl_object_set(&self, id: AclObjectSetId) -> Option<&AclObjectSet> {
+        self.acl_object_sets.get(id)
+    }
+
+    pub fn get_acl_operation(&self, id: AclOperationId) -> Option<&AclOperation> {
+        self.acl_operations.get(id)
+    }
+
+    pub fn get_acl_permission(&self, id: AclPermissionId) -> Option<&AclPermission> {
+        self.acl_permissions.get(id)
+    }
+
+    pub fn get_acl_role(&self, id: AclRoleId) -> Option<&AclRole> {
+        self.acl_roles.get(id)
+    }
+
+    pub fn get_age_constraint(&self, id: AgeConstraintId) -> Option<&AgeConstraint> {
+        self.age_constraints.get(id)
+    }
+
+    pub fn get_aggregation_condition(
+        &self,
+        id: AggregationConditionId,
+    ) -> Option<&AggregationCondition> {
+        self.aggregation_conditions.get(id)
+    }
+
+    pub fn get_aggregation_tailoring(
+        &self,
+        id: AggregationTailoringId,
+    ) -> Option<&AggregationTailoring> {
+        self.aggregation_tailorings.get(id)
+    }
+
+    pub fn get_alias_name_assignment(
+        &self,
+        id: AliasNameAssignmentId,
+    ) -> Option<&AliasNameAssignment> {
+        self.alias_name_assignments.get(id)
+    }
+
+    pub fn get_alias_name_set(&self, id: AliasNameSetId) -> Option<&AliasNameSet> {
+        self.alias_name_sets.get(id)
+    }
+
+    pub fn get_analyzed_execution_time(
+        &self,
+        id: AnalyzedExecutionTimeId,
+    ) -> Option<&AnalyzedExecutionTime> {
+        self.analyzed_execution_times.get(id)
+    }
+
+    pub fn get_annotation(&self, id: AnnotationId) -> Option<&Annotation> {
+        self.annotations.get(id)
+    }
+
+    pub fn get_any_instance_ref(&self, id: AnyInstanceRefId) -> Option<&AnyInstanceRef> {
+        self.any_instance_refs.get(id)
+    }
+
+    pub fn get_app_os_task_proxy_to_ecu_task_proxy_mapping(
+        &self,
+        id: AppOsTaskProxyToEcuTaskProxyMappingId,
+    ) -> Option<&AppOsTaskProxyToEcuTaskProxyMapping> {
+        self.app_os_task_proxy_to_ecu_task_proxy_mappings.get(id)
+    }
+
+    pub fn get_application_array_data_type(
+        &self,
+        id: ApplicationArrayDataTypeId,
+    ) -> Option<&ApplicationArrayDataType> {
+        self.application_array_data_types.get(id)
+    }
+
+    pub fn get_application_array_element(
+        &self,
+        id: ApplicationArrayElementId,
+    ) -> Option<&ApplicationArrayElement> {
+        self.application_array_elements.get(id)
+    }
+
+    pub fn get_application_composite_data_type_sub_element_ref(
+        &self,
+        id: ApplicationCompositeDataTypeSubElementRefId,
+    ) -> Option<&ApplicationCompositeDataTypeSubElementRef> {
+        self.application_composite_data_type_sub_element_refs
+            .get(id)
+    }
+
+    pub fn get_application_composite_element_in_port_interface_instance_ref(
+        &self,
+        id: ApplicationCompositeElementInPortInterfaceInstanceRefId,
+    ) -> Option<&ApplicationCompositeElementInPortInterfaceInstanceRef> {
+        self.application_composite_element_in_port_interface_instance_refs
+            .get(id)
+    }
+
+    pub fn get_application_deferred_data_type(
+        &self,
+        id: ApplicationDeferredDataTypeId,
+    ) -> Option<&ApplicationDeferredDataType> {
+        self.application_deferred_data_types.get(id)
+    }
+
+    pub fn get_application_endpoint(
+        &self,
+        id: ApplicationEndpointId,
+    ) -> Option<&ApplicationEndpoint> {
+        self.application_endpoints.get(id)
+    }
+
+    pub fn get_application_entry(&self, id: ApplicationEntryId) -> Option<&ApplicationEntry> {
+        self.application_entrys.get(id)
+    }
+
+    pub fn get_application_error(&self, id: ApplicationErrorId) -> Option<&ApplicationError> {
+        self.application_errors.get(id)
+    }
+
+    pub fn get_application_interface(
+        &self,
+        id: ApplicationInterfaceId,
+    ) -> Option<&ApplicationInterface> {
+        self.application_interfaces.get(id)
+    }
+
+    pub fn get_application_partition(
+        &self,
+        id: ApplicationPartitionId,
+    ) -> Option<&ApplicationPartition> {
+        self.application_partitions.get(id)
+    }
+
+    pub fn get_application_partition_to_ecu_partition_mapping(
+        &self,
+        id: ApplicationPartitionToEcuPartitionMappingId,
+    ) -> Option<&ApplicationPartitionToEcuPartitionMapping> {
+        self.application_partition_to_ecu_partition_mappings.get(id)
+    }
+
+    pub fn get_application_primitive_data_type(
+        &self,
+        id: ApplicationPrimitiveDataTypeId,
+    ) -> Option<&ApplicationPrimitiveDataType> {
+        self.application_primitive_data_types.get(id)
+    }
+
+    pub fn get_application_record_data_type(
+        &self,
+        id: ApplicationRecordDataTypeId,
+    ) -> Option<&ApplicationRecordDataType> {
+        self.application_record_data_types.get(id)
+    }
+
+    pub fn get_application_record_element(
+        &self,
+        id: ApplicationRecordElementId,
+    ) -> Option<&ApplicationRecordElement> {
+        self.application_record_elements.get(id)
+    }
+
+    pub fn get_application_rule_based_value_specification(
+        &self,
+        id: ApplicationRuleBasedValueSpecificationId,
+    ) -> Option<&ApplicationRuleBasedValueSpecification> {
+        self.application_rule_based_value_specifications.get(id)
+    }
+
+    pub fn get_application_sw_component_type(
+        &self,
+        id: ApplicationSwComponentTypeId,
+    ) -> Option<&ApplicationSwComponentType> {
+        self.application_sw_component_types.get(id)
+    }
+
+    pub fn get_application_value_specification(
+        &self,
+        id: ApplicationValueSpecificationId,
+    ) -> Option<&ApplicationValueSpecification> {
+        self.application_value_specifications.get(id)
+    }
+
+    pub fn get_ar_parameter_in_implementation_data_instance_ref(
+        &self,
+        id: ArParameterInImplementationDataInstanceRefId,
+    ) -> Option<&ArParameterInImplementationDataInstanceRef> {
+        self.ar_parameter_in_implementation_data_instance_refs
+            .get(id)
+    }
+
+    pub fn get_ar_variable_in_implementation_data_instance_ref(
+        &self,
+        id: ArVariableInImplementationDataInstanceRefId,
+    ) -> Option<&ArVariableInImplementationDataInstanceRef> {
+        self.ar_variable_in_implementation_data_instance_refs
+            .get(id)
+    }
+
+    pub fn get_arbitrary_event_triggering(
+        &self,
+        id: ArbitraryEventTriggeringId,
+    ) -> Option<&ArbitraryEventTriggering> {
+        self.arbitrary_event_triggerings.get(id)
+    }
+
+    pub fn get_area(&self, id: AreaId) -> Option<&Area> {
+        self.areas.get(id)
+    }
+
+    pub fn get_argument_data_prototype(
+        &self,
+        id: ArgumentDataPrototypeId,
+    ) -> Option<&ArgumentDataPrototype> {
+        self.argument_data_prototypes.get(id)
+    }
+
+    pub fn get_array_value_specification(
+        &self,
+        id: ArrayValueSpecificationId,
+    ) -> Option<&ArrayValueSpecification> {
+        self.array_value_specifications.get(id)
+    }
+
+    pub fn get_assembly_sw_connector(
+        &self,
+        id: AssemblySwConnectorId,
+    ) -> Option<&AssemblySwConnector> {
+        self.assembly_sw_connectors.get(id)
+    }
+
+    pub fn get_assign_frame_id(&self, id: AssignFrameIdId) -> Option<&AssignFrameId> {
+        self.assign_frame_ids.get(id)
+    }
+
+    pub fn get_assign_frame_id_range(
+        &self,
+        id: AssignFrameIdRangeId,
+    ) -> Option<&AssignFrameIdRange> {
+        self.assign_frame_id_ranges.get(id)
+    }
+
+    pub fn get_assign_nad(&self, id: AssignNadId) -> Option<&AssignNad> {
+        self.assign_nads.get(id)
+    }
+
+    pub fn get_asynchronous_server_call_point(
+        &self,
+        id: AsynchronousServerCallPointId,
+    ) -> Option<&AsynchronousServerCallPoint> {
+        self.asynchronous_server_call_points.get(id)
+    }
+
+    pub fn get_asynchronous_server_call_result_point(
+        &self,
+        id: AsynchronousServerCallResultPointId,
+    ) -> Option<&AsynchronousServerCallResultPoint> {
+        self.asynchronous_server_call_result_points.get(id)
+    }
+
+    pub fn get_asynchronous_server_call_returns_event(
+        &self,
+        id: AsynchronousServerCallReturnsEventId,
+    ) -> Option<&AsynchronousServerCallReturnsEvent> {
+        self.asynchronous_server_call_returns_events.get(id)
+    }
+
+    pub fn get_autosar_engineering_object(
+        &self,
+        id: AutosarEngineeringObjectId,
+    ) -> Option<&AutosarEngineeringObject> {
+        self.autosar_engineering_objects.get(id)
+    }
+
+    pub fn get_autosar_operation_argument_instance(
+        &self,
+        id: AutosarOperationArgumentInstanceId,
+    ) -> Option<&AutosarOperationArgumentInstance> {
+        self.autosar_operation_argument_instances.get(id)
+    }
+
+    pub fn get_autosar_parameter_ref(
+        &self,
+        id: AutosarParameterRefId,
+    ) -> Option<&AutosarParameterRef> {
+        self.autosar_parameter_refs.get(id)
+    }
+
+    pub fn get_autosar_variable_instance(
+        &self,
+        id: AutosarVariableInstanceId,
+    ) -> Option<&AutosarVariableInstance> {
+        self.autosar_variable_instances.get(id)
+    }
+
+    pub fn get_autosar_variable_ref(
+        &self,
+        id: AutosarVariableRefId,
+    ) -> Option<&AutosarVariableRef> {
+        self.autosar_variable_refs.get(id)
+    }
+
+    pub fn get_background_event(&self, id: BackgroundEventId) -> Option<&BackgroundEvent> {
+        self.background_events.get(id)
+    }
+
+    pub fn get_base_type_direct_definition(
+        &self,
+        id: BaseTypeDirectDefinitionId,
+    ) -> Option<&BaseTypeDirectDefinition> {
+        self.base_type_direct_definitions.get(id)
+    }
+
+    pub fn get_baseline(&self, id: BaselineId) -> Option<&Baseline> {
+        self.baselines.get(id)
+    }
+
+    pub fn get_binary_manifest_item(
+        &self,
+        id: BinaryManifestItemId,
+    ) -> Option<&BinaryManifestItem> {
+        self.binary_manifest_items.get(id)
+    }
+
+    pub fn get_binary_manifest_item_definition(
+        &self,
+        id: BinaryManifestItemDefinitionId,
+    ) -> Option<&BinaryManifestItemDefinition> {
+        self.binary_manifest_item_definitions.get(id)
+    }
+
+    pub fn get_binary_manifest_item_numerical_value(
+        &self,
+        id: BinaryManifestItemNumericalValueId,
+    ) -> Option<&BinaryManifestItemNumericalValue> {
+        self.binary_manifest_item_numerical_values.get(id)
+    }
+
+    pub fn get_binary_manifest_item_pointer_value(
+        &self,
+        id: BinaryManifestItemPointerValueId,
+    ) -> Option<&BinaryManifestItemPointerValue> {
+        self.binary_manifest_item_pointer_values.get(id)
+    }
+
+    pub fn get_binary_manifest_meta_data_field(
+        &self,
+        id: BinaryManifestMetaDataFieldId,
+    ) -> Option<&BinaryManifestMetaDataField> {
+        self.binary_manifest_meta_data_fields.get(id)
+    }
+
+    pub fn get_binary_manifest_provide_resource(
+        &self,
+        id: BinaryManifestProvideResourceId,
+    ) -> Option<&BinaryManifestProvideResource> {
+        self.binary_manifest_provide_resources.get(id)
+    }
+
+    pub fn get_binary_manifest_require_resource(
+        &self,
+        id: BinaryManifestRequireResourceId,
+    ) -> Option<&BinaryManifestRequireResource> {
+        self.binary_manifest_require_resources.get(id)
+    }
+
+    pub fn get_binary_manifest_resource_definition(
+        &self,
+        id: BinaryManifestResourceDefinitionId,
+    ) -> Option<&BinaryManifestResourceDefinition> {
+        self.binary_manifest_resource_definitions.get(id)
+    }
+
+    pub fn get_block_state(&self, id: BlockStateId) -> Option<&BlockState> {
+        self.block_states.get(id)
+    }
+
+    pub fn get_blueprint_formula(&self, id: BlueprintFormulaId) -> Option<&BlueprintFormula> {
+        self.blueprint_formulas.get(id)
+    }
+
+    pub fn get_blueprint_generator(&self, id: BlueprintGeneratorId) -> Option<&BlueprintGenerator> {
+        self.blueprint_generators.get(id)
+    }
+
+    pub fn get_blueprint_mapping(&self, id: BlueprintMappingId) -> Option<&BlueprintMapping> {
+        self.blueprint_mappings.get(id)
+    }
+
+    pub fn get_blueprint_mapping_set(
+        &self,
+        id: BlueprintMappingSetId,
+    ) -> Option<&BlueprintMappingSet> {
+        self.blueprint_mapping_sets.get(id)
+    }
+
+    pub fn get_boolean_value(&self, id: BooleanValueId) -> Option<&BooleanValue> {
+        self.boolean_values.get(id)
+    }
+
+    pub fn get_boolean_value_variation_point(
+        &self,
+        id: BooleanValueVariationPointId,
+    ) -> Option<&BooleanValueVariationPoint> {
+        self.boolean_value_variation_points.get(id)
+    }
+
+    pub fn get_br(&self, id: BrId) -> Option<&Br> {
+        self.brs.get(id)
+    }
+
+    pub fn get_bsw_asynchronous_server_call_point(
+        &self,
+        id: BswAsynchronousServerCallPointId,
+    ) -> Option<&BswAsynchronousServerCallPoint> {
+        self.bsw_asynchronous_server_call_points.get(id)
+    }
+
+    pub fn get_bsw_asynchronous_server_call_result_point(
+        &self,
+        id: BswAsynchronousServerCallResultPointId,
+    ) -> Option<&BswAsynchronousServerCallResultPoint> {
+        self.bsw_asynchronous_server_call_result_points.get(id)
+    }
+
+    pub fn get_bsw_asynchronous_server_call_returns_event(
+        &self,
+        id: BswAsynchronousServerCallReturnsEventId,
+    ) -> Option<&BswAsynchronousServerCallReturnsEvent> {
+        self.bsw_asynchronous_server_call_returns_events.get(id)
+    }
+
+    pub fn get_bsw_background_event(
+        &self,
+        id: BswBackgroundEventId,
+    ) -> Option<&BswBackgroundEvent> {
+        self.bsw_background_events.get(id)
+    }
+
+    pub fn get_bsw_called_entity(&self, id: BswCalledEntityId) -> Option<&BswCalledEntity> {
+        self.bsw_called_entitys.get(id)
+    }
+
+    pub fn get_bsw_client_policy(&self, id: BswClientPolicyId) -> Option<&BswClientPolicy> {
+        self.bsw_client_policys.get(id)
+    }
+
+    pub fn get_bsw_composition_timing(
+        &self,
+        id: BswCompositionTimingId,
+    ) -> Option<&BswCompositionTiming> {
+        self.bsw_composition_timings.get(id)
+    }
+
+    pub fn get_bsw_data_received_event(
+        &self,
+        id: BswDataReceivedEventId,
+    ) -> Option<&BswDataReceivedEvent> {
+        self.bsw_data_received_events.get(id)
+    }
+
+    pub fn get_bsw_data_send_policy(&self, id: BswDataSendPolicyId) -> Option<&BswDataSendPolicy> {
+        self.bsw_data_send_policys.get(id)
+    }
+
+    pub fn get_bsw_direct_call_point(
+        &self,
+        id: BswDirectCallPointId,
+    ) -> Option<&BswDirectCallPoint> {
+        self.bsw_direct_call_points.get(id)
+    }
+
+    pub fn get_bsw_distinguished_partition(
+        &self,
+        id: BswDistinguishedPartitionId,
+    ) -> Option<&BswDistinguishedPartition> {
+        self.bsw_distinguished_partitions.get(id)
+    }
+
+    pub fn get_bsw_entry_relationship(
+        &self,
+        id: BswEntryRelationshipId,
+    ) -> Option<&BswEntryRelationship> {
+        self.bsw_entry_relationships.get(id)
+    }
+
+    pub fn get_bsw_entry_relationship_set(
+        &self,
+        id: BswEntryRelationshipSetId,
+    ) -> Option<&BswEntryRelationshipSet> {
+        self.bsw_entry_relationship_sets.get(id)
+    }
+
+    pub fn get_bsw_exclusive_area_policy(
+        &self,
+        id: BswExclusiveAreaPolicyId,
+    ) -> Option<&BswExclusiveAreaPolicy> {
+        self.bsw_exclusive_area_policys.get(id)
+    }
+
+    pub fn get_bsw_external_trigger_occurred_event(
+        &self,
+        id: BswExternalTriggerOccurredEventId,
+    ) -> Option<&BswExternalTriggerOccurredEvent> {
+        self.bsw_external_trigger_occurred_events.get(id)
+    }
+
+    pub fn get_bsw_implementation(&self, id: BswImplementationId) -> Option<&BswImplementation> {
+        self.bsw_implementations.get(id)
+    }
+
+    pub fn get_bsw_internal_behavior(
+        &self,
+        id: BswInternalBehaviorId,
+    ) -> Option<&BswInternalBehavior> {
+        self.bsw_internal_behaviors.get(id)
+    }
+
+    pub fn get_bsw_internal_trigger_occurred_event(
+        &self,
+        id: BswInternalTriggerOccurredEventId,
+    ) -> Option<&BswInternalTriggerOccurredEvent> {
+        self.bsw_internal_trigger_occurred_events.get(id)
+    }
+
+    pub fn get_bsw_internal_triggering_point(
+        &self,
+        id: BswInternalTriggeringPointId,
+    ) -> Option<&BswInternalTriggeringPoint> {
+        self.bsw_internal_triggering_points.get(id)
+    }
+
+    pub fn get_bsw_internal_triggering_point_policy(
+        &self,
+        id: BswInternalTriggeringPointPolicyId,
+    ) -> Option<&BswInternalTriggeringPointPolicy> {
+        self.bsw_internal_triggering_point_policys.get(id)
+    }
+
+    pub fn get_bsw_interrupt_entity(
+        &self,
+        id: BswInterruptEntityId,
+    ) -> Option<&BswInterruptEntity> {
+        self.bsw_interrupt_entitys.get(id)
+    }
+
+    pub fn get_bsw_interrupt_event(&self, id: BswInterruptEventId) -> Option<&BswInterruptEvent> {
+        self.bsw_interrupt_events.get(id)
+    }
+
+    pub fn get_bsw_mgr_needs(&self, id: BswMgrNeedsId) -> Option<&BswMgrNeeds> {
+        self.bsw_mgr_needs.get(id)
+    }
+
+    pub fn get_bsw_mode_manager_error_event(
+        &self,
+        id: BswModeManagerErrorEventId,
+    ) -> Option<&BswModeManagerErrorEvent> {
+        self.bsw_mode_manager_error_events.get(id)
+    }
+
+    pub fn get_bsw_mode_receiver_policy(
+        &self,
+        id: BswModeReceiverPolicyId,
+    ) -> Option<&BswModeReceiverPolicy> {
+        self.bsw_mode_receiver_policys.get(id)
+    }
+
+    pub fn get_bsw_mode_sender_policy(
+        &self,
+        id: BswModeSenderPolicyId,
+    ) -> Option<&BswModeSenderPolicy> {
+        self.bsw_mode_sender_policys.get(id)
+    }
+
+    pub fn get_bsw_mode_switch_ack_request(
+        &self,
+        id: BswModeSwitchAckRequestId,
+    ) -> Option<&BswModeSwitchAckRequest> {
+        self.bsw_mode_switch_ack_requests.get(id)
+    }
+
+    pub fn get_bsw_mode_switch_event(
+        &self,
+        id: BswModeSwitchEventId,
+    ) -> Option<&BswModeSwitchEvent> {
+        self.bsw_mode_switch_events.get(id)
+    }
+
+    pub fn get_bsw_mode_switched_ack_event(
+        &self,
+        id: BswModeSwitchedAckEventId,
+    ) -> Option<&BswModeSwitchedAckEvent> {
+        self.bsw_mode_switched_ack_events.get(id)
+    }
+
+    pub fn get_bsw_module_client_server_entry(
+        &self,
+        id: BswModuleClientServerEntryId,
+    ) -> Option<&BswModuleClientServerEntry> {
+        self.bsw_module_client_server_entrys.get(id)
+    }
+
+    pub fn get_bsw_module_dependency(
+        &self,
+        id: BswModuleDependencyId,
+    ) -> Option<&BswModuleDependency> {
+        self.bsw_module_dependencys.get(id)
+    }
+
+    pub fn get_bsw_module_description(
+        &self,
+        id: BswModuleDescriptionId,
+    ) -> Option<&BswModuleDescription> {
+        self.bsw_module_descriptions.get(id)
+    }
+
+    pub fn get_bsw_module_entry(&self, id: BswModuleEntryId) -> Option<&BswModuleEntry> {
+        self.bsw_module_entrys.get(id)
+    }
+
+    pub fn get_bsw_module_timing(&self, id: BswModuleTimingId) -> Option<&BswModuleTiming> {
+        self.bsw_module_timings.get(id)
+    }
+
+    pub fn get_bsw_operation_invoked_event(
+        &self,
+        id: BswOperationInvokedEventId,
+    ) -> Option<&BswOperationInvokedEvent> {
+        self.bsw_operation_invoked_events.get(id)
+    }
+
+    pub fn get_bsw_os_task_execution_event(
+        &self,
+        id: BswOsTaskExecutionEventId,
+    ) -> Option<&BswOsTaskExecutionEvent> {
+        self.bsw_os_task_execution_events.get(id)
+    }
+
+    pub fn get_bsw_parameter_policy(
+        &self,
+        id: BswParameterPolicyId,
+    ) -> Option<&BswParameterPolicy> {
+        self.bsw_parameter_policys.get(id)
+    }
+
+    pub fn get_bsw_per_instance_memory_policy(
+        &self,
+        id: BswPerInstanceMemoryPolicyId,
+    ) -> Option<&BswPerInstanceMemoryPolicy> {
+        self.bsw_per_instance_memory_policys.get(id)
+    }
+
+    pub fn get_bsw_queued_data_reception_policy(
+        &self,
+        id: BswQueuedDataReceptionPolicyId,
+    ) -> Option<&BswQueuedDataReceptionPolicy> {
+        self.bsw_queued_data_reception_policys.get(id)
+    }
+
+    pub fn get_bsw_released_trigger_policy(
+        &self,
+        id: BswReleasedTriggerPolicyId,
+    ) -> Option<&BswReleasedTriggerPolicy> {
+        self.bsw_released_trigger_policys.get(id)
+    }
+
+    pub fn get_bsw_schedulable_entity(
+        &self,
+        id: BswSchedulableEntityId,
+    ) -> Option<&BswSchedulableEntity> {
+        self.bsw_schedulable_entitys.get(id)
+    }
+
+    pub fn get_bsw_scheduler_name_prefix(
+        &self,
+        id: BswSchedulerNamePrefixId,
+    ) -> Option<&BswSchedulerNamePrefix> {
+        self.bsw_scheduler_name_prefixs.get(id)
+    }
+
+    pub fn get_bsw_service_dependency(
+        &self,
+        id: BswServiceDependencyId,
+    ) -> Option<&BswServiceDependency> {
+        self.bsw_service_dependencys.get(id)
+    }
+
+    pub fn get_bsw_service_dependency_ident(
+        &self,
+        id: BswServiceDependencyIdentId,
+    ) -> Option<&BswServiceDependencyIdent> {
+        self.bsw_service_dependency_idents.get(id)
+    }
+
+    pub fn get_bsw_synchronous_server_call_point(
+        &self,
+        id: BswSynchronousServerCallPointId,
+    ) -> Option<&BswSynchronousServerCallPoint> {
+        self.bsw_synchronous_server_call_points.get(id)
+    }
+
+    pub fn get_bsw_timing_event(&self, id: BswTimingEventId) -> Option<&BswTimingEvent> {
+        self.bsw_timing_events.get(id)
+    }
+
+    pub fn get_bsw_trigger_direct_implementation(
+        &self,
+        id: BswTriggerDirectImplementationId,
+    ) -> Option<&BswTriggerDirectImplementation> {
+        self.bsw_trigger_direct_implementations.get(id)
+    }
+
+    pub fn get_bsw_variable_access(&self, id: BswVariableAccessId) -> Option<&BswVariableAccess> {
+        self.bsw_variable_access.get(id)
+    }
+
+    pub fn get_buffer_properties(&self, id: BufferPropertiesId) -> Option<&BufferProperties> {
+        self.buffer_properties.get(id)
+    }
+
+    pub fn get_build_action(&self, id: BuildActionId) -> Option<&BuildAction> {
+        self.build_actions.get(id)
+    }
+
+    pub fn get_build_action_environment(
+        &self,
+        id: BuildActionEnvironmentId,
+    ) -> Option<&BuildActionEnvironment> {
+        self.build_action_environments.get(id)
+    }
+
+    pub fn get_build_action_invocator(
+        &self,
+        id: BuildActionInvocatorId,
+    ) -> Option<&BuildActionInvocator> {
+        self.build_action_invocators.get(id)
+    }
+
+    pub fn get_build_action_io_element(
+        &self,
+        id: BuildActionIoElementId,
+    ) -> Option<&BuildActionIoElement> {
+        self.build_action_io_elements.get(id)
+    }
+
+    pub fn get_build_action_manifest(
+        &self,
+        id: BuildActionManifestId,
+    ) -> Option<&BuildActionManifest> {
+        self.build_action_manifests.get(id)
+    }
+
+    pub fn get_build_engineering_object(
+        &self,
+        id: BuildEngineeringObjectId,
+    ) -> Option<&BuildEngineeringObject> {
+        self.build_engineering_objects.get(id)
+    }
+
+    pub fn get_bulk_nv_data_descriptor(
+        &self,
+        id: BulkNvDataDescriptorId,
+    ) -> Option<&BulkNvDataDescriptor> {
+        self.bulk_nv_data_descriptors.get(id)
+    }
+
+    pub fn get_burst_pattern_event_triggering(
+        &self,
+        id: BurstPatternEventTriggeringId,
+    ) -> Option<&BurstPatternEventTriggering> {
+        self.burst_pattern_event_triggerings.get(id)
+    }
+
+    pub fn get_bus_mirror_can_id_range_mapping(
+        &self,
+        id: BusMirrorCanIdRangeMappingId,
+    ) -> Option<&BusMirrorCanIdRangeMapping> {
+        self.bus_mirror_can_id_range_mappings.get(id)
+    }
+
+    pub fn get_bus_mirror_can_id_to_can_id_mapping(
+        &self,
+        id: BusMirrorCanIdToCanIdMappingId,
+    ) -> Option<&BusMirrorCanIdToCanIdMapping> {
+        self.bus_mirror_can_id_to_can_id_mappings.get(id)
+    }
+
+    pub fn get_bus_mirror_channel(&self, id: BusMirrorChannelId) -> Option<&BusMirrorChannel> {
+        self.bus_mirror_channels.get(id)
+    }
+
+    pub fn get_bus_mirror_channel_mapping_can(
+        &self,
+        id: BusMirrorChannelMappingCanId,
+    ) -> Option<&BusMirrorChannelMappingCan> {
+        self.bus_mirror_channel_mapping_cans.get(id)
+    }
+
+    pub fn get_bus_mirror_channel_mapping_flexray(
+        &self,
+        id: BusMirrorChannelMappingFlexrayId,
+    ) -> Option<&BusMirrorChannelMappingFlexray> {
+        self.bus_mirror_channel_mapping_flexrays.get(id)
+    }
+
+    pub fn get_bus_mirror_channel_mapping_ip(
+        &self,
+        id: BusMirrorChannelMappingIpId,
+    ) -> Option<&BusMirrorChannelMappingIp> {
+        self.bus_mirror_channel_mapping_ips.get(id)
+    }
+
+    pub fn get_bus_mirror_channel_mapping_user_defined(
+        &self,
+        id: BusMirrorChannelMappingUserDefinedId,
+    ) -> Option<&BusMirrorChannelMappingUserDefined> {
+        self.bus_mirror_channel_mapping_user_defineds.get(id)
+    }
+
+    pub fn get_bus_mirror_lin_pid_to_can_id_mapping(
+        &self,
+        id: BusMirrorLinPidToCanIdMappingId,
+    ) -> Option<&BusMirrorLinPidToCanIdMapping> {
+        self.bus_mirror_lin_pid_to_can_id_mappings.get(id)
+    }
+
+    pub fn get_calibration_parameter_value(
+        &self,
+        id: CalibrationParameterValueId,
+    ) -> Option<&CalibrationParameterValue> {
+        self.calibration_parameter_values.get(id)
+    }
+
+    pub fn get_calibration_parameter_value_set(
+        &self,
+        id: CalibrationParameterValueSetId,
+    ) -> Option<&CalibrationParameterValueSet> {
+        self.calibration_parameter_value_sets.get(id)
+    }
+
+    pub fn get_can_cluster(&self, id: CanClusterId) -> Option<&CanCluster> {
+        self.can_clusters.get(id)
+    }
+
+    pub fn get_can_cluster_bus_off_recovery(
+        &self,
+        id: CanClusterBusOffRecoveryId,
+    ) -> Option<&CanClusterBusOffRecovery> {
+        self.can_cluster_bus_off_recoverys.get(id)
+    }
+
+    pub fn get_can_communication_connector(
+        &self,
+        id: CanCommunicationConnectorId,
+    ) -> Option<&CanCommunicationConnector> {
+        self.can_communication_connectors.get(id)
+    }
+
+    pub fn get_can_communication_controller(
+        &self,
+        id: CanCommunicationControllerId,
+    ) -> Option<&CanCommunicationController> {
+        self.can_communication_controllers.get(id)
+    }
+
+    pub fn get_can_controller_configuration(
+        &self,
+        id: CanControllerConfigurationId,
+    ) -> Option<&CanControllerConfiguration> {
+        self.can_controller_configurations.get(id)
+    }
+
+    pub fn get_can_controller_configuration_requirements(
+        &self,
+        id: CanControllerConfigurationRequirementsId,
+    ) -> Option<&CanControllerConfigurationRequirements> {
+        self.can_controller_configuration_requirements.get(id)
+    }
+
+    pub fn get_can_controller_fd_configuration(
+        &self,
+        id: CanControllerFdConfigurationId,
+    ) -> Option<&CanControllerFdConfiguration> {
+        self.can_controller_fd_configurations.get(id)
+    }
+
+    pub fn get_can_controller_fd_configuration_requirements(
+        &self,
+        id: CanControllerFdConfigurationRequirementsId,
+    ) -> Option<&CanControllerFdConfigurationRequirements> {
+        self.can_controller_fd_configuration_requirements.get(id)
+    }
+
+    pub fn get_can_controller_xl_configuration(
+        &self,
+        id: CanControllerXlConfigurationId,
+    ) -> Option<&CanControllerXlConfiguration> {
+        self.can_controller_xl_configurations.get(id)
+    }
+
+    pub fn get_can_controller_xl_configuration_requirements(
+        &self,
+        id: CanControllerXlConfigurationRequirementsId,
+    ) -> Option<&CanControllerXlConfigurationRequirements> {
+        self.can_controller_xl_configuration_requirements.get(id)
+    }
+
+    pub fn get_can_frame(&self, id: CanFrameId) -> Option<&CanFrame> {
+        self.can_frames.get(id)
+    }
+
+    pub fn get_can_frame_triggering(
+        &self,
+        id: CanFrameTriggeringId,
+    ) -> Option<&CanFrameTriggering> {
+        self.can_frame_triggerings.get(id)
+    }
+
+    pub fn get_can_global_time_domain_props(
+        &self,
+        id: CanGlobalTimeDomainPropsId,
+    ) -> Option<&CanGlobalTimeDomainProps> {
+        self.can_global_time_domain_props.get(id)
+    }
+
+    pub fn get_can_nm_cluster(&self, id: CanNmClusterId) -> Option<&CanNmCluster> {
+        self.can_nm_clusters.get(id)
+    }
+
+    pub fn get_can_nm_cluster_coupling(
+        &self,
+        id: CanNmClusterCouplingId,
+    ) -> Option<&CanNmClusterCoupling> {
+        self.can_nm_cluster_couplings.get(id)
+    }
+
+    pub fn get_can_nm_ecu(&self, id: CanNmEcuId) -> Option<&CanNmEcu> {
+        self.can_nm_ecus.get(id)
+    }
+
+    pub fn get_can_nm_node(&self, id: CanNmNodeId) -> Option<&CanNmNode> {
+        self.can_nm_nodes.get(id)
+    }
+
+    pub fn get_can_physical_channel(
+        &self,
+        id: CanPhysicalChannelId,
+    ) -> Option<&CanPhysicalChannel> {
+        self.can_physical_channels.get(id)
+    }
+
+    pub fn get_can_tp_address(&self, id: CanTpAddressId) -> Option<&CanTpAddress> {
+        self.can_tp_address.get(id)
+    }
+
+    pub fn get_can_tp_channel(&self, id: CanTpChannelId) -> Option<&CanTpChannel> {
+        self.can_tp_channels.get(id)
+    }
+
+    pub fn get_can_tp_config(&self, id: CanTpConfigId) -> Option<&CanTpConfig> {
+        self.can_tp_configs.get(id)
+    }
+
+    pub fn get_can_tp_connection(&self, id: CanTpConnectionId) -> Option<&CanTpConnection> {
+        self.can_tp_connections.get(id)
+    }
+
+    pub fn get_can_tp_ecu(&self, id: CanTpEcuId) -> Option<&CanTpEcu> {
+        self.can_tp_ecus.get(id)
+    }
+
+    pub fn get_can_tp_node(&self, id: CanTpNodeId) -> Option<&CanTpNode> {
+        self.can_tp_nodes.get(id)
+    }
+
+    pub fn get_can_xl_frame_triggering_props(
+        &self,
+        id: CanXlFrameTriggeringPropsId,
+    ) -> Option<&CanXlFrameTriggeringProps> {
+        self.can_xl_frame_triggering_props.get(id)
+    }
+
+    pub fn get_can_xl_props(&self, id: CanXlPropsId) -> Option<&CanXlProps> {
+        self.can_xl_props.get(id)
+    }
+
+    pub fn get_caption(&self, id: CaptionId) -> Option<&Caption> {
+        self.captions.get(id)
+    }
+
+    pub fn get_chapter(&self, id: ChapterId) -> Option<&Chapter> {
+        self.chapters.get(id)
+    }
+
+    pub fn get_chapter_content(&self, id: ChapterContentId) -> Option<&ChapterContent> {
+        self.chapter_contents.get(id)
+    }
+
+    pub fn get_chapter_model(&self, id: ChapterModelId) -> Option<&ChapterModel> {
+        self.chapter_models.get(id)
+    }
+
+    pub fn get_chapter_or_msr_query(&self, id: ChapterOrMsrQueryId) -> Option<&ChapterOrMsrQuery> {
+        self.chapter_or_msr_querys.get(id)
+    }
+
+    pub fn get_class_content_conditional(
+        &self,
+        id: ClassContentConditionalId,
+    ) -> Option<&ClassContentConditional> {
+        self.class_content_conditionals.get(id)
+    }
+
+    pub fn get_client_com_spec(&self, id: ClientComSpecId) -> Option<&ClientComSpec> {
+        self.client_com_specs.get(id)
+    }
+
+    pub fn get_client_id_definition(
+        &self,
+        id: ClientIdDefinitionId,
+    ) -> Option<&ClientIdDefinition> {
+        self.client_id_definitions.get(id)
+    }
+
+    pub fn get_client_id_definition_set(
+        &self,
+        id: ClientIdDefinitionSetId,
+    ) -> Option<&ClientIdDefinitionSet> {
+        self.client_id_definition_sets.get(id)
+    }
+
+    pub fn get_client_id_range(&self, id: ClientIdRangeId) -> Option<&ClientIdRange> {
+        self.client_id_ranges.get(id)
+    }
+
+    pub fn get_client_server_annotation(
+        &self,
+        id: ClientServerAnnotationId,
+    ) -> Option<&ClientServerAnnotation> {
+        self.client_server_annotations.get(id)
+    }
+
+    pub fn get_client_server_application_error_mapping(
+        &self,
+        id: ClientServerApplicationErrorMappingId,
+    ) -> Option<&ClientServerApplicationErrorMapping> {
+        self.client_server_application_error_mappings.get(id)
+    }
+
+    pub fn get_client_server_interface(
+        &self,
+        id: ClientServerInterfaceId,
+    ) -> Option<&ClientServerInterface> {
+        self.client_server_interfaces.get(id)
+    }
+
+    pub fn get_client_server_interface_mapping(
+        &self,
+        id: ClientServerInterfaceMappingId,
+    ) -> Option<&ClientServerInterfaceMapping> {
+        self.client_server_interface_mappings.get(id)
+    }
+
+    pub fn get_client_server_operation(
+        &self,
+        id: ClientServerOperationId,
+    ) -> Option<&ClientServerOperation> {
+        self.client_server_operations.get(id)
+    }
+
+    pub fn get_client_server_operation_blueprint_mapping(
+        &self,
+        id: ClientServerOperationBlueprintMappingId,
+    ) -> Option<&ClientServerOperationBlueprintMapping> {
+        self.client_server_operation_blueprint_mappings.get(id)
+    }
+
+    pub fn get_client_server_operation_com_props(
+        &self,
+        id: ClientServerOperationComPropsId,
+    ) -> Option<&ClientServerOperationComProps> {
+        self.client_server_operation_com_props.get(id)
+    }
+
+    pub fn get_client_server_operation_mapping(
+        &self,
+        id: ClientServerOperationMappingId,
+    ) -> Option<&ClientServerOperationMapping> {
+        self.client_server_operation_mappings.get(id)
+    }
+
+    pub fn get_client_server_to_signal_mapping(
+        &self,
+        id: ClientServerToSignalMappingId,
+    ) -> Option<&ClientServerToSignalMapping> {
+        self.client_server_to_signal_mappings.get(id)
+    }
+
+    pub fn get_code(&self, id: CodeId) -> Option<&Code> {
+        self.codes.get(id)
+    }
+
+    pub fn get_collection(&self, id: CollectionId) -> Option<&Collection> {
+        self.collections.get(id)
+    }
+
+    pub fn get_colspec(&self, id: ColspecId) -> Option<&Colspec> {
+        self.colspecs.get(id)
+    }
+
+    pub fn get_com_management_mapping(
+        &self,
+        id: ComManagementMappingId,
+    ) -> Option<&ComManagementMapping> {
+        self.com_management_mappings.get(id)
+    }
+
+    pub fn get_com_mgr_user_needs(&self, id: ComMgrUserNeedsId) -> Option<&ComMgrUserNeeds> {
+        self.com_mgr_user_needs.get(id)
+    }
+
+    pub fn get_common_signal_path(&self, id: CommonSignalPathId) -> Option<&CommonSignalPath> {
+        self.common_signal_paths.get(id)
+    }
+
+    pub fn get_communication_buffer_locking(
+        &self,
+        id: CommunicationBufferLockingId,
+    ) -> Option<&CommunicationBufferLocking> {
+        self.communication_buffer_lockings.get(id)
+    }
+
+    pub fn get_communication_controller_mapping(
+        &self,
+        id: CommunicationControllerMappingId,
+    ) -> Option<&CommunicationControllerMapping> {
+        self.communication_controller_mappings.get(id)
+    }
+
+    pub fn get_compiler(&self, id: CompilerId) -> Option<&Compiler> {
+        self.compilers.get(id)
+    }
+
+    pub fn get_complex_device_driver_sw_component_type(
+        &self,
+        id: ComplexDeviceDriverSwComponentTypeId,
+    ) -> Option<&ComplexDeviceDriverSwComponentType> {
+        self.complex_device_driver_sw_component_types.get(id)
+    }
+
+    pub fn get_component_clustering(
+        &self,
+        id: ComponentClusteringId,
+    ) -> Option<&ComponentClustering> {
+        self.component_clusterings.get(id)
+    }
+
+    pub fn get_component_in_composition_instance_ref(
+        &self,
+        id: ComponentInCompositionInstanceRefId,
+    ) -> Option<&ComponentInCompositionInstanceRef> {
+        self.component_in_composition_instance_refs.get(id)
+    }
+
+    pub fn get_component_in_system_instance_ref(
+        &self,
+        id: ComponentInSystemInstanceRefId,
+    ) -> Option<&ComponentInSystemInstanceRef> {
+        self.component_in_system_instance_refs.get(id)
+    }
+
+    pub fn get_component_separation(
+        &self,
+        id: ComponentSeparationId,
+    ) -> Option<&ComponentSeparation> {
+        self.component_separations.get(id)
+    }
+
+    pub fn get_composite_network_representation(
+        &self,
+        id: CompositeNetworkRepresentationId,
+    ) -> Option<&CompositeNetworkRepresentation> {
+        self.composite_network_representations.get(id)
+    }
+
+    pub fn get_composite_rule_based_value_specification(
+        &self,
+        id: CompositeRuleBasedValueSpecificationId,
+    ) -> Option<&CompositeRuleBasedValueSpecification> {
+        self.composite_rule_based_value_specifications.get(id)
+    }
+
+    pub fn get_composition_sw_component_type(
+        &self,
+        id: CompositionSwComponentTypeId,
+    ) -> Option<&CompositionSwComponentType> {
+        self.composition_sw_component_types.get(id)
+    }
+
+    pub fn get_compu(&self, id: CompuId) -> Option<&Compu> {
+        self.compus.get(id)
+    }
+
+    pub fn get_compu_const(&self, id: CompuConstId) -> Option<&CompuConst> {
+        self.compu_consts.get(id)
+    }
+
+    pub fn get_compu_const_formula_content(
+        &self,
+        id: CompuConstFormulaContentId,
+    ) -> Option<&CompuConstFormulaContent> {
+        self.compu_const_formula_contents.get(id)
+    }
+
+    pub fn get_compu_const_numeric_content(
+        &self,
+        id: CompuConstNumericContentId,
+    ) -> Option<&CompuConstNumericContent> {
+        self.compu_const_numeric_contents.get(id)
+    }
+
+    pub fn get_compu_const_text_content(
+        &self,
+        id: CompuConstTextContentId,
+    ) -> Option<&CompuConstTextContent> {
+        self.compu_const_text_contents.get(id)
+    }
+
+    pub fn get_compu_generic_math(&self, id: CompuGenericMathId) -> Option<&CompuGenericMath> {
+        self.compu_generic_maths.get(id)
+    }
+
+    pub fn get_compu_method(&self, id: CompuMethodId) -> Option<&CompuMethod> {
+        self.compu_methods.get(id)
+    }
+
+    pub fn get_compu_nominator_denominator(
+        &self,
+        id: CompuNominatorDenominatorId,
+    ) -> Option<&CompuNominatorDenominator> {
+        self.compu_nominator_denominators.get(id)
+    }
+
+    pub fn get_compu_rational_coeffs(
+        &self,
+        id: CompuRationalCoeffsId,
+    ) -> Option<&CompuRationalCoeffs> {
+        self.compu_rational_coeffs.get(id)
+    }
+
+    pub fn get_compu_scale(&self, id: CompuScaleId) -> Option<&CompuScale> {
+        self.compu_scales.get(id)
+    }
+
+    pub fn get_compu_scale_constant_contents(
+        &self,
+        id: CompuScaleConstantContentsId,
+    ) -> Option<&CompuScaleConstantContents> {
+        self.compu_scale_constant_contents.get(id)
+    }
+
+    pub fn get_compu_scale_rational_formula(
+        &self,
+        id: CompuScaleRationalFormulaId,
+    ) -> Option<&CompuScaleRationalFormula> {
+        self.compu_scale_rational_formulas.get(id)
+    }
+
+    pub fn get_compu_scales(&self, id: CompuScalesId) -> Option<&CompuScales> {
+        self.compu_scales_arena.get(id)
+    }
+
+    pub fn get_concrete_class_tailoring(
+        &self,
+        id: ConcreteClassTailoringId,
+    ) -> Option<&ConcreteClassTailoring> {
+        self.concrete_class_tailorings.get(id)
+    }
+
+    pub fn get_concrete_pattern_event_triggering(
+        &self,
+        id: ConcretePatternEventTriggeringId,
+    ) -> Option<&ConcretePatternEventTriggering> {
+        self.concrete_pattern_event_triggerings.get(id)
+    }
+
+    pub fn get_condition_by_formula(
+        &self,
+        id: ConditionByFormulaId,
+    ) -> Option<&ConditionByFormula> {
+        self.condition_by_formulas.get(id)
+    }
+
+    pub fn get_conditional_change_nad(
+        &self,
+        id: ConditionalChangeNadId,
+    ) -> Option<&ConditionalChangeNad> {
+        self.conditional_change_nads.get(id)
+    }
+
+    pub fn get_confidence_interval(&self, id: ConfidenceIntervalId) -> Option<&ConfidenceInterval> {
+        self.confidence_intervals.get(id)
+    }
+
+    pub fn get_consistency_needs(&self, id: ConsistencyNeedsId) -> Option<&ConsistencyNeeds> {
+        self.consistency_needs.get(id)
+    }
+
+    pub fn get_constant_reference(&self, id: ConstantReferenceId) -> Option<&ConstantReference> {
+        self.constant_references.get(id)
+    }
+
+    pub fn get_constant_specification(
+        &self,
+        id: ConstantSpecificationId,
+    ) -> Option<&ConstantSpecification> {
+        self.constant_specifications.get(id)
+    }
+
+    pub fn get_constant_specification_mapping(
+        &self,
+        id: ConstantSpecificationMappingId,
+    ) -> Option<&ConstantSpecificationMapping> {
+        self.constant_specification_mappings.get(id)
+    }
+
+    pub fn get_constant_specification_mapping_set(
+        &self,
+        id: ConstantSpecificationMappingSetId,
+    ) -> Option<&ConstantSpecificationMappingSet> {
+        self.constant_specification_mapping_sets.get(id)
+    }
+
+    pub fn get_constraint_tailoring(
+        &self,
+        id: ConstraintTailoringId,
+    ) -> Option<&ConstraintTailoring> {
+        self.constraint_tailorings.get(id)
+    }
+
+    pub fn get_consumed_event_group(
+        &self,
+        id: ConsumedEventGroupId,
+    ) -> Option<&ConsumedEventGroup> {
+        self.consumed_event_groups.get(id)
+    }
+
+    pub fn get_consumed_provided_service_instance_group(
+        &self,
+        id: ConsumedProvidedServiceInstanceGroupId,
+    ) -> Option<&ConsumedProvidedServiceInstanceGroup> {
+        self.consumed_provided_service_instance_groups.get(id)
+    }
+
+    pub fn get_consumed_service_instance(
+        &self,
+        id: ConsumedServiceInstanceId,
+    ) -> Option<&ConsumedServiceInstance> {
+        self.consumed_service_instances.get(id)
+    }
+
+    pub fn get_contained_i_pdu_props(
+        &self,
+        id: ContainedIPduPropsId,
+    ) -> Option<&ContainedIPduProps> {
+        self.contained_i_pdu_props.get(id)
+    }
+
+    pub fn get_container(&self, id: ContainerId) -> Option<&Container> {
+        self.containers.get(id)
+    }
+
+    pub fn get_container_i_pdu(&self, id: ContainerIPduId) -> Option<&ContainerIPdu> {
+        self.container_i_pdus.get(id)
+    }
+
+    pub fn get_coupling_element(&self, id: CouplingElementId) -> Option<&CouplingElement> {
+        self.coupling_elements.get(id)
+    }
+
+    pub fn get_coupling_element_switch_details(
+        &self,
+        id: CouplingElementSwitchDetailsId,
+    ) -> Option<&CouplingElementSwitchDetails> {
+        self.coupling_element_switch_details.get(id)
+    }
+
+    pub fn get_coupling_port(&self, id: CouplingPortId) -> Option<&CouplingPort> {
+        self.coupling_ports.get(id)
+    }
+
+    pub fn get_coupling_port_connection(
+        &self,
+        id: CouplingPortConnectionId,
+    ) -> Option<&CouplingPortConnection> {
+        self.coupling_port_connections.get(id)
+    }
+
+    pub fn get_coupling_port_details(
+        &self,
+        id: CouplingPortDetailsId,
+    ) -> Option<&CouplingPortDetails> {
+        self.coupling_port_details.get(id)
+    }
+
+    pub fn get_coupling_port_fifo(&self, id: CouplingPortFifoId) -> Option<&CouplingPortFifo> {
+        self.coupling_port_fifos.get(id)
+    }
+
+    pub fn get_coupling_port_rate_policy(
+        &self,
+        id: CouplingPortRatePolicyId,
+    ) -> Option<&CouplingPortRatePolicy> {
+        self.coupling_port_rate_policys.get(id)
+    }
+
+    pub fn get_coupling_port_scheduler(
+        &self,
+        id: CouplingPortSchedulerId,
+    ) -> Option<&CouplingPortScheduler> {
+        self.coupling_port_schedulers.get(id)
+    }
+
+    pub fn get_coupling_port_shaper(
+        &self,
+        id: CouplingPortShaperId,
+    ) -> Option<&CouplingPortShaper> {
+        self.coupling_port_shapers.get(id)
+    }
+
+    pub fn get_coupling_port_traffic_class_assignment(
+        &self,
+        id: CouplingPortTrafficClassAssignmentId,
+    ) -> Option<&CouplingPortTrafficClassAssignment> {
+        self.coupling_port_traffic_class_assignments.get(id)
+    }
+
+    pub fn get_cp_software_cluster(&self, id: CpSoftwareClusterId) -> Option<&CpSoftwareCluster> {
+        self.cp_software_clusters.get(id)
+    }
+
+    pub fn get_cp_software_cluster_binary_manifest_descriptor(
+        &self,
+        id: CpSoftwareClusterBinaryManifestDescriptorId,
+    ) -> Option<&CpSoftwareClusterBinaryManifestDescriptor> {
+        self.cp_software_cluster_binary_manifest_descriptors.get(id)
+    }
+
+    pub fn get_cp_software_cluster_communication_resource(
+        &self,
+        id: CpSoftwareClusterCommunicationResourceId,
+    ) -> Option<&CpSoftwareClusterCommunicationResource> {
+        self.cp_software_cluster_communication_resources.get(id)
+    }
+
+    pub fn get_cp_software_cluster_mapping_set(
+        &self,
+        id: CpSoftwareClusterMappingSetId,
+    ) -> Option<&CpSoftwareClusterMappingSet> {
+        self.cp_software_cluster_mapping_sets.get(id)
+    }
+
+    pub fn get_cp_software_cluster_resource_pool(
+        &self,
+        id: CpSoftwareClusterResourcePoolId,
+    ) -> Option<&CpSoftwareClusterResourcePool> {
+        self.cp_software_cluster_resource_pools.get(id)
+    }
+
+    pub fn get_cp_software_cluster_resource_to_application_partition_mapping(
+        &self,
+        id: CpSoftwareClusterResourceToApplicationPartitionMappingId,
+    ) -> Option<&CpSoftwareClusterResourceToApplicationPartitionMapping> {
+        self.cp_software_cluster_resource_to_application_partition_mappings
+            .get(id)
+    }
+
+    pub fn get_cp_software_cluster_service_resource(
+        &self,
+        id: CpSoftwareClusterServiceResourceId,
+    ) -> Option<&CpSoftwareClusterServiceResource> {
+        self.cp_software_cluster_service_resources.get(id)
+    }
+
+    pub fn get_cp_software_cluster_to_application_partition_mapping(
+        &self,
+        id: CpSoftwareClusterToApplicationPartitionMappingId,
+    ) -> Option<&CpSoftwareClusterToApplicationPartitionMapping> {
+        self.cp_software_cluster_to_application_partition_mappings
+            .get(id)
+    }
+
+    pub fn get_cp_software_cluster_to_ecu_instance_mapping(
+        &self,
+        id: CpSoftwareClusterToEcuInstanceMappingId,
+    ) -> Option<&CpSoftwareClusterToEcuInstanceMapping> {
+        self.cp_software_cluster_to_ecu_instance_mappings.get(id)
+    }
+
+    pub fn get_cp_software_cluster_to_resource_mapping(
+        &self,
+        id: CpSoftwareClusterToResourceMappingId,
+    ) -> Option<&CpSoftwareClusterToResourceMapping> {
+        self.cp_software_cluster_to_resource_mappings.get(id)
+    }
+
+    pub fn get_cp_sw_cluster_resource_to_diag_data_elem_mapping(
+        &self,
+        id: CpSwClusterResourceToDiagDataElemMappingId,
+    ) -> Option<&CpSwClusterResourceToDiagDataElemMapping> {
+        self.cp_sw_cluster_resource_to_diag_data_elem_mappings
+            .get(id)
+    }
+
+    pub fn get_cp_sw_cluster_resource_to_diag_function_id_mapping(
+        &self,
+        id: CpSwClusterResourceToDiagFunctionIdMappingId,
+    ) -> Option<&CpSwClusterResourceToDiagFunctionIdMapping> {
+        self.cp_sw_cluster_resource_to_diag_function_id_mappings
+            .get(id)
+    }
+
+    pub fn get_cp_sw_cluster_to_diag_event_mapping(
+        &self,
+        id: CpSwClusterToDiagEventMappingId,
+    ) -> Option<&CpSwClusterToDiagEventMapping> {
+        self.cp_sw_cluster_to_diag_event_mappings.get(id)
+    }
+
+    pub fn get_cp_sw_cluster_to_diag_routine_subfunction_mapping(
+        &self,
+        id: CpSwClusterToDiagRoutineSubfunctionMappingId,
+    ) -> Option<&CpSwClusterToDiagRoutineSubfunctionMapping> {
+        self.cp_sw_cluster_to_diag_routine_subfunction_mappings
+            .get(id)
+    }
+
+    pub fn get_crypto_elliptic_curve_props(
+        &self,
+        id: CryptoEllipticCurvePropsId,
+    ) -> Option<&CryptoEllipticCurveProps> {
+        self.crypto_elliptic_curve_props.get(id)
+    }
+
+    pub fn get_crypto_key_management_needs(
+        &self,
+        id: CryptoKeyManagementNeedsId,
+    ) -> Option<&CryptoKeyManagementNeeds> {
+        self.crypto_key_management_needs.get(id)
+    }
+
+    pub fn get_crypto_key_slot(&self, id: CryptoKeySlotId) -> Option<&CryptoKeySlot> {
+        self.crypto_key_slots.get(id)
+    }
+
+    pub fn get_crypto_key_slot_allowed_modification(
+        &self,
+        id: CryptoKeySlotAllowedModificationId,
+    ) -> Option<&CryptoKeySlotAllowedModification> {
+        self.crypto_key_slot_allowed_modifications.get(id)
+    }
+
+    pub fn get_crypto_key_slot_content_allowed_usage(
+        &self,
+        id: CryptoKeySlotContentAllowedUsageId,
+    ) -> Option<&CryptoKeySlotContentAllowedUsage> {
+        self.crypto_key_slot_content_allowed_usages.get(id)
+    }
+
+    pub fn get_crypto_service_certificate(
+        &self,
+        id: CryptoServiceCertificateId,
+    ) -> Option<&CryptoServiceCertificate> {
+        self.crypto_service_certificates.get(id)
+    }
+
+    pub fn get_crypto_service_job_needs(
+        &self,
+        id: CryptoServiceJobNeedsId,
+    ) -> Option<&CryptoServiceJobNeeds> {
+        self.crypto_service_job_needs.get(id)
+    }
+
+    pub fn get_crypto_service_key(&self, id: CryptoServiceKeyId) -> Option<&CryptoServiceKey> {
+        self.crypto_service_keys.get(id)
+    }
+
+    pub fn get_crypto_service_needs(
+        &self,
+        id: CryptoServiceNeedsId,
+    ) -> Option<&CryptoServiceNeeds> {
+        self.crypto_service_needs.get(id)
+    }
+
+    pub fn get_crypto_service_primitive(
+        &self,
+        id: CryptoServicePrimitiveId,
+    ) -> Option<&CryptoServicePrimitive> {
+        self.crypto_service_primitives.get(id)
+    }
+
+    pub fn get_crypto_service_queue(
+        &self,
+        id: CryptoServiceQueueId,
+    ) -> Option<&CryptoServiceQueue> {
+        self.crypto_service_queues.get(id)
+    }
+
+    pub fn get_crypto_signature_scheme(
+        &self,
+        id: CryptoSignatureSchemeId,
+    ) -> Option<&CryptoSignatureScheme> {
+        self.crypto_signature_schemes.get(id)
+    }
+
+    pub fn get_cycle_counter(&self, id: CycleCounterId) -> Option<&CycleCounter> {
+        self.cycle_counters.get(id)
+    }
+
+    pub fn get_cycle_repetition(&self, id: CycleRepetitionId) -> Option<&CycleRepetition> {
+        self.cycle_repetitions.get(id)
+    }
+
+    pub fn get_cyclic_timing(&self, id: CyclicTimingId) -> Option<&CyclicTiming> {
+        self.cyclic_timings.get(id)
+    }
+
+    pub fn get_data_com_props(&self, id: DataComPropsId) -> Option<&DataComProps> {
+        self.data_com_props.get(id)
+    }
+
+    pub fn get_data_constr(&self, id: DataConstrId) -> Option<&DataConstr> {
+        self.data_constrs.get(id)
+    }
+
+    pub fn get_data_constr_rule(&self, id: DataConstrRuleId) -> Option<&DataConstrRule> {
+        self.data_constr_rules.get(id)
+    }
+
+    pub fn get_data_dump_entry(&self, id: DataDumpEntryId) -> Option<&DataDumpEntry> {
+        self.data_dump_entrys.get(id)
+    }
+
+    pub fn get_data_exchange_point(&self, id: DataExchangePointId) -> Option<&DataExchangePoint> {
+        self.data_exchange_points.get(id)
+    }
+
+    pub fn get_data_filter(&self, id: DataFilterId) -> Option<&DataFilter> {
+        self.data_filters.get(id)
+    }
+
+    pub fn get_data_link_layer_rule(&self, id: DataLinkLayerRuleId) -> Option<&DataLinkLayerRule> {
+        self.data_link_layer_rules.get(id)
+    }
+
+    pub fn get_data_prototype_group(
+        &self,
+        id: DataPrototypeGroupId,
+    ) -> Option<&DataPrototypeGroup> {
+        self.data_prototype_groups.get(id)
+    }
+
+    pub fn get_data_prototype_in_client_server_interface_instance_ref(
+        &self,
+        id: DataPrototypeInClientServerInterfaceInstanceRefId,
+    ) -> Option<&DataPrototypeInClientServerInterfaceInstanceRef> {
+        self.data_prototype_in_client_server_interface_instance_refs
+            .get(id)
+    }
+
+    pub fn get_data_prototype_in_port_interface_ref(
+        &self,
+        id: DataPrototypeInPortInterfaceRefId,
+    ) -> Option<&DataPrototypeInPortInterfaceRef> {
+        self.data_prototype_in_port_interface_refs.get(id)
+    }
+
+    pub fn get_data_prototype_in_sender_receiver_interface_instance_ref(
+        &self,
+        id: DataPrototypeInSenderReceiverInterfaceInstanceRefId,
+    ) -> Option<&DataPrototypeInSenderReceiverInterfaceInstanceRef> {
+        self.data_prototype_in_sender_receiver_interface_instance_refs
+            .get(id)
+    }
+
+    pub fn get_data_prototype_mapping(
+        &self,
+        id: DataPrototypeMappingId,
+    ) -> Option<&DataPrototypeMapping> {
+        self.data_prototype_mappings.get(id)
+    }
+
+    pub fn get_data_prototype_transformation_props(
+        &self,
+        id: DataPrototypeTransformationPropsId,
+    ) -> Option<&DataPrototypeTransformationProps> {
+        self.data_prototype_transformation_props.get(id)
+    }
+
+    pub fn get_data_receive_error_event(
+        &self,
+        id: DataReceiveErrorEventId,
+    ) -> Option<&DataReceiveErrorEvent> {
+        self.data_receive_error_events.get(id)
+    }
+
+    pub fn get_data_received_event(&self, id: DataReceivedEventId) -> Option<&DataReceivedEvent> {
+        self.data_received_events.get(id)
+    }
+
+    pub fn get_data_send_completed_event(
+        &self,
+        id: DataSendCompletedEventId,
+    ) -> Option<&DataSendCompletedEvent> {
+        self.data_send_completed_events.get(id)
+    }
+
+    pub fn get_data_transformation(&self, id: DataTransformationId) -> Option<&DataTransformation> {
+        self.data_transformations.get(id)
+    }
+
+    pub fn get_data_transformation_set(
+        &self,
+        id: DataTransformationSetId,
+    ) -> Option<&DataTransformationSet> {
+        self.data_transformation_sets.get(id)
+    }
+
+    pub fn get_data_type_map(&self, id: DataTypeMapId) -> Option<&DataTypeMap> {
+        self.data_type_maps.get(id)
+    }
+
+    pub fn get_data_type_mapping_set(
+        &self,
+        id: DataTypeMappingSetId,
+    ) -> Option<&DataTypeMappingSet> {
+        self.data_type_mapping_sets.get(id)
+    }
+
+    pub fn get_data_write_completed_event(
+        &self,
+        id: DataWriteCompletedEventId,
+    ) -> Option<&DataWriteCompletedEvent> {
+        self.data_write_completed_events.get(id)
+    }
+
+    pub fn get_dcm_i_pdu(&self, id: DcmIPduId) -> Option<&DcmIPdu> {
+        self.dcm_i_pdus.get(id)
+    }
+
+    pub fn get_dds_cp_config(&self, id: DdsCpConfigId) -> Option<&DdsCpConfig> {
+        self.dds_cp_configs.get(id)
+    }
+
+    pub fn get_dds_cp_consumed_service_instance(
+        &self,
+        id: DdsCpConsumedServiceInstanceId,
+    ) -> Option<&DdsCpConsumedServiceInstance> {
+        self.dds_cp_consumed_service_instances.get(id)
+    }
+
+    pub fn get_dds_cp_domain(&self, id: DdsCpDomainId) -> Option<&DdsCpDomain> {
+        self.dds_cp_domains.get(id)
+    }
+
+    pub fn get_dds_cp_i_signal_to_dds_topic_mapping(
+        &self,
+        id: DdsCpISignalToDdsTopicMappingId,
+    ) -> Option<&DdsCpISignalToDdsTopicMapping> {
+        self.dds_cp_i_signal_to_dds_topic_mappings.get(id)
+    }
+
+    pub fn get_dds_cp_partition(&self, id: DdsCpPartitionId) -> Option<&DdsCpPartition> {
+        self.dds_cp_partitions.get(id)
+    }
+
+    pub fn get_dds_cp_provided_service_instance(
+        &self,
+        id: DdsCpProvidedServiceInstanceId,
+    ) -> Option<&DdsCpProvidedServiceInstance> {
+        self.dds_cp_provided_service_instances.get(id)
+    }
+
+    pub fn get_dds_cp_qos_profile(&self, id: DdsCpQosProfileId) -> Option<&DdsCpQosProfile> {
+        self.dds_cp_qos_profiles.get(id)
+    }
+
+    pub fn get_dds_cp_service_instance_event(
+        &self,
+        id: DdsCpServiceInstanceEventId,
+    ) -> Option<&DdsCpServiceInstanceEvent> {
+        self.dds_cp_service_instance_events.get(id)
+    }
+
+    pub fn get_dds_cp_service_instance_operation(
+        &self,
+        id: DdsCpServiceInstanceOperationId,
+    ) -> Option<&DdsCpServiceInstanceOperation> {
+        self.dds_cp_service_instance_operations.get(id)
+    }
+
+    pub fn get_dds_cp_topic(&self, id: DdsCpTopicId) -> Option<&DdsCpTopic> {
+        self.dds_cp_topics.get(id)
+    }
+
+    pub fn get_dds_deadline(&self, id: DdsDeadlineId) -> Option<&DdsDeadline> {
+        self.dds_deadlines.get(id)
+    }
+
+    pub fn get_dds_destination_order(
+        &self,
+        id: DdsDestinationOrderId,
+    ) -> Option<&DdsDestinationOrder> {
+        self.dds_destination_orders.get(id)
+    }
+
+    pub fn get_dds_durability(&self, id: DdsDurabilityId) -> Option<&DdsDurability> {
+        self.dds_durabilitys.get(id)
+    }
+
+    pub fn get_dds_durability_service(
+        &self,
+        id: DdsDurabilityServiceId,
+    ) -> Option<&DdsDurabilityService> {
+        self.dds_durability_services.get(id)
+    }
+
+    pub fn get_dds_history(&self, id: DdsHistoryId) -> Option<&DdsHistory> {
+        self.dds_historys.get(id)
+    }
+
+    pub fn get_dds_latency_budget(&self, id: DdsLatencyBudgetId) -> Option<&DdsLatencyBudget> {
+        self.dds_latency_budgets.get(id)
+    }
+
+    pub fn get_dds_lifespan(&self, id: DdsLifespanId) -> Option<&DdsLifespan> {
+        self.dds_lifespans.get(id)
+    }
+
+    pub fn get_dds_liveliness(&self, id: DdsLivelinessId) -> Option<&DdsLiveliness> {
+        self.dds_liveliness.get(id)
+    }
+
+    pub fn get_dds_ownership(&self, id: DdsOwnershipId) -> Option<&DdsOwnership> {
+        self.dds_ownerships.get(id)
+    }
+
+    pub fn get_dds_ownership_strength(
+        &self,
+        id: DdsOwnershipStrengthId,
+    ) -> Option<&DdsOwnershipStrength> {
+        self.dds_ownership_strengths.get(id)
+    }
+
+    pub fn get_dds_reliability(&self, id: DdsReliabilityId) -> Option<&DdsReliability> {
+        self.dds_reliabilitys.get(id)
+    }
+
+    pub fn get_dds_resource_limits(&self, id: DdsResourceLimitsId) -> Option<&DdsResourceLimits> {
+        self.dds_resource_limits.get(id)
+    }
+
+    pub fn get_dds_rule(&self, id: DdsRuleId) -> Option<&DdsRule> {
+        self.dds_rules.get(id)
+    }
+
+    pub fn get_dds_topic_data(&self, id: DdsTopicDataId) -> Option<&DdsTopicData> {
+        self.dds_topic_datas.get(id)
+    }
+
+    pub fn get_dds_transport_priority(
+        &self,
+        id: DdsTransportPriorityId,
+    ) -> Option<&DdsTransportPriority> {
+        self.dds_transport_prioritys.get(id)
+    }
+
+    pub fn get_def_item(&self, id: DefItemId) -> Option<&DefItem> {
+        self.def_items.get(id)
+    }
+
+    pub fn get_def_list(&self, id: DefListId) -> Option<&DefList> {
+        self.def_lists.get(id)
+    }
+
+    pub fn get_default_value_element(
+        &self,
+        id: DefaultValueElementId,
+    ) -> Option<&DefaultValueElement> {
+        self.default_value_elements.get(id)
+    }
+
+    pub fn get_delegated_port_annotation(
+        &self,
+        id: DelegatedPortAnnotationId,
+    ) -> Option<&DelegatedPortAnnotation> {
+        self.delegated_port_annotations.get(id)
+    }
+
+    pub fn get_delegation_sw_connector(
+        &self,
+        id: DelegationSwConnectorId,
+    ) -> Option<&DelegationSwConnector> {
+        self.delegation_sw_connectors.get(id)
+    }
+
+    pub fn get_dependency_on_artifact(
+        &self,
+        id: DependencyOnArtifactId,
+    ) -> Option<&DependencyOnArtifact> {
+        self.dependency_on_artifacts.get(id)
+    }
+
+    pub fn get_development_error(&self, id: DevelopmentErrorId) -> Option<&DevelopmentError> {
+        self.development_errors.get(id)
+    }
+
+    pub fn get_dhcp_server_configuration(
+        &self,
+        id: DhcpServerConfigurationId,
+    ) -> Option<&DhcpServerConfiguration> {
+        self.dhcp_server_configurations.get(id)
+    }
+
+    pub fn get_dhcpv6_props(&self, id: Dhcpv6PropsId) -> Option<&Dhcpv6Props> {
+        self.dhcpv6_props.get(id)
+    }
+
+    pub fn get_diag_event_debounce_counter_based(
+        &self,
+        id: DiagEventDebounceCounterBasedId,
+    ) -> Option<&DiagEventDebounceCounterBased> {
+        self.diag_event_debounce_counter_baseds.get(id)
+    }
+
+    pub fn get_diag_event_debounce_monitor_internal(
+        &self,
+        id: DiagEventDebounceMonitorInternalId,
+    ) -> Option<&DiagEventDebounceMonitorInternal> {
+        self.diag_event_debounce_monitor_internals.get(id)
+    }
+
+    pub fn get_diag_event_debounce_time_based(
+        &self,
+        id: DiagEventDebounceTimeBasedId,
+    ) -> Option<&DiagEventDebounceTimeBased> {
+        self.diag_event_debounce_time_baseds.get(id)
+    }
+
+    pub fn get_diagnostic_access_permission(
+        &self,
+        id: DiagnosticAccessPermissionId,
+    ) -> Option<&DiagnosticAccessPermission> {
+        self.diagnostic_access_permissions.get(id)
+    }
+
+    pub fn get_diagnostic_aging(&self, id: DiagnosticAgingId) -> Option<&DiagnosticAging> {
+        self.diagnostic_agings.get(id)
+    }
+
+    pub fn get_diagnostic_auth_role(
+        &self,
+        id: DiagnosticAuthRoleId,
+    ) -> Option<&DiagnosticAuthRole> {
+        self.diagnostic_auth_roles.get(id)
+    }
+
+    pub fn get_diagnostic_auth_role_proxy(
+        &self,
+        id: DiagnosticAuthRoleProxyId,
+    ) -> Option<&DiagnosticAuthRoleProxy> {
+        self.diagnostic_auth_role_proxys.get(id)
+    }
+
+    pub fn get_diagnostic_auth_transmit_certificate(
+        &self,
+        id: DiagnosticAuthTransmitCertificateId,
+    ) -> Option<&DiagnosticAuthTransmitCertificate> {
+        self.diagnostic_auth_transmit_certificates.get(id)
+    }
+
+    pub fn get_diagnostic_auth_transmit_certificate_evaluation(
+        &self,
+        id: DiagnosticAuthTransmitCertificateEvaluationId,
+    ) -> Option<&DiagnosticAuthTransmitCertificateEvaluation> {
+        self.diagnostic_auth_transmit_certificate_evaluations
+            .get(id)
+    }
+
+    pub fn get_diagnostic_auth_transmit_certificate_mapping(
+        &self,
+        id: DiagnosticAuthTransmitCertificateMappingId,
+    ) -> Option<&DiagnosticAuthTransmitCertificateMapping> {
+        self.diagnostic_auth_transmit_certificate_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_authentication_class(
+        &self,
+        id: DiagnosticAuthenticationClassId,
+    ) -> Option<&DiagnosticAuthenticationClass> {
+        self.diagnostic_authentication_class.get(id)
+    }
+
+    pub fn get_diagnostic_authentication_configuration(
+        &self,
+        id: DiagnosticAuthenticationConfigurationId,
+    ) -> Option<&DiagnosticAuthenticationConfiguration> {
+        self.diagnostic_authentication_configurations.get(id)
+    }
+
+    pub fn get_diagnostic_clear_diagnostic_information(
+        &self,
+        id: DiagnosticClearDiagnosticInformationId,
+    ) -> Option<&DiagnosticClearDiagnosticInformation> {
+        self.diagnostic_clear_diagnostic_informations.get(id)
+    }
+
+    pub fn get_diagnostic_clear_diagnostic_information_class(
+        &self,
+        id: DiagnosticClearDiagnosticInformationClassId,
+    ) -> Option<&DiagnosticClearDiagnosticInformationClass> {
+        self.diagnostic_clear_diagnostic_information_class.get(id)
+    }
+
+    pub fn get_diagnostic_clear_reset_emission_related_info(
+        &self,
+        id: DiagnosticClearResetEmissionRelatedInfoId,
+    ) -> Option<&DiagnosticClearResetEmissionRelatedInfo> {
+        self.diagnostic_clear_reset_emission_related_infos.get(id)
+    }
+
+    pub fn get_diagnostic_clear_reset_emission_related_info_class(
+        &self,
+        id: DiagnosticClearResetEmissionRelatedInfoClassId,
+    ) -> Option<&DiagnosticClearResetEmissionRelatedInfoClass> {
+        self.diagnostic_clear_reset_emission_related_info_class
+            .get(id)
+    }
+
+    pub fn get_diagnostic_com_control(
+        &self,
+        id: DiagnosticComControlId,
+    ) -> Option<&DiagnosticComControl> {
+        self.diagnostic_com_controls.get(id)
+    }
+
+    pub fn get_diagnostic_com_control_class(
+        &self,
+        id: DiagnosticComControlClassId,
+    ) -> Option<&DiagnosticComControlClass> {
+        self.diagnostic_com_control_class.get(id)
+    }
+
+    pub fn get_diagnostic_com_control_specific_channel(
+        &self,
+        id: DiagnosticComControlSpecificChannelId,
+    ) -> Option<&DiagnosticComControlSpecificChannel> {
+        self.diagnostic_com_control_specific_channels.get(id)
+    }
+
+    pub fn get_diagnostic_com_control_sub_node_channel(
+        &self,
+        id: DiagnosticComControlSubNodeChannelId,
+    ) -> Option<&DiagnosticComControlSubNodeChannel> {
+        self.diagnostic_com_control_sub_node_channels.get(id)
+    }
+
+    pub fn get_diagnostic_common_props(
+        &self,
+        id: DiagnosticCommonPropsId,
+    ) -> Option<&DiagnosticCommonProps> {
+        self.diagnostic_common_props.get(id)
+    }
+
+    pub fn get_diagnostic_communication_manager_needs(
+        &self,
+        id: DiagnosticCommunicationManagerNeedsId,
+    ) -> Option<&DiagnosticCommunicationManagerNeeds> {
+        self.diagnostic_communication_manager_needs.get(id)
+    }
+
+    pub fn get_diagnostic_component_needs(
+        &self,
+        id: DiagnosticComponentNeedsId,
+    ) -> Option<&DiagnosticComponentNeeds> {
+        self.diagnostic_component_needs.get(id)
+    }
+
+    pub fn get_diagnostic_connected_indicator(
+        &self,
+        id: DiagnosticConnectedIndicatorId,
+    ) -> Option<&DiagnosticConnectedIndicator> {
+        self.diagnostic_connected_indicators.get(id)
+    }
+
+    pub fn get_diagnostic_connection(
+        &self,
+        id: DiagnosticConnectionId,
+    ) -> Option<&DiagnosticConnection> {
+        self.diagnostic_connections.get(id)
+    }
+
+    pub fn get_diagnostic_contribution_set(
+        &self,
+        id: DiagnosticContributionSetId,
+    ) -> Option<&DiagnosticContributionSet> {
+        self.diagnostic_contribution_sets.get(id)
+    }
+
+    pub fn get_diagnostic_control_dtc_setting(
+        &self,
+        id: DiagnosticControlDTCSettingId,
+    ) -> Option<&DiagnosticControlDTCSetting> {
+        self.diagnostic_control_dtc_settings.get(id)
+    }
+
+    pub fn get_diagnostic_control_dtc_setting_class(
+        &self,
+        id: DiagnosticControlDTCSettingClassId,
+    ) -> Option<&DiagnosticControlDTCSettingClass> {
+        self.diagnostic_control_dtc_setting_class.get(id)
+    }
+
+    pub fn get_diagnostic_control_enable_mask_bit(
+        &self,
+        id: DiagnosticControlEnableMaskBitId,
+    ) -> Option<&DiagnosticControlEnableMaskBit> {
+        self.diagnostic_control_enable_mask_bits.get(id)
+    }
+
+    pub fn get_diagnostic_control_needs(
+        &self,
+        id: DiagnosticControlNeedsId,
+    ) -> Option<&DiagnosticControlNeeds> {
+        self.diagnostic_control_needs.get(id)
+    }
+
+    pub fn get_diagnostic_custom_service_class(
+        &self,
+        id: DiagnosticCustomServiceClassId,
+    ) -> Option<&DiagnosticCustomServiceClass> {
+        self.diagnostic_custom_service_class.get(id)
+    }
+
+    pub fn get_diagnostic_custom_service_instance(
+        &self,
+        id: DiagnosticCustomServiceInstanceId,
+    ) -> Option<&DiagnosticCustomServiceInstance> {
+        self.diagnostic_custom_service_instances.get(id)
+    }
+
+    pub fn get_diagnostic_data_element(
+        &self,
+        id: DiagnosticDataElementId,
+    ) -> Option<&DiagnosticDataElement> {
+        self.diagnostic_data_elements.get(id)
+    }
+
+    pub fn get_diagnostic_data_identifier(
+        &self,
+        id: DiagnosticDataIdentifierId,
+    ) -> Option<&DiagnosticDataIdentifier> {
+        self.diagnostic_data_identifiers.get(id)
+    }
+
+    pub fn get_diagnostic_data_identifier_set(
+        &self,
+        id: DiagnosticDataIdentifierSetId,
+    ) -> Option<&DiagnosticDataIdentifierSet> {
+        self.diagnostic_data_identifier_sets.get(id)
+    }
+
+    pub fn get_diagnostic_data_transfer(
+        &self,
+        id: DiagnosticDataTransferId,
+    ) -> Option<&DiagnosticDataTransfer> {
+        self.diagnostic_data_transfers.get(id)
+    }
+
+    pub fn get_diagnostic_data_transfer_class(
+        &self,
+        id: DiagnosticDataTransferClassId,
+    ) -> Option<&DiagnosticDataTransferClass> {
+        self.diagnostic_data_transfer_class.get(id)
+    }
+
+    pub fn get_diagnostic_de_authentication(
+        &self,
+        id: DiagnosticDeAuthenticationId,
+    ) -> Option<&DiagnosticDeAuthentication> {
+        self.diagnostic_de_authentications.get(id)
+    }
+
+    pub fn get_diagnostic_debounce_algorithm_props(
+        &self,
+        id: DiagnosticDebounceAlgorithmPropsId,
+    ) -> Option<&DiagnosticDebounceAlgorithmProps> {
+        self.diagnostic_debounce_algorithm_props.get(id)
+    }
+
+    pub fn get_diagnostic_dem_provided_data_mapping(
+        &self,
+        id: DiagnosticDemProvidedDataMappingId,
+    ) -> Option<&DiagnosticDemProvidedDataMapping> {
+        self.diagnostic_dem_provided_data_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_dynamic_data_identifier(
+        &self,
+        id: DiagnosticDynamicDataIdentifierId,
+    ) -> Option<&DiagnosticDynamicDataIdentifier> {
+        self.diagnostic_dynamic_data_identifiers.get(id)
+    }
+
+    pub fn get_diagnostic_dynamically_define_data_identifier(
+        &self,
+        id: DiagnosticDynamicallyDefineDataIdentifierId,
+    ) -> Option<&DiagnosticDynamicallyDefineDataIdentifier> {
+        self.diagnostic_dynamically_define_data_identifiers.get(id)
+    }
+
+    pub fn get_diagnostic_dynamically_define_data_identifier_class(
+        &self,
+        id: DiagnosticDynamicallyDefineDataIdentifierClassId,
+    ) -> Option<&DiagnosticDynamicallyDefineDataIdentifierClass> {
+        self.diagnostic_dynamically_define_data_identifier_class
+            .get(id)
+    }
+
+    pub fn get_diagnostic_ecu_instance_props(
+        &self,
+        id: DiagnosticEcuInstancePropsId,
+    ) -> Option<&DiagnosticEcuInstanceProps> {
+        self.diagnostic_ecu_instance_props.get(id)
+    }
+
+    pub fn get_diagnostic_ecu_reset(
+        &self,
+        id: DiagnosticEcuResetId,
+    ) -> Option<&DiagnosticEcuReset> {
+        self.diagnostic_ecu_resets.get(id)
+    }
+
+    pub fn get_diagnostic_ecu_reset_class(
+        &self,
+        id: DiagnosticEcuResetClassId,
+    ) -> Option<&DiagnosticEcuResetClass> {
+        self.diagnostic_ecu_reset_class.get(id)
+    }
+
+    pub fn get_diagnostic_enable_condition(
+        &self,
+        id: DiagnosticEnableConditionId,
+    ) -> Option<&DiagnosticEnableCondition> {
+        self.diagnostic_enable_conditions.get(id)
+    }
+
+    pub fn get_diagnostic_enable_condition_group(
+        &self,
+        id: DiagnosticEnableConditionGroupId,
+    ) -> Option<&DiagnosticEnableConditionGroup> {
+        self.diagnostic_enable_condition_groups.get(id)
+    }
+
+    pub fn get_diagnostic_enable_condition_needs(
+        &self,
+        id: DiagnosticEnableConditionNeedsId,
+    ) -> Option<&DiagnosticEnableConditionNeeds> {
+        self.diagnostic_enable_condition_needs.get(id)
+    }
+
+    pub fn get_diagnostic_enable_condition_port_mapping(
+        &self,
+        id: DiagnosticEnableConditionPortMappingId,
+    ) -> Option<&DiagnosticEnableConditionPortMapping> {
+        self.diagnostic_enable_condition_port_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_env_bsw_mode_element(
+        &self,
+        id: DiagnosticEnvBswModeElementId,
+    ) -> Option<&DiagnosticEnvBswModeElement> {
+        self.diagnostic_env_bsw_mode_elements.get(id)
+    }
+
+    pub fn get_diagnostic_env_condition_formula(
+        &self,
+        id: DiagnosticEnvConditionFormulaId,
+    ) -> Option<&DiagnosticEnvConditionFormula> {
+        self.diagnostic_env_condition_formulas.get(id)
+    }
+
+    pub fn get_diagnostic_env_data_condition(
+        &self,
+        id: DiagnosticEnvDataConditionId,
+    ) -> Option<&DiagnosticEnvDataCondition> {
+        self.diagnostic_env_data_conditions.get(id)
+    }
+
+    pub fn get_diagnostic_env_data_element_condition(
+        &self,
+        id: DiagnosticEnvDataElementConditionId,
+    ) -> Option<&DiagnosticEnvDataElementCondition> {
+        self.diagnostic_env_data_element_conditions.get(id)
+    }
+
+    pub fn get_diagnostic_env_mode_condition(
+        &self,
+        id: DiagnosticEnvModeConditionId,
+    ) -> Option<&DiagnosticEnvModeCondition> {
+        self.diagnostic_env_mode_conditions.get(id)
+    }
+
+    pub fn get_diagnostic_env_swc_mode_element(
+        &self,
+        id: DiagnosticEnvSwcModeElementId,
+    ) -> Option<&DiagnosticEnvSwcModeElement> {
+        self.diagnostic_env_swc_mode_elements.get(id)
+    }
+
+    pub fn get_diagnostic_environmental_condition(
+        &self,
+        id: DiagnosticEnvironmentalConditionId,
+    ) -> Option<&DiagnosticEnvironmentalCondition> {
+        self.diagnostic_environmental_conditions.get(id)
+    }
+
+    pub fn get_diagnostic_event(&self, id: DiagnosticEventId) -> Option<&DiagnosticEvent> {
+        self.diagnostic_events.get(id)
+    }
+
+    pub fn get_diagnostic_event_info_needs(
+        &self,
+        id: DiagnosticEventInfoNeedsId,
+    ) -> Option<&DiagnosticEventInfoNeeds> {
+        self.diagnostic_event_info_needs.get(id)
+    }
+
+    pub fn get_diagnostic_event_manager_needs(
+        &self,
+        id: DiagnosticEventManagerNeedsId,
+    ) -> Option<&DiagnosticEventManagerNeeds> {
+        self.diagnostic_event_manager_needs.get(id)
+    }
+
+    pub fn get_diagnostic_event_needs(
+        &self,
+        id: DiagnosticEventNeedsId,
+    ) -> Option<&DiagnosticEventNeeds> {
+        self.diagnostic_event_needs.get(id)
+    }
+
+    pub fn get_diagnostic_event_port_mapping(
+        &self,
+        id: DiagnosticEventPortMappingId,
+    ) -> Option<&DiagnosticEventPortMapping> {
+        self.diagnostic_event_port_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_event_to_debounce_algorithm_mapping(
+        &self,
+        id: DiagnosticEventToDebounceAlgorithmMappingId,
+    ) -> Option<&DiagnosticEventToDebounceAlgorithmMapping> {
+        self.diagnostic_event_to_debounce_algorithm_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_event_to_enable_condition_group_mapping(
+        &self,
+        id: DiagnosticEventToEnableConditionGroupMappingId,
+    ) -> Option<&DiagnosticEventToEnableConditionGroupMapping> {
+        self.diagnostic_event_to_enable_condition_group_mappings
+            .get(id)
+    }
+
+    pub fn get_diagnostic_event_to_operation_cycle_mapping(
+        &self,
+        id: DiagnosticEventToOperationCycleMappingId,
+    ) -> Option<&DiagnosticEventToOperationCycleMapping> {
+        self.diagnostic_event_to_operation_cycle_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_event_to_security_event_mapping(
+        &self,
+        id: DiagnosticEventToSecurityEventMappingId,
+    ) -> Option<&DiagnosticEventToSecurityEventMapping> {
+        self.diagnostic_event_to_security_event_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_event_to_storage_condition_group_mapping(
+        &self,
+        id: DiagnosticEventToStorageConditionGroupMappingId,
+    ) -> Option<&DiagnosticEventToStorageConditionGroupMapping> {
+        self.diagnostic_event_to_storage_condition_group_mappings
+            .get(id)
+    }
+
+    pub fn get_diagnostic_event_to_trouble_code_j1939_mapping(
+        &self,
+        id: DiagnosticEventToTroubleCodeJ1939MappingId,
+    ) -> Option<&DiagnosticEventToTroubleCodeJ1939Mapping> {
+        self.diagnostic_event_to_trouble_code_j1939_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_event_to_trouble_code_uds_mapping(
+        &self,
+        id: DiagnosticEventToTroubleCodeUdsMappingId,
+    ) -> Option<&DiagnosticEventToTroubleCodeUdsMapping> {
+        self.diagnostic_event_to_trouble_code_uds_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_event_window(
+        &self,
+        id: DiagnosticEventWindowId,
+    ) -> Option<&DiagnosticEventWindow> {
+        self.diagnostic_event_windows.get(id)
+    }
+
+    pub fn get_diagnostic_extended_data_record(
+        &self,
+        id: DiagnosticExtendedDataRecordId,
+    ) -> Option<&DiagnosticExtendedDataRecord> {
+        self.diagnostic_extended_data_records.get(id)
+    }
+
+    pub fn get_diagnostic_fim_alias_event(
+        &self,
+        id: DiagnosticFimAliasEventId,
+    ) -> Option<&DiagnosticFimAliasEvent> {
+        self.diagnostic_fim_alias_events.get(id)
+    }
+
+    pub fn get_diagnostic_fim_alias_event_group(
+        &self,
+        id: DiagnosticFimAliasEventGroupId,
+    ) -> Option<&DiagnosticFimAliasEventGroup> {
+        self.diagnostic_fim_alias_event_groups.get(id)
+    }
+
+    pub fn get_diagnostic_fim_alias_event_group_mapping(
+        &self,
+        id: DiagnosticFimAliasEventGroupMappingId,
+    ) -> Option<&DiagnosticFimAliasEventGroupMapping> {
+        self.diagnostic_fim_alias_event_group_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_fim_alias_event_mapping(
+        &self,
+        id: DiagnosticFimAliasEventMappingId,
+    ) -> Option<&DiagnosticFimAliasEventMapping> {
+        self.diagnostic_fim_alias_event_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_fim_event_group(
+        &self,
+        id: DiagnosticFimEventGroupId,
+    ) -> Option<&DiagnosticFimEventGroup> {
+        self.diagnostic_fim_event_groups.get(id)
+    }
+
+    pub fn get_diagnostic_fim_function_mapping(
+        &self,
+        id: DiagnosticFimFunctionMappingId,
+    ) -> Option<&DiagnosticFimFunctionMapping> {
+        self.diagnostic_fim_function_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_freeze_frame(
+        &self,
+        id: DiagnosticFreezeFrameId,
+    ) -> Option<&DiagnosticFreezeFrame> {
+        self.diagnostic_freeze_frames.get(id)
+    }
+
+    pub fn get_diagnostic_function_identifier(
+        &self,
+        id: DiagnosticFunctionIdentifierId,
+    ) -> Option<&DiagnosticFunctionIdentifier> {
+        self.diagnostic_function_identifiers.get(id)
+    }
+
+    pub fn get_diagnostic_function_identifier_inhibit(
+        &self,
+        id: DiagnosticFunctionIdentifierInhibitId,
+    ) -> Option<&DiagnosticFunctionIdentifierInhibit> {
+        self.diagnostic_function_identifier_inhibits.get(id)
+    }
+
+    pub fn get_diagnostic_function_inhibit_source(
+        &self,
+        id: DiagnosticFunctionInhibitSourceId,
+    ) -> Option<&DiagnosticFunctionInhibitSource> {
+        self.diagnostic_function_inhibit_sources.get(id)
+    }
+
+    pub fn get_diagnostic_io_control(
+        &self,
+        id: DiagnosticIOControlId,
+    ) -> Option<&DiagnosticIOControl> {
+        self.diagnostic_io_controls.get(id)
+    }
+
+    pub fn get_diagnostic_indicator(
+        &self,
+        id: DiagnosticIndicatorId,
+    ) -> Option<&DiagnosticIndicator> {
+        self.diagnostic_indicators.get(id)
+    }
+
+    pub fn get_diagnostic_info_type(
+        &self,
+        id: DiagnosticInfoTypeId,
+    ) -> Option<&DiagnosticInfoType> {
+        self.diagnostic_info_types.get(id)
+    }
+
+    pub fn get_diagnostic_inhibit_source_event_mapping(
+        &self,
+        id: DiagnosticInhibitSourceEventMappingId,
+    ) -> Option<&DiagnosticInhibitSourceEventMapping> {
+        self.diagnostic_inhibit_source_event_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_io_control_class(
+        &self,
+        id: DiagnosticIoControlClassId,
+    ) -> Option<&DiagnosticIoControlClass> {
+        self.diagnostic_io_control_class.get(id)
+    }
+
+    pub fn get_diagnostic_io_control_needs(
+        &self,
+        id: DiagnosticIoControlNeedsId,
+    ) -> Option<&DiagnosticIoControlNeeds> {
+        self.diagnostic_io_control_needs.get(id)
+    }
+
+    pub fn get_diagnostic_iumpr(&self, id: DiagnosticIumprId) -> Option<&DiagnosticIumpr> {
+        self.diagnostic_iumprs.get(id)
+    }
+
+    pub fn get_diagnostic_iumpr_denominator_group(
+        &self,
+        id: DiagnosticIumprDenominatorGroupId,
+    ) -> Option<&DiagnosticIumprDenominatorGroup> {
+        self.diagnostic_iumpr_denominator_groups.get(id)
+    }
+
+    pub fn get_diagnostic_iumpr_group(
+        &self,
+        id: DiagnosticIumprGroupId,
+    ) -> Option<&DiagnosticIumprGroup> {
+        self.diagnostic_iumpr_groups.get(id)
+    }
+
+    pub fn get_diagnostic_iumpr_group_identifier(
+        &self,
+        id: DiagnosticIumprGroupIdentifierId,
+    ) -> Option<&DiagnosticIumprGroupIdentifier> {
+        self.diagnostic_iumpr_group_identifiers.get(id)
+    }
+
+    pub fn get_diagnostic_iumpr_to_function_identifier_mapping(
+        &self,
+        id: DiagnosticIumprToFunctionIdentifierMappingId,
+    ) -> Option<&DiagnosticIumprToFunctionIdentifierMapping> {
+        self.diagnostic_iumpr_to_function_identifier_mappings
+            .get(id)
+    }
+
+    pub fn get_diagnostic_j1939_expanded_freeze_frame(
+        &self,
+        id: DiagnosticJ1939ExpandedFreezeFrameId,
+    ) -> Option<&DiagnosticJ1939ExpandedFreezeFrame> {
+        self.diagnostic_j1939_expanded_freeze_frames.get(id)
+    }
+
+    pub fn get_diagnostic_j1939_freeze_frame(
+        &self,
+        id: DiagnosticJ1939FreezeFrameId,
+    ) -> Option<&DiagnosticJ1939FreezeFrame> {
+        self.diagnostic_j1939_freeze_frames.get(id)
+    }
+
+    pub fn get_diagnostic_j1939_node(
+        &self,
+        id: DiagnosticJ1939NodeId,
+    ) -> Option<&DiagnosticJ1939Node> {
+        self.diagnostic_j1939_nodes.get(id)
+    }
+
+    pub fn get_diagnostic_j1939_spn(
+        &self,
+        id: DiagnosticJ1939SpnId,
+    ) -> Option<&DiagnosticJ1939Spn> {
+        self.diagnostic_j1939_spns.get(id)
+    }
+
+    pub fn get_diagnostic_j1939_spn_mapping(
+        &self,
+        id: DiagnosticJ1939SpnMappingId,
+    ) -> Option<&DiagnosticJ1939SpnMapping> {
+        self.diagnostic_j1939_spn_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_j1939_sw_mapping(
+        &self,
+        id: DiagnosticJ1939SwMappingId,
+    ) -> Option<&DiagnosticJ1939SwMapping> {
+        self.diagnostic_j1939_sw_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_master_to_slave_event_mapping(
+        &self,
+        id: DiagnosticMasterToSlaveEventMappingId,
+    ) -> Option<&DiagnosticMasterToSlaveEventMapping> {
+        self.diagnostic_master_to_slave_event_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_measurement_identifier(
+        &self,
+        id: DiagnosticMeasurementIdentifierId,
+    ) -> Option<&DiagnosticMeasurementIdentifier> {
+        self.diagnostic_measurement_identifiers.get(id)
+    }
+
+    pub fn get_diagnostic_memory_destination_primary(
+        &self,
+        id: DiagnosticMemoryDestinationPrimaryId,
+    ) -> Option<&DiagnosticMemoryDestinationPrimary> {
+        self.diagnostic_memory_destination_primarys.get(id)
+    }
+
+    pub fn get_diagnostic_memory_destination_user_defined(
+        &self,
+        id: DiagnosticMemoryDestinationUserDefinedId,
+    ) -> Option<&DiagnosticMemoryDestinationUserDefined> {
+        self.diagnostic_memory_destination_user_defineds.get(id)
+    }
+
+    pub fn get_diagnostic_memory_identifier(
+        &self,
+        id: DiagnosticMemoryIdentifierId,
+    ) -> Option<&DiagnosticMemoryIdentifier> {
+        self.diagnostic_memory_identifiers.get(id)
+    }
+
+    pub fn get_diagnostic_operation_cycle(
+        &self,
+        id: DiagnosticOperationCycleId,
+    ) -> Option<&DiagnosticOperationCycle> {
+        self.diagnostic_operation_cycles.get(id)
+    }
+
+    pub fn get_diagnostic_operation_cycle_needs(
+        &self,
+        id: DiagnosticOperationCycleNeedsId,
+    ) -> Option<&DiagnosticOperationCycleNeeds> {
+        self.diagnostic_operation_cycle_needs.get(id)
+    }
+
+    pub fn get_diagnostic_operation_cycle_port_mapping(
+        &self,
+        id: DiagnosticOperationCyclePortMappingId,
+    ) -> Option<&DiagnosticOperationCyclePortMapping> {
+        self.diagnostic_operation_cycle_port_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_parameter(
+        &self,
+        id: DiagnosticParameterId,
+    ) -> Option<&DiagnosticParameter> {
+        self.diagnostic_parameters.get(id)
+    }
+
+    pub fn get_diagnostic_parameter_element(
+        &self,
+        id: DiagnosticParameterElementId,
+    ) -> Option<&DiagnosticParameterElement> {
+        self.diagnostic_parameter_elements.get(id)
+    }
+
+    pub fn get_diagnostic_parameter_element_access(
+        &self,
+        id: DiagnosticParameterElementAccessId,
+    ) -> Option<&DiagnosticParameterElementAccess> {
+        self.diagnostic_parameter_element_access.get(id)
+    }
+
+    pub fn get_diagnostic_parameter_ident(
+        &self,
+        id: DiagnosticParameterIdentId,
+    ) -> Option<&DiagnosticParameterIdent> {
+        self.diagnostic_parameter_idents.get(id)
+    }
+
+    pub fn get_diagnostic_parameter_identifier(
+        &self,
+        id: DiagnosticParameterIdentifierId,
+    ) -> Option<&DiagnosticParameterIdentifier> {
+        self.diagnostic_parameter_identifiers.get(id)
+    }
+
+    pub fn get_diagnostic_parameter_support_info(
+        &self,
+        id: DiagnosticParameterSupportInfoId,
+    ) -> Option<&DiagnosticParameterSupportInfo> {
+        self.diagnostic_parameter_support_infos.get(id)
+    }
+
+    pub fn get_diagnostic_periodic_rate(
+        &self,
+        id: DiagnosticPeriodicRateId,
+    ) -> Option<&DiagnosticPeriodicRate> {
+        self.diagnostic_periodic_rates.get(id)
+    }
+
+    pub fn get_diagnostic_powertrain_freeze_frame(
+        &self,
+        id: DiagnosticPowertrainFreezeFrameId,
+    ) -> Option<&DiagnosticPowertrainFreezeFrame> {
+        self.diagnostic_powertrain_freeze_frames.get(id)
+    }
+
+    pub fn get_diagnostic_proof_of_ownership(
+        &self,
+        id: DiagnosticProofOfOwnershipId,
+    ) -> Option<&DiagnosticProofOfOwnership> {
+        self.diagnostic_proof_of_ownerships.get(id)
+    }
+
+    pub fn get_diagnostic_protocol(&self, id: DiagnosticProtocolId) -> Option<&DiagnosticProtocol> {
+        self.diagnostic_protocols.get(id)
+    }
+
+    pub fn get_diagnostic_read_dtc_information(
+        &self,
+        id: DiagnosticReadDTCInformationId,
+    ) -> Option<&DiagnosticReadDTCInformation> {
+        self.diagnostic_read_dtc_informations.get(id)
+    }
+
+    pub fn get_diagnostic_read_dtc_information_class(
+        &self,
+        id: DiagnosticReadDTCInformationClassId,
+    ) -> Option<&DiagnosticReadDTCInformationClass> {
+        self.diagnostic_read_dtc_information_class.get(id)
+    }
+
+    pub fn get_diagnostic_read_data_by_identifier(
+        &self,
+        id: DiagnosticReadDataByIdentifierId,
+    ) -> Option<&DiagnosticReadDataByIdentifier> {
+        self.diagnostic_read_data_by_identifiers.get(id)
+    }
+
+    pub fn get_diagnostic_read_data_by_identifier_class(
+        &self,
+        id: DiagnosticReadDataByIdentifierClassId,
+    ) -> Option<&DiagnosticReadDataByIdentifierClass> {
+        self.diagnostic_read_data_by_identifier_class.get(id)
+    }
+
+    pub fn get_diagnostic_read_data_by_periodic_id(
+        &self,
+        id: DiagnosticReadDataByPeriodicIDId,
+    ) -> Option<&DiagnosticReadDataByPeriodicID> {
+        self.diagnostic_read_data_by_periodic_ids.get(id)
+    }
+
+    pub fn get_diagnostic_read_data_by_periodic_id_class(
+        &self,
+        id: DiagnosticReadDataByPeriodicIDClassId,
+    ) -> Option<&DiagnosticReadDataByPeriodicIDClass> {
+        self.diagnostic_read_data_by_periodic_id_class.get(id)
+    }
+
+    pub fn get_diagnostic_read_memory_by_address(
+        &self,
+        id: DiagnosticReadMemoryByAddressId,
+    ) -> Option<&DiagnosticReadMemoryByAddress> {
+        self.diagnostic_read_memory_by_address.get(id)
+    }
+
+    pub fn get_diagnostic_read_memory_by_address_class(
+        &self,
+        id: DiagnosticReadMemoryByAddressClassId,
+    ) -> Option<&DiagnosticReadMemoryByAddressClass> {
+        self.diagnostic_read_memory_by_address_class.get(id)
+    }
+
+    pub fn get_diagnostic_read_scaling_data_by_identifier(
+        &self,
+        id: DiagnosticReadScalingDataByIdentifierId,
+    ) -> Option<&DiagnosticReadScalingDataByIdentifier> {
+        self.diagnostic_read_scaling_data_by_identifiers.get(id)
+    }
+
+    pub fn get_diagnostic_read_scaling_data_by_identifier_class(
+        &self,
+        id: DiagnosticReadScalingDataByIdentifierClassId,
+    ) -> Option<&DiagnosticReadScalingDataByIdentifierClass> {
+        self.diagnostic_read_scaling_data_by_identifier_class
+            .get(id)
+    }
+
+    pub fn get_diagnostic_request_control_of_on_board_device(
+        &self,
+        id: DiagnosticRequestControlOfOnBoardDeviceId,
+    ) -> Option<&DiagnosticRequestControlOfOnBoardDevice> {
+        self.diagnostic_request_control_of_on_board_devices.get(id)
+    }
+
+    pub fn get_diagnostic_request_control_of_on_board_device_class(
+        &self,
+        id: DiagnosticRequestControlOfOnBoardDeviceClassId,
+    ) -> Option<&DiagnosticRequestControlOfOnBoardDeviceClass> {
+        self.diagnostic_request_control_of_on_board_device_class
+            .get(id)
+    }
+
+    pub fn get_diagnostic_request_current_powertrain_data(
+        &self,
+        id: DiagnosticRequestCurrentPowertrainDataId,
+    ) -> Option<&DiagnosticRequestCurrentPowertrainData> {
+        self.diagnostic_request_current_powertrain_datas.get(id)
+    }
+
+    pub fn get_diagnostic_request_current_powertrain_data_class(
+        &self,
+        id: DiagnosticRequestCurrentPowertrainDataClassId,
+    ) -> Option<&DiagnosticRequestCurrentPowertrainDataClass> {
+        self.diagnostic_request_current_powertrain_data_class
+            .get(id)
+    }
+
+    pub fn get_diagnostic_request_download(
+        &self,
+        id: DiagnosticRequestDownloadId,
+    ) -> Option<&DiagnosticRequestDownload> {
+        self.diagnostic_request_downloads.get(id)
+    }
+
+    pub fn get_diagnostic_request_download_class(
+        &self,
+        id: DiagnosticRequestDownloadClassId,
+    ) -> Option<&DiagnosticRequestDownloadClass> {
+        self.diagnostic_request_download_class.get(id)
+    }
+
+    pub fn get_diagnostic_request_emission_related_dtc(
+        &self,
+        id: DiagnosticRequestEmissionRelatedDTCId,
+    ) -> Option<&DiagnosticRequestEmissionRelatedDTC> {
+        self.diagnostic_request_emission_related_dtcs.get(id)
+    }
+
+    pub fn get_diagnostic_request_emission_related_dtc_class(
+        &self,
+        id: DiagnosticRequestEmissionRelatedDTCClassId,
+    ) -> Option<&DiagnosticRequestEmissionRelatedDTCClass> {
+        self.diagnostic_request_emission_related_dtc_class.get(id)
+    }
+
+    pub fn get_diagnostic_request_emission_related_dtc_permanent_status(
+        &self,
+        id: DiagnosticRequestEmissionRelatedDTCPermanentStatusId,
+    ) -> Option<&DiagnosticRequestEmissionRelatedDTCPermanentStatus> {
+        self.diagnostic_request_emission_related_dtc_permanent_status
+            .get(id)
+    }
+
+    pub fn get_diagnostic_request_emission_related_dtc_permanent_status_class(
+        &self,
+        id: DiagnosticRequestEmissionRelatedDTCPermanentStatusClassId,
+    ) -> Option<&DiagnosticRequestEmissionRelatedDTCPermanentStatusClass> {
+        self.diagnostic_request_emission_related_dtc_permanent_status_class
+            .get(id)
+    }
+
+    pub fn get_diagnostic_request_file_transfer(
+        &self,
+        id: DiagnosticRequestFileTransferId,
+    ) -> Option<&DiagnosticRequestFileTransfer> {
+        self.diagnostic_request_file_transfers.get(id)
+    }
+
+    pub fn get_diagnostic_request_file_transfer_class(
+        &self,
+        id: DiagnosticRequestFileTransferClassId,
+    ) -> Option<&DiagnosticRequestFileTransferClass> {
+        self.diagnostic_request_file_transfer_class.get(id)
+    }
+
+    pub fn get_diagnostic_request_file_transfer_needs(
+        &self,
+        id: DiagnosticRequestFileTransferNeedsId,
+    ) -> Option<&DiagnosticRequestFileTransferNeeds> {
+        self.diagnostic_request_file_transfer_needs.get(id)
+    }
+
+    pub fn get_diagnostic_request_on_board_monitoring_test_results(
+        &self,
+        id: DiagnosticRequestOnBoardMonitoringTestResultsId,
+    ) -> Option<&DiagnosticRequestOnBoardMonitoringTestResults> {
+        self.diagnostic_request_on_board_monitoring_test_results
+            .get(id)
+    }
+
+    pub fn get_diagnostic_request_on_board_monitoring_test_results_class(
+        &self,
+        id: DiagnosticRequestOnBoardMonitoringTestResultsClassId,
+    ) -> Option<&DiagnosticRequestOnBoardMonitoringTestResultsClass> {
+        self.diagnostic_request_on_board_monitoring_test_results_class
+            .get(id)
+    }
+
+    pub fn get_diagnostic_request_powertrain_freeze_frame_data(
+        &self,
+        id: DiagnosticRequestPowertrainFreezeFrameDataId,
+    ) -> Option<&DiagnosticRequestPowertrainFreezeFrameData> {
+        self.diagnostic_request_powertrain_freeze_frame_datas
+            .get(id)
+    }
+
+    pub fn get_diagnostic_request_powertrain_freeze_frame_data_class(
+        &self,
+        id: DiagnosticRequestPowertrainFreezeFrameDataClassId,
+    ) -> Option<&DiagnosticRequestPowertrainFreezeFrameDataClass> {
+        self.diagnostic_request_powertrain_freeze_frame_data_class
+            .get(id)
+    }
+
+    pub fn get_diagnostic_request_routine_results(
+        &self,
+        id: DiagnosticRequestRoutineResultsId,
+    ) -> Option<&DiagnosticRequestRoutineResults> {
+        self.diagnostic_request_routine_results.get(id)
+    }
+
+    pub fn get_diagnostic_request_upload(
+        &self,
+        id: DiagnosticRequestUploadId,
+    ) -> Option<&DiagnosticRequestUpload> {
+        self.diagnostic_request_uploads.get(id)
+    }
+
+    pub fn get_diagnostic_request_upload_class(
+        &self,
+        id: DiagnosticRequestUploadClassId,
+    ) -> Option<&DiagnosticRequestUploadClass> {
+        self.diagnostic_request_upload_class.get(id)
+    }
+
+    pub fn get_diagnostic_request_vehicle_info(
+        &self,
+        id: DiagnosticRequestVehicleInfoId,
+    ) -> Option<&DiagnosticRequestVehicleInfo> {
+        self.diagnostic_request_vehicle_infos.get(id)
+    }
+
+    pub fn get_diagnostic_request_vehicle_info_class(
+        &self,
+        id: DiagnosticRequestVehicleInfoClassId,
+    ) -> Option<&DiagnosticRequestVehicleInfoClass> {
+        self.diagnostic_request_vehicle_info_class.get(id)
+    }
+
+    pub fn get_diagnostic_response_on_event(
+        &self,
+        id: DiagnosticResponseOnEventId,
+    ) -> Option<&DiagnosticResponseOnEvent> {
+        self.diagnostic_response_on_events.get(id)
+    }
+
+    pub fn get_diagnostic_response_on_event_class(
+        &self,
+        id: DiagnosticResponseOnEventClassId,
+    ) -> Option<&DiagnosticResponseOnEventClass> {
+        self.diagnostic_response_on_event_class.get(id)
+    }
+
+    pub fn get_diagnostic_routine(&self, id: DiagnosticRoutineId) -> Option<&DiagnosticRoutine> {
+        self.diagnostic_routines.get(id)
+    }
+
+    pub fn get_diagnostic_routine_control(
+        &self,
+        id: DiagnosticRoutineControlId,
+    ) -> Option<&DiagnosticRoutineControl> {
+        self.diagnostic_routine_controls.get(id)
+    }
+
+    pub fn get_diagnostic_routine_control_class(
+        &self,
+        id: DiagnosticRoutineControlClassId,
+    ) -> Option<&DiagnosticRoutineControlClass> {
+        self.diagnostic_routine_control_class.get(id)
+    }
+
+    pub fn get_diagnostic_routine_needs(
+        &self,
+        id: DiagnosticRoutineNeedsId,
+    ) -> Option<&DiagnosticRoutineNeeds> {
+        self.diagnostic_routine_needs.get(id)
+    }
+
+    pub fn get_diagnostic_security_access(
+        &self,
+        id: DiagnosticSecurityAccessId,
+    ) -> Option<&DiagnosticSecurityAccess> {
+        self.diagnostic_security_access.get(id)
+    }
+
+    pub fn get_diagnostic_security_access_class(
+        &self,
+        id: DiagnosticSecurityAccessClassId,
+    ) -> Option<&DiagnosticSecurityAccessClass> {
+        self.diagnostic_security_access_class.get(id)
+    }
+
+    pub fn get_diagnostic_security_event_reporting_mode_mapping(
+        &self,
+        id: DiagnosticSecurityEventReportingModeMappingId,
+    ) -> Option<&DiagnosticSecurityEventReportingModeMapping> {
+        self.diagnostic_security_event_reporting_mode_mappings
+            .get(id)
+    }
+
+    pub fn get_diagnostic_security_level(
+        &self,
+        id: DiagnosticSecurityLevelId,
+    ) -> Option<&DiagnosticSecurityLevel> {
+        self.diagnostic_security_levels.get(id)
+    }
+
+    pub fn get_diagnostic_service_data_mapping(
+        &self,
+        id: DiagnosticServiceDataMappingId,
+    ) -> Option<&DiagnosticServiceDataMapping> {
+        self.diagnostic_service_data_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_service_sw_mapping(
+        &self,
+        id: DiagnosticServiceSwMappingId,
+    ) -> Option<&DiagnosticServiceSwMapping> {
+        self.diagnostic_service_sw_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_service_table(
+        &self,
+        id: DiagnosticServiceTableId,
+    ) -> Option<&DiagnosticServiceTable> {
+        self.diagnostic_service_tables.get(id)
+    }
+
+    pub fn get_diagnostic_session(&self, id: DiagnosticSessionId) -> Option<&DiagnosticSession> {
+        self.diagnostic_sessions.get(id)
+    }
+
+    pub fn get_diagnostic_session_control(
+        &self,
+        id: DiagnosticSessionControlId,
+    ) -> Option<&DiagnosticSessionControl> {
+        self.diagnostic_session_controls.get(id)
+    }
+
+    pub fn get_diagnostic_session_control_class(
+        &self,
+        id: DiagnosticSessionControlClassId,
+    ) -> Option<&DiagnosticSessionControlClass> {
+        self.diagnostic_session_control_class.get(id)
+    }
+
+    pub fn get_diagnostic_start_routine(
+        &self,
+        id: DiagnosticStartRoutineId,
+    ) -> Option<&DiagnosticStartRoutine> {
+        self.diagnostic_start_routines.get(id)
+    }
+
+    pub fn get_diagnostic_stop_routine(
+        &self,
+        id: DiagnosticStopRoutineId,
+    ) -> Option<&DiagnosticStopRoutine> {
+        self.diagnostic_stop_routines.get(id)
+    }
+
+    pub fn get_diagnostic_storage_condition(
+        &self,
+        id: DiagnosticStorageConditionId,
+    ) -> Option<&DiagnosticStorageCondition> {
+        self.diagnostic_storage_conditions.get(id)
+    }
+
+    pub fn get_diagnostic_storage_condition_group(
+        &self,
+        id: DiagnosticStorageConditionGroupId,
+    ) -> Option<&DiagnosticStorageConditionGroup> {
+        self.diagnostic_storage_condition_groups.get(id)
+    }
+
+    pub fn get_diagnostic_storage_condition_needs(
+        &self,
+        id: DiagnosticStorageConditionNeedsId,
+    ) -> Option<&DiagnosticStorageConditionNeeds> {
+        self.diagnostic_storage_condition_needs.get(id)
+    }
+
+    pub fn get_diagnostic_storage_condition_port_mapping(
+        &self,
+        id: DiagnosticStorageConditionPortMappingId,
+    ) -> Option<&DiagnosticStorageConditionPortMapping> {
+        self.diagnostic_storage_condition_port_mappings.get(id)
+    }
+
+    pub fn get_diagnostic_support_info_byte(
+        &self,
+        id: DiagnosticSupportInfoByteId,
+    ) -> Option<&DiagnosticSupportInfoByte> {
+        self.diagnostic_support_info_bytes.get(id)
+    }
+
+    pub fn get_diagnostic_test_identifier(
+        &self,
+        id: DiagnosticTestIdentifierId,
+    ) -> Option<&DiagnosticTestIdentifier> {
+        self.diagnostic_test_identifiers.get(id)
+    }
+
+    pub fn get_diagnostic_test_result(
+        &self,
+        id: DiagnosticTestResultId,
+    ) -> Option<&DiagnosticTestResult> {
+        self.diagnostic_test_results.get(id)
+    }
+
+    pub fn get_diagnostic_test_routine_identifier(
+        &self,
+        id: DiagnosticTestRoutineIdentifierId,
+    ) -> Option<&DiagnosticTestRoutineIdentifier> {
+        self.diagnostic_test_routine_identifiers.get(id)
+    }
+
+    pub fn get_diagnostic_transfer_exit(
+        &self,
+        id: DiagnosticTransferExitId,
+    ) -> Option<&DiagnosticTransferExit> {
+        self.diagnostic_transfer_exits.get(id)
+    }
+
+    pub fn get_diagnostic_transfer_exit_class(
+        &self,
+        id: DiagnosticTransferExitClassId,
+    ) -> Option<&DiagnosticTransferExitClass> {
+        self.diagnostic_transfer_exit_class.get(id)
+    }
+
+    pub fn get_diagnostic_trouble_code_group(
+        &self,
+        id: DiagnosticTroubleCodeGroupId,
+    ) -> Option<&DiagnosticTroubleCodeGroup> {
+        self.diagnostic_trouble_code_groups.get(id)
+    }
+
+    pub fn get_diagnostic_trouble_code_j1939(
+        &self,
+        id: DiagnosticTroubleCodeJ1939Id,
+    ) -> Option<&DiagnosticTroubleCodeJ1939> {
+        self.diagnostic_trouble_code_j1939s.get(id)
+    }
+
+    pub fn get_diagnostic_trouble_code_obd(
+        &self,
+        id: DiagnosticTroubleCodeObdId,
+    ) -> Option<&DiagnosticTroubleCodeObd> {
+        self.diagnostic_trouble_code_obds.get(id)
+    }
+
+    pub fn get_diagnostic_trouble_code_props(
+        &self,
+        id: DiagnosticTroubleCodePropsId,
+    ) -> Option<&DiagnosticTroubleCodeProps> {
+        self.diagnostic_trouble_code_props.get(id)
+    }
+
+    pub fn get_diagnostic_trouble_code_uds(
+        &self,
+        id: DiagnosticTroubleCodeUdsId,
+    ) -> Option<&DiagnosticTroubleCodeUds> {
+        self.diagnostic_trouble_code_uds.get(id)
+    }
+
+    pub fn get_diagnostic_trouble_code_uds_to_trouble_code_obd_mapping(
+        &self,
+        id: DiagnosticTroubleCodeUdsToTroubleCodeObdMappingId,
+    ) -> Option<&DiagnosticTroubleCodeUdsToTroubleCodeObdMapping> {
+        self.diagnostic_trouble_code_uds_to_trouble_code_obd_mappings
+            .get(id)
+    }
+
+    pub fn get_diagnostic_upload_download_needs(
+        &self,
+        id: DiagnosticUploadDownloadNeedsId,
+    ) -> Option<&DiagnosticUploadDownloadNeeds> {
+        self.diagnostic_upload_download_needs.get(id)
+    }
+
+    pub fn get_diagnostic_value_needs(
+        &self,
+        id: DiagnosticValueNeedsId,
+    ) -> Option<&DiagnosticValueNeeds> {
+        self.diagnostic_value_needs.get(id)
+    }
+
+    pub fn get_diagnostic_verify_certificate_bidirectional(
+        &self,
+        id: DiagnosticVerifyCertificateBidirectionalId,
+    ) -> Option<&DiagnosticVerifyCertificateBidirectional> {
+        self.diagnostic_verify_certificate_bidirectionals.get(id)
+    }
+
+    pub fn get_diagnostic_verify_certificate_unidirectional(
+        &self,
+        id: DiagnosticVerifyCertificateUnidirectionalId,
+    ) -> Option<&DiagnosticVerifyCertificateUnidirectional> {
+        self.diagnostic_verify_certificate_unidirectionals.get(id)
+    }
+
+    pub fn get_diagnostic_write_data_by_identifier(
+        &self,
+        id: DiagnosticWriteDataByIdentifierId,
+    ) -> Option<&DiagnosticWriteDataByIdentifier> {
+        self.diagnostic_write_data_by_identifiers.get(id)
+    }
+
+    pub fn get_diagnostic_write_data_by_identifier_class(
+        &self,
+        id: DiagnosticWriteDataByIdentifierClassId,
+    ) -> Option<&DiagnosticWriteDataByIdentifierClass> {
+        self.diagnostic_write_data_by_identifier_class.get(id)
+    }
+
+    pub fn get_diagnostic_write_memory_by_address(
+        &self,
+        id: DiagnosticWriteMemoryByAddressId,
+    ) -> Option<&DiagnosticWriteMemoryByAddress> {
+        self.diagnostic_write_memory_by_address.get(id)
+    }
+
+    pub fn get_diagnostic_write_memory_by_address_class(
+        &self,
+        id: DiagnosticWriteMemoryByAddressClassId,
+    ) -> Option<&DiagnosticWriteMemoryByAddressClass> {
+        self.diagnostic_write_memory_by_address_class.get(id)
+    }
+
+    pub fn get_diagnostics_communication_security_needs(
+        &self,
+        id: DiagnosticsCommunicationSecurityNeedsId,
+    ) -> Option<&DiagnosticsCommunicationSecurityNeeds> {
+        self.diagnostics_communication_security_needs.get(id)
+    }
+
+    pub fn get_dlt_application(&self, id: DltApplicationId) -> Option<&DltApplication> {
+        self.dlt_applications.get(id)
+    }
+
+    pub fn get_dlt_argument(&self, id: DltArgumentId) -> Option<&DltArgument> {
+        self.dlt_arguments.get(id)
+    }
+
+    pub fn get_dlt_config(&self, id: DltConfigId) -> Option<&DltConfig> {
+        self.dlt_configs.get(id)
+    }
+
+    pub fn get_dlt_context(&self, id: DltContextId) -> Option<&DltContext> {
+        self.dlt_contexts.get(id)
+    }
+
+    pub fn get_dlt_ecu(&self, id: DltEcuId) -> Option<&DltEcu> {
+        self.dlt_ecus.get(id)
+    }
+
+    pub fn get_dlt_log_channel(&self, id: DltLogChannelId) -> Option<&DltLogChannel> {
+        self.dlt_log_channels.get(id)
+    }
+
+    pub fn get_dlt_message(&self, id: DltMessageId) -> Option<&DltMessage> {
+        self.dlt_messages.get(id)
+    }
+
+    pub fn get_dlt_user_needs(&self, id: DltUserNeedsId) -> Option<&DltUserNeeds> {
+        self.dlt_user_needs.get(id)
+    }
+
+    pub fn get_do_ip_activation_line_needs(
+        &self,
+        id: DoIpActivationLineNeedsId,
+    ) -> Option<&DoIpActivationLineNeeds> {
+        self.do_ip_activation_line_needs.get(id)
+    }
+
+    pub fn get_do_ip_config(&self, id: DoIpConfigId) -> Option<&DoIpConfig> {
+        self.do_ip_configs.get(id)
+    }
+
+    pub fn get_do_ip_entity(&self, id: DoIpEntityId) -> Option<&DoIpEntity> {
+        self.do_ip_entitys.get(id)
+    }
+
+    pub fn get_do_ip_gid_needs(&self, id: DoIpGidNeedsId) -> Option<&DoIpGidNeeds> {
+        self.do_ip_gid_needs.get(id)
+    }
+
+    pub fn get_do_ip_gid_synchronization_needs(
+        &self,
+        id: DoIpGidSynchronizationNeedsId,
+    ) -> Option<&DoIpGidSynchronizationNeeds> {
+        self.do_ip_gid_synchronization_needs.get(id)
+    }
+
+    pub fn get_do_ip_interface(&self, id: DoIpInterfaceId) -> Option<&DoIpInterface> {
+        self.do_ip_interfaces.get(id)
+    }
+
+    pub fn get_do_ip_logic_address(&self, id: DoIpLogicAddressId) -> Option<&DoIpLogicAddress> {
+        self.do_ip_logic_address.get(id)
+    }
+
+    pub fn get_do_ip_logic_target_address_props(
+        &self,
+        id: DoIpLogicTargetAddressPropsId,
+    ) -> Option<&DoIpLogicTargetAddressProps> {
+        self.do_ip_logic_target_address_props.get(id)
+    }
+
+    pub fn get_do_ip_logic_tester_address_props(
+        &self,
+        id: DoIpLogicTesterAddressPropsId,
+    ) -> Option<&DoIpLogicTesterAddressProps> {
+        self.do_ip_logic_tester_address_props.get(id)
+    }
+
+    pub fn get_do_ip_power_mode_status_needs(
+        &self,
+        id: DoIpPowerModeStatusNeedsId,
+    ) -> Option<&DoIpPowerModeStatusNeeds> {
+        self.do_ip_power_mode_status_needs.get(id)
+    }
+
+    pub fn get_do_ip_routing_activation(
+        &self,
+        id: DoIpRoutingActivationId,
+    ) -> Option<&DoIpRoutingActivation> {
+        self.do_ip_routing_activations.get(id)
+    }
+
+    pub fn get_do_ip_routing_activation_authentication_needs(
+        &self,
+        id: DoIpRoutingActivationAuthenticationNeedsId,
+    ) -> Option<&DoIpRoutingActivationAuthenticationNeeds> {
+        self.do_ip_routing_activation_authentication_needs.get(id)
+    }
+
+    pub fn get_do_ip_routing_activation_confirmation_needs(
+        &self,
+        id: DoIpRoutingActivationConfirmationNeedsId,
+    ) -> Option<&DoIpRoutingActivationConfirmationNeeds> {
+        self.do_ip_routing_activation_confirmation_needs.get(id)
+    }
+
+    pub fn get_do_ip_rule(&self, id: DoIpRuleId) -> Option<&DoIpRule> {
+        self.do_ip_rules.get(id)
+    }
+
+    pub fn get_do_ip_tp_config(&self, id: DoIpTpConfigId) -> Option<&DoIpTpConfig> {
+        self.do_ip_tp_configs.get(id)
+    }
+
+    pub fn get_do_ip_tp_connection(&self, id: DoIpTpConnectionId) -> Option<&DoIpTpConnection> {
+        self.do_ip_tp_connections.get(id)
+    }
+
+    pub fn get_doc_revision(&self, id: DocRevisionId) -> Option<&DocRevision> {
+        self.doc_revisions.get(id)
+    }
+
+    pub fn get_document_element_scope(
+        &self,
+        id: DocumentElementScopeId,
+    ) -> Option<&DocumentElementScope> {
+        self.document_element_scopes.get(id)
+    }
+
+    pub fn get_documentation(&self, id: DocumentationId) -> Option<&Documentation> {
+        self.documentations.get(id)
+    }
+
+    pub fn get_documentation_block(&self, id: DocumentationBlockId) -> Option<&DocumentationBlock> {
+        self.documentation_blocks.get(id)
+    }
+
+    pub fn get_documentation_context(
+        &self,
+        id: DocumentationContextId,
+    ) -> Option<&DocumentationContext> {
+        self.documentation_contexts.get(id)
+    }
+
+    pub fn get_dtc_status_change_notification_needs(
+        &self,
+        id: DtcStatusChangeNotificationNeedsId,
+    ) -> Option<&DtcStatusChangeNotificationNeeds> {
+        self.dtc_status_change_notification_needs.get(id)
+    }
+
+    pub fn get_dynamic_part(&self, id: DynamicPartId) -> Option<&DynamicPart> {
+        self.dynamic_parts.get(id)
+    }
+
+    pub fn get_dynamic_part_alternative(
+        &self,
+        id: DynamicPartAlternativeId,
+    ) -> Option<&DynamicPartAlternative> {
+        self.dynamic_part_alternatives.get(id)
+    }
+
+    pub fn get_e2_e_profile_compatibility_props(
+        &self,
+        id: E2EProfileCompatibilityPropsId,
+    ) -> Option<&E2EProfileCompatibilityProps> {
+        self.e2_e_profile_compatibility_props.get(id)
+    }
+
+    pub fn get_ecu_mapping(&self, id: ECUMappingId) -> Option<&ECUMapping> {
+        self.ecu_mappings.get(id)
+    }
+
+    pub fn get_eoc_event_ref(&self, id: EOCEventRefId) -> Option<&EOCEventRef> {
+        self.eoc_event_refs.get(id)
+    }
+
+    pub fn get_eoc_executable_entity_ref(
+        &self,
+        id: EOCExecutableEntityRefId,
+    ) -> Option<&EOCExecutableEntityRef> {
+        self.eoc_executable_entity_refs.get(id)
+    }
+
+    pub fn get_eoc_executable_entity_ref_group(
+        &self,
+        id: EOCExecutableEntityRefGroupId,
+    ) -> Option<&EOCExecutableEntityRefGroup> {
+        self.eoc_executable_entity_ref_groups.get(id)
+    }
+
+    pub fn get_ecu_abstraction_sw_component_type(
+        &self,
+        id: EcuAbstractionSwComponentTypeId,
+    ) -> Option<&EcuAbstractionSwComponentType> {
+        self.ecu_abstraction_sw_component_types.get(id)
+    }
+
+    pub fn get_ecu_instance(&self, id: EcuInstanceId) -> Option<&EcuInstance> {
+        self.ecu_instances.get(id)
+    }
+
+    pub fn get_ecu_partition(&self, id: EcuPartitionId) -> Option<&EcuPartition> {
+        self.ecu_partitions.get(id)
+    }
+
+    pub fn get_ecu_resource_estimation(
+        &self,
+        id: EcuResourceEstimationId,
+    ) -> Option<&EcuResourceEstimation> {
+        self.ecu_resource_estimations.get(id)
+    }
+
+    pub fn get_ecu_state_mgr_user_needs(
+        &self,
+        id: EcuStateMgrUserNeedsId,
+    ) -> Option<&EcuStateMgrUserNeeds> {
+        self.ecu_state_mgr_user_needs.get(id)
+    }
+
+    pub fn get_ecu_timing(&self, id: EcuTimingId) -> Option<&EcuTiming> {
+        self.ecu_timings.get(id)
+    }
+
+    pub fn get_ecuc_add_info_param_def(
+        &self,
+        id: EcucAddInfoParamDefId,
+    ) -> Option<&EcucAddInfoParamDef> {
+        self.ecuc_add_info_param_defs.get(id)
+    }
+
+    pub fn get_ecuc_add_info_param_value(
+        &self,
+        id: EcucAddInfoParamValueId,
+    ) -> Option<&EcucAddInfoParamValue> {
+        self.ecuc_add_info_param_values.get(id)
+    }
+
+    pub fn get_ecuc_boolean_param_def(
+        &self,
+        id: EcucBooleanParamDefId,
+    ) -> Option<&EcucBooleanParamDef> {
+        self.ecuc_boolean_param_defs.get(id)
+    }
+
+    pub fn get_ecuc_choice_container_def(
+        &self,
+        id: EcucChoiceContainerDefId,
+    ) -> Option<&EcucChoiceContainerDef> {
+        self.ecuc_choice_container_defs.get(id)
+    }
+
+    pub fn get_ecuc_choice_reference_def(
+        &self,
+        id: EcucChoiceReferenceDefId,
+    ) -> Option<&EcucChoiceReferenceDef> {
+        self.ecuc_choice_reference_defs.get(id)
+    }
+
+    pub fn get_ecuc_condition_formula(
+        &self,
+        id: EcucConditionFormulaId,
+    ) -> Option<&EcucConditionFormula> {
+        self.ecuc_condition_formulas.get(id)
+    }
+
+    pub fn get_ecuc_condition_specification(
+        &self,
+        id: EcucConditionSpecificationId,
+    ) -> Option<&EcucConditionSpecification> {
+        self.ecuc_condition_specifications.get(id)
+    }
+
+    pub fn get_ecuc_container_value(
+        &self,
+        id: EcucContainerValueId,
+    ) -> Option<&EcucContainerValue> {
+        self.ecuc_container_values.get(id)
+    }
+
+    pub fn get_ecuc_definition_collection(
+        &self,
+        id: EcucDefinitionCollectionId,
+    ) -> Option<&EcucDefinitionCollection> {
+        self.ecuc_definition_collections.get(id)
+    }
+
+    pub fn get_ecuc_derivation_specification(
+        &self,
+        id: EcucDerivationSpecificationId,
+    ) -> Option<&EcucDerivationSpecification> {
+        self.ecuc_derivation_specifications.get(id)
+    }
+
+    pub fn get_ecuc_destination_uri_def(
+        &self,
+        id: EcucDestinationUriDefId,
+    ) -> Option<&EcucDestinationUriDef> {
+        self.ecuc_destination_uri_defs.get(id)
+    }
+
+    pub fn get_ecuc_destination_uri_def_ref_type(
+        &self,
+        id: EcucDestinationUriDefRefTypeId,
+    ) -> Option<&EcucDestinationUriDefRefType> {
+        self.ecuc_destination_uri_def_ref_types.get(id)
+    }
+
+    pub fn get_ecuc_destination_uri_def_set(
+        &self,
+        id: EcucDestinationUriDefSetId,
+    ) -> Option<&EcucDestinationUriDefSet> {
+        self.ecuc_destination_uri_def_sets.get(id)
+    }
+
+    pub fn get_ecuc_destination_uri_policy(
+        &self,
+        id: EcucDestinationUriPolicyId,
+    ) -> Option<&EcucDestinationUriPolicy> {
+        self.ecuc_destination_uri_policys.get(id)
+    }
+
+    pub fn get_ecuc_enumeration_literal_def(
+        &self,
+        id: EcucEnumerationLiteralDefId,
+    ) -> Option<&EcucEnumerationLiteralDef> {
+        self.ecuc_enumeration_literal_defs.get(id)
+    }
+
+    pub fn get_ecuc_enumeration_param_def(
+        &self,
+        id: EcucEnumerationParamDefId,
+    ) -> Option<&EcucEnumerationParamDef> {
+        self.ecuc_enumeration_param_defs.get(id)
+    }
+
+    pub fn get_ecuc_float_param_def(&self, id: EcucFloatParamDefId) -> Option<&EcucFloatParamDef> {
+        self.ecuc_float_param_defs.get(id)
+    }
+
+    pub fn get_ecuc_foreign_reference_def(
+        &self,
+        id: EcucForeignReferenceDefId,
+    ) -> Option<&EcucForeignReferenceDef> {
+        self.ecuc_foreign_reference_defs.get(id)
+    }
+
+    pub fn get_ecuc_function_name_def(
+        &self,
+        id: EcucFunctionNameDefId,
+    ) -> Option<&EcucFunctionNameDef> {
+        self.ecuc_function_name_defs.get(id)
+    }
+
+    pub fn get_ecuc_instance_reference_def(
+        &self,
+        id: EcucInstanceReferenceDefId,
+    ) -> Option<&EcucInstanceReferenceDef> {
+        self.ecuc_instance_reference_defs.get(id)
+    }
+
+    pub fn get_ecuc_instance_reference_value(
+        &self,
+        id: EcucInstanceReferenceValueId,
+    ) -> Option<&EcucInstanceReferenceValue> {
+        self.ecuc_instance_reference_values.get(id)
+    }
+
+    pub fn get_ecuc_integer_param_def(
+        &self,
+        id: EcucIntegerParamDefId,
+    ) -> Option<&EcucIntegerParamDef> {
+        self.ecuc_integer_param_defs.get(id)
+    }
+
+    pub fn get_ecuc_linker_symbol_def(
+        &self,
+        id: EcucLinkerSymbolDefId,
+    ) -> Option<&EcucLinkerSymbolDef> {
+        self.ecuc_linker_symbol_defs.get(id)
+    }
+
+    pub fn get_ecuc_module_configuration_values(
+        &self,
+        id: EcucModuleConfigurationValuesId,
+    ) -> Option<&EcucModuleConfigurationValues> {
+        self.ecuc_module_configuration_values.get(id)
+    }
+
+    pub fn get_ecuc_module_def(&self, id: EcucModuleDefId) -> Option<&EcucModuleDef> {
+        self.ecuc_module_defs.get(id)
+    }
+
+    pub fn get_ecuc_multiline_string_param_def(
+        &self,
+        id: EcucMultilineStringParamDefId,
+    ) -> Option<&EcucMultilineStringParamDef> {
+        self.ecuc_multiline_string_param_defs.get(id)
+    }
+
+    pub fn get_ecuc_multiplicity_configuration_class(
+        &self,
+        id: EcucMultiplicityConfigurationClassId,
+    ) -> Option<&EcucMultiplicityConfigurationClass> {
+        self.ecuc_multiplicity_configuration_class.get(id)
+    }
+
+    pub fn get_ecuc_numerical_param_value(
+        &self,
+        id: EcucNumericalParamValueId,
+    ) -> Option<&EcucNumericalParamValue> {
+        self.ecuc_numerical_param_values.get(id)
+    }
+
+    pub fn get_ecuc_param_conf_container_def(
+        &self,
+        id: EcucParamConfContainerDefId,
+    ) -> Option<&EcucParamConfContainerDef> {
+        self.ecuc_param_conf_container_defs.get(id)
+    }
+
+    pub fn get_ecuc_parameter_derivation_formula(
+        &self,
+        id: EcucParameterDerivationFormulaId,
+    ) -> Option<&EcucParameterDerivationFormula> {
+        self.ecuc_parameter_derivation_formulas.get(id)
+    }
+
+    pub fn get_ecuc_query(&self, id: EcucQueryId) -> Option<&EcucQuery> {
+        self.ecuc_querys.get(id)
+    }
+
+    pub fn get_ecuc_query_expression(
+        &self,
+        id: EcucQueryExpressionId,
+    ) -> Option<&EcucQueryExpression> {
+        self.ecuc_query_expressions.get(id)
+    }
+
+    pub fn get_ecuc_reference_def(&self, id: EcucReferenceDefId) -> Option<&EcucReferenceDef> {
+        self.ecuc_reference_defs.get(id)
+    }
+
+    pub fn get_ecuc_reference_value(
+        &self,
+        id: EcucReferenceValueId,
+    ) -> Option<&EcucReferenceValue> {
+        self.ecuc_reference_values.get(id)
+    }
+
+    pub fn get_ecuc_string_param_def(
+        &self,
+        id: EcucStringParamDefId,
+    ) -> Option<&EcucStringParamDef> {
+        self.ecuc_string_param_defs.get(id)
+    }
+
+    pub fn get_ecuc_symbolic_name_reference_def(
+        &self,
+        id: EcucSymbolicNameReferenceDefId,
+    ) -> Option<&EcucSymbolicNameReferenceDef> {
+        self.ecuc_symbolic_name_reference_defs.get(id)
+    }
+
+    pub fn get_ecuc_textual_param_value(
+        &self,
+        id: EcucTextualParamValueId,
+    ) -> Option<&EcucTextualParamValue> {
+        self.ecuc_textual_param_values.get(id)
+    }
+
+    pub fn get_ecuc_uri_reference_def(
+        &self,
+        id: EcucUriReferenceDefId,
+    ) -> Option<&EcucUriReferenceDef> {
+        self.ecuc_uri_reference_defs.get(id)
+    }
+
+    pub fn get_ecuc_validation_condition(
+        &self,
+        id: EcucValidationConditionId,
+    ) -> Option<&EcucValidationCondition> {
+        self.ecuc_validation_conditions.get(id)
+    }
+
+    pub fn get_ecuc_value_collection(
+        &self,
+        id: EcucValueCollectionId,
+    ) -> Option<&EcucValueCollection> {
+        self.ecuc_value_collections.get(id)
+    }
+
+    pub fn get_ecuc_value_configuration_class(
+        &self,
+        id: EcucValueConfigurationClassId,
+    ) -> Option<&EcucValueConfigurationClass> {
+        self.ecuc_value_configuration_class.get(id)
+    }
+
+    pub fn get_emphasis_text(&self, id: EmphasisTextId) -> Option<&EmphasisText> {
+        self.emphasis_texts.get(id)
+    }
+
+    pub fn get_end_to_end_description(
+        &self,
+        id: EndToEndDescriptionId,
+    ) -> Option<&EndToEndDescription> {
+        self.end_to_end_descriptions.get(id)
+    }
+
+    pub fn get_end_to_end_protection(
+        &self,
+        id: EndToEndProtectionId,
+    ) -> Option<&EndToEndProtection> {
+        self.end_to_end_protections.get(id)
+    }
+
+    pub fn get_end_to_end_protection_i_signal_i_pdu(
+        &self,
+        id: EndToEndProtectionISignalIPduId,
+    ) -> Option<&EndToEndProtectionISignalIPdu> {
+        self.end_to_end_protection_i_signal_i_pdus.get(id)
+    }
+
+    pub fn get_end_to_end_protection_set(
+        &self,
+        id: EndToEndProtectionSetId,
+    ) -> Option<&EndToEndProtectionSet> {
+        self.end_to_end_protection_sets.get(id)
+    }
+
+    pub fn get_end_to_end_protection_variable_prototype(
+        &self,
+        id: EndToEndProtectionVariablePrototypeId,
+    ) -> Option<&EndToEndProtectionVariablePrototype> {
+        self.end_to_end_protection_variable_prototypes.get(id)
+    }
+
+    pub fn get_end_to_end_transformation_com_spec_props(
+        &self,
+        id: EndToEndTransformationComSpecPropsId,
+    ) -> Option<&EndToEndTransformationComSpecProps> {
+        self.end_to_end_transformation_com_spec_props.get(id)
+    }
+
+    pub fn get_end_to_end_transformation_description(
+        &self,
+        id: EndToEndTransformationDescriptionId,
+    ) -> Option<&EndToEndTransformationDescription> {
+        self.end_to_end_transformation_descriptions.get(id)
+    }
+
+    pub fn get_end_to_end_transformation_i_signal_props(
+        &self,
+        id: EndToEndTransformationISignalPropsId,
+    ) -> Option<&EndToEndTransformationISignalProps> {
+        self.end_to_end_transformation_i_signal_props.get(id)
+    }
+
+    pub fn get_entry(&self, id: EntryId) -> Option<&Entry> {
+        self.entrys.get(id)
+    }
+
+    pub fn get_enumeration_value(&self, id: EnumerationValueId) -> Option<&EnumerationValue> {
+        self.enumeration_values.get(id)
+    }
+
+    pub fn get_error_tracer_needs(&self, id: ErrorTracerNeedsId) -> Option<&ErrorTracerNeeds> {
+        self.error_tracer_needs.get(id)
+    }
+
+    pub fn get_eth_global_time_domain_props(
+        &self,
+        id: EthGlobalTimeDomainPropsId,
+    ) -> Option<&EthGlobalTimeDomainProps> {
+        self.eth_global_time_domain_props.get(id)
+    }
+
+    pub fn get_eth_global_time_managed_coupling_port(
+        &self,
+        id: EthGlobalTimeManagedCouplingPortId,
+    ) -> Option<&EthGlobalTimeManagedCouplingPort> {
+        self.eth_global_time_managed_coupling_ports.get(id)
+    }
+
+    pub fn get_eth_ip_props(&self, id: EthIpPropsId) -> Option<&EthIpProps> {
+        self.eth_ip_props.get(id)
+    }
+
+    pub fn get_eth_t_syn_crc_flags(&self, id: EthTSynCrcFlagsId) -> Option<&EthTSynCrcFlags> {
+        self.eth_t_syn_crc_flags.get(id)
+    }
+
+    pub fn get_eth_t_syn_sub_tlv_config(
+        &self,
+        id: EthTSynSubTlvConfigId,
+    ) -> Option<&EthTSynSubTlvConfig> {
+        self.eth_t_syn_sub_tlv_configs.get(id)
+    }
+
+    pub fn get_eth_tcp_ip_icmp_props(&self, id: EthTcpIpIcmpPropsId) -> Option<&EthTcpIpIcmpProps> {
+        self.eth_tcp_ip_icmp_props.get(id)
+    }
+
+    pub fn get_eth_tcp_ip_props(&self, id: EthTcpIpPropsId) -> Option<&EthTcpIpProps> {
+        self.eth_tcp_ip_props.get(id)
+    }
+
+    pub fn get_eth_tp_config(&self, id: EthTpConfigId) -> Option<&EthTpConfig> {
+        self.eth_tp_configs.get(id)
+    }
+
+    pub fn get_eth_tp_connection(&self, id: EthTpConnectionId) -> Option<&EthTpConnection> {
+        self.eth_tp_connections.get(id)
+    }
+
+    pub fn get_ethernet_cluster(&self, id: EthernetClusterId) -> Option<&EthernetCluster> {
+        self.ethernet_clusters.get(id)
+    }
+
+    pub fn get_ethernet_communication_connector(
+        &self,
+        id: EthernetCommunicationConnectorId,
+    ) -> Option<&EthernetCommunicationConnector> {
+        self.ethernet_communication_connectors.get(id)
+    }
+
+    pub fn get_ethernet_communication_controller(
+        &self,
+        id: EthernetCommunicationControllerId,
+    ) -> Option<&EthernetCommunicationController> {
+        self.ethernet_communication_controllers.get(id)
+    }
+
+    pub fn get_ethernet_frame_triggering(
+        &self,
+        id: EthernetFrameTriggeringId,
+    ) -> Option<&EthernetFrameTriggering> {
+        self.ethernet_frame_triggerings.get(id)
+    }
+
+    pub fn get_ethernet_physical_channel(
+        &self,
+        id: EthernetPhysicalChannelId,
+    ) -> Option<&EthernetPhysicalChannel> {
+        self.ethernet_physical_channels.get(id)
+    }
+
+    pub fn get_ethernet_priority_regeneration(
+        &self,
+        id: EthernetPriorityRegenerationId,
+    ) -> Option<&EthernetPriorityRegeneration> {
+        self.ethernet_priority_regenerations.get(id)
+    }
+
+    pub fn get_ethernet_wakeup_sleep_on_dataline_config(
+        &self,
+        id: EthernetWakeupSleepOnDatalineConfigId,
+    ) -> Option<&EthernetWakeupSleepOnDatalineConfig> {
+        self.ethernet_wakeup_sleep_on_dataline_configs.get(id)
+    }
+
+    pub fn get_ethernet_wakeup_sleep_on_dataline_config_set(
+        &self,
+        id: EthernetWakeupSleepOnDatalineConfigSetId,
+    ) -> Option<&EthernetWakeupSleepOnDatalineConfigSet> {
+        self.ethernet_wakeup_sleep_on_dataline_config_sets.get(id)
+    }
+
+    pub fn get_evaluated_variant_set(
+        &self,
+        id: EvaluatedVariantSetId,
+    ) -> Option<&EvaluatedVariantSet> {
+        self.evaluated_variant_sets.get(id)
+    }
+
+    pub fn get_event_controlled_timing(
+        &self,
+        id: EventControlledTimingId,
+    ) -> Option<&EventControlledTiming> {
+        self.event_controlled_timings.get(id)
+    }
+
+    pub fn get_event_handler(&self, id: EventHandlerId) -> Option<&EventHandler> {
+        self.event_handlers.get(id)
+    }
+
+    pub fn get_event_obd_readiness_group(
+        &self,
+        id: EventObdReadinessGroupId,
+    ) -> Option<&EventObdReadinessGroup> {
+        self.event_obd_readiness_groups.get(id)
+    }
+
+    pub fn get_exclusive_area(&self, id: ExclusiveAreaId) -> Option<&ExclusiveArea> {
+        self.exclusive_areas.get(id)
+    }
+
+    pub fn get_exclusive_area_nesting_order(
+        &self,
+        id: ExclusiveAreaNestingOrderId,
+    ) -> Option<&ExclusiveAreaNestingOrder> {
+        self.exclusive_area_nesting_orders.get(id)
+    }
+
+    pub fn get_executable_entity_activation_reason(
+        &self,
+        id: ExecutableEntityActivationReasonId,
+    ) -> Option<&ExecutableEntityActivationReason> {
+        self.executable_entity_activation_reasons.get(id)
+    }
+
+    pub fn get_execution_order_constraint(
+        &self,
+        id: ExecutionOrderConstraintId,
+    ) -> Option<&ExecutionOrderConstraint> {
+        self.execution_order_constraints.get(id)
+    }
+
+    pub fn get_execution_time_constraint(
+        &self,
+        id: ExecutionTimeConstraintId,
+    ) -> Option<&ExecutionTimeConstraint> {
+        self.execution_time_constraints.get(id)
+    }
+
+    pub fn get_external_trigger_occurred_event(
+        &self,
+        id: ExternalTriggerOccurredEventId,
+    ) -> Option<&ExternalTriggerOccurredEvent> {
+        self.external_trigger_occurred_events.get(id)
+    }
+
+    pub fn get_external_triggering_point(
+        &self,
+        id: ExternalTriggeringPointId,
+    ) -> Option<&ExternalTriggeringPoint> {
+        self.external_triggering_points.get(id)
+    }
+
+    pub fn get_external_triggering_point_ident(
+        &self,
+        id: ExternalTriggeringPointIdentId,
+    ) -> Option<&ExternalTriggeringPointIdent> {
+        self.external_triggering_point_idents.get(id)
+    }
+
+    pub fn get_fm_attribute_def(&self, id: FMAttributeDefId) -> Option<&FMAttributeDef> {
+        self.fm_attribute_defs.get(id)
+    }
+
+    pub fn get_fm_attribute_value(&self, id: FMAttributeValueId) -> Option<&FMAttributeValue> {
+        self.fm_attribute_values.get(id)
+    }
+
+    pub fn get_fm_condition_by_features_and_attributes(
+        &self,
+        id: FMConditionByFeaturesAndAttributesId,
+    ) -> Option<&FMConditionByFeaturesAndAttributes> {
+        self.fm_condition_by_features_and_attributes.get(id)
+    }
+
+    pub fn get_fm_condition_by_features_and_sw_systemconsts(
+        &self,
+        id: FMConditionByFeaturesAndSwSystemconstsId,
+    ) -> Option<&FMConditionByFeaturesAndSwSystemconsts> {
+        self.fm_condition_by_features_and_sw_systemconsts.get(id)
+    }
+
+    pub fn get_fm_feature(&self, id: FMFeatureId) -> Option<&FMFeature> {
+        self.fm_features.get(id)
+    }
+
+    pub fn get_fm_feature_decomposition(
+        &self,
+        id: FMFeatureDecompositionId,
+    ) -> Option<&FMFeatureDecomposition> {
+        self.fm_feature_decompositions.get(id)
+    }
+
+    pub fn get_fm_feature_map(&self, id: FMFeatureMapId) -> Option<&FMFeatureMap> {
+        self.fm_feature_maps.get(id)
+    }
+
+    pub fn get_fm_feature_map_assertion(
+        &self,
+        id: FMFeatureMapAssertionId,
+    ) -> Option<&FMFeatureMapAssertion> {
+        self.fm_feature_map_assertions.get(id)
+    }
+
+    pub fn get_fm_feature_map_condition(
+        &self,
+        id: FMFeatureMapConditionId,
+    ) -> Option<&FMFeatureMapCondition> {
+        self.fm_feature_map_conditions.get(id)
+    }
+
+    pub fn get_fm_feature_map_element(
+        &self,
+        id: FMFeatureMapElementId,
+    ) -> Option<&FMFeatureMapElement> {
+        self.fm_feature_map_elements.get(id)
+    }
+
+    pub fn get_fm_feature_model(&self, id: FMFeatureModelId) -> Option<&FMFeatureModel> {
+        self.fm_feature_models.get(id)
+    }
+
+    pub fn get_fm_feature_relation(&self, id: FMFeatureRelationId) -> Option<&FMFeatureRelation> {
+        self.fm_feature_relations.get(id)
+    }
+
+    pub fn get_fm_feature_restriction(
+        &self,
+        id: FMFeatureRestrictionId,
+    ) -> Option<&FMFeatureRestriction> {
+        self.fm_feature_restrictions.get(id)
+    }
+
+    pub fn get_fm_feature_selection(
+        &self,
+        id: FMFeatureSelectionId,
+    ) -> Option<&FMFeatureSelection> {
+        self.fm_feature_selections.get(id)
+    }
+
+    pub fn get_fm_feature_selection_set(
+        &self,
+        id: FMFeatureSelectionSetId,
+    ) -> Option<&FMFeatureSelectionSet> {
+        self.fm_feature_selection_sets.get(id)
+    }
+
+    pub fn get_field(&self, id: FieldId) -> Option<&Field> {
+        self.fields.get(id)
+    }
+
+    pub fn get_firewall_rule(&self, id: FirewallRuleId) -> Option<&FirewallRule> {
+        self.firewall_rules.get(id)
+    }
+
+    pub fn get_firewall_rule_props(&self, id: FirewallRulePropsId) -> Option<&FirewallRuleProps> {
+        self.firewall_rule_props.get(id)
+    }
+
+    pub fn get_flat_instance_descriptor(
+        &self,
+        id: FlatInstanceDescriptorId,
+    ) -> Option<&FlatInstanceDescriptor> {
+        self.flat_instance_descriptors.get(id)
+    }
+
+    pub fn get_flat_map(&self, id: FlatMapId) -> Option<&FlatMap> {
+        self.flat_maps.get(id)
+    }
+
+    pub fn get_flexray_absolutely_scheduled_timing(
+        &self,
+        id: FlexrayAbsolutelyScheduledTimingId,
+    ) -> Option<&FlexrayAbsolutelyScheduledTiming> {
+        self.flexray_absolutely_scheduled_timings.get(id)
+    }
+
+    pub fn get_flexray_ar_tp_channel(
+        &self,
+        id: FlexrayArTpChannelId,
+    ) -> Option<&FlexrayArTpChannel> {
+        self.flexray_ar_tp_channels.get(id)
+    }
+
+    pub fn get_flexray_ar_tp_config(&self, id: FlexrayArTpConfigId) -> Option<&FlexrayArTpConfig> {
+        self.flexray_ar_tp_configs.get(id)
+    }
+
+    pub fn get_flexray_ar_tp_connection(
+        &self,
+        id: FlexrayArTpConnectionId,
+    ) -> Option<&FlexrayArTpConnection> {
+        self.flexray_ar_tp_connections.get(id)
+    }
+
+    pub fn get_flexray_ar_tp_node(&self, id: FlexrayArTpNodeId) -> Option<&FlexrayArTpNode> {
+        self.flexray_ar_tp_nodes.get(id)
+    }
+
+    pub fn get_flexray_cluster(&self, id: FlexrayClusterId) -> Option<&FlexrayCluster> {
+        self.flexray_clusters.get(id)
+    }
+
+    pub fn get_flexray_communication_connector(
+        &self,
+        id: FlexrayCommunicationConnectorId,
+    ) -> Option<&FlexrayCommunicationConnector> {
+        self.flexray_communication_connectors.get(id)
+    }
+
+    pub fn get_flexray_communication_controller(
+        &self,
+        id: FlexrayCommunicationControllerId,
+    ) -> Option<&FlexrayCommunicationController> {
+        self.flexray_communication_controllers.get(id)
+    }
+
+    pub fn get_flexray_fifo_configuration(
+        &self,
+        id: FlexrayFifoConfigurationId,
+    ) -> Option<&FlexrayFifoConfiguration> {
+        self.flexray_fifo_configurations.get(id)
+    }
+
+    pub fn get_flexray_fifo_range(&self, id: FlexrayFifoRangeId) -> Option<&FlexrayFifoRange> {
+        self.flexray_fifo_ranges.get(id)
+    }
+
+    pub fn get_flexray_frame(&self, id: FlexrayFrameId) -> Option<&FlexrayFrame> {
+        self.flexray_frames.get(id)
+    }
+
+    pub fn get_flexray_frame_triggering(
+        &self,
+        id: FlexrayFrameTriggeringId,
+    ) -> Option<&FlexrayFrameTriggering> {
+        self.flexray_frame_triggerings.get(id)
+    }
+
+    pub fn get_flexray_nm_cluster(&self, id: FlexrayNmClusterId) -> Option<&FlexrayNmCluster> {
+        self.flexray_nm_clusters.get(id)
+    }
+
+    pub fn get_flexray_nm_cluster_coupling(
+        &self,
+        id: FlexrayNmClusterCouplingId,
+    ) -> Option<&FlexrayNmClusterCoupling> {
+        self.flexray_nm_cluster_couplings.get(id)
+    }
+
+    pub fn get_flexray_nm_ecu(&self, id: FlexrayNmEcuId) -> Option<&FlexrayNmEcu> {
+        self.flexray_nm_ecus.get(id)
+    }
+
+    pub fn get_flexray_nm_node(&self, id: FlexrayNmNodeId) -> Option<&FlexrayNmNode> {
+        self.flexray_nm_nodes.get(id)
+    }
+
+    pub fn get_flexray_physical_channel(
+        &self,
+        id: FlexrayPhysicalChannelId,
+    ) -> Option<&FlexrayPhysicalChannel> {
+        self.flexray_physical_channels.get(id)
+    }
+
+    pub fn get_flexray_tp_config(&self, id: FlexrayTpConfigId) -> Option<&FlexrayTpConfig> {
+        self.flexray_tp_configs.get(id)
+    }
+
+    pub fn get_flexray_tp_connection(
+        &self,
+        id: FlexrayTpConnectionId,
+    ) -> Option<&FlexrayTpConnection> {
+        self.flexray_tp_connections.get(id)
+    }
+
+    pub fn get_flexray_tp_connection_control(
+        &self,
+        id: FlexrayTpConnectionControlId,
+    ) -> Option<&FlexrayTpConnectionControl> {
+        self.flexray_tp_connection_controls.get(id)
+    }
+
+    pub fn get_flexray_tp_ecu(&self, id: FlexrayTpEcuId) -> Option<&FlexrayTpEcu> {
+        self.flexray_tp_ecus.get(id)
+    }
+
+    pub fn get_flexray_tp_node(&self, id: FlexrayTpNodeId) -> Option<&FlexrayTpNode> {
+        self.flexray_tp_nodes.get(id)
+    }
+
+    pub fn get_flexray_tp_pdu_pool(&self, id: FlexrayTpPduPoolId) -> Option<&FlexrayTpPduPool> {
+        self.flexray_tp_pdu_pools.get(id)
+    }
+
+    pub fn get_float_value(&self, id: FloatValueId) -> Option<&FloatValue> {
+        self.float_values.get(id)
+    }
+
+    pub fn get_float_value_variation_point(
+        &self,
+        id: FloatValueVariationPointId,
+    ) -> Option<&FloatValueVariationPoint> {
+        self.float_value_variation_points.get(id)
+    }
+
+    pub fn get_forbidden_signal_path(
+        &self,
+        id: ForbiddenSignalPathId,
+    ) -> Option<&ForbiddenSignalPath> {
+        self.forbidden_signal_paths.get(id)
+    }
+
+    pub fn get_fr_global_time_domain_props(
+        &self,
+        id: FrGlobalTimeDomainPropsId,
+    ) -> Option<&FrGlobalTimeDomainProps> {
+        self.fr_global_time_domain_props.get(id)
+    }
+
+    pub fn get_frame_mapping(&self, id: FrameMappingId) -> Option<&FrameMapping> {
+        self.frame_mappings.get(id)
+    }
+
+    pub fn get_frame_pid(&self, id: FramePidId) -> Option<&FramePid> {
+        self.frame_pids.get(id)
+    }
+
+    pub fn get_frame_port(&self, id: FramePortId) -> Option<&FramePort> {
+        self.frame_ports.get(id)
+    }
+
+    pub fn get_free_format(&self, id: FreeFormatId) -> Option<&FreeFormat> {
+        self.free_formats.get(id)
+    }
+
+    pub fn get_function_inhibition_availability_needs(
+        &self,
+        id: FunctionInhibitionAvailabilityNeedsId,
+    ) -> Option<&FunctionInhibitionAvailabilityNeeds> {
+        self.function_inhibition_availability_needs.get(id)
+    }
+
+    pub fn get_function_inhibition_needs(
+        &self,
+        id: FunctionInhibitionNeedsId,
+    ) -> Option<&FunctionInhibitionNeeds> {
+        self.function_inhibition_needs.get(id)
+    }
+
+    pub fn get_function_name_value(&self, id: FunctionNameValueId) -> Option<&FunctionNameValue> {
+        self.function_name_values.get(id)
+    }
+
+    pub fn get_further_action_byte_needs(
+        &self,
+        id: FurtherActionByteNeedsId,
+    ) -> Option<&FurtherActionByteNeeds> {
+        self.further_action_byte_needs.get(id)
+    }
+
+    pub fn get_gateway(&self, id: GatewayId) -> Option<&Gateway> {
+        self.gateways.get(id)
+    }
+
+    pub fn get_general_parameter(&self, id: GeneralParameterId) -> Option<&GeneralParameter> {
+        self.general_parameters.get(id)
+    }
+
+    pub fn get_general_purpose_connection(
+        &self,
+        id: GeneralPurposeConnectionId,
+    ) -> Option<&GeneralPurposeConnection> {
+        self.general_purpose_connections.get(id)
+    }
+
+    pub fn get_general_purpose_i_pdu(
+        &self,
+        id: GeneralPurposeIPduId,
+    ) -> Option<&GeneralPurposeIPdu> {
+        self.general_purpose_i_pdus.get(id)
+    }
+
+    pub fn get_general_purpose_pdu(&self, id: GeneralPurposePduId) -> Option<&GeneralPurposePdu> {
+        self.general_purpose_pdus.get(id)
+    }
+
+    pub fn get_generic_ethernet_frame(
+        &self,
+        id: GenericEthernetFrameId,
+    ) -> Option<&GenericEthernetFrame> {
+        self.generic_ethernet_frames.get(id)
+    }
+
+    pub fn get_generic_tp(&self, id: GenericTpId) -> Option<&GenericTp> {
+        self.generic_tps.get(id)
+    }
+
+    pub fn get_global_supervision_needs(
+        &self,
+        id: GlobalSupervisionNeedsId,
+    ) -> Option<&GlobalSupervisionNeeds> {
+        self.global_supervision_needs.get(id)
+    }
+
+    pub fn get_global_time_can_master(
+        &self,
+        id: GlobalTimeCanMasterId,
+    ) -> Option<&GlobalTimeCanMaster> {
+        self.global_time_can_masters.get(id)
+    }
+
+    pub fn get_global_time_can_slave(
+        &self,
+        id: GlobalTimeCanSlaveId,
+    ) -> Option<&GlobalTimeCanSlave> {
+        self.global_time_can_slaves.get(id)
+    }
+
+    pub fn get_global_time_correction_props(
+        &self,
+        id: GlobalTimeCorrectionPropsId,
+    ) -> Option<&GlobalTimeCorrectionProps> {
+        self.global_time_correction_props.get(id)
+    }
+
+    pub fn get_global_time_coupling_port_props(
+        &self,
+        id: GlobalTimeCouplingPortPropsId,
+    ) -> Option<&GlobalTimeCouplingPortProps> {
+        self.global_time_coupling_port_props.get(id)
+    }
+
+    pub fn get_global_time_domain(&self, id: GlobalTimeDomainId) -> Option<&GlobalTimeDomain> {
+        self.global_time_domains.get(id)
+    }
+
+    pub fn get_global_time_eth_master(
+        &self,
+        id: GlobalTimeEthMasterId,
+    ) -> Option<&GlobalTimeEthMaster> {
+        self.global_time_eth_masters.get(id)
+    }
+
+    pub fn get_global_time_eth_slave(
+        &self,
+        id: GlobalTimeEthSlaveId,
+    ) -> Option<&GlobalTimeEthSlave> {
+        self.global_time_eth_slaves.get(id)
+    }
+
+    pub fn get_global_time_fr_master(
+        &self,
+        id: GlobalTimeFrMasterId,
+    ) -> Option<&GlobalTimeFrMaster> {
+        self.global_time_fr_masters.get(id)
+    }
+
+    pub fn get_global_time_fr_slave(&self, id: GlobalTimeFrSlaveId) -> Option<&GlobalTimeFrSlave> {
+        self.global_time_fr_slaves.get(id)
+    }
+
+    pub fn get_global_time_gateway(&self, id: GlobalTimeGatewayId) -> Option<&GlobalTimeGateway> {
+        self.global_time_gateways.get(id)
+    }
+
+    pub fn get_graphic(&self, id: GraphicId) -> Option<&Graphic> {
+        self.graphics.get(id)
+    }
+
+    pub fn get_hardware_configuration(
+        &self,
+        id: HardwareConfigurationId,
+    ) -> Option<&HardwareConfiguration> {
+        self.hardware_configurations.get(id)
+    }
+
+    pub fn get_hardware_test_needs(&self, id: HardwareTestNeedsId) -> Option<&HardwareTestNeeds> {
+        self.hardware_test_needs.get(id)
+    }
+
+    pub fn get_http_tp(&self, id: HttpTpId) -> Option<&HttpTp> {
+        self.http_tps.get(id)
+    }
+
+    pub fn get_hw_attribute_def(&self, id: HwAttributeDefId) -> Option<&HwAttributeDef> {
+        self.hw_attribute_defs.get(id)
+    }
+
+    pub fn get_hw_attribute_literal_def(
+        &self,
+        id: HwAttributeLiteralDefId,
+    ) -> Option<&HwAttributeLiteralDef> {
+        self.hw_attribute_literal_defs.get(id)
+    }
+
+    pub fn get_hw_attribute_value(&self, id: HwAttributeValueId) -> Option<&HwAttributeValue> {
+        self.hw_attribute_values.get(id)
+    }
+
+    pub fn get_hw_category(&self, id: HwCategoryId) -> Option<&HwCategory> {
+        self.hw_categorys.get(id)
+    }
+
+    pub fn get_hw_element(&self, id: HwElementId) -> Option<&HwElement> {
+        self.hw_elements.get(id)
+    }
+
+    pub fn get_hw_element_connector(
+        &self,
+        id: HwElementConnectorId,
+    ) -> Option<&HwElementConnector> {
+        self.hw_element_connectors.get(id)
+    }
+
+    pub fn get_hw_pin(&self, id: HwPinId) -> Option<&HwPin> {
+        self.hw_pins.get(id)
+    }
+
+    pub fn get_hw_pin_connector(&self, id: HwPinConnectorId) -> Option<&HwPinConnector> {
+        self.hw_pin_connectors.get(id)
+    }
+
+    pub fn get_hw_pin_group(&self, id: HwPinGroupId) -> Option<&HwPinGroup> {
+        self.hw_pin_groups.get(id)
+    }
+
+    pub fn get_hw_pin_group_connector(
+        &self,
+        id: HwPinGroupConnectorId,
+    ) -> Option<&HwPinGroupConnector> {
+        self.hw_pin_group_connectors.get(id)
+    }
+
+    pub fn get_hw_pin_group_content(&self, id: HwPinGroupContentId) -> Option<&HwPinGroupContent> {
+        self.hw_pin_group_contents.get(id)
+    }
+
+    pub fn get_hw_port_mapping(&self, id: HwPortMappingId) -> Option<&HwPortMapping> {
+        self.hw_port_mappings.get(id)
+    }
+
+    pub fn get_hw_type(&self, id: HwTypeId) -> Option<&HwType> {
+        self.hw_types.get(id)
+    }
+
+    pub fn get_ieee1722_tp_aaf_connection(
+        &self,
+        id: IEEE1722TpAafConnectionId,
+    ) -> Option<&IEEE1722TpAafConnection> {
+        self.ieee1722_tp_aaf_connections.get(id)
+    }
+
+    pub fn get_ieee1722_tp_acf_can(&self, id: IEEE1722TpAcfCanId) -> Option<&IEEE1722TpAcfCan> {
+        self.ieee1722_tp_acf_cans.get(id)
+    }
+
+    pub fn get_ieee1722_tp_acf_can_part(
+        &self,
+        id: IEEE1722TpAcfCanPartId,
+    ) -> Option<&IEEE1722TpAcfCanPart> {
+        self.ieee1722_tp_acf_can_parts.get(id)
+    }
+
+    pub fn get_ieee1722_tp_acf_connection(
+        &self,
+        id: IEEE1722TpAcfConnectionId,
+    ) -> Option<&IEEE1722TpAcfConnection> {
+        self.ieee1722_tp_acf_connections.get(id)
+    }
+
+    pub fn get_ieee1722_tp_acf_lin(&self, id: IEEE1722TpAcfLinId) -> Option<&IEEE1722TpAcfLin> {
+        self.ieee1722_tp_acf_lins.get(id)
+    }
+
+    pub fn get_ieee1722_tp_acf_lin_part(
+        &self,
+        id: IEEE1722TpAcfLinPartId,
+    ) -> Option<&IEEE1722TpAcfLinPart> {
+        self.ieee1722_tp_acf_lin_parts.get(id)
+    }
+
+    pub fn get_ieee1722_tp_config(&self, id: IEEE1722TpConfigId) -> Option<&IEEE1722TpConfig> {
+        self.ieee1722_tp_configs.get(id)
+    }
+
+    pub fn get_ieee1722_tp_crf_connection(
+        &self,
+        id: IEEE1722TpCrfConnectionId,
+    ) -> Option<&IEEE1722TpCrfConnection> {
+        self.ieee1722_tp_crf_connections.get(id)
+    }
+
+    pub fn get_ieee1722_tp_iidc_connection(
+        &self,
+        id: IEEE1722TpIidcConnectionId,
+    ) -> Option<&IEEE1722TpIidcConnection> {
+        self.ieee1722_tp_iidc_connections.get(id)
+    }
+
+    pub fn get_ieee1722_tp_rvf_connection(
+        &self,
+        id: IEEE1722TpRvfConnectionId,
+    ) -> Option<&IEEE1722TpRvfConnection> {
+        self.ieee1722_tp_rvf_connections.get(id)
+    }
+
+    pub fn get_ip_sec_config(&self, id: IPSecConfigId) -> Option<&IPSecConfig> {
+        self.ip_sec_configs.get(id)
+    }
+
+    pub fn get_ip_sec_config_props(&self, id: IPSecConfigPropsId) -> Option<&IPSecConfigProps> {
+        self.ip_sec_config_props.get(id)
+    }
+
+    pub fn get_ip_sec_rule(&self, id: IPSecRuleId) -> Option<&IPSecRule> {
+        self.ip_sec_rules.get(id)
+    }
+
+    pub fn get_i_pdu_mapping(&self, id: IPduMappingId) -> Option<&IPduMapping> {
+        self.i_pdu_mappings.get(id)
+    }
+
+    pub fn get_i_pdu_port(&self, id: IPduPortId) -> Option<&IPduPort> {
+        self.i_pdu_ports.get(id)
+    }
+
+    pub fn get_i_pdu_timing(&self, id: IPduTimingId) -> Option<&IPduTiming> {
+        self.i_pdu_timings.get(id)
+    }
+
+    pub fn get_i_pv6_ext_header_filter_list(
+        &self,
+        id: IPv6ExtHeaderFilterListId,
+    ) -> Option<&IPv6ExtHeaderFilterList> {
+        self.i_pv6_ext_header_filter_lists.get(id)
+    }
+
+    pub fn get_i_pv6_ext_header_filter_set(
+        &self,
+        id: IPv6ExtHeaderFilterSetId,
+    ) -> Option<&IPv6ExtHeaderFilterSet> {
+        self.i_pv6_ext_header_filter_sets.get(id)
+    }
+
+    pub fn get_i_signal(&self, id: ISignalId) -> Option<&ISignal> {
+        self.i_signals.get(id)
+    }
+
+    pub fn get_i_signal_group(&self, id: ISignalGroupId) -> Option<&ISignalGroup> {
+        self.i_signal_groups.get(id)
+    }
+
+    pub fn get_i_signal_i_pdu(&self, id: ISignalIPduId) -> Option<&ISignalIPdu> {
+        self.i_signal_i_pdus.get(id)
+    }
+
+    pub fn get_i_signal_i_pdu_group(&self, id: ISignalIPduGroupId) -> Option<&ISignalIPduGroup> {
+        self.i_signal_i_pdu_groups.get(id)
+    }
+
+    pub fn get_i_signal_mapping(&self, id: ISignalMappingId) -> Option<&ISignalMapping> {
+        self.i_signal_mappings.get(id)
+    }
+
+    pub fn get_i_signal_port(&self, id: ISignalPortId) -> Option<&ISignalPort> {
+        self.i_signal_ports.get(id)
+    }
+
+    pub fn get_i_signal_props(&self, id: ISignalPropsId) -> Option<&ISignalProps> {
+        self.i_signal_props.get(id)
+    }
+
+    pub fn get_i_signal_to_i_pdu_mapping(
+        &self,
+        id: ISignalToIPduMappingId,
+    ) -> Option<&ISignalToIPduMapping> {
+        self.i_signal_to_i_pdu_mappings.get(id)
+    }
+
+    pub fn get_i_signal_triggering(&self, id: ISignalTriggeringId) -> Option<&ISignalTriggering> {
+        self.i_signal_triggerings.get(id)
+    }
+
+    pub fn get_icmp_rule(&self, id: IcmpRuleId) -> Option<&IcmpRule> {
+        self.icmp_rules.get(id)
+    }
+
+    pub fn get_ids_design(&self, id: IdsDesignId) -> Option<&IdsDesign> {
+        self.ids_designs.get(id)
+    }
+
+    pub fn get_ids_mgr_custom_timestamp_needs(
+        &self,
+        id: IdsMgrCustomTimestampNeedsId,
+    ) -> Option<&IdsMgrCustomTimestampNeeds> {
+        self.ids_mgr_custom_timestamp_needs.get(id)
+    }
+
+    pub fn get_ids_mgr_needs(&self, id: IdsMgrNeedsId) -> Option<&IdsMgrNeeds> {
+        self.ids_mgr_needs.get(id)
+    }
+
+    pub fn get_idsm_instance(&self, id: IdsmInstanceId) -> Option<&IdsmInstance> {
+        self.idsm_instances.get(id)
+    }
+
+    pub fn get_idsm_module_instantiation(
+        &self,
+        id: IdsmModuleInstantiationId,
+    ) -> Option<&IdsmModuleInstantiation> {
+        self.idsm_module_instantiations.get(id)
+    }
+
+    pub fn get_idsm_rate_limitation(
+        &self,
+        id: IdsmRateLimitationId,
+    ) -> Option<&IdsmRateLimitation> {
+        self.idsm_rate_limitations.get(id)
+    }
+
+    pub fn get_idsm_traffic_limitation(
+        &self,
+        id: IdsmTrafficLimitationId,
+    ) -> Option<&IdsmTrafficLimitation> {
+        self.idsm_traffic_limitations.get(id)
+    }
+
+    pub fn get_ieee1722_tp(&self, id: Ieee1722TpId) -> Option<&Ieee1722Tp> {
+        self.ieee1722_tps.get(id)
+    }
+
+    pub fn get_ieee1722_tp_ethernet_frame(
+        &self,
+        id: Ieee1722TpEthernetFrameId,
+    ) -> Option<&Ieee1722TpEthernetFrame> {
+        self.ieee1722_tp_ethernet_frames.get(id)
+    }
+
+    pub fn get_implementation_data_type(
+        &self,
+        id: ImplementationDataTypeId,
+    ) -> Option<&ImplementationDataType> {
+        self.implementation_data_types.get(id)
+    }
+
+    pub fn get_implementation_data_type_element(
+        &self,
+        id: ImplementationDataTypeElementId,
+    ) -> Option<&ImplementationDataTypeElement> {
+        self.implementation_data_type_elements.get(id)
+    }
+
+    pub fn get_implementation_data_type_element_in_port_interface_ref(
+        &self,
+        id: ImplementationDataTypeElementInPortInterfaceRefId,
+    ) -> Option<&ImplementationDataTypeElementInPortInterfaceRef> {
+        self.implementation_data_type_element_in_port_interface_refs
+            .get(id)
+    }
+
+    pub fn get_implementation_data_type_sub_element_ref(
+        &self,
+        id: ImplementationDataTypeSubElementRefId,
+    ) -> Option<&ImplementationDataTypeSubElementRef> {
+        self.implementation_data_type_sub_element_refs.get(id)
+    }
+
+    pub fn get_implementation_element_in_parameter_instance_ref(
+        &self,
+        id: ImplementationElementInParameterInstanceRefId,
+    ) -> Option<&ImplementationElementInParameterInstanceRef> {
+        self.implementation_element_in_parameter_instance_refs
+            .get(id)
+    }
+
+    pub fn get_included_data_type_set(
+        &self,
+        id: IncludedDataTypeSetId,
+    ) -> Option<&IncludedDataTypeSet> {
+        self.included_data_type_sets.get(id)
+    }
+
+    pub fn get_included_mode_declaration_group_set(
+        &self,
+        id: IncludedModeDeclarationGroupSetId,
+    ) -> Option<&IncludedModeDeclarationGroupSet> {
+        self.included_mode_declaration_group_sets.get(id)
+    }
+
+    pub fn get_indent_sample(&self, id: IndentSampleId) -> Option<&IndentSample> {
+        self.indent_samples.get(id)
+    }
+
+    pub fn get_index_entry(&self, id: IndexEntryId) -> Option<&IndexEntry> {
+        self.index_entrys.get(id)
+    }
+
+    pub fn get_indexed_array_element(
+        &self,
+        id: IndexedArrayElementId,
+    ) -> Option<&IndexedArrayElement> {
+        self.indexed_array_elements.get(id)
+    }
+
+    pub fn get_indicator_status_needs(
+        &self,
+        id: IndicatorStatusNeedsId,
+    ) -> Option<&IndicatorStatusNeeds> {
+        self.indicator_status_needs.get(id)
+    }
+
+    pub fn get_infrastructure_services(
+        &self,
+        id: InfrastructureServicesId,
+    ) -> Option<&InfrastructureServices> {
+        self.infrastructure_services.get(id)
+    }
+
+    pub fn get_init_event(&self, id: InitEventId) -> Option<&InitEvent> {
+        self.init_events.get(id)
+    }
+
+    pub fn get_initial_sd_delay_config(
+        &self,
+        id: InitialSdDelayConfigId,
+    ) -> Option<&InitialSdDelayConfig> {
+        self.initial_sd_delay_configs.get(id)
+    }
+
+    pub fn get_inner_data_prototype_group_in_composition_instance_ref(
+        &self,
+        id: InnerDataPrototypeGroupInCompositionInstanceRefId,
+    ) -> Option<&InnerDataPrototypeGroupInCompositionInstanceRef> {
+        self.inner_data_prototype_group_in_composition_instance_refs
+            .get(id)
+    }
+
+    pub fn get_inner_port_group_in_composition_instance_ref(
+        &self,
+        id: InnerPortGroupInCompositionInstanceRefId,
+    ) -> Option<&InnerPortGroupInCompositionInstanceRef> {
+        self.inner_port_group_in_composition_instance_refs.get(id)
+    }
+
+    pub fn get_inner_runnable_entity_group_in_composition_instance_ref(
+        &self,
+        id: InnerRunnableEntityGroupInCompositionInstanceRefId,
+    ) -> Option<&InnerRunnableEntityGroupInCompositionInstanceRef> {
+        self.inner_runnable_entity_group_in_composition_instance_refs
+            .get(id)
+    }
+
+    pub fn get_instance_event_in_composition_instance_ref(
+        &self,
+        id: InstanceEventInCompositionInstanceRefId,
+    ) -> Option<&InstanceEventInCompositionInstanceRef> {
+        self.instance_event_in_composition_instance_refs.get(id)
+    }
+
+    pub fn get_instance_reference_value(
+        &self,
+        id: InstanceReferenceValueId,
+    ) -> Option<&InstanceReferenceValue> {
+        self.instance_reference_values.get(id)
+    }
+
+    pub fn get_instantiation_data_def_props(
+        &self,
+        id: InstantiationDataDefPropsId,
+    ) -> Option<&InstantiationDataDefProps> {
+        self.instantiation_data_def_props.get(id)
+    }
+
+    pub fn get_instantiation_timing_event_props(
+        &self,
+        id: InstantiationTimingEventPropsId,
+    ) -> Option<&InstantiationTimingEventProps> {
+        self.instantiation_timing_event_props.get(id)
+    }
+
+    pub fn get_integer_value(&self, id: IntegerValueId) -> Option<&IntegerValue> {
+        self.integer_values.get(id)
+    }
+
+    pub fn get_integer_value_variation_point(
+        &self,
+        id: IntegerValueVariationPointId,
+    ) -> Option<&IntegerValueVariationPoint> {
+        self.integer_value_variation_points.get(id)
+    }
+
+    pub fn get_internal_constrs(&self, id: InternalConstrsId) -> Option<&InternalConstrs> {
+        self.internal_constrs.get(id)
+    }
+
+    pub fn get_internal_trigger_occurred_event(
+        &self,
+        id: InternalTriggerOccurredEventId,
+    ) -> Option<&InternalTriggerOccurredEvent> {
+        self.internal_trigger_occurred_events.get(id)
+    }
+
+    pub fn get_internal_triggering_point(
+        &self,
+        id: InternalTriggeringPointId,
+    ) -> Option<&InternalTriggeringPoint> {
+        self.internal_triggering_points.get(id)
+    }
+
+    pub fn get_interpolation_routine(
+        &self,
+        id: InterpolationRoutineId,
+    ) -> Option<&InterpolationRoutine> {
+        self.interpolation_routines.get(id)
+    }
+
+    pub fn get_interpolation_routine_mapping(
+        &self,
+        id: InterpolationRoutineMappingId,
+    ) -> Option<&InterpolationRoutineMapping> {
+        self.interpolation_routine_mappings.get(id)
+    }
+
+    pub fn get_interpolation_routine_mapping_set(
+        &self,
+        id: InterpolationRoutineMappingSetId,
+    ) -> Option<&InterpolationRoutineMappingSet> {
+        self.interpolation_routine_mapping_sets.get(id)
+    }
+
+    pub fn get_invalidation_policy(&self, id: InvalidationPolicyId) -> Option<&InvalidationPolicy> {
+        self.invalidation_policys.get(id)
+    }
+
+    pub fn get_invert_condition(&self, id: InvertConditionId) -> Option<&InvertCondition> {
+        self.invert_conditions.get(id)
+    }
+
+    pub fn get_io_hw_abstraction_server_annotation(
+        &self,
+        id: IoHwAbstractionServerAnnotationId,
+    ) -> Option<&IoHwAbstractionServerAnnotation> {
+        self.io_hw_abstraction_server_annotations.get(id)
+    }
+
+    pub fn get_ipv4_arp_props(&self, id: Ipv4ArpPropsId) -> Option<&Ipv4ArpProps> {
+        self.ipv4_arp_props.get(id)
+    }
+
+    pub fn get_ipv4_auto_ip_props(&self, id: Ipv4AutoIpPropsId) -> Option<&Ipv4AutoIpProps> {
+        self.ipv4_auto_ip_props.get(id)
+    }
+
+    pub fn get_ipv4_configuration(&self, id: Ipv4ConfigurationId) -> Option<&Ipv4Configuration> {
+        self.ipv4_configurations.get(id)
+    }
+
+    pub fn get_ipv4_dhcp_server_configuration(
+        &self,
+        id: Ipv4DhcpServerConfigurationId,
+    ) -> Option<&Ipv4DhcpServerConfiguration> {
+        self.ipv4_dhcp_server_configurations.get(id)
+    }
+
+    pub fn get_ipv4_fragmentation_props(
+        &self,
+        id: Ipv4FragmentationPropsId,
+    ) -> Option<&Ipv4FragmentationProps> {
+        self.ipv4_fragmentation_props.get(id)
+    }
+
+    pub fn get_ipv4_props(&self, id: Ipv4PropsId) -> Option<&Ipv4Props> {
+        self.ipv4_props.get(id)
+    }
+
+    pub fn get_ipv4_rule(&self, id: Ipv4RuleId) -> Option<&Ipv4Rule> {
+        self.ipv4_rules.get(id)
+    }
+
+    pub fn get_ipv6_configuration(&self, id: Ipv6ConfigurationId) -> Option<&Ipv6Configuration> {
+        self.ipv6_configurations.get(id)
+    }
+
+    pub fn get_ipv6_dhcp_server_configuration(
+        &self,
+        id: Ipv6DhcpServerConfigurationId,
+    ) -> Option<&Ipv6DhcpServerConfiguration> {
+        self.ipv6_dhcp_server_configurations.get(id)
+    }
+
+    pub fn get_ipv6_fragmentation_props(
+        &self,
+        id: Ipv6FragmentationPropsId,
+    ) -> Option<&Ipv6FragmentationProps> {
+        self.ipv6_fragmentation_props.get(id)
+    }
+
+    pub fn get_ipv6_ndp_props(&self, id: Ipv6NdpPropsId) -> Option<&Ipv6NdpProps> {
+        self.ipv6_ndp_props.get(id)
+    }
+
+    pub fn get_ipv6_props(&self, id: Ipv6PropsId) -> Option<&Ipv6Props> {
+        self.ipv6_props.get(id)
+    }
+
+    pub fn get_ipv6_rule(&self, id: Ipv6RuleId) -> Option<&Ipv6Rule> {
+        self.ipv6_rules.get(id)
+    }
+
+    pub fn get_item(&self, id: ItemId) -> Option<&Item> {
+        self.items.get(id)
+    }
+
+    pub fn get_j1939_cluster(&self, id: J1939ClusterId) -> Option<&J1939Cluster> {
+        self.j1939_clusters.get(id)
+    }
+
+    pub fn get_j1939_controller_application(
+        &self,
+        id: J1939ControllerApplicationId,
+    ) -> Option<&J1939ControllerApplication> {
+        self.j1939_controller_applications.get(id)
+    }
+
+    pub fn get_j1939_controller_application_to_j1939_nm_node_mapping(
+        &self,
+        id: J1939ControllerApplicationToJ1939NmNodeMappingId,
+    ) -> Option<&J1939ControllerApplicationToJ1939NmNodeMapping> {
+        self.j1939_controller_application_to_j1939_nm_node_mappings
+            .get(id)
+    }
+
+    pub fn get_j1939_dcm_dm19_support(
+        &self,
+        id: J1939DcmDm19SupportId,
+    ) -> Option<&J1939DcmDm19Support> {
+        self.j1939_dcm_dm19_supports.get(id)
+    }
+
+    pub fn get_j1939_dcm_i_pdu(&self, id: J1939DcmIPduId) -> Option<&J1939DcmIPdu> {
+        self.j1939_dcm_i_pdus.get(id)
+    }
+
+    pub fn get_j1939_nm_cluster(&self, id: J1939NmClusterId) -> Option<&J1939NmCluster> {
+        self.j1939_nm_clusters.get(id)
+    }
+
+    pub fn get_j1939_nm_ecu(&self, id: J1939NmEcuId) -> Option<&J1939NmEcu> {
+        self.j1939_nm_ecus.get(id)
+    }
+
+    pub fn get_j1939_nm_node(&self, id: J1939NmNodeId) -> Option<&J1939NmNode> {
+        self.j1939_nm_nodes.get(id)
+    }
+
+    pub fn get_j1939_node_name(&self, id: J1939NodeNameId) -> Option<&J1939NodeName> {
+        self.j1939_node_names.get(id)
+    }
+
+    pub fn get_j1939_rm_incoming_request_service_needs(
+        &self,
+        id: J1939RmIncomingRequestServiceNeedsId,
+    ) -> Option<&J1939RmIncomingRequestServiceNeeds> {
+        self.j1939_rm_incoming_request_service_needs.get(id)
+    }
+
+    pub fn get_j1939_rm_outgoing_request_service_needs(
+        &self,
+        id: J1939RmOutgoingRequestServiceNeedsId,
+    ) -> Option<&J1939RmOutgoingRequestServiceNeeds> {
+        self.j1939_rm_outgoing_request_service_needs.get(id)
+    }
+
+    pub fn get_j1939_shared_address_cluster(
+        &self,
+        id: J1939SharedAddressClusterId,
+    ) -> Option<&J1939SharedAddressCluster> {
+        self.j1939_shared_address_clusters.get(id)
+    }
+
+    pub fn get_j1939_tp_config(&self, id: J1939TpConfigId) -> Option<&J1939TpConfig> {
+        self.j1939_tp_configs.get(id)
+    }
+
+    pub fn get_j1939_tp_connection(&self, id: J1939TpConnectionId) -> Option<&J1939TpConnection> {
+        self.j1939_tp_connections.get(id)
+    }
+
+    pub fn get_j1939_tp_node(&self, id: J1939TpNodeId) -> Option<&J1939TpNode> {
+        self.j1939_tp_nodes.get(id)
+    }
+
+    pub fn get_j1939_tp_pg(&self, id: J1939TpPgId) -> Option<&J1939TpPg> {
+        self.j1939_tp_pgs.get(id)
+    }
+
+    pub fn get_keyword(&self, id: KeywordId) -> Option<&Keyword> {
+        self.keywords.get(id)
+    }
+
+    pub fn get_keyword_set(&self, id: KeywordSetId) -> Option<&KeywordSet> {
+        self.keyword_sets.get(id)
+    }
+
+    pub fn get_l_graphic(&self, id: LGraphicId) -> Option<&LGraphic> {
+        self.l_graphics.get(id)
+    }
+
+    pub fn get_l_long_name(&self, id: LLongNameId) -> Option<&LLongName> {
+        self.l_long_names.get(id)
+    }
+
+    pub fn get_l_overview_paragraph(
+        &self,
+        id: LOverviewParagraphId,
+    ) -> Option<&LOverviewParagraph> {
+        self.l_overview_paragraphs.get(id)
+    }
+
+    pub fn get_l_paragraph(&self, id: LParagraphId) -> Option<&LParagraph> {
+        self.l_paragraphs.get(id)
+    }
+
+    pub fn get_l_plain_text(&self, id: LPlainTextId) -> Option<&LPlainText> {
+        self.l_plain_texts.get(id)
+    }
+
+    pub fn get_l_verbatim(&self, id: LVerbatimId) -> Option<&LVerbatim> {
+        self.l_verbatims.get(id)
+    }
+
+    pub fn get_labeled_item(&self, id: LabeledItemId) -> Option<&LabeledItem> {
+        self.labeled_items.get(id)
+    }
+
+    pub fn get_labeled_list(&self, id: LabeledListId) -> Option<&LabeledList> {
+        self.labeled_lists.get(id)
+    }
+
+    pub fn get_latency_timing_constraint(
+        &self,
+        id: LatencyTimingConstraintId,
+    ) -> Option<&LatencyTimingConstraint> {
+        self.latency_timing_constraints.get(id)
+    }
+
+    pub fn get_life_cycle_info(&self, id: LifeCycleInfoId) -> Option<&LifeCycleInfo> {
+        self.life_cycle_infos.get(id)
+    }
+
+    pub fn get_life_cycle_info_set(&self, id: LifeCycleInfoSetId) -> Option<&LifeCycleInfoSet> {
+        self.life_cycle_info_sets.get(id)
+    }
+
+    pub fn get_life_cycle_period(&self, id: LifeCyclePeriodId) -> Option<&LifeCyclePeriod> {
+        self.life_cycle_periods.get(id)
+    }
+
+    pub fn get_life_cycle_state(&self, id: LifeCycleStateId) -> Option<&LifeCycleState> {
+        self.life_cycle_states.get(id)
+    }
+
+    pub fn get_life_cycle_state_definition_group(
+        &self,
+        id: LifeCycleStateDefinitionGroupId,
+    ) -> Option<&LifeCycleStateDefinitionGroup> {
+        self.life_cycle_state_definition_groups.get(id)
+    }
+
+    pub fn get_limit(&self, id: LimitId) -> Option<&Limit> {
+        self.limits.get(id)
+    }
+
+    pub fn get_limit_value_variation_point(
+        &self,
+        id: LimitValueVariationPointId,
+    ) -> Option<&LimitValueVariationPoint> {
+        self.limit_value_variation_points.get(id)
+    }
+
+    pub fn get_lin_cluster(&self, id: LinClusterId) -> Option<&LinCluster> {
+        self.lin_clusters.get(id)
+    }
+
+    pub fn get_lin_communication_connector(
+        &self,
+        id: LinCommunicationConnectorId,
+    ) -> Option<&LinCommunicationConnector> {
+        self.lin_communication_connectors.get(id)
+    }
+
+    pub fn get_lin_configurable_frame(
+        &self,
+        id: LinConfigurableFrameId,
+    ) -> Option<&LinConfigurableFrame> {
+        self.lin_configurable_frames.get(id)
+    }
+
+    pub fn get_lin_error_response(&self, id: LinErrorResponseId) -> Option<&LinErrorResponse> {
+        self.lin_error_responses.get(id)
+    }
+
+    pub fn get_lin_event_triggered_frame(
+        &self,
+        id: LinEventTriggeredFrameId,
+    ) -> Option<&LinEventTriggeredFrame> {
+        self.lin_event_triggered_frames.get(id)
+    }
+
+    pub fn get_lin_frame_triggering(
+        &self,
+        id: LinFrameTriggeringId,
+    ) -> Option<&LinFrameTriggering> {
+        self.lin_frame_triggerings.get(id)
+    }
+
+    pub fn get_lin_master(&self, id: LinMasterId) -> Option<&LinMaster> {
+        self.lin_masters.get(id)
+    }
+
+    pub fn get_lin_ordered_configurable_frame(
+        &self,
+        id: LinOrderedConfigurableFrameId,
+    ) -> Option<&LinOrderedConfigurableFrame> {
+        self.lin_ordered_configurable_frames.get(id)
+    }
+
+    pub fn get_lin_physical_channel(
+        &self,
+        id: LinPhysicalChannelId,
+    ) -> Option<&LinPhysicalChannel> {
+        self.lin_physical_channels.get(id)
+    }
+
+    pub fn get_lin_schedule_table(&self, id: LinScheduleTableId) -> Option<&LinScheduleTable> {
+        self.lin_schedule_tables.get(id)
+    }
+
+    pub fn get_lin_slave(&self, id: LinSlaveId) -> Option<&LinSlave> {
+        self.lin_slaves.get(id)
+    }
+
+    pub fn get_lin_slave_config(&self, id: LinSlaveConfigId) -> Option<&LinSlaveConfig> {
+        self.lin_slave_configs.get(id)
+    }
+
+    pub fn get_lin_slave_config_ident(
+        &self,
+        id: LinSlaveConfigIdentId,
+    ) -> Option<&LinSlaveConfigIdent> {
+        self.lin_slave_config_idents.get(id)
+    }
+
+    pub fn get_lin_sporadic_frame(&self, id: LinSporadicFrameId) -> Option<&LinSporadicFrame> {
+        self.lin_sporadic_frames.get(id)
+    }
+
+    pub fn get_lin_tp_config(&self, id: LinTpConfigId) -> Option<&LinTpConfig> {
+        self.lin_tp_configs.get(id)
+    }
+
+    pub fn get_lin_tp_connection(&self, id: LinTpConnectionId) -> Option<&LinTpConnection> {
+        self.lin_tp_connections.get(id)
+    }
+
+    pub fn get_lin_tp_node(&self, id: LinTpNodeId) -> Option<&LinTpNode> {
+        self.lin_tp_nodes.get(id)
+    }
+
+    pub fn get_lin_unconditional_frame(
+        &self,
+        id: LinUnconditionalFrameId,
+    ) -> Option<&LinUnconditionalFrame> {
+        self.lin_unconditional_frames.get(id)
+    }
+
+    pub fn get_linker(&self, id: LinkerId) -> Option<&Linker> {
+        self.linkers.get(id)
+    }
+
+    pub fn get_linker_symbol_value(&self, id: LinkerSymbolValueId) -> Option<&LinkerSymbolValue> {
+        self.linker_symbol_values.get(id)
+    }
+
+    pub fn get_log_and_trace_message_collection_set(
+        &self,
+        id: LogAndTraceMessageCollectionSetId,
+    ) -> Option<&LogAndTraceMessageCollectionSet> {
+        self.log_and_trace_message_collection_sets.get(id)
+    }
+
+    pub fn get_mac_multicast_configuration(
+        &self,
+        id: MacMulticastConfigurationId,
+    ) -> Option<&MacMulticastConfiguration> {
+        self.mac_multicast_configurations.get(id)
+    }
+
+    pub fn get_mac_multicast_group(&self, id: MacMulticastGroupId) -> Option<&MacMulticastGroup> {
+        self.mac_multicast_groups.get(id)
+    }
+
+    pub fn get_mac_sec_cipher_suite_config(
+        &self,
+        id: MacSecCipherSuiteConfigId,
+    ) -> Option<&MacSecCipherSuiteConfig> {
+        self.mac_sec_cipher_suite_configs.get(id)
+    }
+
+    pub fn get_mac_sec_crypto_algo_config(
+        &self,
+        id: MacSecCryptoAlgoConfigId,
+    ) -> Option<&MacSecCryptoAlgoConfig> {
+        self.mac_sec_crypto_algo_configs.get(id)
+    }
+
+    pub fn get_mac_sec_global_kay_props(
+        &self,
+        id: MacSecGlobalKayPropsId,
+    ) -> Option<&MacSecGlobalKayProps> {
+        self.mac_sec_global_kay_props.get(id)
+    }
+
+    pub fn get_mac_sec_kay_participant(
+        &self,
+        id: MacSecKayParticipantId,
+    ) -> Option<&MacSecKayParticipant> {
+        self.mac_sec_kay_participants.get(id)
+    }
+
+    pub fn get_mac_sec_local_kay_props(
+        &self,
+        id: MacSecLocalKayPropsId,
+    ) -> Option<&MacSecLocalKayProps> {
+        self.mac_sec_local_kay_props.get(id)
+    }
+
+    pub fn get_mac_sec_participant_set(
+        &self,
+        id: MacSecParticipantSetId,
+    ) -> Option<&MacSecParticipantSet> {
+        self.mac_sec_participant_sets.get(id)
+    }
+
+    pub fn get_mac_sec_props(&self, id: MacSecPropsId) -> Option<&MacSecProps> {
+        self.mac_sec_props.get(id)
+    }
+
+    pub fn get_map(&self, id: MapId) -> Option<&Map> {
+        self.maps.get(id)
+    }
+
+    pub fn get_mc_data_access_details(
+        &self,
+        id: McDataAccessDetailsId,
+    ) -> Option<&McDataAccessDetails> {
+        self.mc_data_access_details.get(id)
+    }
+
+    pub fn get_mc_data_instance(&self, id: McDataInstanceId) -> Option<&McDataInstance> {
+        self.mc_data_instances.get(id)
+    }
+
+    pub fn get_mc_function(&self, id: McFunctionId) -> Option<&McFunction> {
+        self.mc_functions.get(id)
+    }
+
+    pub fn get_mc_function_data_ref_set(
+        &self,
+        id: McFunctionDataRefSetId,
+    ) -> Option<&McFunctionDataRefSet> {
+        self.mc_function_data_ref_sets.get(id)
+    }
+
+    pub fn get_mc_group(&self, id: McGroupId) -> Option<&McGroup> {
+        self.mc_groups.get(id)
+    }
+
+    pub fn get_mc_group_data_ref_set(&self, id: McGroupDataRefSetId) -> Option<&McGroupDataRefSet> {
+        self.mc_group_data_ref_sets.get(id)
+    }
+
+    pub fn get_mc_parameter_element_group(
+        &self,
+        id: McParameterElementGroupId,
+    ) -> Option<&McParameterElementGroup> {
+        self.mc_parameter_element_groups.get(id)
+    }
+
+    pub fn get_mc_support_data(&self, id: McSupportDataId) -> Option<&McSupportData> {
+        self.mc_support_datas.get(id)
+    }
+
+    pub fn get_mc_sw_emulation_method_support(
+        &self,
+        id: McSwEmulationMethodSupportId,
+    ) -> Option<&McSwEmulationMethodSupport> {
+        self.mc_sw_emulation_method_supports.get(id)
+    }
+
+    pub fn get_measured_execution_time(
+        &self,
+        id: MeasuredExecutionTimeId,
+    ) -> Option<&MeasuredExecutionTime> {
+        self.measured_execution_times.get(id)
+    }
+
+    pub fn get_measured_heap_usage(&self, id: MeasuredHeapUsageId) -> Option<&MeasuredHeapUsage> {
+        self.measured_heap_usages.get(id)
+    }
+
+    pub fn get_measured_stack_usage(
+        &self,
+        id: MeasuredStackUsageId,
+    ) -> Option<&MeasuredStackUsage> {
+        self.measured_stack_usages.get(id)
+    }
+
+    pub fn get_memory_section(&self, id: MemorySectionId) -> Option<&MemorySection> {
+        self.memory_sections.get(id)
+    }
+
+    pub fn get_memory_section_location(
+        &self,
+        id: MemorySectionLocationId,
+    ) -> Option<&MemorySectionLocation> {
+        self.memory_section_locations.get(id)
+    }
+
+    pub fn get_meta_data_item(&self, id: MetaDataItemId) -> Option<&MetaDataItem> {
+        self.meta_data_items.get(id)
+    }
+
+    pub fn get_meta_data_item_set(&self, id: MetaDataItemSetId) -> Option<&MetaDataItemSet> {
+        self.meta_data_item_sets.get(id)
+    }
+
+    pub fn get_ml_figure(&self, id: MlFigureId) -> Option<&MlFigure> {
+        self.ml_figures.get(id)
+    }
+
+    pub fn get_ml_formula(&self, id: MlFormulaId) -> Option<&MlFormula> {
+        self.ml_formulas.get(id)
+    }
+
+    pub fn get_mode_access_point(&self, id: ModeAccessPointId) -> Option<&ModeAccessPoint> {
+        self.mode_access_points.get(id)
+    }
+
+    pub fn get_mode_access_point_ident(
+        &self,
+        id: ModeAccessPointIdentId,
+    ) -> Option<&ModeAccessPointIdent> {
+        self.mode_access_point_idents.get(id)
+    }
+
+    pub fn get_mode_declaration(&self, id: ModeDeclarationId) -> Option<&ModeDeclaration> {
+        self.mode_declarations.get(id)
+    }
+
+    pub fn get_mode_declaration_group(
+        &self,
+        id: ModeDeclarationGroupId,
+    ) -> Option<&ModeDeclarationGroup> {
+        self.mode_declaration_groups.get(id)
+    }
+
+    pub fn get_mode_declaration_group_prototype(
+        &self,
+        id: ModeDeclarationGroupPrototypeId,
+    ) -> Option<&ModeDeclarationGroupPrototype> {
+        self.mode_declaration_group_prototypes.get(id)
+    }
+
+    pub fn get_mode_declaration_group_prototype_mapping(
+        &self,
+        id: ModeDeclarationGroupPrototypeMappingId,
+    ) -> Option<&ModeDeclarationGroupPrototypeMapping> {
+        self.mode_declaration_group_prototype_mappings.get(id)
+    }
+
+    pub fn get_mode_declaration_mapping(
+        &self,
+        id: ModeDeclarationMappingId,
+    ) -> Option<&ModeDeclarationMapping> {
+        self.mode_declaration_mappings.get(id)
+    }
+
+    pub fn get_mode_declaration_mapping_set(
+        &self,
+        id: ModeDeclarationMappingSetId,
+    ) -> Option<&ModeDeclarationMappingSet> {
+        self.mode_declaration_mapping_sets.get(id)
+    }
+
+    pub fn get_mode_driven_transmission_mode_condition(
+        &self,
+        id: ModeDrivenTransmissionModeConditionId,
+    ) -> Option<&ModeDrivenTransmissionModeCondition> {
+        self.mode_driven_transmission_mode_conditions.get(id)
+    }
+
+    pub fn get_mode_error_behavior(&self, id: ModeErrorBehaviorId) -> Option<&ModeErrorBehavior> {
+        self.mode_error_behaviors.get(id)
+    }
+
+    pub fn get_mode_in_bsw_instance_ref(
+        &self,
+        id: ModeInBswInstanceRefId,
+    ) -> Option<&ModeInBswInstanceRef> {
+        self.mode_in_bsw_instance_refs.get(id)
+    }
+
+    pub fn get_mode_in_bsw_module_description_instance_ref(
+        &self,
+        id: ModeInBswModuleDescriptionInstanceRefId,
+    ) -> Option<&ModeInBswModuleDescriptionInstanceRef> {
+        self.mode_in_bsw_module_description_instance_refs.get(id)
+    }
+
+    pub fn get_mode_in_swc_instance_ref(
+        &self,
+        id: ModeInSwcInstanceRefId,
+    ) -> Option<&ModeInSwcInstanceRef> {
+        self.mode_in_swc_instance_refs.get(id)
+    }
+
+    pub fn get_mode_interface_mapping(
+        &self,
+        id: ModeInterfaceMappingId,
+    ) -> Option<&ModeInterfaceMapping> {
+        self.mode_interface_mappings.get(id)
+    }
+
+    pub fn get_mode_port_annotation(
+        &self,
+        id: ModePortAnnotationId,
+    ) -> Option<&ModePortAnnotation> {
+        self.mode_port_annotations.get(id)
+    }
+
+    pub fn get_mode_request_type_map(
+        &self,
+        id: ModeRequestTypeMapId,
+    ) -> Option<&ModeRequestTypeMap> {
+        self.mode_request_type_maps.get(id)
+    }
+
+    pub fn get_mode_switch_event_triggered_activity(
+        &self,
+        id: ModeSwitchEventTriggeredActivityId,
+    ) -> Option<&ModeSwitchEventTriggeredActivity> {
+        self.mode_switch_event_triggered_activitys.get(id)
+    }
+
+    pub fn get_mode_switch_interface(
+        &self,
+        id: ModeSwitchInterfaceId,
+    ) -> Option<&ModeSwitchInterface> {
+        self.mode_switch_interfaces.get(id)
+    }
+
+    pub fn get_mode_switch_point(&self, id: ModeSwitchPointId) -> Option<&ModeSwitchPoint> {
+        self.mode_switch_points.get(id)
+    }
+
+    pub fn get_mode_switch_receiver_com_spec(
+        &self,
+        id: ModeSwitchReceiverComSpecId,
+    ) -> Option<&ModeSwitchReceiverComSpec> {
+        self.mode_switch_receiver_com_specs.get(id)
+    }
+
+    pub fn get_mode_switch_sender_com_spec(
+        &self,
+        id: ModeSwitchSenderComSpecId,
+    ) -> Option<&ModeSwitchSenderComSpec> {
+        self.mode_switch_sender_com_specs.get(id)
+    }
+
+    pub fn get_mode_switched_ack_event(
+        &self,
+        id: ModeSwitchedAckEventId,
+    ) -> Option<&ModeSwitchedAckEvent> {
+        self.mode_switched_ack_events.get(id)
+    }
+
+    pub fn get_mode_switched_ack_request(
+        &self,
+        id: ModeSwitchedAckRequestId,
+    ) -> Option<&ModeSwitchedAckRequest> {
+        self.mode_switched_ack_requests.get(id)
+    }
+
+    pub fn get_mode_transition(&self, id: ModeTransitionId) -> Option<&ModeTransition> {
+        self.mode_transitions.get(id)
+    }
+
+    pub fn get_modification(&self, id: ModificationId) -> Option<&Modification> {
+        self.modifications.get(id)
+    }
+
+    pub fn get_module_configuration(
+        &self,
+        id: ModuleConfigurationId,
+    ) -> Option<&ModuleConfiguration> {
+        self.module_configurations.get(id)
+    }
+
+    pub fn get_msr_query_arg(&self, id: MsrQueryArgId) -> Option<&MsrQueryArg> {
+        self.msr_query_args.get(id)
+    }
+
+    pub fn get_msr_query_chapter(&self, id: MsrQueryChapterId) -> Option<&MsrQueryChapter> {
+        self.msr_query_chapters.get(id)
+    }
+
+    pub fn get_msr_query_p1(&self, id: MsrQueryP1Id) -> Option<&MsrQueryP1> {
+        self.msr_query_p1s.get(id)
+    }
+
+    pub fn get_msr_query_p2(&self, id: MsrQueryP2Id) -> Option<&MsrQueryP2> {
+        self.msr_query_p2s.get(id)
+    }
+
+    pub fn get_msr_query_props(&self, id: MsrQueryPropsId) -> Option<&MsrQueryProps> {
+        self.msr_query_props.get(id)
+    }
+
+    pub fn get_msr_query_result_chapter(
+        &self,
+        id: MsrQueryResultChapterId,
+    ) -> Option<&MsrQueryResultChapter> {
+        self.msr_query_result_chapters.get(id)
+    }
+
+    pub fn get_msr_query_result_topic1(
+        &self,
+        id: MsrQueryResultTopic1Id,
+    ) -> Option<&MsrQueryResultTopic1> {
+        self.msr_query_result_topic1s.get(id)
+    }
+
+    pub fn get_msr_query_topic1(&self, id: MsrQueryTopic1Id) -> Option<&MsrQueryTopic1> {
+        self.msr_query_topic1s.get(id)
+    }
+
+    pub fn get_multi_language_overview_paragraph(
+        &self,
+        id: MultiLanguageOverviewParagraphId,
+    ) -> Option<&MultiLanguageOverviewParagraph> {
+        self.multi_language_overview_paragraphs.get(id)
+    }
+
+    pub fn get_multi_language_paragraph(
+        &self,
+        id: MultiLanguageParagraphId,
+    ) -> Option<&MultiLanguageParagraph> {
+        self.multi_language_paragraphs.get(id)
+    }
+
+    pub fn get_multi_language_plain_text(
+        &self,
+        id: MultiLanguagePlainTextId,
+    ) -> Option<&MultiLanguagePlainText> {
+        self.multi_language_plain_texts.get(id)
+    }
+
+    pub fn get_multi_language_verbatim(
+        &self,
+        id: MultiLanguageVerbatimId,
+    ) -> Option<&MultiLanguageVerbatim> {
+        self.multi_language_verbatims.get(id)
+    }
+
+    pub fn get_multidimensional_time(
+        &self,
+        id: MultidimensionalTimeId,
+    ) -> Option<&MultidimensionalTime> {
+        self.multidimensional_times.get(id)
+    }
+
+    pub fn get_multilanguage_long_name(
+        &self,
+        id: MultilanguageLongNameId,
+    ) -> Option<&MultilanguageLongName> {
+        self.multilanguage_long_names.get(id)
+    }
+
+    pub fn get_multiplexed_i_pdu(&self, id: MultiplexedIPduId) -> Option<&MultiplexedIPdu> {
+        self.multiplexed_i_pdus.get(id)
+    }
+
+    pub fn get_multiplicity_restriction_with_severity(
+        &self,
+        id: MultiplicityRestrictionWithSeverityId,
+    ) -> Option<&MultiplicityRestrictionWithSeverity> {
+        self.multiplicity_restriction_with_severitys.get(id)
+    }
+
+    pub fn get_n_pdu(&self, id: NPduId) -> Option<&NPdu> {
+        self.n_pdus.get(id)
+    }
+
+    pub fn get_network_endpoint(&self, id: NetworkEndpointId) -> Option<&NetworkEndpoint> {
+        self.network_endpoints.get(id)
+    }
+
+    pub fn get_network_layer_rule(&self, id: NetworkLayerRuleId) -> Option<&NetworkLayerRule> {
+        self.network_layer_rules.get(id)
+    }
+
+    pub fn get_network_segment_identification(
+        &self,
+        id: NetworkSegmentIdentificationId,
+    ) -> Option<&NetworkSegmentIdentification> {
+        self.network_segment_identifications.get(id)
+    }
+
+    pub fn get_nm_config(&self, id: NmConfigId) -> Option<&NmConfig> {
+        self.nm_configs.get(id)
+    }
+
+    pub fn get_nm_coordinator(&self, id: NmCoordinatorId) -> Option<&NmCoordinator> {
+        self.nm_coordinators.get(id)
+    }
+
+    pub fn get_nm_ecu(&self, id: NmEcuId) -> Option<&NmEcu> {
+        self.nm_ecus.get(id)
+    }
+
+    pub fn get_nm_pdu(&self, id: NmPduId) -> Option<&NmPdu> {
+        self.nm_pdus.get(id)
+    }
+
+    pub fn get_nonqueued_receiver_com_spec(
+        &self,
+        id: NonqueuedReceiverComSpecId,
+    ) -> Option<&NonqueuedReceiverComSpec> {
+        self.nonqueued_receiver_com_specs.get(id)
+    }
+
+    pub fn get_nonqueued_sender_com_spec(
+        &self,
+        id: NonqueuedSenderComSpecId,
+    ) -> Option<&NonqueuedSenderComSpec> {
+        self.nonqueued_sender_com_specs.get(id)
+    }
+
+    pub fn get_not_available_value_specification(
+        &self,
+        id: NotAvailableValueSpecificationId,
+    ) -> Option<&NotAvailableValueSpecification> {
+        self.not_available_value_specifications.get(id)
+    }
+
+    pub fn get_note(&self, id: NoteId) -> Option<&Note> {
+        self.notes.get(id)
+    }
+
+    pub fn get_numerical_or_text(&self, id: NumericalOrTextId) -> Option<&NumericalOrText> {
+        self.numerical_or_texts.get(id)
+    }
+
+    pub fn get_numerical_rule_based_value_specification(
+        &self,
+        id: NumericalRuleBasedValueSpecificationId,
+    ) -> Option<&NumericalRuleBasedValueSpecification> {
+        self.numerical_rule_based_value_specifications.get(id)
+    }
+
+    pub fn get_numerical_value_specification(
+        &self,
+        id: NumericalValueSpecificationId,
+    ) -> Option<&NumericalValueSpecification> {
+        self.numerical_value_specifications.get(id)
+    }
+
+    pub fn get_numerical_value_variation_point(
+        &self,
+        id: NumericalValueVariationPointId,
+    ) -> Option<&NumericalValueVariationPoint> {
+        self.numerical_value_variation_points.get(id)
+    }
+
+    pub fn get_nv_block_data_mapping(
+        &self,
+        id: NvBlockDataMappingId,
+    ) -> Option<&NvBlockDataMapping> {
+        self.nv_block_data_mappings.get(id)
+    }
+
+    pub fn get_nv_block_descriptor(&self, id: NvBlockDescriptorId) -> Option<&NvBlockDescriptor> {
+        self.nv_block_descriptors.get(id)
+    }
+
+    pub fn get_nv_block_needs(&self, id: NvBlockNeedsId) -> Option<&NvBlockNeeds> {
+        self.nv_block_needs.get(id)
+    }
+
+    pub fn get_nv_block_sw_component_type(
+        &self,
+        id: NvBlockSwComponentTypeId,
+    ) -> Option<&NvBlockSwComponentType> {
+        self.nv_block_sw_component_types.get(id)
+    }
+
+    pub fn get_nv_data_interface(&self, id: NvDataInterfaceId) -> Option<&NvDataInterface> {
+        self.nv_data_interfaces.get(id)
+    }
+
+    pub fn get_nv_data_port_annotation(
+        &self,
+        id: NvDataPortAnnotationId,
+    ) -> Option<&NvDataPortAnnotation> {
+        self.nv_data_port_annotations.get(id)
+    }
+
+    pub fn get_nv_provide_com_spec(&self, id: NvProvideComSpecId) -> Option<&NvProvideComSpec> {
+        self.nv_provide_com_specs.get(id)
+    }
+
+    pub fn get_nv_require_com_spec(&self, id: NvRequireComSpecId) -> Option<&NvRequireComSpec> {
+        self.nv_require_com_specs.get(id)
+    }
+
+    pub fn get_obd_control_service_needs(
+        &self,
+        id: ObdControlServiceNeedsId,
+    ) -> Option<&ObdControlServiceNeeds> {
+        self.obd_control_service_needs.get(id)
+    }
+
+    pub fn get_obd_info_service_needs(
+        &self,
+        id: ObdInfoServiceNeedsId,
+    ) -> Option<&ObdInfoServiceNeeds> {
+        self.obd_info_service_needs.get(id)
+    }
+
+    pub fn get_obd_monitor_service_needs(
+        &self,
+        id: ObdMonitorServiceNeedsId,
+    ) -> Option<&ObdMonitorServiceNeeds> {
+        self.obd_monitor_service_needs.get(id)
+    }
+
+    pub fn get_obd_pid_service_needs(
+        &self,
+        id: ObdPidServiceNeedsId,
+    ) -> Option<&ObdPidServiceNeeds> {
+        self.obd_pid_service_needs.get(id)
+    }
+
+    pub fn get_obd_ratio_denominator_needs(
+        &self,
+        id: ObdRatioDenominatorNeedsId,
+    ) -> Option<&ObdRatioDenominatorNeeds> {
+        self.obd_ratio_denominator_needs.get(id)
+    }
+
+    pub fn get_obd_ratio_service_needs(
+        &self,
+        id: ObdRatioServiceNeedsId,
+    ) -> Option<&ObdRatioServiceNeeds> {
+        self.obd_ratio_service_needs.get(id)
+    }
+
+    pub fn get_offset_timing_constraint(
+        &self,
+        id: OffsetTimingConstraintId,
+    ) -> Option<&OffsetTimingConstraint> {
+        self.offset_timing_constraints.get(id)
+    }
+
+    pub fn get_operation_argument_in_component_instance_ref(
+        &self,
+        id: OperationArgumentInComponentInstanceRefId,
+    ) -> Option<&OperationArgumentInComponentInstanceRef> {
+        self.operation_argument_in_component_instance_refs.get(id)
+    }
+
+    pub fn get_operation_in_system_instance_ref(
+        &self,
+        id: OperationInSystemInstanceRefId,
+    ) -> Option<&OperationInSystemInstanceRef> {
+        self.operation_in_system_instance_refs.get(id)
+    }
+
+    pub fn get_operation_invoked_event(
+        &self,
+        id: OperationInvokedEventId,
+    ) -> Option<&OperationInvokedEvent> {
+        self.operation_invoked_events.get(id)
+    }
+
+    pub fn get_ordered_master(&self, id: OrderedMasterId) -> Option<&OrderedMaster> {
+        self.ordered_masters.get(id)
+    }
+
+    pub fn get_os_task_execution_event(
+        &self,
+        id: OsTaskExecutionEventId,
+    ) -> Option<&OsTaskExecutionEvent> {
+        self.os_task_execution_events.get(id)
+    }
+
+    pub fn get_os_task_proxy(&self, id: OsTaskProxyId) -> Option<&OsTaskProxy> {
+        self.os_task_proxys.get(id)
+    }
+
+    pub fn get_p_mode_group_in_atomic_swc_instance_ref(
+        &self,
+        id: PModeGroupInAtomicSwcInstanceRefId,
+    ) -> Option<&PModeGroupInAtomicSwcInstanceRef> {
+        self.p_mode_group_in_atomic_swc_instance_refs.get(id)
+    }
+
+    pub fn get_p_operation_in_atomic_swc_instance_ref(
+        &self,
+        id: POperationInAtomicSwcInstanceRefId,
+    ) -> Option<&POperationInAtomicSwcInstanceRef> {
+        self.p_operation_in_atomic_swc_instance_refs.get(id)
+    }
+
+    pub fn get_p_port_in_composition_instance_ref(
+        &self,
+        id: PPortInCompositionInstanceRefId,
+    ) -> Option<&PPortInCompositionInstanceRef> {
+        self.p_port_in_composition_instance_refs.get(id)
+    }
+
+    pub fn get_p_port_prototype(&self, id: PPortPrototypeId) -> Option<&PPortPrototype> {
+        self.p_port_prototypes.get(id)
+    }
+
+    pub fn get_pr_port_prototype(&self, id: PRPortPrototypeId) -> Option<&PRPortPrototype> {
+        self.pr_port_prototypes.get(id)
+    }
+
+    pub fn get_p_trigger_in_atomic_swc_type_instance_ref(
+        &self,
+        id: PTriggerInAtomicSwcTypeInstanceRefId,
+    ) -> Option<&PTriggerInAtomicSwcTypeInstanceRef> {
+        self.p_trigger_in_atomic_swc_type_instance_refs.get(id)
+    }
+
+    pub fn get_parameter_access(&self, id: ParameterAccessId) -> Option<&ParameterAccess> {
+        self.parameter_access.get(id)
+    }
+
+    pub fn get_parameter_data_prototype(
+        &self,
+        id: ParameterDataPrototypeId,
+    ) -> Option<&ParameterDataPrototype> {
+        self.parameter_data_prototypes.get(id)
+    }
+
+    pub fn get_parameter_in_atomic_swc_type_instance_ref(
+        &self,
+        id: ParameterInAtomicSWCTypeInstanceRefId,
+    ) -> Option<&ParameterInAtomicSWCTypeInstanceRef> {
+        self.parameter_in_atomic_swc_type_instance_refs.get(id)
+    }
+
+    pub fn get_parameter_interface(&self, id: ParameterInterfaceId) -> Option<&ParameterInterface> {
+        self.parameter_interfaces.get(id)
+    }
+
+    pub fn get_parameter_port_annotation(
+        &self,
+        id: ParameterPortAnnotationId,
+    ) -> Option<&ParameterPortAnnotation> {
+        self.parameter_port_annotations.get(id)
+    }
+
+    pub fn get_parameter_provide_com_spec(
+        &self,
+        id: ParameterProvideComSpecId,
+    ) -> Option<&ParameterProvideComSpec> {
+        self.parameter_provide_com_specs.get(id)
+    }
+
+    pub fn get_parameter_require_com_spec(
+        &self,
+        id: ParameterRequireComSpecId,
+    ) -> Option<&ParameterRequireComSpec> {
+        self.parameter_require_com_specs.get(id)
+    }
+
+    pub fn get_parameter_sw_component_type(
+        &self,
+        id: ParameterSwComponentTypeId,
+    ) -> Option<&ParameterSwComponentType> {
+        self.parameter_sw_component_types.get(id)
+    }
+
+    pub fn get_pass_through_sw_connector(
+        &self,
+        id: PassThroughSwConnectorId,
+    ) -> Option<&PassThroughSwConnector> {
+        self.pass_through_sw_connectors.get(id)
+    }
+
+    pub fn get_payload_byte_pattern_rule(
+        &self,
+        id: PayloadBytePatternRuleId,
+    ) -> Option<&PayloadBytePatternRule> {
+        self.payload_byte_pattern_rules.get(id)
+    }
+
+    pub fn get_payload_byte_pattern_rule_part(
+        &self,
+        id: PayloadBytePatternRulePartId,
+    ) -> Option<&PayloadBytePatternRulePart> {
+        self.payload_byte_pattern_rule_parts.get(id)
+    }
+
+    pub fn get_pdu_activation_routing_group(
+        &self,
+        id: PduActivationRoutingGroupId,
+    ) -> Option<&PduActivationRoutingGroup> {
+        self.pdu_activation_routing_groups.get(id)
+    }
+
+    pub fn get_pdu_mapping_default_value(
+        &self,
+        id: PduMappingDefaultValueId,
+    ) -> Option<&PduMappingDefaultValue> {
+        self.pdu_mapping_default_values.get(id)
+    }
+
+    pub fn get_pdu_to_frame_mapping(&self, id: PduToFrameMappingId) -> Option<&PduToFrameMapping> {
+        self.pdu_to_frame_mappings.get(id)
+    }
+
+    pub fn get_pdu_triggering(&self, id: PduTriggeringId) -> Option<&PduTriggering> {
+        self.pdu_triggerings.get(id)
+    }
+
+    pub fn get_pdur_i_pdu_group(&self, id: PdurIPduGroupId) -> Option<&PdurIPduGroup> {
+        self.pdur_i_pdu_groups.get(id)
+    }
+
+    pub fn get_per_instance_memory(&self, id: PerInstanceMemoryId) -> Option<&PerInstanceMemory> {
+        self.per_instance_memorys.get(id)
+    }
+
+    pub fn get_per_instance_memory_size(
+        &self,
+        id: PerInstanceMemorySizeId,
+    ) -> Option<&PerInstanceMemorySize> {
+        self.per_instance_memory_sizes.get(id)
+    }
+
+    pub fn get_periodic_event_triggering(
+        &self,
+        id: PeriodicEventTriggeringId,
+    ) -> Option<&PeriodicEventTriggering> {
+        self.periodic_event_triggerings.get(id)
+    }
+
+    pub fn get_permissible_signal_path(
+        &self,
+        id: PermissibleSignalPathId,
+    ) -> Option<&PermissibleSignalPath> {
+        self.permissible_signal_paths.get(id)
+    }
+
+    pub fn get_phys_constrs(&self, id: PhysConstrsId) -> Option<&PhysConstrs> {
+        self.phys_constrs.get(id)
+    }
+
+    pub fn get_physical_dimension(&self, id: PhysicalDimensionId) -> Option<&PhysicalDimension> {
+        self.physical_dimensions.get(id)
+    }
+
+    pub fn get_physical_dimension_mapping(
+        &self,
+        id: PhysicalDimensionMappingId,
+    ) -> Option<&PhysicalDimensionMapping> {
+        self.physical_dimension_mappings.get(id)
+    }
+
+    pub fn get_physical_dimension_mapping_set(
+        &self,
+        id: PhysicalDimensionMappingSetId,
+    ) -> Option<&PhysicalDimensionMappingSet> {
+        self.physical_dimension_mapping_sets.get(id)
+    }
+
+    pub fn get_platform_module_ethernet_endpoint_configuration(
+        &self,
+        id: PlatformModuleEthernetEndpointConfigurationId,
+    ) -> Option<&PlatformModuleEthernetEndpointConfiguration> {
+        self.platform_module_ethernet_endpoint_configurations
+            .get(id)
+    }
+
+    pub fn get_plca_props(&self, id: PlcaPropsId) -> Option<&PlcaProps> {
+        self.plca_props.get(id)
+    }
+
+    pub fn get_pnc_mapping(&self, id: PncMappingId) -> Option<&PncMapping> {
+        self.pnc_mappings.get(id)
+    }
+
+    pub fn get_port_api_option(&self, id: PortAPIOptionId) -> Option<&PortAPIOption> {
+        self.port_api_options.get(id)
+    }
+
+    pub fn get_port_defined_argument_value(
+        &self,
+        id: PortDefinedArgumentValueId,
+    ) -> Option<&PortDefinedArgumentValue> {
+        self.port_defined_argument_values.get(id)
+    }
+
+    pub fn get_port_element_to_communication_resource_mapping(
+        &self,
+        id: PortElementToCommunicationResourceMappingId,
+    ) -> Option<&PortElementToCommunicationResourceMapping> {
+        self.port_element_to_communication_resource_mappings.get(id)
+    }
+
+    pub fn get_port_group(&self, id: PortGroupId) -> Option<&PortGroup> {
+        self.port_groups.get(id)
+    }
+
+    pub fn get_port_group_in_system_instance_ref(
+        &self,
+        id: PortGroupInSystemInstanceRefId,
+    ) -> Option<&PortGroupInSystemInstanceRef> {
+        self.port_group_in_system_instance_refs.get(id)
+    }
+
+    pub fn get_port_interface_blueprint_mapping(
+        &self,
+        id: PortInterfaceBlueprintMappingId,
+    ) -> Option<&PortInterfaceBlueprintMapping> {
+        self.port_interface_blueprint_mappings.get(id)
+    }
+
+    pub fn get_port_interface_mapping_set(
+        &self,
+        id: PortInterfaceMappingSetId,
+    ) -> Option<&PortInterfaceMappingSet> {
+        self.port_interface_mapping_sets.get(id)
+    }
+
+    pub fn get_port_prototype_blueprint(
+        &self,
+        id: PortPrototypeBlueprintId,
+    ) -> Option<&PortPrototypeBlueprint> {
+        self.port_prototype_blueprints.get(id)
+    }
+
+    pub fn get_port_prototype_blueprint_init_value(
+        &self,
+        id: PortPrototypeBlueprintInitValueId,
+    ) -> Option<&PortPrototypeBlueprintInitValue> {
+        self.port_prototype_blueprint_init_values.get(id)
+    }
+
+    pub fn get_port_prototype_blueprint_mapping(
+        &self,
+        id: PortPrototypeBlueprintMappingId,
+    ) -> Option<&PortPrototypeBlueprintMapping> {
+        self.port_prototype_blueprint_mappings.get(id)
+    }
+
+    pub fn get_positive_integer_value_variation_point(
+        &self,
+        id: PositiveIntegerValueVariationPointId,
+    ) -> Option<&PositiveIntegerValueVariationPoint> {
+        self.positive_integer_value_variation_points.get(id)
+    }
+
+    pub fn get_possible_error_reaction(
+        &self,
+        id: PossibleErrorReactionId,
+    ) -> Option<&PossibleErrorReaction> {
+        self.possible_error_reactions.get(id)
+    }
+
+    pub fn get_post_build_variant_condition(
+        &self,
+        id: PostBuildVariantConditionId,
+    ) -> Option<&PostBuildVariantCondition> {
+        self.post_build_variant_conditions.get(id)
+    }
+
+    pub fn get_post_build_variant_criterion(
+        &self,
+        id: PostBuildVariantCriterionId,
+    ) -> Option<&PostBuildVariantCriterion> {
+        self.post_build_variant_criterions.get(id)
+    }
+
+    pub fn get_post_build_variant_criterion_value(
+        &self,
+        id: PostBuildVariantCriterionValueId,
+    ) -> Option<&PostBuildVariantCriterionValue> {
+        self.post_build_variant_criterion_values.get(id)
+    }
+
+    pub fn get_post_build_variant_criterion_value_set(
+        &self,
+        id: PostBuildVariantCriterionValueSetId,
+    ) -> Option<&PostBuildVariantCriterionValueSet> {
+        self.post_build_variant_criterion_value_sets.get(id)
+    }
+
+    pub fn get_predefined_chapter(&self, id: PredefinedChapterId) -> Option<&PredefinedChapter> {
+        self.predefined_chapters.get(id)
+    }
+
+    pub fn get_predefined_variant(&self, id: PredefinedVariantId) -> Option<&PredefinedVariant> {
+        self.predefined_variants.get(id)
+    }
+
+    pub fn get_primitive_attribute_condition(
+        &self,
+        id: PrimitiveAttributeConditionId,
+    ) -> Option<&PrimitiveAttributeCondition> {
+        self.primitive_attribute_conditions.get(id)
+    }
+
+    pub fn get_primitive_attribute_tailoring(
+        &self,
+        id: PrimitiveAttributeTailoringId,
+    ) -> Option<&PrimitiveAttributeTailoring> {
+        self.primitive_attribute_tailorings.get(id)
+    }
+
+    pub fn get_privacy_level(&self, id: PrivacyLevelId) -> Option<&PrivacyLevel> {
+        self.privacy_levels.get(id)
+    }
+
+    pub fn get_prm_char(&self, id: PrmCharId) -> Option<&PrmChar> {
+        self.prm_chars.get(id)
+    }
+
+    pub fn get_prm_char_abs_tol(&self, id: PrmCharAbsTolId) -> Option<&PrmCharAbsTol> {
+        self.prm_char_abs_tols.get(id)
+    }
+
+    pub fn get_prm_char_min_typ_max(&self, id: PrmCharMinTypMaxId) -> Option<&PrmCharMinTypMax> {
+        self.prm_char_min_typ_maxs.get(id)
+    }
+
+    pub fn get_prm_char_numerical_contents(
+        &self,
+        id: PrmCharNumericalContentsId,
+    ) -> Option<&PrmCharNumericalContents> {
+        self.prm_char_numerical_contents.get(id)
+    }
+
+    pub fn get_prm_char_textual_contents(
+        &self,
+        id: PrmCharTextualContentsId,
+    ) -> Option<&PrmCharTextualContents> {
+        self.prm_char_textual_contents.get(id)
+    }
+
+    pub fn get_prms(&self, id: PrmsId) -> Option<&Prms> {
+        self.prms.get(id)
+    }
+
+    pub fn get_provided_service_instance(
+        &self,
+        id: ProvidedServiceInstanceId,
+    ) -> Option<&ProvidedServiceInstance> {
+        self.provided_service_instances.get(id)
+    }
+
+    pub fn get_queued_receiver_com_spec(
+        &self,
+        id: QueuedReceiverComSpecId,
+    ) -> Option<&QueuedReceiverComSpec> {
+        self.queued_receiver_com_specs.get(id)
+    }
+
+    pub fn get_queued_sender_com_spec(
+        &self,
+        id: QueuedSenderComSpecId,
+    ) -> Option<&QueuedSenderComSpec> {
+        self.queued_sender_com_specs.get(id)
+    }
+
+    pub fn get_r_mode_group_in_atomic_swc_instance_ref(
+        &self,
+        id: RModeGroupInAtomicSWCInstanceRefId,
+    ) -> Option<&RModeGroupInAtomicSWCInstanceRef> {
+        self.r_mode_group_in_atomic_swc_instance_refs.get(id)
+    }
+
+    pub fn get_r_mode_in_atomic_swc_instance_ref(
+        &self,
+        id: RModeInAtomicSwcInstanceRefId,
+    ) -> Option<&RModeInAtomicSwcInstanceRef> {
+        self.r_mode_in_atomic_swc_instance_refs.get(id)
+    }
+
+    pub fn get_r_operation_in_atomic_swc_instance_ref(
+        &self,
+        id: ROperationInAtomicSwcInstanceRefId,
+    ) -> Option<&ROperationInAtomicSwcInstanceRef> {
+        self.r_operation_in_atomic_swc_instance_refs.get(id)
+    }
+
+    pub fn get_r_port_in_composition_instance_ref(
+        &self,
+        id: RPortInCompositionInstanceRefId,
+    ) -> Option<&RPortInCompositionInstanceRef> {
+        self.r_port_in_composition_instance_refs.get(id)
+    }
+
+    pub fn get_r_port_prototype(&self, id: RPortPrototypeId) -> Option<&RPortPrototype> {
+        self.r_port_prototypes.get(id)
+    }
+
+    pub fn get_r_variable_in_atomic_swc_instance_ref(
+        &self,
+        id: RVariableInAtomicSwcInstanceRefId,
+    ) -> Option<&RVariableInAtomicSwcInstanceRef> {
+        self.r_variable_in_atomic_swc_instance_refs.get(id)
+    }
+
+    pub fn get_rapid_prototyping_scenario(
+        &self,
+        id: RapidPrototypingScenarioId,
+    ) -> Option<&RapidPrototypingScenario> {
+        self.rapid_prototyping_scenarios.get(id)
+    }
+
+    pub fn get_receiver_annotation(&self, id: ReceiverAnnotationId) -> Option<&ReceiverAnnotation> {
+        self.receiver_annotations.get(id)
+    }
+
+    pub fn get_reception_com_spec_props(
+        &self,
+        id: ReceptionComSpecPropsId,
+    ) -> Option<&ReceptionComSpecProps> {
+        self.reception_com_spec_props.get(id)
+    }
+
+    pub fn get_record_value_specification(
+        &self,
+        id: RecordValueSpecificationId,
+    ) -> Option<&RecordValueSpecification> {
+        self.record_value_specifications.get(id)
+    }
+
+    pub fn get_ref_type(&self, id: RefTypeId) -> Option<&RefType> {
+        self.ref_types.get(id)
+    }
+
+    pub fn get_reference_base(&self, id: ReferenceBaseId) -> Option<&ReferenceBase> {
+        self.reference_bases.get(id)
+    }
+
+    pub fn get_reference_condition(&self, id: ReferenceConditionId) -> Option<&ReferenceCondition> {
+        self.reference_conditions.get(id)
+    }
+
+    pub fn get_reference_tailoring(&self, id: ReferenceTailoringId) -> Option<&ReferenceTailoring> {
+        self.reference_tailorings.get(id)
+    }
+
+    pub fn get_reference_value(&self, id: ReferenceValueId) -> Option<&ReferenceValue> {
+        self.reference_values.get(id)
+    }
+
+    pub fn get_reference_value_specification(
+        &self,
+        id: ReferenceValueSpecificationId,
+    ) -> Option<&ReferenceValueSpecification> {
+        self.reference_value_specifications.get(id)
+    }
+
+    pub fn get_relative_tolerance(&self, id: RelativeToleranceId) -> Option<&RelativeTolerance> {
+        self.relative_tolerances.get(id)
+    }
+
+    pub fn get_request_response_delay(
+        &self,
+        id: RequestResponseDelayId,
+    ) -> Option<&RequestResponseDelay> {
+        self.request_response_delays.get(id)
+    }
+
+    pub fn get_resource_consumption(
+        &self,
+        id: ResourceConsumptionId,
+    ) -> Option<&ResourceConsumption> {
+        self.resource_consumptions.get(id)
+    }
+
+    pub fn get_role_based_bsw_module_entry_assignment(
+        &self,
+        id: RoleBasedBswModuleEntryAssignmentId,
+    ) -> Option<&RoleBasedBswModuleEntryAssignment> {
+        self.role_based_bsw_module_entry_assignments.get(id)
+    }
+
+    pub fn get_role_based_data_assignment(
+        &self,
+        id: RoleBasedDataAssignmentId,
+    ) -> Option<&RoleBasedDataAssignment> {
+        self.role_based_data_assignments.get(id)
+    }
+
+    pub fn get_role_based_data_type_assignment(
+        &self,
+        id: RoleBasedDataTypeAssignmentId,
+    ) -> Option<&RoleBasedDataTypeAssignment> {
+        self.role_based_data_type_assignments.get(id)
+    }
+
+    pub fn get_role_based_mc_data_assignment(
+        &self,
+        id: RoleBasedMcDataAssignmentId,
+    ) -> Option<&RoleBasedMcDataAssignment> {
+        self.role_based_mc_data_assignments.get(id)
+    }
+
+    pub fn get_role_based_port_assignment(
+        &self,
+        id: RoleBasedPortAssignmentId,
+    ) -> Option<&RoleBasedPortAssignment> {
+        self.role_based_port_assignments.get(id)
+    }
+
+    pub fn get_role_based_resource_dependency(
+        &self,
+        id: RoleBasedResourceDependencyId,
+    ) -> Option<&RoleBasedResourceDependency> {
+        self.role_based_resource_dependencys.get(id)
+    }
+
+    pub fn get_root_sw_composition_prototype(
+        &self,
+        id: RootSwCompositionPrototypeId,
+    ) -> Option<&RootSwCompositionPrototype> {
+        self.root_sw_composition_prototypes.get(id)
+    }
+
+    pub fn get_rough_estimate_heap_usage(
+        &self,
+        id: RoughEstimateHeapUsageId,
+    ) -> Option<&RoughEstimateHeapUsage> {
+        self.rough_estimate_heap_usages.get(id)
+    }
+
+    pub fn get_rough_estimate_of_execution_time(
+        &self,
+        id: RoughEstimateOfExecutionTimeId,
+    ) -> Option<&RoughEstimateOfExecutionTime> {
+        self.rough_estimate_of_execution_times.get(id)
+    }
+
+    pub fn get_rough_estimate_stack_usage(
+        &self,
+        id: RoughEstimateStackUsageId,
+    ) -> Option<&RoughEstimateStackUsage> {
+        self.rough_estimate_stack_usages.get(id)
+    }
+
+    pub fn get_row(&self, id: RowId) -> Option<&Row> {
+        self.rows.get(id)
+    }
+
+    pub fn get_rpt_component(&self, id: RptComponentId) -> Option<&RptComponent> {
+        self.rpt_components.get(id)
+    }
+
+    pub fn get_rpt_container(&self, id: RptContainerId) -> Option<&RptContainer> {
+        self.rpt_containers.get(id)
+    }
+
+    pub fn get_rpt_executable_entity(
+        &self,
+        id: RptExecutableEntityId,
+    ) -> Option<&RptExecutableEntity> {
+        self.rpt_executable_entitys.get(id)
+    }
+
+    pub fn get_rpt_executable_entity_event(
+        &self,
+        id: RptExecutableEntityEventId,
+    ) -> Option<&RptExecutableEntityEvent> {
+        self.rpt_executable_entity_events.get(id)
+    }
+
+    pub fn get_rpt_executable_entity_properties(
+        &self,
+        id: RptExecutableEntityPropertiesId,
+    ) -> Option<&RptExecutableEntityProperties> {
+        self.rpt_executable_entity_properties.get(id)
+    }
+
+    pub fn get_rpt_execution_context(
+        &self,
+        id: RptExecutionContextId,
+    ) -> Option<&RptExecutionContext> {
+        self.rpt_execution_contexts.get(id)
+    }
+
+    pub fn get_rpt_hook(&self, id: RptHookId) -> Option<&RptHook> {
+        self.rpt_hooks.get(id)
+    }
+
+    pub fn get_rpt_impl_policy(&self, id: RptImplPolicyId) -> Option<&RptImplPolicy> {
+        self.rpt_impl_policys.get(id)
+    }
+
+    pub fn get_rpt_profile(&self, id: RptProfileId) -> Option<&RptProfile> {
+        self.rpt_profiles.get(id)
+    }
+
+    pub fn get_rpt_service_point(&self, id: RptServicePointId) -> Option<&RptServicePoint> {
+        self.rpt_service_points.get(id)
+    }
+
+    pub fn get_rpt_support_data(&self, id: RptSupportDataId) -> Option<&RptSupportData> {
+        self.rpt_support_datas.get(id)
+    }
+
+    pub fn get_rpt_sw_prototyping_access(
+        &self,
+        id: RptSwPrototypingAccessId,
+    ) -> Option<&RptSwPrototypingAccess> {
+        self.rpt_sw_prototyping_access.get(id)
+    }
+
+    pub fn get_rte_event_in_composition_separation(
+        &self,
+        id: RteEventInCompositionSeparationId,
+    ) -> Option<&RteEventInCompositionSeparation> {
+        self.rte_event_in_composition_separations.get(id)
+    }
+
+    pub fn get_rte_event_in_composition_to_os_task_proxy_mapping(
+        &self,
+        id: RteEventInCompositionToOsTaskProxyMappingId,
+    ) -> Option<&RteEventInCompositionToOsTaskProxyMapping> {
+        self.rte_event_in_composition_to_os_task_proxy_mappings
+            .get(id)
+    }
+
+    pub fn get_rte_event_in_ecu_instance_ref(
+        &self,
+        id: RteEventInEcuInstanceRefId,
+    ) -> Option<&RteEventInEcuInstanceRef> {
+        self.rte_event_in_ecu_instance_refs.get(id)
+    }
+
+    pub fn get_rte_event_in_system_separation(
+        &self,
+        id: RteEventInSystemSeparationId,
+    ) -> Option<&RteEventInSystemSeparation> {
+        self.rte_event_in_system_separations.get(id)
+    }
+
+    pub fn get_rte_event_in_system_to_os_task_proxy_mapping(
+        &self,
+        id: RteEventInSystemToOsTaskProxyMappingId,
+    ) -> Option<&RteEventInSystemToOsTaskProxyMapping> {
+        self.rte_event_in_system_to_os_task_proxy_mappings.get(id)
+    }
+
+    pub fn get_rte_plugin_props(&self, id: RtePluginPropsId) -> Option<&RtePluginProps> {
+        self.rte_plugin_props.get(id)
+    }
+
+    pub fn get_rtp_tp(&self, id: RtpTpId) -> Option<&RtpTp> {
+        self.rtp_tps.get(id)
+    }
+
+    pub fn get_rule_arguments(&self, id: RuleArgumentsId) -> Option<&RuleArguments> {
+        self.rule_arguments.get(id)
+    }
+
+    pub fn get_rule_based_axis_cont(&self, id: RuleBasedAxisContId) -> Option<&RuleBasedAxisCont> {
+        self.rule_based_axis_conts.get(id)
+    }
+
+    pub fn get_rule_based_value_cont(
+        &self,
+        id: RuleBasedValueContId,
+    ) -> Option<&RuleBasedValueCont> {
+        self.rule_based_value_conts.get(id)
+    }
+
+    pub fn get_rule_based_value_specification(
+        &self,
+        id: RuleBasedValueSpecificationId,
+    ) -> Option<&RuleBasedValueSpecification> {
+        self.rule_based_value_specifications.get(id)
+    }
+
+    pub fn get_runnable_entity(&self, id: RunnableEntityId) -> Option<&RunnableEntity> {
+        self.runnable_entitys.get(id)
+    }
+
+    pub fn get_runnable_entity_argument(
+        &self,
+        id: RunnableEntityArgumentId,
+    ) -> Option<&RunnableEntityArgument> {
+        self.runnable_entity_arguments.get(id)
+    }
+
+    pub fn get_runnable_entity_group(
+        &self,
+        id: RunnableEntityGroupId,
+    ) -> Option<&RunnableEntityGroup> {
+        self.runnable_entity_groups.get(id)
+    }
+
+    pub fn get_runnable_entity_in_composition_instance_ref(
+        &self,
+        id: RunnableEntityInCompositionInstanceRefId,
+    ) -> Option<&RunnableEntityInCompositionInstanceRef> {
+        self.runnable_entity_in_composition_instance_refs.get(id)
+    }
+
+    pub fn get_runtime_error(&self, id: RuntimeErrorId) -> Option<&RuntimeError> {
+        self.runtime_errors.get(id)
+    }
+
+    pub fn get_rx_identifier_range(&self, id: RxIdentifierRangeId) -> Option<&RxIdentifierRange> {
+        self.rx_identifier_ranges.get(id)
+    }
+
+    pub fn get_someip_transformation_description(
+        &self,
+        id: SOMEIPTransformationDescriptionId,
+    ) -> Option<&SOMEIPTransformationDescription> {
+        self.someip_transformation_descriptions.get(id)
+    }
+
+    pub fn get_someip_transformation_i_signal_props(
+        &self,
+        id: SOMEIPTransformationISignalPropsId,
+    ) -> Option<&SOMEIPTransformationISignalProps> {
+        self.someip_transformation_i_signal_props.get(id)
+    }
+
+    pub fn get_someip_transformation_props(
+        &self,
+        id: SOMEIPTransformationPropsId,
+    ) -> Option<&SOMEIPTransformationProps> {
+        self.someip_transformation_props.get(id)
+    }
+
+    pub fn get_save_configuration_entry(
+        &self,
+        id: SaveConfigurationEntryId,
+    ) -> Option<&SaveConfigurationEntry> {
+        self.save_configuration_entrys.get(id)
+    }
+
+    pub fn get_scale_constr(&self, id: ScaleConstrId) -> Option<&ScaleConstr> {
+        self.scale_constrs.get(id)
+    }
+
+    pub fn get_sd(&self, id: SdId) -> Option<&Sd> {
+        self.sds.get(id)
+    }
+
+    pub fn get_sd_client_config(&self, id: SdClientConfigId) -> Option<&SdClientConfig> {
+        self.sd_client_configs.get(id)
+    }
+
+    pub fn get_sd_server_config(&self, id: SdServerConfigId) -> Option<&SdServerConfig> {
+        self.sd_server_configs.get(id)
+    }
+
+    pub fn get_sdf(&self, id: SdfId) -> Option<&Sdf> {
+        self.sdfs.get(id)
+    }
+
+    pub fn get_sdg(&self, id: SdgId) -> Option<&Sdg> {
+        self.sdgs.get(id)
+    }
+
+    pub fn get_sdg_aggregation_with_variation(
+        &self,
+        id: SdgAggregationWithVariationId,
+    ) -> Option<&SdgAggregationWithVariation> {
+        self.sdg_aggregation_with_variations.get(id)
+    }
+
+    pub fn get_sdg_caption(&self, id: SdgCaptionId) -> Option<&SdgCaption> {
+        self.sdg_captions.get(id)
+    }
+
+    pub fn get_sdg_class(&self, id: SdgClassId) -> Option<&SdgClass> {
+        self.sdg_class.get(id)
+    }
+
+    pub fn get_sdg_contents(&self, id: SdgContentsId) -> Option<&SdgContents> {
+        self.sdg_contents.get(id)
+    }
+
+    pub fn get_sdg_def(&self, id: SdgDefId) -> Option<&SdgDef> {
+        self.sdg_defs.get(id)
+    }
+
+    pub fn get_sdg_foreign_reference(
+        &self,
+        id: SdgForeignReferenceId,
+    ) -> Option<&SdgForeignReference> {
+        self.sdg_foreign_references.get(id)
+    }
+
+    pub fn get_sdg_foreign_reference_with_variation(
+        &self,
+        id: SdgForeignReferenceWithVariationId,
+    ) -> Option<&SdgForeignReferenceWithVariation> {
+        self.sdg_foreign_reference_with_variations.get(id)
+    }
+
+    pub fn get_sdg_primitive_attribute(
+        &self,
+        id: SdgPrimitiveAttributeId,
+    ) -> Option<&SdgPrimitiveAttribute> {
+        self.sdg_primitive_attributes.get(id)
+    }
+
+    pub fn get_sdg_primitive_attribute_with_variation(
+        &self,
+        id: SdgPrimitiveAttributeWithVariationId,
+    ) -> Option<&SdgPrimitiveAttributeWithVariation> {
+        self.sdg_primitive_attribute_with_variations.get(id)
+    }
+
+    pub fn get_sdg_reference(&self, id: SdgReferenceId) -> Option<&SdgReference> {
+        self.sdg_references.get(id)
+    }
+
+    pub fn get_sdg_tailoring(&self, id: SdgTailoringId) -> Option<&SdgTailoring> {
+        self.sdg_tailorings.get(id)
+    }
+
+    pub fn get_sec_oc_crypto_service_mapping(
+        &self,
+        id: SecOcCryptoServiceMappingId,
+    ) -> Option<&SecOcCryptoServiceMapping> {
+        self.sec_oc_crypto_service_mappings.get(id)
+    }
+
+    pub fn get_section_name_prefix(&self, id: SectionNamePrefixId) -> Option<&SectionNamePrefix> {
+        self.section_name_prefixs.get(id)
+    }
+
+    pub fn get_secure_communication_authentication_props(
+        &self,
+        id: SecureCommunicationAuthenticationPropsId,
+    ) -> Option<&SecureCommunicationAuthenticationProps> {
+        self.secure_communication_authentication_props.get(id)
+    }
+
+    pub fn get_secure_communication_freshness_props(
+        &self,
+        id: SecureCommunicationFreshnessPropsId,
+    ) -> Option<&SecureCommunicationFreshnessProps> {
+        self.secure_communication_freshness_props.get(id)
+    }
+
+    pub fn get_secure_communication_props(
+        &self,
+        id: SecureCommunicationPropsId,
+    ) -> Option<&SecureCommunicationProps> {
+        self.secure_communication_props.get(id)
+    }
+
+    pub fn get_secure_communication_props_set(
+        &self,
+        id: SecureCommunicationPropsSetId,
+    ) -> Option<&SecureCommunicationPropsSet> {
+        self.secure_communication_props_sets.get(id)
+    }
+
+    pub fn get_secure_on_board_communication_needs(
+        &self,
+        id: SecureOnBoardCommunicationNeedsId,
+    ) -> Option<&SecureOnBoardCommunicationNeeds> {
+        self.secure_on_board_communication_needs.get(id)
+    }
+
+    pub fn get_secured_i_pdu(&self, id: SecuredIPduId) -> Option<&SecuredIPdu> {
+        self.secured_i_pdus.get(id)
+    }
+
+    pub fn get_security_event_aggregation_filter(
+        &self,
+        id: SecurityEventAggregationFilterId,
+    ) -> Option<&SecurityEventAggregationFilter> {
+        self.security_event_aggregation_filters.get(id)
+    }
+
+    pub fn get_security_event_context_mapping_application(
+        &self,
+        id: SecurityEventContextMappingApplicationId,
+    ) -> Option<&SecurityEventContextMappingApplication> {
+        self.security_event_context_mapping_applications.get(id)
+    }
+
+    pub fn get_security_event_context_mapping_bsw_module(
+        &self,
+        id: SecurityEventContextMappingBswModuleId,
+    ) -> Option<&SecurityEventContextMappingBswModule> {
+        self.security_event_context_mapping_bsw_modules.get(id)
+    }
+
+    pub fn get_security_event_context_mapping_comm_connector(
+        &self,
+        id: SecurityEventContextMappingCommConnectorId,
+    ) -> Option<&SecurityEventContextMappingCommConnector> {
+        self.security_event_context_mapping_comm_connectors.get(id)
+    }
+
+    pub fn get_security_event_context_mapping_functional_cluster(
+        &self,
+        id: SecurityEventContextMappingFunctionalClusterId,
+    ) -> Option<&SecurityEventContextMappingFunctionalCluster> {
+        self.security_event_context_mapping_functional_clusters
+            .get(id)
+    }
+
+    pub fn get_security_event_context_props(
+        &self,
+        id: SecurityEventContextPropsId,
+    ) -> Option<&SecurityEventContextProps> {
+        self.security_event_context_props.get(id)
+    }
+
+    pub fn get_security_event_definition(
+        &self,
+        id: SecurityEventDefinitionId,
+    ) -> Option<&SecurityEventDefinition> {
+        self.security_event_definitions.get(id)
+    }
+
+    pub fn get_security_event_filter_chain(
+        &self,
+        id: SecurityEventFilterChainId,
+    ) -> Option<&SecurityEventFilterChain> {
+        self.security_event_filter_chains.get(id)
+    }
+
+    pub fn get_security_event_one_every_n_filter(
+        &self,
+        id: SecurityEventOneEveryNFilterId,
+    ) -> Option<&SecurityEventOneEveryNFilter> {
+        self.security_event_one_every_n_filters.get(id)
+    }
+
+    pub fn get_security_event_state_filter(
+        &self,
+        id: SecurityEventStateFilterId,
+    ) -> Option<&SecurityEventStateFilter> {
+        self.security_event_state_filters.get(id)
+    }
+
+    pub fn get_security_event_threshold_filter(
+        &self,
+        id: SecurityEventThresholdFilterId,
+    ) -> Option<&SecurityEventThresholdFilter> {
+        self.security_event_threshold_filters.get(id)
+    }
+
+    pub fn get_segment_position(&self, id: SegmentPositionId) -> Option<&SegmentPosition> {
+        self.segment_positions.get(id)
+    }
+
+    pub fn get_sender_annotation(&self, id: SenderAnnotationId) -> Option<&SenderAnnotation> {
+        self.sender_annotations.get(id)
+    }
+
+    pub fn get_sender_rec_array_element_mapping(
+        &self,
+        id: SenderRecArrayElementMappingId,
+    ) -> Option<&SenderRecArrayElementMapping> {
+        self.sender_rec_array_element_mappings.get(id)
+    }
+
+    pub fn get_sender_rec_array_type_mapping(
+        &self,
+        id: SenderRecArrayTypeMappingId,
+    ) -> Option<&SenderRecArrayTypeMapping> {
+        self.sender_rec_array_type_mappings.get(id)
+    }
+
+    pub fn get_sender_rec_record_element_mapping(
+        &self,
+        id: SenderRecRecordElementMappingId,
+    ) -> Option<&SenderRecRecordElementMapping> {
+        self.sender_rec_record_element_mappings.get(id)
+    }
+
+    pub fn get_sender_rec_record_type_mapping(
+        &self,
+        id: SenderRecRecordTypeMappingId,
+    ) -> Option<&SenderRecRecordTypeMapping> {
+        self.sender_rec_record_type_mappings.get(id)
+    }
+
+    pub fn get_sender_receiver_annotation(
+        &self,
+        id: SenderReceiverAnnotationId,
+    ) -> Option<&SenderReceiverAnnotation> {
+        self.sender_receiver_annotations.get(id)
+    }
+
+    pub fn get_sender_receiver_composite_element_to_signal_mapping(
+        &self,
+        id: SenderReceiverCompositeElementToSignalMappingId,
+    ) -> Option<&SenderReceiverCompositeElementToSignalMapping> {
+        self.sender_receiver_composite_element_to_signal_mappings
+            .get(id)
+    }
+
+    pub fn get_sender_receiver_interface(
+        &self,
+        id: SenderReceiverInterfaceId,
+    ) -> Option<&SenderReceiverInterface> {
+        self.sender_receiver_interfaces.get(id)
+    }
+
+    pub fn get_sender_receiver_to_signal_group_mapping(
+        &self,
+        id: SenderReceiverToSignalGroupMappingId,
+    ) -> Option<&SenderReceiverToSignalGroupMapping> {
+        self.sender_receiver_to_signal_group_mappings.get(id)
+    }
+
+    pub fn get_sender_receiver_to_signal_mapping(
+        &self,
+        id: SenderReceiverToSignalMappingId,
+    ) -> Option<&SenderReceiverToSignalMapping> {
+        self.sender_receiver_to_signal_mappings.get(id)
+    }
+
+    pub fn get_sensor_actuator_sw_component_type(
+        &self,
+        id: SensorActuatorSwComponentTypeId,
+    ) -> Option<&SensorActuatorSwComponentType> {
+        self.sensor_actuator_sw_component_types.get(id)
+    }
+
+    pub fn get_separate_signal_path(
+        &self,
+        id: SeparateSignalPathId,
+    ) -> Option<&SeparateSignalPath> {
+        self.separate_signal_paths.get(id)
+    }
+
+    pub fn get_server_com_spec(&self, id: ServerComSpecId) -> Option<&ServerComSpec> {
+        self.server_com_specs.get(id)
+    }
+
+    pub fn get_service_instance_collection_set(
+        &self,
+        id: ServiceInstanceCollectionSetId,
+    ) -> Option<&ServiceInstanceCollectionSet> {
+        self.service_instance_collection_sets.get(id)
+    }
+
+    pub fn get_service_proxy_sw_component_type(
+        &self,
+        id: ServiceProxySwComponentTypeId,
+    ) -> Option<&ServiceProxySwComponentType> {
+        self.service_proxy_sw_component_types.get(id)
+    }
+
+    pub fn get_service_sw_component_type(
+        &self,
+        id: ServiceSwComponentTypeId,
+    ) -> Option<&ServiceSwComponentType> {
+        self.service_sw_component_types.get(id)
+    }
+
+    pub fn get_short_name_fragment(&self, id: ShortNameFragmentId) -> Option<&ShortNameFragment> {
+        self.short_name_fragments.get(id)
+    }
+
+    pub fn get_signal_service_translation_element_props(
+        &self,
+        id: SignalServiceTranslationElementPropsId,
+    ) -> Option<&SignalServiceTranslationElementProps> {
+        self.signal_service_translation_element_props.get(id)
+    }
+
+    pub fn get_signal_service_translation_event_props(
+        &self,
+        id: SignalServiceTranslationEventPropsId,
+    ) -> Option<&SignalServiceTranslationEventProps> {
+        self.signal_service_translation_event_props.get(id)
+    }
+
+    pub fn get_signal_service_translation_props(
+        &self,
+        id: SignalServiceTranslationPropsId,
+    ) -> Option<&SignalServiceTranslationProps> {
+        self.signal_service_translation_props.get(id)
+    }
+
+    pub fn get_signal_service_translation_props_set(
+        &self,
+        id: SignalServiceTranslationPropsSetId,
+    ) -> Option<&SignalServiceTranslationPropsSet> {
+        self.signal_service_translation_props_sets.get(id)
+    }
+
+    pub fn get_simulated_execution_time(
+        &self,
+        id: SimulatedExecutionTimeId,
+    ) -> Option<&SimulatedExecutionTime> {
+        self.simulated_execution_times.get(id)
+    }
+
+    pub fn get_single_language_long_name(
+        &self,
+        id: SingleLanguageLongNameId,
+    ) -> Option<&SingleLanguageLongName> {
+        self.single_language_long_names.get(id)
+    }
+
+    pub fn get_single_language_unit_names(
+        &self,
+        id: SingleLanguageUnitNamesId,
+    ) -> Option<&SingleLanguageUnitNames> {
+        self.single_language_unit_names.get(id)
+    }
+
+    pub fn get_sl_overview_paragraph(
+        &self,
+        id: SlOverviewParagraphId,
+    ) -> Option<&SlOverviewParagraph> {
+        self.sl_overview_paragraphs.get(id)
+    }
+
+    pub fn get_sl_paragraph(&self, id: SlParagraphId) -> Option<&SlParagraph> {
+        self.sl_paragraphs.get(id)
+    }
+
+    pub fn get_so_ad_config(&self, id: SoAdConfigId) -> Option<&SoAdConfig> {
+        self.so_ad_configs.get(id)
+    }
+
+    pub fn get_so_ad_routing_group(&self, id: SoAdRoutingGroupId) -> Option<&SoAdRoutingGroup> {
+        self.so_ad_routing_groups.get(id)
+    }
+
+    pub fn get_so_con_i_pdu_identifier(
+        &self,
+        id: SoConIPduIdentifierId,
+    ) -> Option<&SoConIPduIdentifier> {
+        self.so_con_i_pdu_identifiers.get(id)
+    }
+
+    pub fn get_socket_address(&self, id: SocketAddressId) -> Option<&SocketAddress> {
+        self.socket_address.get(id)
+    }
+
+    pub fn get_socket_connection(&self, id: SocketConnectionId) -> Option<&SocketConnection> {
+        self.socket_connections.get(id)
+    }
+
+    pub fn get_socket_connection_bundle(
+        &self,
+        id: SocketConnectionBundleId,
+    ) -> Option<&SocketConnectionBundle> {
+        self.socket_connection_bundles.get(id)
+    }
+
+    pub fn get_socket_connection_ipdu_identifier(
+        &self,
+        id: SocketConnectionIpduIdentifierId,
+    ) -> Option<&SocketConnectionIpduIdentifier> {
+        self.socket_connection_ipdu_identifiers.get(id)
+    }
+
+    pub fn get_socket_connection_ipdu_identifier_set(
+        &self,
+        id: SocketConnectionIpduIdentifierSetId,
+    ) -> Option<&SocketConnectionIpduIdentifierSet> {
+        self.socket_connection_ipdu_identifier_sets.get(id)
+    }
+
+    pub fn get_software_context(&self, id: SoftwareContextId) -> Option<&SoftwareContext> {
+        self.software_contexts.get(id)
+    }
+
+    pub fn get_someip_protocol_rule(
+        &self,
+        id: SomeipProtocolRuleId,
+    ) -> Option<&SomeipProtocolRule> {
+        self.someip_protocol_rules.get(id)
+    }
+
+    pub fn get_someip_sd_client_event_group_timing_config(
+        &self,
+        id: SomeipSdClientEventGroupTimingConfigId,
+    ) -> Option<&SomeipSdClientEventGroupTimingConfig> {
+        self.someip_sd_client_event_group_timing_configs.get(id)
+    }
+
+    pub fn get_someip_sd_client_service_instance_config(
+        &self,
+        id: SomeipSdClientServiceInstanceConfigId,
+    ) -> Option<&SomeipSdClientServiceInstanceConfig> {
+        self.someip_sd_client_service_instance_configs.get(id)
+    }
+
+    pub fn get_someip_sd_rule(&self, id: SomeipSdRuleId) -> Option<&SomeipSdRule> {
+        self.someip_sd_rules.get(id)
+    }
+
+    pub fn get_someip_sd_server_event_group_timing_config(
+        &self,
+        id: SomeipSdServerEventGroupTimingConfigId,
+    ) -> Option<&SomeipSdServerEventGroupTimingConfig> {
+        self.someip_sd_server_event_group_timing_configs.get(id)
+    }
+
+    pub fn get_someip_sd_server_service_instance_config(
+        &self,
+        id: SomeipSdServerServiceInstanceConfigId,
+    ) -> Option<&SomeipSdServerServiceInstanceConfig> {
+        self.someip_sd_server_service_instance_configs.get(id)
+    }
+
+    pub fn get_someip_service_version(
+        &self,
+        id: SomeipServiceVersionId,
+    ) -> Option<&SomeipServiceVersion> {
+        self.someip_service_versions.get(id)
+    }
+
+    pub fn get_someip_tp_channel(&self, id: SomeipTpChannelId) -> Option<&SomeipTpChannel> {
+        self.someip_tp_channels.get(id)
+    }
+
+    pub fn get_someip_tp_config(&self, id: SomeipTpConfigId) -> Option<&SomeipTpConfig> {
+        self.someip_tp_configs.get(id)
+    }
+
+    pub fn get_someip_tp_connection(
+        &self,
+        id: SomeipTpConnectionId,
+    ) -> Option<&SomeipTpConnection> {
+        self.someip_tp_connections.get(id)
+    }
+
+    pub fn get_specification_document_scope(
+        &self,
+        id: SpecificationDocumentScopeId,
+    ) -> Option<&SpecificationDocumentScope> {
+        self.specification_document_scopes.get(id)
+    }
+
+    pub fn get_specification_scope(&self, id: SpecificationScopeId) -> Option<&SpecificationScope> {
+        self.specification_scopes.get(id)
+    }
+
+    pub fn get_sporadic_event_triggering(
+        &self,
+        id: SporadicEventTriggeringId,
+    ) -> Option<&SporadicEventTriggering> {
+        self.sporadic_event_triggerings.get(id)
+    }
+
+    pub fn get_state_dependent_firewall(
+        &self,
+        id: StateDependentFirewallId,
+    ) -> Option<&StateDependentFirewall> {
+        self.state_dependent_firewalls.get(id)
+    }
+
+    pub fn get_static_part(&self, id: StaticPartId) -> Option<&StaticPart> {
+        self.static_parts.get(id)
+    }
+
+    pub fn get_static_socket_connection(
+        &self,
+        id: StaticSocketConnectionId,
+    ) -> Option<&StaticSocketConnection> {
+        self.static_socket_connections.get(id)
+    }
+
+    pub fn get_std(&self, id: StdId) -> Option<&Std> {
+        self.stds.get(id)
+    }
+
+    pub fn get_stream_filter_ieee1722_tp(
+        &self,
+        id: StreamFilterIEEE1722TpId,
+    ) -> Option<&StreamFilterIEEE1722Tp> {
+        self.stream_filter_ieee1722_tps.get(id)
+    }
+
+    pub fn get_stream_filter_ipv4_address(
+        &self,
+        id: StreamFilterIpv4AddressId,
+    ) -> Option<&StreamFilterIpv4Address> {
+        self.stream_filter_ipv4_address.get(id)
+    }
+
+    pub fn get_stream_filter_ipv6_address(
+        &self,
+        id: StreamFilterIpv6AddressId,
+    ) -> Option<&StreamFilterIpv6Address> {
+        self.stream_filter_ipv6_address.get(id)
+    }
+
+    pub fn get_stream_filter_mac_address(
+        &self,
+        id: StreamFilterMACAddressId,
+    ) -> Option<&StreamFilterMACAddress> {
+        self.stream_filter_mac_address.get(id)
+    }
+
+    pub fn get_stream_filter_port_range(
+        &self,
+        id: StreamFilterPortRangeId,
+    ) -> Option<&StreamFilterPortRange> {
+        self.stream_filter_port_ranges.get(id)
+    }
+
+    pub fn get_stream_filter_rule_data_link_layer(
+        &self,
+        id: StreamFilterRuleDataLinkLayerId,
+    ) -> Option<&StreamFilterRuleDataLinkLayer> {
+        self.stream_filter_rule_data_link_layers.get(id)
+    }
+
+    pub fn get_stream_filter_rule_ip_tp(
+        &self,
+        id: StreamFilterRuleIpTpId,
+    ) -> Option<&StreamFilterRuleIpTp> {
+        self.stream_filter_rule_ip_tps.get(id)
+    }
+
+    pub fn get_string_value(&self, id: StringValueId) -> Option<&StringValue> {
+        self.string_values.get(id)
+    }
+
+    pub fn get_structured_req(&self, id: StructuredReqId) -> Option<&StructuredReq> {
+        self.structured_reqs.get(id)
+    }
+
+    pub fn get_sub_element_mapping(&self, id: SubElementMappingId) -> Option<&SubElementMapping> {
+        self.sub_element_mappings.get(id)
+    }
+
+    pub fn get_supervised_entity_checkpoint_needs(
+        &self,
+        id: SupervisedEntityCheckpointNeedsId,
+    ) -> Option<&SupervisedEntityCheckpointNeeds> {
+        self.supervised_entity_checkpoint_needs.get(id)
+    }
+
+    pub fn get_supervised_entity_needs(
+        &self,
+        id: SupervisedEntityNeedsId,
+    ) -> Option<&SupervisedEntityNeeds> {
+        self.supervised_entity_needs.get(id)
+    }
+
+    pub fn get_sw_addr_method(&self, id: SwAddrMethodId) -> Option<&SwAddrMethod> {
+        self.sw_addr_methods.get(id)
+    }
+
+    pub fn get_sw_axis_cont(&self, id: SwAxisContId) -> Option<&SwAxisCont> {
+        self.sw_axis_conts.get(id)
+    }
+
+    pub fn get_sw_axis_generic(&self, id: SwAxisGenericId) -> Option<&SwAxisGeneric> {
+        self.sw_axis_generics.get(id)
+    }
+
+    pub fn get_sw_axis_grouped(&self, id: SwAxisGroupedId) -> Option<&SwAxisGrouped> {
+        self.sw_axis_groupeds.get(id)
+    }
+
+    pub fn get_sw_axis_individual(&self, id: SwAxisIndividualId) -> Option<&SwAxisIndividual> {
+        self.sw_axis_individuals.get(id)
+    }
+
+    pub fn get_sw_axis_type(&self, id: SwAxisTypeId) -> Option<&SwAxisType> {
+        self.sw_axis_types.get(id)
+    }
+
+    pub fn get_sw_base_type(&self, id: SwBaseTypeId) -> Option<&SwBaseType> {
+        self.sw_base_types.get(id)
+    }
+
+    pub fn get_sw_bit_representation(
+        &self,
+        id: SwBitRepresentationId,
+    ) -> Option<&SwBitRepresentation> {
+        self.sw_bit_representations.get(id)
+    }
+
+    pub fn get_sw_calprm_axis(&self, id: SwCalprmAxisId) -> Option<&SwCalprmAxis> {
+        self.sw_calprm_axis.get(id)
+    }
+
+    pub fn get_sw_calprm_axis_set(&self, id: SwCalprmAxisSetId) -> Option<&SwCalprmAxisSet> {
+        self.sw_calprm_axis_sets.get(id)
+    }
+
+    pub fn get_sw_calprm_ref_proxy(&self, id: SwCalprmRefProxyId) -> Option<&SwCalprmRefProxy> {
+        self.sw_calprm_ref_proxys.get(id)
+    }
+
+    pub fn get_sw_component_documentation(
+        &self,
+        id: SwComponentDocumentationId,
+    ) -> Option<&SwComponentDocumentation> {
+        self.sw_component_documentations.get(id)
+    }
+
+    pub fn get_sw_component_prototype(
+        &self,
+        id: SwComponentPrototypeId,
+    ) -> Option<&SwComponentPrototype> {
+        self.sw_component_prototypes.get(id)
+    }
+
+    pub fn get_sw_component_prototype_assignment(
+        &self,
+        id: SwComponentPrototypeAssignmentId,
+    ) -> Option<&SwComponentPrototypeAssignment> {
+        self.sw_component_prototype_assignments.get(id)
+    }
+
+    pub fn get_sw_data_def_props(&self, id: SwDataDefPropsId) -> Option<&SwDataDefProps> {
+        self.sw_data_def_props.get(id)
+    }
+
+    pub fn get_sw_data_dependency(&self, id: SwDataDependencyId) -> Option<&SwDataDependency> {
+        self.sw_data_dependencys.get(id)
+    }
+
+    pub fn get_sw_data_dependency_args(
+        &self,
+        id: SwDataDependencyArgsId,
+    ) -> Option<&SwDataDependencyArgs> {
+        self.sw_data_dependency_args.get(id)
+    }
+
+    pub fn get_sw_generic_axis_param(
+        &self,
+        id: SwGenericAxisParamId,
+    ) -> Option<&SwGenericAxisParam> {
+        self.sw_generic_axis_params.get(id)
+    }
+
+    pub fn get_sw_generic_axis_param_type(
+        &self,
+        id: SwGenericAxisParamTypeId,
+    ) -> Option<&SwGenericAxisParamType> {
+        self.sw_generic_axis_param_types.get(id)
+    }
+
+    pub fn get_sw_pointer_target_props(
+        &self,
+        id: SwPointerTargetPropsId,
+    ) -> Option<&SwPointerTargetProps> {
+        self.sw_pointer_target_props.get(id)
+    }
+
+    pub fn get_sw_record_layout(&self, id: SwRecordLayoutId) -> Option<&SwRecordLayout> {
+        self.sw_record_layouts.get(id)
+    }
+
+    pub fn get_sw_record_layout_group(
+        &self,
+        id: SwRecordLayoutGroupId,
+    ) -> Option<&SwRecordLayoutGroup> {
+        self.sw_record_layout_groups.get(id)
+    }
+
+    pub fn get_sw_record_layout_group_content(
+        &self,
+        id: SwRecordLayoutGroupContentId,
+    ) -> Option<&SwRecordLayoutGroupContent> {
+        self.sw_record_layout_group_contents.get(id)
+    }
+
+    pub fn get_sw_record_layout_v(&self, id: SwRecordLayoutVId) -> Option<&SwRecordLayoutV> {
+        self.sw_record_layout_vs.get(id)
+    }
+
+    pub fn get_sw_service_arg(&self, id: SwServiceArgId) -> Option<&SwServiceArg> {
+        self.sw_service_args.get(id)
+    }
+
+    pub fn get_sw_systemconst(&self, id: SwSystemconstId) -> Option<&SwSystemconst> {
+        self.sw_systemconsts.get(id)
+    }
+
+    pub fn get_sw_systemconst_value(
+        &self,
+        id: SwSystemconstValueId,
+    ) -> Option<&SwSystemconstValue> {
+        self.sw_systemconst_values.get(id)
+    }
+
+    pub fn get_sw_systemconstant_value_set(
+        &self,
+        id: SwSystemconstantValueSetId,
+    ) -> Option<&SwSystemconstantValueSet> {
+        self.sw_systemconstant_value_sets.get(id)
+    }
+
+    pub fn get_sw_text_props(&self, id: SwTextPropsId) -> Option<&SwTextProps> {
+        self.sw_text_props.get(id)
+    }
+
+    pub fn get_sw_value_cont(&self, id: SwValueContId) -> Option<&SwValueCont> {
+        self.sw_value_conts.get(id)
+    }
+
+    pub fn get_sw_values(&self, id: SwValuesId) -> Option<&SwValues> {
+        self.sw_values.get(id)
+    }
+
+    pub fn get_sw_variable_ref_proxy(
+        &self,
+        id: SwVariableRefProxyId,
+    ) -> Option<&SwVariableRefProxy> {
+        self.sw_variable_ref_proxys.get(id)
+    }
+
+    pub fn get_swc_bsw_mapping(&self, id: SwcBswMappingId) -> Option<&SwcBswMapping> {
+        self.swc_bsw_mappings.get(id)
+    }
+
+    pub fn get_swc_bsw_runnable_mapping(
+        &self,
+        id: SwcBswRunnableMappingId,
+    ) -> Option<&SwcBswRunnableMapping> {
+        self.swc_bsw_runnable_mappings.get(id)
+    }
+
+    pub fn get_swc_bsw_synchronized_mode_group_prototype(
+        &self,
+        id: SwcBswSynchronizedModeGroupPrototypeId,
+    ) -> Option<&SwcBswSynchronizedModeGroupPrototype> {
+        self.swc_bsw_synchronized_mode_group_prototypes.get(id)
+    }
+
+    pub fn get_swc_bsw_synchronized_trigger(
+        &self,
+        id: SwcBswSynchronizedTriggerId,
+    ) -> Option<&SwcBswSynchronizedTrigger> {
+        self.swc_bsw_synchronized_triggers.get(id)
+    }
+
+    pub fn get_swc_exclusive_area_policy(
+        &self,
+        id: SwcExclusiveAreaPolicyId,
+    ) -> Option<&SwcExclusiveAreaPolicy> {
+        self.swc_exclusive_area_policys.get(id)
+    }
+
+    pub fn get_swc_implementation(&self, id: SwcImplementationId) -> Option<&SwcImplementation> {
+        self.swc_implementations.get(id)
+    }
+
+    pub fn get_swc_internal_behavior(
+        &self,
+        id: SwcInternalBehaviorId,
+    ) -> Option<&SwcInternalBehavior> {
+        self.swc_internal_behaviors.get(id)
+    }
+
+    pub fn get_swc_mode_manager_error_event(
+        &self,
+        id: SwcModeManagerErrorEventId,
+    ) -> Option<&SwcModeManagerErrorEvent> {
+        self.swc_mode_manager_error_events.get(id)
+    }
+
+    pub fn get_swc_mode_switch_event(
+        &self,
+        id: SwcModeSwitchEventId,
+    ) -> Option<&SwcModeSwitchEvent> {
+        self.swc_mode_switch_events.get(id)
+    }
+
+    pub fn get_swc_service_dependency(
+        &self,
+        id: SwcServiceDependencyId,
+    ) -> Option<&SwcServiceDependency> {
+        self.swc_service_dependencys.get(id)
+    }
+
+    pub fn get_swc_timing(&self, id: SwcTimingId) -> Option<&SwcTiming> {
+        self.swc_timings.get(id)
+    }
+
+    pub fn get_swc_to_application_partition_mapping(
+        &self,
+        id: SwcToApplicationPartitionMappingId,
+    ) -> Option<&SwcToApplicationPartitionMapping> {
+        self.swc_to_application_partition_mappings.get(id)
+    }
+
+    pub fn get_swc_to_ecu_mapping(&self, id: SwcToEcuMappingId) -> Option<&SwcToEcuMapping> {
+        self.swc_to_ecu_mappings.get(id)
+    }
+
+    pub fn get_swc_to_impl_mapping(&self, id: SwcToImplMappingId) -> Option<&SwcToImplMapping> {
+        self.swc_to_impl_mappings.get(id)
+    }
+
+    pub fn get_swc_to_swc_operation_arguments(
+        &self,
+        id: SwcToSwcOperationArgumentsId,
+    ) -> Option<&SwcToSwcOperationArguments> {
+        self.swc_to_swc_operation_arguments.get(id)
+    }
+
+    pub fn get_swc_to_swc_signal(&self, id: SwcToSwcSignalId) -> Option<&SwcToSwcSignal> {
+        self.swc_to_swc_signals.get(id)
+    }
+
+    pub fn get_switch_asynchronous_traffic_shaper_group_entry(
+        &self,
+        id: SwitchAsynchronousTrafficShaperGroupEntryId,
+    ) -> Option<&SwitchAsynchronousTrafficShaperGroupEntry> {
+        self.switch_asynchronous_traffic_shaper_group_entrys.get(id)
+    }
+
+    pub fn get_switch_flow_metering_entry(
+        &self,
+        id: SwitchFlowMeteringEntryId,
+    ) -> Option<&SwitchFlowMeteringEntry> {
+        self.switch_flow_metering_entrys.get(id)
+    }
+
+    pub fn get_switch_stream_filter_action_dest_port_modification(
+        &self,
+        id: SwitchStreamFilterActionDestPortModificationId,
+    ) -> Option<&SwitchStreamFilterActionDestPortModification> {
+        self.switch_stream_filter_action_dest_port_modifications
+            .get(id)
+    }
+
+    pub fn get_switch_stream_filter_entry(
+        &self,
+        id: SwitchStreamFilterEntryId,
+    ) -> Option<&SwitchStreamFilterEntry> {
+        self.switch_stream_filter_entrys.get(id)
+    }
+
+    pub fn get_switch_stream_filter_rule(
+        &self,
+        id: SwitchStreamFilterRuleId,
+    ) -> Option<&SwitchStreamFilterRule> {
+        self.switch_stream_filter_rules.get(id)
+    }
+
+    pub fn get_switch_stream_gate_entry(
+        &self,
+        id: SwitchStreamGateEntryId,
+    ) -> Option<&SwitchStreamGateEntry> {
+        self.switch_stream_gate_entrys.get(id)
+    }
+
+    pub fn get_switch_stream_identification(
+        &self,
+        id: SwitchStreamIdentificationId,
+    ) -> Option<&SwitchStreamIdentification> {
+        self.switch_stream_identifications.get(id)
+    }
+
+    pub fn get_symbol_props(&self, id: SymbolPropsId) -> Option<&SymbolProps> {
+        self.symbol_props.get(id)
+    }
+
+    pub fn get_symbolic_name_props(&self, id: SymbolicNamePropsId) -> Option<&SymbolicNameProps> {
+        self.symbolic_name_props.get(id)
+    }
+
+    pub fn get_sync_time_base_mgr_user_needs(
+        &self,
+        id: SyncTimeBaseMgrUserNeedsId,
+    ) -> Option<&SyncTimeBaseMgrUserNeeds> {
+        self.sync_time_base_mgr_user_needs.get(id)
+    }
+
+    pub fn get_synchronization_point_constraint(
+        &self,
+        id: SynchronizationPointConstraintId,
+    ) -> Option<&SynchronizationPointConstraint> {
+        self.synchronization_point_constraints.get(id)
+    }
+
+    pub fn get_synchronization_timing_constraint(
+        &self,
+        id: SynchronizationTimingConstraintId,
+    ) -> Option<&SynchronizationTimingConstraint> {
+        self.synchronization_timing_constraints.get(id)
+    }
+
+    pub fn get_synchronous_server_call_point(
+        &self,
+        id: SynchronousServerCallPointId,
+    ) -> Option<&SynchronousServerCallPoint> {
+        self.synchronous_server_call_points.get(id)
+    }
+
+    pub fn get_system(&self, id: SystemId) -> Option<&System> {
+        self.systems.get(id)
+    }
+
+    pub fn get_system_mapping(&self, id: SystemMappingId) -> Option<&SystemMapping> {
+        self.system_mappings.get(id)
+    }
+
+    pub fn get_system_signal(&self, id: SystemSignalId) -> Option<&SystemSignal> {
+        self.system_signals.get(id)
+    }
+
+    pub fn get_system_signal_group(&self, id: SystemSignalGroupId) -> Option<&SystemSignalGroup> {
+        self.system_signal_groups.get(id)
+    }
+
+    pub fn get_system_signal_group_to_communication_resource_mapping(
+        &self,
+        id: SystemSignalGroupToCommunicationResourceMappingId,
+    ) -> Option<&SystemSignalGroupToCommunicationResourceMapping> {
+        self.system_signal_group_to_communication_resource_mappings
+            .get(id)
+    }
+
+    pub fn get_system_signal_to_communication_resource_mapping(
+        &self,
+        id: SystemSignalToCommunicationResourceMappingId,
+    ) -> Option<&SystemSignalToCommunicationResourceMapping> {
+        self.system_signal_to_communication_resource_mappings
+            .get(id)
+    }
+
+    pub fn get_system_timing(&self, id: SystemTimingId) -> Option<&SystemTiming> {
+        self.system_timings.get(id)
+    }
+
+    pub fn get_td_cp_software_cluster_mapping(
+        &self,
+        id: TDCpSoftwareClusterMappingId,
+    ) -> Option<&TDCpSoftwareClusterMapping> {
+        self.td_cp_software_cluster_mappings.get(id)
+    }
+
+    pub fn get_td_cp_software_cluster_mapping_set(
+        &self,
+        id: TDCpSoftwareClusterMappingSetId,
+    ) -> Option<&TDCpSoftwareClusterMappingSet> {
+        self.td_cp_software_cluster_mapping_sets.get(id)
+    }
+
+    pub fn get_td_cp_software_cluster_resource_mapping(
+        &self,
+        id: TDCpSoftwareClusterResourceMappingId,
+    ) -> Option<&TDCpSoftwareClusterResourceMapping> {
+        self.td_cp_software_cluster_resource_mappings.get(id)
+    }
+
+    pub fn get_td_event_bsw_internal_behavior(
+        &self,
+        id: TDEventBswInternalBehaviorId,
+    ) -> Option<&TDEventBswInternalBehavior> {
+        self.td_event_bsw_internal_behaviors.get(id)
+    }
+
+    pub fn get_td_event_bsw_mode_declaration(
+        &self,
+        id: TDEventBswModeDeclarationId,
+    ) -> Option<&TDEventBswModeDeclaration> {
+        self.td_event_bsw_mode_declarations.get(id)
+    }
+
+    pub fn get_td_event_bsw_module(&self, id: TDEventBswModuleId) -> Option<&TDEventBswModule> {
+        self.td_event_bsw_modules.get(id)
+    }
+
+    pub fn get_td_event_complex(&self, id: TDEventComplexId) -> Option<&TDEventComplex> {
+        self.td_event_complexs.get(id)
+    }
+
+    pub fn get_td_event_fr_cluster_cycle_start(
+        &self,
+        id: TDEventFrClusterCycleStartId,
+    ) -> Option<&TDEventFrClusterCycleStart> {
+        self.td_event_fr_cluster_cycle_starts.get(id)
+    }
+
+    pub fn get_td_event_frame(&self, id: TDEventFrameId) -> Option<&TDEventFrame> {
+        self.td_event_frames.get(id)
+    }
+
+    pub fn get_td_event_frame_ethernet(
+        &self,
+        id: TDEventFrameEthernetId,
+    ) -> Option<&TDEventFrameEthernet> {
+        self.td_event_frame_ethernets.get(id)
+    }
+
+    pub fn get_td_event_i_pdu(&self, id: TDEventIPduId) -> Option<&TDEventIPdu> {
+        self.td_event_i_pdus.get(id)
+    }
+
+    pub fn get_td_event_i_signal(&self, id: TDEventISignalId) -> Option<&TDEventISignal> {
+        self.td_event_i_signals.get(id)
+    }
+
+    pub fn get_td_event_mode_declaration(
+        &self,
+        id: TDEventModeDeclarationId,
+    ) -> Option<&TDEventModeDeclaration> {
+        self.td_event_mode_declarations.get(id)
+    }
+
+    pub fn get_td_event_occurrence_expression(
+        &self,
+        id: TDEventOccurrenceExpressionId,
+    ) -> Option<&TDEventOccurrenceExpression> {
+        self.td_event_occurrence_expressions.get(id)
+    }
+
+    pub fn get_td_event_occurrence_expression_formula(
+        &self,
+        id: TDEventOccurrenceExpressionFormulaId,
+    ) -> Option<&TDEventOccurrenceExpressionFormula> {
+        self.td_event_occurrence_expression_formulas.get(id)
+    }
+
+    pub fn get_td_event_operation(&self, id: TDEventOperationId) -> Option<&TDEventOperation> {
+        self.td_event_operations.get(id)
+    }
+
+    pub fn get_td_event_sllet_port(&self, id: TDEventSLLETPortId) -> Option<&TDEventSLLETPort> {
+        self.td_event_sllet_ports.get(id)
+    }
+
+    pub fn get_td_event_swc_internal_behavior(
+        &self,
+        id: TDEventSwcInternalBehaviorId,
+    ) -> Option<&TDEventSwcInternalBehavior> {
+        self.td_event_swc_internal_behaviors.get(id)
+    }
+
+    pub fn get_td_event_swc_internal_behavior_reference(
+        &self,
+        id: TDEventSwcInternalBehaviorReferenceId,
+    ) -> Option<&TDEventSwcInternalBehaviorReference> {
+        self.td_event_swc_internal_behavior_references.get(id)
+    }
+
+    pub fn get_td_event_tt_can_cycle_start(
+        &self,
+        id: TDEventTTCanCycleStartId,
+    ) -> Option<&TDEventTTCanCycleStart> {
+        self.td_event_tt_can_cycle_starts.get(id)
+    }
+
+    pub fn get_td_event_trigger(&self, id: TDEventTriggerId) -> Option<&TDEventTrigger> {
+        self.td_event_triggers.get(id)
+    }
+
+    pub fn get_td_event_variable_data_prototype(
+        &self,
+        id: TDEventVariableDataPrototypeId,
+    ) -> Option<&TDEventVariableDataPrototype> {
+        self.td_event_variable_data_prototypes.get(id)
+    }
+
+    pub fn get_td_event_vfb(&self, id: TDEventVfbId) -> Option<&TDEventVfb> {
+        self.td_event_vfbs.get(id)
+    }
+
+    pub fn get_td_event_vfb_reference(
+        &self,
+        id: TDEventVfbReferenceId,
+    ) -> Option<&TDEventVfbReference> {
+        self.td_event_vfb_references.get(id)
+    }
+
+    pub fn get_td_header_id_range(&self, id: TDHeaderIdRangeId) -> Option<&TDHeaderIdRange> {
+        self.td_header_id_ranges.get(id)
+    }
+
+    pub fn get_tdlet_zone_clock(&self, id: TDLETZoneClockId) -> Option<&TDLETZoneClock> {
+        self.tdlet_zone_clocks.get(id)
+    }
+
+    pub fn get_t_ref_type(&self, id: TRefTypeId) -> Option<&TRefType> {
+        self.t_ref_types.get(id)
+    }
+
+    pub fn get_table(&self, id: TableId) -> Option<&Table> {
+        self.tables.get(id)
+    }
+
+    pub fn get_tag_with_optional_value(
+        &self,
+        id: TagWithOptionalValueId,
+    ) -> Option<&TagWithOptionalValue> {
+        self.tag_with_optional_values.get(id)
+    }
+
+    pub fn get_target_i_pdu_ref(&self, id: TargetIPduRefId) -> Option<&TargetIPduRef> {
+        self.target_i_pdu_refs.get(id)
+    }
+
+    pub fn get_tbody(&self, id: TbodyId) -> Option<&Tbody> {
+        self.tbodys.get(id)
+    }
+
+    pub fn get_tcp_ip_icmpv4_props(&self, id: TcpIpIcmpv4PropsId) -> Option<&TcpIpIcmpv4Props> {
+        self.tcp_ip_icmpv4_props.get(id)
+    }
+
+    pub fn get_tcp_ip_icmpv6_props(&self, id: TcpIpIcmpv6PropsId) -> Option<&TcpIpIcmpv6Props> {
+        self.tcp_ip_icmpv6_props.get(id)
+    }
+
+    pub fn get_tcp_option_filter_list(
+        &self,
+        id: TcpOptionFilterListId,
+    ) -> Option<&TcpOptionFilterList> {
+        self.tcp_option_filter_lists.get(id)
+    }
+
+    pub fn get_tcp_option_filter_set(
+        &self,
+        id: TcpOptionFilterSetId,
+    ) -> Option<&TcpOptionFilterSet> {
+        self.tcp_option_filter_sets.get(id)
+    }
+
+    pub fn get_tcp_props(&self, id: TcpPropsId) -> Option<&TcpProps> {
+        self.tcp_props.get(id)
+    }
+
+    pub fn get_tcp_rule(&self, id: TcpRuleId) -> Option<&TcpRule> {
+        self.tcp_rules.get(id)
+    }
+
+    pub fn get_tcp_tp(&self, id: TcpTpId) -> Option<&TcpTp> {
+        self.tcp_tps.get(id)
+    }
+
+    pub fn get_text_table_mapping(&self, id: TextTableMappingId) -> Option<&TextTableMapping> {
+        self.text_table_mappings.get(id)
+    }
+
+    pub fn get_text_table_value_pair(
+        &self,
+        id: TextTableValuePairId,
+    ) -> Option<&TextTableValuePair> {
+        self.text_table_value_pairs.get(id)
+    }
+
+    pub fn get_text_value_specification(
+        &self,
+        id: TextValueSpecificationId,
+    ) -> Option<&TextValueSpecification> {
+        self.text_value_specifications.get(id)
+    }
+
+    pub fn get_textual_condition(&self, id: TextualConditionId) -> Option<&TextualCondition> {
+        self.textual_conditions.get(id)
+    }
+
+    pub fn get_tgroup(&self, id: TgroupId) -> Option<&Tgroup> {
+        self.tgroups.get(id)
+    }
+
+    pub fn get_time_range_type(&self, id: TimeRangeTypeId) -> Option<&TimeRangeType> {
+        self.time_range_types.get(id)
+    }
+
+    pub fn get_time_range_type_tolerance(
+        &self,
+        id: TimeRangeTypeToleranceId,
+    ) -> Option<&TimeRangeTypeTolerance> {
+        self.time_range_type_tolerances.get(id)
+    }
+
+    pub fn get_time_sync_client_configuration(
+        &self,
+        id: TimeSyncClientConfigurationId,
+    ) -> Option<&TimeSyncClientConfiguration> {
+        self.time_sync_client_configurations.get(id)
+    }
+
+    pub fn get_time_sync_server_configuration(
+        &self,
+        id: TimeSyncServerConfigurationId,
+    ) -> Option<&TimeSyncServerConfiguration> {
+        self.time_sync_server_configurations.get(id)
+    }
+
+    pub fn get_time_synchronization(
+        &self,
+        id: TimeSynchronizationId,
+    ) -> Option<&TimeSynchronization> {
+        self.time_synchronizations.get(id)
+    }
+
+    pub fn get_time_value_value_variation_point(
+        &self,
+        id: TimeValueValueVariationPointId,
+    ) -> Option<&TimeValueValueVariationPoint> {
+        self.time_value_value_variation_points.get(id)
+    }
+
+    pub fn get_timing_clock_sync_accuracy(
+        &self,
+        id: TimingClockSyncAccuracyId,
+    ) -> Option<&TimingClockSyncAccuracy> {
+        self.timing_clock_sync_accuracys.get(id)
+    }
+
+    pub fn get_timing_condition(&self, id: TimingConditionId) -> Option<&TimingCondition> {
+        self.timing_conditions.get(id)
+    }
+
+    pub fn get_timing_condition_formula(
+        &self,
+        id: TimingConditionFormulaId,
+    ) -> Option<&TimingConditionFormula> {
+        self.timing_condition_formulas.get(id)
+    }
+
+    pub fn get_timing_description_event_chain(
+        &self,
+        id: TimingDescriptionEventChainId,
+    ) -> Option<&TimingDescriptionEventChain> {
+        self.timing_description_event_chains.get(id)
+    }
+
+    pub fn get_timing_event(&self, id: TimingEventId) -> Option<&TimingEvent> {
+        self.timing_events.get(id)
+    }
+
+    pub fn get_timing_extension_resource(
+        &self,
+        id: TimingExtensionResourceId,
+    ) -> Option<&TimingExtensionResource> {
+        self.timing_extension_resources.get(id)
+    }
+
+    pub fn get_timing_mode_instance(
+        &self,
+        id: TimingModeInstanceId,
+    ) -> Option<&TimingModeInstance> {
+        self.timing_mode_instances.get(id)
+    }
+
+    pub fn get_tls_crypto_cipher_suite(
+        &self,
+        id: TlsCryptoCipherSuiteId,
+    ) -> Option<&TlsCryptoCipherSuite> {
+        self.tls_crypto_cipher_suites.get(id)
+    }
+
+    pub fn get_tls_crypto_cipher_suite_props(
+        &self,
+        id: TlsCryptoCipherSuitePropsId,
+    ) -> Option<&TlsCryptoCipherSuiteProps> {
+        self.tls_crypto_cipher_suite_props.get(id)
+    }
+
+    pub fn get_tls_crypto_service_mapping(
+        &self,
+        id: TlsCryptoServiceMappingId,
+    ) -> Option<&TlsCryptoServiceMapping> {
+        self.tls_crypto_service_mappings.get(id)
+    }
+
+    pub fn get_tls_psk_identity(&self, id: TlsPskIdentityId) -> Option<&TlsPskIdentity> {
+        self.tls_psk_identitys.get(id)
+    }
+
+    pub fn get_tlv_data_id_definition(
+        &self,
+        id: TlvDataIdDefinitionId,
+    ) -> Option<&TlvDataIdDefinition> {
+        self.tlv_data_id_definitions.get(id)
+    }
+
+    pub fn get_tlv_data_id_definition_set(
+        &self,
+        id: TlvDataIdDefinitionSetId,
+    ) -> Option<&TlvDataIdDefinitionSet> {
+        self.tlv_data_id_definition_sets.get(id)
+    }
+
+    pub fn get_topic1(&self, id: Topic1Id) -> Option<&Topic1> {
+        self.topic1s.get(id)
+    }
+
+    pub fn get_topic_content(&self, id: TopicContentId) -> Option<&TopicContent> {
+        self.topic_contents.get(id)
+    }
+
+    pub fn get_topic_content_or_msr_query(
+        &self,
+        id: TopicContentOrMsrQueryId,
+    ) -> Option<&TopicContentOrMsrQuery> {
+        self.topic_content_or_msr_querys.get(id)
+    }
+
+    pub fn get_topic_or_msr_query(&self, id: TopicOrMsrQueryId) -> Option<&TopicOrMsrQuery> {
+        self.topic_or_msr_querys.get(id)
+    }
+
+    pub fn get_tp_address(&self, id: TpAddressId) -> Option<&TpAddress> {
+        self.tp_address.get(id)
+    }
+
+    pub fn get_tp_connection_ident(&self, id: TpConnectionIdentId) -> Option<&TpConnectionIdent> {
+        self.tp_connection_idents.get(id)
+    }
+
+    pub fn get_tp_port(&self, id: TpPortId) -> Option<&TpPort> {
+        self.tp_ports.get(id)
+    }
+
+    pub fn get_traceable_table(&self, id: TraceableTableId) -> Option<&TraceableTable> {
+        self.traceable_tables.get(id)
+    }
+
+    pub fn get_traceable_text(&self, id: TraceableTextId) -> Option<&TraceableText> {
+        self.traceable_texts.get(id)
+    }
+
+    pub fn get_transformation_props_set(
+        &self,
+        id: TransformationPropsSetId,
+    ) -> Option<&TransformationPropsSet> {
+        self.transformation_props_sets.get(id)
+    }
+
+    pub fn get_transformation_technology(
+        &self,
+        id: TransformationTechnologyId,
+    ) -> Option<&TransformationTechnology> {
+        self.transformation_technologys.get(id)
+    }
+
+    pub fn get_transformer_hard_error_event(
+        &self,
+        id: TransformerHardErrorEventId,
+    ) -> Option<&TransformerHardErrorEvent> {
+        self.transformer_hard_error_events.get(id)
+    }
+
+    pub fn get_transient_fault(&self, id: TransientFaultId) -> Option<&TransientFault> {
+        self.transient_faults.get(id)
+    }
+
+    pub fn get_transmission_acknowledgement_request(
+        &self,
+        id: TransmissionAcknowledgementRequestId,
+    ) -> Option<&TransmissionAcknowledgementRequest> {
+        self.transmission_acknowledgement_requests.get(id)
+    }
+
+    pub fn get_transmission_com_spec_props(
+        &self,
+        id: TransmissionComSpecPropsId,
+    ) -> Option<&TransmissionComSpecProps> {
+        self.transmission_com_spec_props.get(id)
+    }
+
+    pub fn get_transmission_mode_condition(
+        &self,
+        id: TransmissionModeConditionId,
+    ) -> Option<&TransmissionModeCondition> {
+        self.transmission_mode_conditions.get(id)
+    }
+
+    pub fn get_transmission_mode_declaration(
+        &self,
+        id: TransmissionModeDeclarationId,
+    ) -> Option<&TransmissionModeDeclaration> {
+        self.transmission_mode_declarations.get(id)
+    }
+
+    pub fn get_transmission_mode_timing(
+        &self,
+        id: TransmissionModeTimingId,
+    ) -> Option<&TransmissionModeTiming> {
+        self.transmission_mode_timings.get(id)
+    }
+
+    pub fn get_transport_layer_rule(
+        &self,
+        id: TransportLayerRuleId,
+    ) -> Option<&TransportLayerRule> {
+        self.transport_layer_rules.get(id)
+    }
+
+    pub fn get_trigger(&self, id: TriggerId) -> Option<&Trigger> {
+        self.triggers.get(id)
+    }
+
+    pub fn get_trigger_i_pdu_send_condition(
+        &self,
+        id: TriggerIPduSendConditionId,
+    ) -> Option<&TriggerIPduSendCondition> {
+        self.trigger_i_pdu_send_conditions.get(id)
+    }
+
+    pub fn get_trigger_interface(&self, id: TriggerInterfaceId) -> Option<&TriggerInterface> {
+        self.trigger_interfaces.get(id)
+    }
+
+    pub fn get_trigger_interface_mapping(
+        &self,
+        id: TriggerInterfaceMappingId,
+    ) -> Option<&TriggerInterfaceMapping> {
+        self.trigger_interface_mappings.get(id)
+    }
+
+    pub fn get_trigger_mapping(&self, id: TriggerMappingId) -> Option<&TriggerMapping> {
+        self.trigger_mappings.get(id)
+    }
+
+    pub fn get_trigger_port_annotation(
+        &self,
+        id: TriggerPortAnnotationId,
+    ) -> Option<&TriggerPortAnnotation> {
+        self.trigger_port_annotations.get(id)
+    }
+
+    pub fn get_trigger_to_signal_mapping(
+        &self,
+        id: TriggerToSignalMappingId,
+    ) -> Option<&TriggerToSignalMapping> {
+        self.trigger_to_signal_mappings.get(id)
+    }
+
+    pub fn get_tt(&self, id: TtId) -> Option<&Tt> {
+        self.tts.get(id)
+    }
+
+    pub fn get_ttcan_absolutely_scheduled_timing(
+        &self,
+        id: TtcanAbsolutelyScheduledTimingId,
+    ) -> Option<&TtcanAbsolutelyScheduledTiming> {
+        self.ttcan_absolutely_scheduled_timings.get(id)
+    }
+
+    pub fn get_ttcan_cluster(&self, id: TtcanClusterId) -> Option<&TtcanCluster> {
+        self.ttcan_clusters.get(id)
+    }
+
+    pub fn get_ttcan_communication_connector(
+        &self,
+        id: TtcanCommunicationConnectorId,
+    ) -> Option<&TtcanCommunicationConnector> {
+        self.ttcan_communication_connectors.get(id)
+    }
+
+    pub fn get_ttcan_communication_controller(
+        &self,
+        id: TtcanCommunicationControllerId,
+    ) -> Option<&TtcanCommunicationController> {
+        self.ttcan_communication_controllers.get(id)
+    }
+
+    pub fn get_ttcan_physical_channel(
+        &self,
+        id: TtcanPhysicalChannelId,
+    ) -> Option<&TtcanPhysicalChannel> {
+        self.ttcan_physical_channels.get(id)
+    }
+
+    pub fn get_udp_nm_cluster(&self, id: UdpNmClusterId) -> Option<&UdpNmCluster> {
+        self.udp_nm_clusters.get(id)
+    }
+
+    pub fn get_udp_nm_cluster_coupling(
+        &self,
+        id: UdpNmClusterCouplingId,
+    ) -> Option<&UdpNmClusterCoupling> {
+        self.udp_nm_cluster_couplings.get(id)
+    }
+
+    pub fn get_udp_nm_ecu(&self, id: UdpNmEcuId) -> Option<&UdpNmEcu> {
+        self.udp_nm_ecus.get(id)
+    }
+
+    pub fn get_udp_nm_node(&self, id: UdpNmNodeId) -> Option<&UdpNmNode> {
+        self.udp_nm_nodes.get(id)
+    }
+
+    pub fn get_udp_props(&self, id: UdpPropsId) -> Option<&UdpProps> {
+        self.udp_props.get(id)
+    }
+
+    pub fn get_udp_rule(&self, id: UdpRuleId) -> Option<&UdpRule> {
+        self.udp_rules.get(id)
+    }
+
+    pub fn get_udp_tp(&self, id: UdpTpId) -> Option<&UdpTp> {
+        self.udp_tps.get(id)
+    }
+
+    pub fn get_unassign_frame_id(&self, id: UnassignFrameIdId) -> Option<&UnassignFrameId> {
+        self.unassign_frame_ids.get(id)
+    }
+
+    pub fn get_unit(&self, id: UnitId) -> Option<&Unit> {
+        self.units.get(id)
+    }
+
+    pub fn get_unit_group(&self, id: UnitGroupId) -> Option<&UnitGroup> {
+        self.unit_groups.get(id)
+    }
+
+    pub fn get_unlimited_integer_value_variation_point(
+        &self,
+        id: UnlimitedIntegerValueVariationPointId,
+    ) -> Option<&UnlimitedIntegerValueVariationPoint> {
+        self.unlimited_integer_value_variation_points.get(id)
+    }
+
+    pub fn get_url(&self, id: UrlId) -> Option<&Url> {
+        self.urls.get(id)
+    }
+
+    pub fn get_user_defined_cluster(
+        &self,
+        id: UserDefinedClusterId,
+    ) -> Option<&UserDefinedCluster> {
+        self.user_defined_clusters.get(id)
+    }
+
+    pub fn get_user_defined_communication_connector(
+        &self,
+        id: UserDefinedCommunicationConnectorId,
+    ) -> Option<&UserDefinedCommunicationConnector> {
+        self.user_defined_communication_connectors.get(id)
+    }
+
+    pub fn get_user_defined_communication_controller(
+        &self,
+        id: UserDefinedCommunicationControllerId,
+    ) -> Option<&UserDefinedCommunicationController> {
+        self.user_defined_communication_controllers.get(id)
+    }
+
+    pub fn get_user_defined_ethernet_frame(
+        &self,
+        id: UserDefinedEthernetFrameId,
+    ) -> Option<&UserDefinedEthernetFrame> {
+        self.user_defined_ethernet_frames.get(id)
+    }
+
+    pub fn get_user_defined_global_time_master(
+        &self,
+        id: UserDefinedGlobalTimeMasterId,
+    ) -> Option<&UserDefinedGlobalTimeMaster> {
+        self.user_defined_global_time_masters.get(id)
+    }
+
+    pub fn get_user_defined_global_time_slave(
+        &self,
+        id: UserDefinedGlobalTimeSlaveId,
+    ) -> Option<&UserDefinedGlobalTimeSlave> {
+        self.user_defined_global_time_slaves.get(id)
+    }
+
+    pub fn get_user_defined_i_pdu(&self, id: UserDefinedIPduId) -> Option<&UserDefinedIPdu> {
+        self.user_defined_i_pdus.get(id)
+    }
+
+    pub fn get_user_defined_pdu(&self, id: UserDefinedPduId) -> Option<&UserDefinedPdu> {
+        self.user_defined_pdus.get(id)
+    }
+
+    pub fn get_user_defined_physical_channel(
+        &self,
+        id: UserDefinedPhysicalChannelId,
+    ) -> Option<&UserDefinedPhysicalChannel> {
+        self.user_defined_physical_channels.get(id)
+    }
+
+    pub fn get_user_defined_transformation_com_spec_props(
+        &self,
+        id: UserDefinedTransformationComSpecPropsId,
+    ) -> Option<&UserDefinedTransformationComSpecProps> {
+        self.user_defined_transformation_com_spec_props.get(id)
+    }
+
+    pub fn get_user_defined_transformation_description(
+        &self,
+        id: UserDefinedTransformationDescriptionId,
+    ) -> Option<&UserDefinedTransformationDescription> {
+        self.user_defined_transformation_descriptions.get(id)
+    }
+
+    pub fn get_user_defined_transformation_i_signal_props(
+        &self,
+        id: UserDefinedTransformationISignalPropsId,
+    ) -> Option<&UserDefinedTransformationISignalProps> {
+        self.user_defined_transformation_i_signal_props.get(id)
+    }
+
+    pub fn get_user_defined_transformation_props(
+        &self,
+        id: UserDefinedTransformationPropsId,
+    ) -> Option<&UserDefinedTransformationProps> {
+        self.user_defined_transformation_props.get(id)
+    }
+
+    pub fn get_v2x_data_manager_needs(
+        &self,
+        id: V2xDataManagerNeedsId,
+    ) -> Option<&V2xDataManagerNeeds> {
+        self.v2x_data_manager_needs.get(id)
+    }
+
+    pub fn get_v2x_fac_user_needs(&self, id: V2xFacUserNeedsId) -> Option<&V2xFacUserNeeds> {
+        self.v2x_fac_user_needs.get(id)
+    }
+
+    pub fn get_v2x_m_user_needs(&self, id: V2xMUserNeedsId) -> Option<&V2xMUserNeeds> {
+        self.v2x_m_user_needs.get(id)
+    }
+
+    pub fn get_value_group(&self, id: ValueGroupId) -> Option<&ValueGroup> {
+        self.value_groups.get(id)
+    }
+
+    pub fn get_value_list(&self, id: ValueListId) -> Option<&ValueList> {
+        self.value_lists.get(id)
+    }
+
+    pub fn get_value_restriction_with_severity(
+        &self,
+        id: ValueRestrictionWithSeverityId,
+    ) -> Option<&ValueRestrictionWithSeverity> {
+        self.value_restriction_with_severitys.get(id)
+    }
+
+    pub fn get_variable_access(&self, id: VariableAccessId) -> Option<&VariableAccess> {
+        self.variable_access.get(id)
+    }
+
+    pub fn get_variable_access_in_ecu_instance_ref(
+        &self,
+        id: VariableAccessInEcuInstanceRefId,
+    ) -> Option<&VariableAccessInEcuInstanceRef> {
+        self.variable_access_in_ecu_instance_refs.get(id)
+    }
+
+    pub fn get_variable_and_parameter_interface_mapping(
+        &self,
+        id: VariableAndParameterInterfaceMappingId,
+    ) -> Option<&VariableAndParameterInterfaceMapping> {
+        self.variable_and_parameter_interface_mappings.get(id)
+    }
+
+    pub fn get_variable_data_prototype(
+        &self,
+        id: VariableDataPrototypeId,
+    ) -> Option<&VariableDataPrototype> {
+        self.variable_data_prototypes.get(id)
+    }
+
+    pub fn get_variable_data_prototype_in_composition_instance_ref(
+        &self,
+        id: VariableDataPrototypeInCompositionInstanceRefId,
+    ) -> Option<&VariableDataPrototypeInCompositionInstanceRef> {
+        self.variable_data_prototype_in_composition_instance_refs
+            .get(id)
+    }
+
+    pub fn get_variable_data_prototype_in_system_instance_ref(
+        &self,
+        id: VariableDataPrototypeInSystemInstanceRefId,
+    ) -> Option<&VariableDataPrototypeInSystemInstanceRef> {
+        self.variable_data_prototype_in_system_instance_refs.get(id)
+    }
+
+    pub fn get_variable_in_atomic_swc_type_instance_ref(
+        &self,
+        id: VariableInAtomicSWCTypeInstanceRefId,
+    ) -> Option<&VariableInAtomicSWCTypeInstanceRef> {
+        self.variable_in_atomic_swc_type_instance_refs.get(id)
+    }
+
+    pub fn get_variable_in_component_instance_ref(
+        &self,
+        id: VariableInComponentInstanceRefId,
+    ) -> Option<&VariableInComponentInstanceRef> {
+        self.variable_in_component_instance_refs.get(id)
+    }
+
+    pub fn get_variation_point(&self, id: VariationPointId) -> Option<&VariationPoint> {
+        self.variation_points.get(id)
+    }
+
+    pub fn get_variation_point_proxy(
+        &self,
+        id: VariationPointProxyId,
+    ) -> Option<&VariationPointProxy> {
+        self.variation_point_proxys.get(id)
+    }
+
+    pub fn get_variation_restriction_with_severity(
+        &self,
+        id: VariationRestrictionWithSeverityId,
+    ) -> Option<&VariationRestrictionWithSeverity> {
+        self.variation_restriction_with_severitys.get(id)
+    }
+
+    pub fn get_vendor_specific_service_needs(
+        &self,
+        id: VendorSpecificServiceNeedsId,
+    ) -> Option<&VendorSpecificServiceNeeds> {
+        self.vendor_specific_service_needs.get(id)
+    }
+
+    pub fn get_vfb_timing(&self, id: VfbTimingId) -> Option<&VfbTiming> {
+        self.vfb_timings.get(id)
+    }
+
+    pub fn get_view_map(&self, id: ViewMapId) -> Option<&ViewMap> {
+        self.view_maps.get(id)
+    }
+
+    pub fn get_view_map_set(&self, id: ViewMapSetId) -> Option<&ViewMapSet> {
+        self.view_map_sets.get(id)
+    }
+
+    pub fn get_vlan_config(&self, id: VlanConfigId) -> Option<&VlanConfig> {
+        self.vlan_configs.get(id)
+    }
+
+    pub fn get_vlan_membership(&self, id: VlanMembershipId) -> Option<&VlanMembership> {
+        self.vlan_memberships.get(id)
+    }
+
+    pub fn get_wait_point(&self, id: WaitPointId) -> Option<&WaitPoint> {
+        self.wait_points.get(id)
+    }
+
+    pub fn get_warning_indicator_requested_bit_needs(
+        &self,
+        id: WarningIndicatorRequestedBitNeedsId,
+    ) -> Option<&WarningIndicatorRequestedBitNeeds> {
+        self.warning_indicator_requested_bit_needs.get(id)
+    }
+
+    pub fn get_worst_case_heap_usage(
+        &self,
+        id: WorstCaseHeapUsageId,
+    ) -> Option<&WorstCaseHeapUsage> {
+        self.worst_case_heap_usages.get(id)
+    }
+
+    pub fn get_worst_case_stack_usage(
+        &self,
+        id: WorstCaseStackUsageId,
+    ) -> Option<&WorstCaseStackUsage> {
+        self.worst_case_stack_usages.get(id)
+    }
+
+    pub fn get_xdoc(&self, id: XdocId) -> Option<&Xdoc> {
+        self.xdocs.get(id)
+    }
+
+    pub fn get_xfile(&self, id: XfileId) -> Option<&Xfile> {
+        self.xfiles.get(id)
+    }
+
+    pub fn get_xref(&self, id: XrefId) -> Option<&Xref> {
+        self.xrefs.get(id)
+    }
+
+    pub fn get_xref_target(&self, id: XrefTargetId) -> Option<&XrefTarget> {
+        self.xref_targets.get(id)
+    }
+
+    // — generated element factories (py createXxx directory) —
+
+    /// py `createAclObjectSet` — allocates in the arena and links the element into the package.
+    pub fn add_acl_object_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> AclObjectSetId {
+        let mut element = AclObjectSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
         }
-        for (index, (sdg_a, sdg_b)) in sdgs_a.iter().zip(sdgs_b.iter()).enumerate() {
-            let sdg_a = self
-                .sdgs
-                .get(*sdg_a)
-                .ok_or_else(|| format!("{path}.SDG[{index}]: id not found in own arena"))?;
-            let sdg_b = other
-                .sdgs
-                .get(*sdg_b)
-                .ok_or_else(|| format!("{path}.SDG[{index}]: id not found in other arena"))?;
-            self.compare_sdg(other, sdg_a, sdg_b, &format!("{path}.SDG[{index}]"))?;
+        let id = self.acl_object_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::AclObjectSet(id));
+            }
         }
-        Ok(())
+        id
+    }
+
+    /// py `createAclOperation` — allocates in the arena and links the element into the package.
+    pub fn add_acl_operation(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> AclOperationId {
+        let mut element = AclOperation::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.acl_operations.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::AclOperation(id));
+            }
+        }
+        id
+    }
+
+    /// py `createAclPermission` — allocates in the arena and links the element into the package.
+    pub fn add_acl_permission(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> AclPermissionId {
+        let mut element = AclPermission::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.acl_permissions.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::AclPermission(id));
+            }
+        }
+        id
+    }
+
+    /// py `createAclRole` — allocates in the arena and links the element into the package.
+    pub fn add_acl_role(&mut self, package: Option<ARPackageId>, short_name: &str) -> AclRoleId {
+        let mut element = AclRole::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.acl_roles.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::AclRole(id));
+            }
+        }
+        id
+    }
+
+    /// py `createApplicationArrayDataType` — allocates in the arena and links the element into the package.
+    pub fn add_application_array_data_type(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ApplicationArrayDataTypeId {
+        let mut element = ApplicationArrayDataType::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.application_array_data_types.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ApplicationArrayDataType(id));
+            }
+        }
+        id
+    }
+
+    /// py `createApplicationDeferredDataType` — allocates in the arena and links the element into the package.
+    pub fn add_application_deferred_data_type(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ApplicationDeferredDataTypeId {
+        let mut element = ApplicationDeferredDataType::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.application_deferred_data_types.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ApplicationDeferredDataType(id));
+            }
+        }
+        id
+    }
+
+    /// py `createApplicationPrimitiveDataType` — allocates in the arena and links the element into the package.
+    pub fn add_application_primitive_data_type(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ApplicationPrimitiveDataTypeId {
+        let mut element = ApplicationPrimitiveDataType::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.application_primitive_data_types.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ApplicationPrimitiveDataType(id));
+            }
+        }
+        id
+    }
+
+    /// py `createApplicationRecordDataType` — allocates in the arena and links the element into the package.
+    pub fn add_application_record_data_type(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ApplicationRecordDataTypeId {
+        let mut element = ApplicationRecordDataType::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.application_record_data_types.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ApplicationRecordDataType(id));
+            }
+        }
+        id
+    }
+
+    /// py `createApplicationSwComponentType` — allocates in the arena and links the element into the package.
+    pub fn add_application_sw_component_type(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ApplicationSwComponentTypeId {
+        let mut element = ApplicationSwComponentType::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.application_sw_component_types.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ApplicationSwComponentType(id));
+            }
+        }
+        id
+    }
+
+    /// py `createBlueprintMappingSet` — allocates in the arena and links the element into the package.
+    pub fn add_blueprint_mapping_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> BlueprintMappingSetId {
+        let mut element = BlueprintMappingSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.blueprint_mapping_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::BlueprintMappingSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createBswEntryRelationshipSet` — allocates in the arena and links the element into the package.
+    pub fn add_bsw_entry_relationship_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> BswEntryRelationshipSetId {
+        let mut element = BswEntryRelationshipSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.bsw_entry_relationship_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::BswEntryRelationshipSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createBswImplementation` — allocates in the arena and links the element into the package.
+    pub fn add_bsw_implementation(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> BswImplementationId {
+        let mut element = BswImplementation::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.bsw_implementations.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::BswImplementation(id));
+            }
+        }
+        id
+    }
+
+    /// py `createBswModuleDescription` — allocates in the arena and links the element into the package.
+    pub fn add_bsw_module_description(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> BswModuleDescriptionId {
+        let mut element = BswModuleDescription::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.bsw_module_descriptions.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::BswModuleDescription(id));
+            }
+        }
+        id
+    }
+
+    /// py `createBswModuleEntry` — allocates in the arena and links the element into the package.
+    pub fn add_bsw_module_entry(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> BswModuleEntryId {
+        let mut element = BswModuleEntry::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.bsw_module_entrys.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::BswModuleEntry(id));
+            }
+        }
+        id
+    }
+
+    /// py `createBuildActionManifest` — allocates in the arena and links the element into the package.
+    pub fn add_build_action_manifest(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> BuildActionManifestId {
+        let mut element = BuildActionManifest::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.build_action_manifests.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::BuildActionManifest(id));
+            }
+        }
+        id
+    }
+
+    /// py `createCanCluster` — allocates in the arena and links the element into the package.
+    pub fn add_can_cluster(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> CanClusterId {
+        let mut element = CanCluster::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.can_clusters.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::CanCluster(id));
+            }
+        }
+        id
+    }
+
+    /// py `createCanFrame` — allocates in the arena and links the element into the package.
+    pub fn add_can_frame(&mut self, package: Option<ARPackageId>, short_name: &str) -> CanFrameId {
+        let mut element = CanFrame::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.can_frames.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::CanFrame(id));
+            }
+        }
+        id
+    }
+
+    /// py `createCanTpConfig` — allocates in the arena and links the element into the package.
+    pub fn add_can_tp_config(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> CanTpConfigId {
+        let mut element = CanTpConfig::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.can_tp_configs.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::CanTpConfig(id));
+            }
+        }
+        id
+    }
+
+    /// py `createCanXlProps` — allocates in the arena and links the element into the package.
+    pub fn add_can_xl_props(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> CanXlPropsId {
+        let mut element = CanXlProps::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.can_xl_props.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::CanXlProps(id));
+            }
+        }
+        id
+    }
+
+    /// py `createClientIdDefinitionSet` — allocates in the arena and links the element into the package.
+    pub fn add_client_id_definition_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ClientIdDefinitionSetId {
+        let mut element = ClientIdDefinitionSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.client_id_definition_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ClientIdDefinitionSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createClientServerInterface` — allocates in the arena and links the element into the package.
+    pub fn add_client_server_interface(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ClientServerInterfaceId {
+        let mut element = ClientServerInterface::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.client_server_interfaces.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ClientServerInterface(id));
+            }
+        }
+        id
+    }
+
+    /// py `createCollection` — allocates in the arena and links the element into the package.
+    pub fn add_collection(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> CollectionId {
+        let mut element = Collection::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.collections.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::Collection(id));
+            }
+        }
+        id
+    }
+
+    /// py `createComplexDeviceDriverSwComponentType` — allocates in the arena and links the element into the package.
+    pub fn add_complex_device_driver_sw_component_type(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ComplexDeviceDriverSwComponentTypeId {
+        let mut element = ComplexDeviceDriverSwComponentType::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self
+            .complex_device_driver_sw_component_types
+            .insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ComplexDeviceDriverSwComponentType(id));
+            }
+        }
+        id
+    }
+
+    /// py `createCompositionSwComponentType` — allocates in the arena and links the element into the package.
+    pub fn add_composition_sw_component_type(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> CompositionSwComponentTypeId {
+        let mut element = CompositionSwComponentType::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.composition_sw_component_types.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::CompositionSwComponentType(id));
+            }
+        }
+        id
+    }
+
+    /// py `createCompuMethod` — allocates in the arena and links the element into the package.
+    pub fn add_compu_method(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> CompuMethodId {
+        let mut element = CompuMethod::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.compu_methods.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::CompuMethod(id));
+            }
+        }
+        id
+    }
+
+    /// py `createConsistencyNeeds` — allocates in the arena and links the element into the package.
+    pub fn add_consistency_needs(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ConsistencyNeedsId {
+        let mut element = ConsistencyNeeds::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.consistency_needs.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ConsistencyNeeds(id));
+            }
+        }
+        id
+    }
+
+    /// py `createConstantSpecification` — allocates in the arena and links the element into the package.
+    pub fn add_constant_specification(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ConstantSpecificationId {
+        let mut element = ConstantSpecification::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.constant_specifications.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ConstantSpecification(id));
+            }
+        }
+        id
+    }
+
+    /// py `createConstantSpecificationMappingSet` — allocates in the arena and links the element into the package.
+    pub fn add_constant_specification_mapping_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ConstantSpecificationMappingSetId {
+        let mut element = ConstantSpecificationMappingSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.constant_specification_mapping_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ConstantSpecificationMappingSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createConsumedProvidedServiceInstanceGroup` — allocates in the arena and links the element into the package.
+    pub fn add_consumed_provided_service_instance_group(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ConsumedProvidedServiceInstanceGroupId {
+        let mut element = ConsumedProvidedServiceInstanceGroup::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self
+            .consumed_provided_service_instance_groups
+            .insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ConsumedProvidedServiceInstanceGroup(id));
+            }
+        }
+        id
+    }
+
+    /// py `createCpSoftwareCluster` — allocates in the arena and links the element into the package.
+    pub fn add_cp_software_cluster(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> CpSoftwareClusterId {
+        let mut element = CpSoftwareCluster::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.cp_software_clusters.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::CpSoftwareCluster(id));
+            }
+        }
+        id
+    }
+
+    /// py `createCryptoEllipticCurveProps` — allocates in the arena and links the element into the package.
+    pub fn add_crypto_elliptic_curve_props(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> CryptoEllipticCurvePropsId {
+        let mut element = CryptoEllipticCurveProps::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.crypto_elliptic_curve_props.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::CryptoEllipticCurveProps(id));
+            }
+        }
+        id
+    }
+
+    /// py `createCryptoServiceCertificate` — allocates in the arena and links the element into the package.
+    pub fn add_crypto_service_certificate(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> CryptoServiceCertificateId {
+        let mut element = CryptoServiceCertificate::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.crypto_service_certificates.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::CryptoServiceCertificate(id));
+            }
+        }
+        id
+    }
+
+    /// py `createCryptoServicePrimitive` — allocates in the arena and links the element into the package.
+    pub fn add_crypto_service_primitive(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> CryptoServicePrimitiveId {
+        let mut element = CryptoServicePrimitive::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.crypto_service_primitives.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::CryptoServicePrimitive(id));
+            }
+        }
+        id
+    }
+
+    /// py `createCryptoSignatureScheme` — allocates in the arena and links the element into the package.
+    pub fn add_crypto_signature_scheme(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> CryptoSignatureSchemeId {
+        let mut element = CryptoSignatureScheme::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.crypto_signature_schemes.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::CryptoSignatureScheme(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDataConstr` — allocates in the arena and links the element into the package.
+    pub fn add_data_constr(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DataConstrId {
+        let mut element = DataConstr::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.data_constrs.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DataConstr(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDataPrototypeGroup` — allocates in the arena and links the element into the package.
+    pub fn add_data_prototype_group(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DataPrototypeGroupId {
+        let mut element = DataPrototypeGroup::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.data_prototype_groups.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DataPrototypeGroup(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDataTransformationSet` — allocates in the arena and links the element into the package.
+    pub fn add_data_transformation_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DataTransformationSetId {
+        let mut element = DataTransformationSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.data_transformation_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DataTransformationSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDataTypeMappingSet` — allocates in the arena and links the element into the package.
+    pub fn add_data_type_mapping_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DataTypeMappingSetId {
+        let mut element = DataTypeMappingSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.data_type_mapping_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DataTypeMappingSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDcmIPdu` — allocates in the arena and links the element into the package.
+    pub fn add_dcm_i_pdu(&mut self, package: Option<ARPackageId>, short_name: &str) -> DcmIPduId {
+        let mut element = DcmIPdu::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.dcm_i_pdus.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DcmIPdu(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticAccessPermission` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_access_permission(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticAccessPermissionId {
+        let mut element = DiagnosticAccessPermission::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_access_permissions.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticAccessPermission(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticAuthRole` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_auth_role(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticAuthRoleId {
+        let mut element = DiagnosticAuthRole::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_auth_roles.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticAuthRole(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticAuthTransmitCertificate` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_auth_transmit_certificate(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticAuthTransmitCertificateId {
+        let mut element = DiagnosticAuthTransmitCertificate::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_auth_transmit_certificates.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticAuthTransmitCertificate(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticAuthenticationClass` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_authentication_class(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticAuthenticationClassId {
+        let mut element = DiagnosticAuthenticationClass::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_authentication_class.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticAuthenticationClass(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticAuthenticationConfiguration` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_authentication_configuration(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticAuthenticationConfigurationId {
+        let mut element = DiagnosticAuthenticationConfiguration::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self
+            .diagnostic_authentication_configurations
+            .insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticAuthenticationConfiguration(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticComControl` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_com_control(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticComControlId {
+        let mut element = DiagnosticComControl::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_com_controls.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticComControl(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticConnection` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_connection(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticConnectionId {
+        let mut element = DiagnosticConnection::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_connections.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticConnection(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticContributionSet` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_contribution_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticContributionSetId {
+        let mut element = DiagnosticContributionSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_contribution_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticContributionSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticCustomServiceClass` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_custom_service_class(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticCustomServiceClassId {
+        let mut element = DiagnosticCustomServiceClass::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_custom_service_class.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticCustomServiceClass(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticCustomServiceInstance` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_custom_service_instance(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticCustomServiceInstanceId {
+        let mut element = DiagnosticCustomServiceInstance::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_custom_service_instances.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticCustomServiceInstance(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticDataIdentifier` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_data_identifier(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticDataIdentifierId {
+        let mut element = DiagnosticDataIdentifier::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_data_identifiers.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticDataIdentifier(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticDeAuthentication` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_de_authentication(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticDeAuthenticationId {
+        let mut element = DiagnosticDeAuthentication::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_de_authentications.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticDeAuthentication(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticDynamicDataIdentifier` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_dynamic_data_identifier(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticDynamicDataIdentifierId {
+        let mut element = DiagnosticDynamicDataIdentifier::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_dynamic_data_identifiers.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticDynamicDataIdentifier(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticEcuReset` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_ecu_reset(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticEcuResetId {
+        let mut element = DiagnosticEcuReset::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_ecu_resets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticEcuReset(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticEcuResetClass` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_ecu_reset_class(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticEcuResetClassId {
+        let mut element = DiagnosticEcuResetClass::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_ecu_reset_class.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticEcuResetClass(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticEnvironmentalCondition` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_environmental_condition(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticEnvironmentalConditionId {
+        let mut element = DiagnosticEnvironmentalCondition::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_environmental_conditions.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticEnvironmentalCondition(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticProofOfOwnership` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_proof_of_ownership(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticProofOfOwnershipId {
+        let mut element = DiagnosticProofOfOwnership::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_proof_of_ownerships.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticProofOfOwnership(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticProtocol` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_protocol(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticProtocolId {
+        let mut element = DiagnosticProtocol::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_protocols.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticProtocol(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticSecurityAccess` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_security_access(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticSecurityAccessId {
+        let mut element = DiagnosticSecurityAccess::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_security_access.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticSecurityAccess(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticSecurityAccessClass` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_security_access_class(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticSecurityAccessClassId {
+        let mut element = DiagnosticSecurityAccessClass::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_security_access_class.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticSecurityAccessClass(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticSecurityLevel` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_security_level(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticSecurityLevelId {
+        let mut element = DiagnosticSecurityLevel::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_security_levels.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticSecurityLevel(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticServiceTable` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_service_table(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticServiceTableId {
+        let mut element = DiagnosticServiceTable::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_service_tables.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticServiceTable(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticSession` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_session(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticSessionId {
+        let mut element = DiagnosticSession::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_sessions.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticSession(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticSessionControl` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_session_control(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticSessionControlId {
+        let mut element = DiagnosticSessionControl::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_session_controls.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticSessionControl(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticSessionControlClass` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_session_control_class(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticSessionControlClassId {
+        let mut element = DiagnosticSessionControlClass::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.diagnostic_session_control_class.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticSessionControlClass(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticVerifyCertificateBidirectional` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_verify_certificate_bidirectional(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticVerifyCertificateBidirectionalId {
+        let mut element = DiagnosticVerifyCertificateBidirectional::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self
+            .diagnostic_verify_certificate_bidirectionals
+            .insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticVerifyCertificateBidirectional(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDiagnosticVerifyCertificateUnidirectional` — allocates in the arena and links the element into the package.
+    pub fn add_diagnostic_verify_certificate_unidirectional(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DiagnosticVerifyCertificateUnidirectionalId {
+        let mut element = DiagnosticVerifyCertificateUnidirectional::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self
+            .diagnostic_verify_certificate_unidirectionals
+            .insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DiagnosticVerifyCertificateUnidirectional(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDltContext` — allocates in the arena and links the element into the package.
+    pub fn add_dlt_context(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DltContextId {
+        let mut element = DltContext::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.dlt_contexts.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DltContext(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDltEcu` — allocates in the arena and links the element into the package.
+    pub fn add_dlt_ecu(&mut self, package: Option<ARPackageId>, short_name: &str) -> DltEcuId {
+        let mut element = DltEcu::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.dlt_ecus.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DltEcu(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDoIpTpConfig` — allocates in the arena and links the element into the package.
+    pub fn add_do_ip_tp_config(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DoIpTpConfigId {
+        let mut element = DoIpTpConfig::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.do_ip_tp_configs.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::DoIpTpConfig(id));
+            }
+        }
+        id
+    }
+
+    /// py `createDocumentation` — allocates in the arena and links the element into the package.
+    pub fn add_documentation(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> DocumentationId {
+        let mut element = Documentation::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.documentations.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::Documentation(id));
+            }
+        }
+        id
+    }
+
+    /// py `createE2EProfileCompatibilityProps` — allocates in the arena and links the element into the package.
+    pub fn add_e2_e_profile_compatibility_props(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> E2EProfileCompatibilityPropsId {
+        let mut element = E2EProfileCompatibilityProps::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.e2_e_profile_compatibility_props.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::E2EProfileCompatibilityProps(id));
+            }
+        }
+        id
+    }
+
+    /// py `createEcuAbstractionSwComponentType` — allocates in the arena and links the element into the package.
+    pub fn add_ecu_abstraction_sw_component_type(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> EcuAbstractionSwComponentTypeId {
+        let mut element = EcuAbstractionSwComponentType::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.ecu_abstraction_sw_component_types.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::EcuAbstractionSwComponentType(id));
+            }
+        }
+        id
+    }
+
+    /// py `createEcuInstance` — allocates in the arena and links the element into the package.
+    pub fn add_ecu_instance(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> EcuInstanceId {
+        let mut element = EcuInstance::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.ecu_instances.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::EcuInstance(id));
+            }
+        }
+        id
+    }
+
+    /// py `createEcucDefinitionCollection` — allocates in the arena and links the element into the package.
+    pub fn add_ecuc_definition_collection(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> EcucDefinitionCollectionId {
+        let mut element = EcucDefinitionCollection::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.ecuc_definition_collections.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::EcucDefinitionCollection(id));
+            }
+        }
+        id
+    }
+
+    /// py `createEcucDestinationUriDefSet` — allocates in the arena and links the element into the package.
+    pub fn add_ecuc_destination_uri_def_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> EcucDestinationUriDefSetId {
+        let mut element = EcucDestinationUriDefSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.ecuc_destination_uri_def_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::EcucDestinationUriDefSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createEcucModuleConfigurationValues` — allocates in the arena and links the element into the package.
+    pub fn add_ecuc_module_configuration_values(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> EcucModuleConfigurationValuesId {
+        let mut element = EcucModuleConfigurationValues::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.ecuc_module_configuration_values.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::EcucModuleConfigurationValues(id));
+            }
+        }
+        id
+    }
+
+    /// py `createEcucModuleDef` — allocates in the arena and links the element into the package.
+    pub fn add_ecuc_module_def(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> EcucModuleDefId {
+        let mut element = EcucModuleDef::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.ecuc_module_defs.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::EcucModuleDef(id));
+            }
+        }
+        id
+    }
+
+    /// py `createEcucValueCollection` — allocates in the arena and links the element into the package.
+    pub fn add_ecuc_value_collection(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> EcucValueCollectionId {
+        let mut element = EcucValueCollection::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.ecuc_value_collections.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::EcucValueCollection(id));
+            }
+        }
+        id
+    }
+
+    /// py `createEndToEndProtectionSet` — allocates in the arena and links the element into the package.
+    pub fn add_end_to_end_protection_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> EndToEndProtectionSetId {
+        let mut element = EndToEndProtectionSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.end_to_end_protection_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::EndToEndProtectionSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createEthTcpIpIcmpProps` — allocates in the arena and links the element into the package.
+    pub fn add_eth_tcp_ip_icmp_props(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> EthTcpIpIcmpPropsId {
+        let mut element = EthTcpIpIcmpProps::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.eth_tcp_ip_icmp_props.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::EthTcpIpIcmpProps(id));
+            }
+        }
+        id
+    }
+
+    /// py `createEthTcpIpProps` — allocates in the arena and links the element into the package.
+    pub fn add_eth_tcp_ip_props(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> EthTcpIpPropsId {
+        let mut element = EthTcpIpProps::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.eth_tcp_ip_props.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::EthTcpIpProps(id));
+            }
+        }
+        id
+    }
+
+    /// py `createEthernetCluster` — allocates in the arena and links the element into the package.
+    pub fn add_ethernet_cluster(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> EthernetClusterId {
+        let mut element = EthernetCluster::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.ethernet_clusters.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::EthernetCluster(id));
+            }
+        }
+        id
+    }
+
+    /// py `createEvaluatedVariantSet` — allocates in the arena and links the element into the package.
+    pub fn add_evaluated_variant_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> EvaluatedVariantSetId {
+        let mut element = EvaluatedVariantSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.evaluated_variant_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::EvaluatedVariantSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createFirewallRule` — allocates in the arena and links the element into the package.
+    pub fn add_firewall_rule(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> FirewallRuleId {
+        let mut element = FirewallRule::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.firewall_rules.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::FirewallRule(id));
+            }
+        }
+        id
+    }
+
+    /// py `createFlatMap` — allocates in the arena and links the element into the package.
+    pub fn add_flat_map(&mut self, package: Option<ARPackageId>, short_name: &str) -> FlatMapId {
+        let mut element = FlatMap::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.flat_maps.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::FlatMap(id));
+            }
+        }
+        id
+    }
+
+    /// py `createFlexrayCluster` — allocates in the arena and links the element into the package.
+    pub fn add_flexray_cluster(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> FlexrayClusterId {
+        let mut element = FlexrayCluster::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.flexray_clusters.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::FlexrayCluster(id));
+            }
+        }
+        id
+    }
+
+    /// py `createFlexrayFrame` — allocates in the arena and links the element into the package.
+    pub fn add_flexray_frame(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> FlexrayFrameId {
+        let mut element = FlexrayFrame::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.flexray_frames.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::FlexrayFrame(id));
+            }
+        }
+        id
+    }
+
+    /// py `createGateway` — allocates in the arena and links the element into the package.
+    pub fn add_gateway(&mut self, package: Option<ARPackageId>, short_name: &str) -> GatewayId {
+        let mut element = Gateway::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.gateways.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::Gateway(id));
+            }
+        }
+        id
+    }
+
+    /// py `createGeneralPurposeIPdu` — allocates in the arena and links the element into the package.
+    pub fn add_general_purpose_i_pdu(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> GeneralPurposeIPduId {
+        let mut element = GeneralPurposeIPdu::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.general_purpose_i_pdus.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::GeneralPurposeIPdu(id));
+            }
+        }
+        id
+    }
+
+    /// py `createGeneralPurposePdu` — allocates in the arena and links the element into the package.
+    pub fn add_general_purpose_pdu(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> GeneralPurposePduId {
+        let mut element = GeneralPurposePdu::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.general_purpose_pdus.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::GeneralPurposePdu(id));
+            }
+        }
+        id
+    }
+
+    /// py `createGenericEthernetFrame` — allocates in the arena and links the element into the package.
+    pub fn add_generic_ethernet_frame(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> GenericEthernetFrameId {
+        let mut element = GenericEthernetFrame::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.generic_ethernet_frames.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::GenericEthernetFrame(id));
+            }
+        }
+        id
+    }
+
+    /// py `createHwCategory` — allocates in the arena and links the element into the package.
+    pub fn add_hw_category(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> HwCategoryId {
+        let mut element = HwCategory::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.hw_categorys.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::HwCategory(id));
+            }
+        }
+        id
+    }
+
+    /// py `createHwElement` — allocates in the arena and links the element into the package.
+    pub fn add_hw_element(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> HwElementId {
+        let mut element = HwElement::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.hw_elements.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::HwElement(id));
+            }
+        }
+        id
+    }
+
+    /// py `createHwType` — allocates in the arena and links the element into the package.
+    pub fn add_hw_type(&mut self, package: Option<ARPackageId>, short_name: &str) -> HwTypeId {
+        let mut element = HwType::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.hw_types.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::HwType(id));
+            }
+        }
+        id
+    }
+
+    /// py `createIPSecConfigProps` — allocates in the arena and links the element into the package.
+    pub fn add_ip_sec_config_props(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> IPSecConfigPropsId {
+        let mut element = IPSecConfigProps::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.ip_sec_config_props.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::IPSecConfigProps(id));
+            }
+        }
+        id
+    }
+
+    /// py `createISignal` — allocates in the arena and links the element into the package.
+    pub fn add_i_signal(&mut self, package: Option<ARPackageId>, short_name: &str) -> ISignalId {
+        let mut element = ISignal::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.i_signals.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ISignal(id));
+            }
+        }
+        id
+    }
+
+    /// py `createISignalGroup` — allocates in the arena and links the element into the package.
+    pub fn add_i_signal_group(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ISignalGroupId {
+        let mut element = ISignalGroup::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.i_signal_groups.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ISignalGroup(id));
+            }
+        }
+        id
+    }
+
+    /// py `createISignalIPdu` — allocates in the arena and links the element into the package.
+    pub fn add_i_signal_i_pdu(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ISignalIPduId {
+        let mut element = ISignalIPdu::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.i_signal_i_pdus.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ISignalIPdu(id));
+            }
+        }
+        id
+    }
+
+    /// py `createISignalIPduGroup` — allocates in the arena and links the element into the package.
+    pub fn add_i_signal_i_pdu_group(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ISignalIPduGroupId {
+        let mut element = ISignalIPduGroup::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.i_signal_i_pdu_groups.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ISignalIPduGroup(id));
+            }
+        }
+        id
+    }
+
+    /// py `createImplementationDataType` — allocates in the arena and links the element into the package.
+    pub fn add_implementation_data_type(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ImplementationDataTypeId {
+        let mut element = ImplementationDataType::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.implementation_data_types.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ImplementationDataType(id));
+            }
+        }
+        id
+    }
+
+    /// py `createInterpolationRoutineMappingSet` — allocates in the arena and links the element into the package.
+    pub fn add_interpolation_routine_mapping_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> InterpolationRoutineMappingSetId {
+        let mut element = InterpolationRoutineMappingSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.interpolation_routine_mapping_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::InterpolationRoutineMappingSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createJ1939Cluster` — allocates in the arena and links the element into the package.
+    pub fn add_j1939_cluster(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> J1939ClusterId {
+        let mut element = J1939Cluster::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.j1939_clusters.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::J1939Cluster(id));
+            }
+        }
+        id
+    }
+
+    /// py `createKeywordSet` — allocates in the arena and links the element into the package.
+    pub fn add_keyword_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> KeywordSetId {
+        let mut element = KeywordSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.keyword_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::KeywordSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createLifeCycleInfoSet` — allocates in the arena and links the element into the package.
+    pub fn add_life_cycle_info_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> LifeCycleInfoSetId {
+        let mut element = LifeCycleInfoSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.life_cycle_info_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::LifeCycleInfoSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createLifeCycleStateDefinitionGroup` — allocates in the arena and links the element into the package.
+    pub fn add_life_cycle_state_definition_group(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> LifeCycleStateDefinitionGroupId {
+        let mut element = LifeCycleStateDefinitionGroup::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.life_cycle_state_definition_groups.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::LifeCycleStateDefinitionGroup(id));
+            }
+        }
+        id
+    }
+
+    /// py `createLinCluster` — allocates in the arena and links the element into the package.
+    pub fn add_lin_cluster(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> LinClusterId {
+        let mut element = LinCluster::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.lin_clusters.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::LinCluster(id));
+            }
+        }
+        id
+    }
+
+    /// py `createLinTpConfig` — allocates in the arena and links the element into the package.
+    pub fn add_lin_tp_config(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> LinTpConfigId {
+        let mut element = LinTpConfig::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.lin_tp_configs.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::LinTpConfig(id));
+            }
+        }
+        id
+    }
+
+    /// py `createLinUnconditionalFrame` — allocates in the arena and links the element into the package.
+    pub fn add_lin_unconditional_frame(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> LinUnconditionalFrameId {
+        let mut element = LinUnconditionalFrame::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.lin_unconditional_frames.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::LinUnconditionalFrame(id));
+            }
+        }
+        id
+    }
+
+    /// py `createMcFunction` — allocates in the arena and links the element into the package.
+    pub fn add_mc_function(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> McFunctionId {
+        let mut element = McFunction::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.mc_functions.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::McFunction(id));
+            }
+        }
+        id
+    }
+
+    /// py `createMcGroup` — allocates in the arena and links the element into the package.
+    pub fn add_mc_group(&mut self, package: Option<ARPackageId>, short_name: &str) -> McGroupId {
+        let mut element = McGroup::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.mc_groups.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::McGroup(id));
+            }
+        }
+        id
+    }
+
+    /// py `createModeDeclarationGroup` — allocates in the arena and links the element into the package.
+    pub fn add_mode_declaration_group(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ModeDeclarationGroupId {
+        let mut element = ModeDeclarationGroup::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.mode_declaration_groups.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ModeDeclarationGroup(id));
+            }
+        }
+        id
+    }
+
+    /// py `createModeDeclarationMappingSet` — allocates in the arena and links the element into the package.
+    pub fn add_mode_declaration_mapping_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ModeDeclarationMappingSetId {
+        let mut element = ModeDeclarationMappingSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.mode_declaration_mapping_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ModeDeclarationMappingSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createModeSwitchInterface` — allocates in the arena and links the element into the package.
+    pub fn add_mode_switch_interface(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ModeSwitchInterfaceId {
+        let mut element = ModeSwitchInterface::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.mode_switch_interfaces.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ModeSwitchInterface(id));
+            }
+        }
+        id
+    }
+
+    /// py `createModuleConfiguration` — allocates in the arena and links the element into the package.
+    pub fn add_module_configuration(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ModuleConfigurationId {
+        let mut element = ModuleConfiguration::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.module_configurations.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ModuleConfiguration(id));
+            }
+        }
+        id
+    }
+
+    /// py `createMultiplexedIPdu` — allocates in the arena and links the element into the package.
+    pub fn add_multiplexed_i_pdu(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> MultiplexedIPduId {
+        let mut element = MultiplexedIPdu::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.multiplexed_i_pdus.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::MultiplexedIPdu(id));
+            }
+        }
+        id
+    }
+
+    /// py `createNPdu` — allocates in the arena and links the element into the package.
+    pub fn add_n_pdu(&mut self, package: Option<ARPackageId>, short_name: &str) -> NPduId {
+        let mut element = NPdu::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.n_pdus.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::NPdu(id));
+            }
+        }
+        id
+    }
+
+    /// py `createNmConfig` — allocates in the arena and links the element into the package.
+    pub fn add_nm_config(&mut self, package: Option<ARPackageId>, short_name: &str) -> NmConfigId {
+        let mut element = NmConfig::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.nm_configs.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::NmConfig(id));
+            }
+        }
+        id
+    }
+
+    /// py `createNmPdu` — allocates in the arena and links the element into the package.
+    pub fn add_nm_pdu(&mut self, package: Option<ARPackageId>, short_name: &str) -> NmPduId {
+        let mut element = NmPdu::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.nm_pdus.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::NmPdu(id));
+            }
+        }
+        id
+    }
+
+    /// py `createNvBlockSwComponentType` — allocates in the arena and links the element into the package.
+    pub fn add_nv_block_sw_component_type(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> NvBlockSwComponentTypeId {
+        let mut element = NvBlockSwComponentType::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.nv_block_sw_component_types.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::NvBlockSwComponentType(id));
+            }
+        }
+        id
+    }
+
+    /// py `createNvDataInterface` — allocates in the arena and links the element into the package.
+    pub fn add_nv_data_interface(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> NvDataInterfaceId {
+        let mut element = NvDataInterface::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.nv_data_interfaces.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::NvDataInterface(id));
+            }
+        }
+        id
+    }
+
+    /// py `createOsTaskProxy` — allocates in the arena and links the element into the package.
+    pub fn add_os_task_proxy(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> OsTaskProxyId {
+        let mut element = OsTaskProxy::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.os_task_proxys.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::OsTaskProxy(id));
+            }
+        }
+        id
+    }
+
+    /// py `createParameterInterface` — allocates in the arena and links the element into the package.
+    pub fn add_parameter_interface(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ParameterInterfaceId {
+        let mut element = ParameterInterface::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.parameter_interfaces.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ParameterInterface(id));
+            }
+        }
+        id
+    }
+
+    /// py `createPdurIPduGroup` — allocates in the arena and links the element into the package.
+    pub fn add_pdur_i_pdu_group(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> PdurIPduGroupId {
+        let mut element = PdurIPduGroup::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.pdur_i_pdu_groups.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::PdurIPduGroup(id));
+            }
+        }
+        id
+    }
+
+    /// py `createPhysicalDimension` — allocates in the arena and links the element into the package.
+    pub fn add_physical_dimension(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> PhysicalDimensionId {
+        let mut element = PhysicalDimension::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.physical_dimensions.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::PhysicalDimension(id));
+            }
+        }
+        id
+    }
+
+    /// py `createPlatformModuleEthernetEndpointConfiguration` — allocates in the arena and links the element into the package.
+    pub fn add_platform_module_ethernet_endpoint_configuration(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> PlatformModuleEthernetEndpointConfigurationId {
+        let mut element = PlatformModuleEthernetEndpointConfiguration::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self
+            .platform_module_ethernet_endpoint_configurations
+            .insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::PlatformModuleEthernetEndpointConfiguration(id));
+            }
+        }
+        id
+    }
+
+    /// py `createPortInterfaceMappingSet` — allocates in the arena and links the element into the package.
+    pub fn add_port_interface_mapping_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> PortInterfaceMappingSetId {
+        let mut element = PortInterfaceMappingSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.port_interface_mapping_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::PortInterfaceMappingSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createPortPrototypeBlueprint` — allocates in the arena and links the element into the package.
+    pub fn add_port_prototype_blueprint(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> PortPrototypeBlueprintId {
+        let mut element = PortPrototypeBlueprint::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.port_prototype_blueprints.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::PortPrototypeBlueprint(id));
+            }
+        }
+        id
+    }
+
+    /// py `createPostBuildVariantCriterion` — allocates in the arena and links the element into the package.
+    pub fn add_post_build_variant_criterion(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> PostBuildVariantCriterionId {
+        let mut element = PostBuildVariantCriterion::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.post_build_variant_criterions.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::PostBuildVariantCriterion(id));
+            }
+        }
+        id
+    }
+
+    /// py `createPredefinedVariant` — allocates in the arena and links the element into the package.
+    pub fn add_predefined_variant(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> PredefinedVariantId {
+        let mut element = PredefinedVariant::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.predefined_variants.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::PredefinedVariant(id));
+            }
+        }
+        id
+    }
+
+    /// py `createRunnableEntityGroup` — allocates in the arena and links the element into the package.
+    pub fn add_runnable_entity_group(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> RunnableEntityGroupId {
+        let mut element = RunnableEntityGroup::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.runnable_entity_groups.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::RunnableEntityGroup(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSdgDef` — allocates in the arena and links the element into the package.
+    pub fn add_sdg_def(&mut self, package: Option<ARPackageId>, short_name: &str) -> SdgDefId {
+        let mut element = SdgDef::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.sdg_defs.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SdgDef(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSecureCommunicationPropsSet` — allocates in the arena and links the element into the package.
+    pub fn add_secure_communication_props_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> SecureCommunicationPropsSetId {
+        let mut element = SecureCommunicationPropsSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.secure_communication_props_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SecureCommunicationPropsSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSecuredIPdu` — allocates in the arena and links the element into the package.
+    pub fn add_secured_i_pdu(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> SecuredIPduId {
+        let mut element = SecuredIPdu::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.secured_i_pdus.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SecuredIPdu(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSenderReceiverInterface` — allocates in the arena and links the element into the package.
+    pub fn add_sender_receiver_interface(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> SenderReceiverInterfaceId {
+        let mut element = SenderReceiverInterface::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.sender_receiver_interfaces.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SenderReceiverInterface(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSensorActuatorSwComponentType` — allocates in the arena and links the element into the package.
+    pub fn add_sensor_actuator_sw_component_type(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> SensorActuatorSwComponentTypeId {
+        let mut element = SensorActuatorSwComponentType::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.sensor_actuator_sw_component_types.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SensorActuatorSwComponentType(id));
+            }
+        }
+        id
+    }
+
+    /// py `createServiceProxySwComponentType` — allocates in the arena and links the element into the package.
+    pub fn add_service_proxy_sw_component_type(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ServiceProxySwComponentTypeId {
+        let mut element = ServiceProxySwComponentType::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.service_proxy_sw_component_types.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ServiceProxySwComponentType(id));
+            }
+        }
+        id
+    }
+
+    /// py `createServiceSwComponentType` — allocates in the arena and links the element into the package.
+    pub fn add_service_sw_component_type(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ServiceSwComponentTypeId {
+        let mut element = ServiceSwComponentType::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.service_sw_component_types.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ServiceSwComponentType(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSignalServiceTranslationPropsSet` — allocates in the arena and links the element into the package.
+    pub fn add_signal_service_translation_props_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> SignalServiceTranslationPropsSetId {
+        let mut element = SignalServiceTranslationPropsSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.signal_service_translation_props_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SignalServiceTranslationPropsSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSoAdRoutingGroup` — allocates in the arena and links the element into the package.
+    pub fn add_so_ad_routing_group(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> SoAdRoutingGroupId {
+        let mut element = SoAdRoutingGroup::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.so_ad_routing_groups.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SoAdRoutingGroup(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSomeipSdClientEventGroupTimingConfig` — allocates in the arena and links the element into the package.
+    pub fn add_someip_sd_client_event_group_timing_config(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> SomeipSdClientEventGroupTimingConfigId {
+        let mut element = SomeipSdClientEventGroupTimingConfig::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self
+            .someip_sd_client_event_group_timing_configs
+            .insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SomeipSdClientEventGroupTimingConfig(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSomeipSdClientServiceInstanceConfig` — allocates in the arena and links the element into the package.
+    pub fn add_someip_sd_client_service_instance_config(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> SomeipSdClientServiceInstanceConfigId {
+        let mut element = SomeipSdClientServiceInstanceConfig::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self
+            .someip_sd_client_service_instance_configs
+            .insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SomeipSdClientServiceInstanceConfig(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSomeipSdServerEventGroupTimingConfig` — allocates in the arena and links the element into the package.
+    pub fn add_someip_sd_server_event_group_timing_config(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> SomeipSdServerEventGroupTimingConfigId {
+        let mut element = SomeipSdServerEventGroupTimingConfig::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self
+            .someip_sd_server_event_group_timing_configs
+            .insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SomeipSdServerEventGroupTimingConfig(id));
+            }
+        }
+        id
+    }
+
+    /// py `createStateDependentFirewall` — allocates in the arena and links the element into the package.
+    pub fn add_state_dependent_firewall(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> StateDependentFirewallId {
+        let mut element = StateDependentFirewall::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.state_dependent_firewalls.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::StateDependentFirewall(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSwAddrMethod` — allocates in the arena and links the element into the package.
+    pub fn add_sw_addr_method(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> SwAddrMethodId {
+        let mut element = SwAddrMethod::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.sw_addr_methods.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SwAddrMethod(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSwBaseType` — allocates in the arena and links the element into the package.
+    pub fn add_sw_base_type(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> SwBaseTypeId {
+        let mut element = SwBaseType::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.sw_base_types.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SwBaseType(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSwRecordLayout` — allocates in the arena and links the element into the package.
+    pub fn add_sw_record_layout(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> SwRecordLayoutId {
+        let mut element = SwRecordLayout::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.sw_record_layouts.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SwRecordLayout(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSwSystemconst` — allocates in the arena and links the element into the package.
+    pub fn add_sw_systemconst(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> SwSystemconstId {
+        let mut element = SwSystemconst::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.sw_systemconsts.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SwSystemconst(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSwSystemconstantValueSet` — allocates in the arena and links the element into the package.
+    pub fn add_sw_systemconstant_value_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> SwSystemconstantValueSetId {
+        let mut element = SwSystemconstantValueSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.sw_systemconstant_value_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SwSystemconstantValueSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSwcBswMapping` — allocates in the arena and links the element into the package.
+    pub fn add_swc_bsw_mapping(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> SwcBswMappingId {
+        let mut element = SwcBswMapping::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.swc_bsw_mappings.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SwcBswMapping(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSwcImplementation` — allocates in the arena and links the element into the package.
+    pub fn add_swc_implementation(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> SwcImplementationId {
+        let mut element = SwcImplementation::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.swc_implementations.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SwcImplementation(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSwcTiming` — allocates in the arena and links the element into the package.
+    pub fn add_swc_timing(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> SwcTimingId {
+        let mut element = SwcTiming::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.swc_timings.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SwcTiming(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSystem` — allocates in the arena and links the element into the package.
+    pub fn add_system(&mut self, package: Option<ARPackageId>, short_name: &str) -> SystemId {
+        let mut element = System::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.systems.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::System(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSystemSignal` — allocates in the arena and links the element into the package.
+    pub fn add_system_signal(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> SystemSignalId {
+        let mut element = SystemSignal::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.system_signals.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SystemSignal(id));
+            }
+        }
+        id
+    }
+
+    /// py `createSystemSignalGroup` — allocates in the arena and links the element into the package.
+    pub fn add_system_signal_group(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> SystemSignalGroupId {
+        let mut element = SystemSignalGroup::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.system_signal_groups.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::SystemSignalGroup(id));
+            }
+        }
+        id
+    }
+
+    /// py `createTcpOptionFilterSet` — allocates in the arena and links the element into the package.
+    pub fn add_tcp_option_filter_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> TcpOptionFilterSetId {
+        let mut element = TcpOptionFilterSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.tcp_option_filter_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::TcpOptionFilterSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createTlvDataIdDefinitionSet` — allocates in the arena and links the element into the package.
+    pub fn add_tlv_data_id_definition_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> TlvDataIdDefinitionSetId {
+        let mut element = TlvDataIdDefinitionSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.tlv_data_id_definition_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::TlvDataIdDefinitionSet(id));
+            }
+        }
+        id
+    }
+
+    /// py `createTriggerInterface` — allocates in the arena and links the element into the package.
+    pub fn add_trigger_interface(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> TriggerInterfaceId {
+        let mut element = TriggerInterface::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.trigger_interfaces.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::TriggerInterface(id));
+            }
+        }
+        id
+    }
+
+    /// py `createUnit` — allocates in the arena and links the element into the package.
+    pub fn add_unit(&mut self, package: Option<ARPackageId>, short_name: &str) -> UnitId {
+        let mut element = Unit::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.units.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::Unit(id));
+            }
+        }
+        id
+    }
+
+    /// py `createUnitGroup` — allocates in the arena and links the element into the package.
+    pub fn add_unit_group(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> UnitGroupId {
+        let mut element = UnitGroup::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.unit_groups.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::UnitGroup(id));
+            }
+        }
+        id
+    }
+
+    /// py `createUserDefinedIPdu` — allocates in the arena and links the element into the package.
+    pub fn add_user_defined_i_pdu(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> UserDefinedIPduId {
+        let mut element = UserDefinedIPdu::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.user_defined_i_pdus.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::UserDefinedIPdu(id));
+            }
+        }
+        id
+    }
+
+    /// py `createUserDefinedPdu` — allocates in the arena and links the element into the package.
+    pub fn add_user_defined_pdu(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> UserDefinedPduId {
+        let mut element = UserDefinedPdu::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.user_defined_pdus.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::UserDefinedPdu(id));
+            }
+        }
+        id
+    }
+
+    /// py `createViewMapSet` — allocates in the arena and links the element into the package.
+    pub fn add_view_map_set(
+        &mut self,
+        package: Option<ARPackageId>,
+        short_name: &str,
+    ) -> ViewMapSetId {
+        let mut element = ViewMapSet::new();
+        element.set_short_name(short_name);
+        if let Some(package_id) = package {
+            element.set_parent(Some(ElementRef::ARPackage(package_id)));
+        }
+        let id = self.view_map_sets.insert(element);
+        if let Some(package_id) = package {
+            if let Some(parent) = self.ar_packages.get_mut(package_id) {
+                parent.push_element(ElementRef::ViewMapSet(id));
+            }
+        }
+        id
     }
 }
 

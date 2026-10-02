@@ -149,11 +149,12 @@ class TestEmitDocument(unittest.TestCase):
         self.ir = ir
 
     def test_element_variants_from_create_directory(self):
-        variants = build_element_variants(self.ir)
+        variants = build_element_variants(self.ir, Overrides.default())
         self.assertEqual(variants, ["ARPackage", "ApplicationSwComponentType"])
 
     def test_registry_maps_kebab_tags(self):
-        code = emit_registry(self.ir, Overrides.default(), PLACEMENT, build_element_variants(self.ir))
+        code = emit_registry(self.ir, Overrides.default(), PLACEMENT,
+                             build_element_variants(self.ir, Overrides.default()))
         self.assertIn('"APPLICATION-SW-COMPONENT-TYPE" =>', code)
         self.assertIn("ElementRef::ApplicationSwComponentType(d.add_application_sw_component_type(p, n))", code)
         self.assertIn('"AR-PACKAGE" =>', code)

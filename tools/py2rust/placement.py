@@ -40,9 +40,15 @@ def parse_markdown(files: dict[str, str]) -> Placement:
     """files: markdown file name -> content. Tables split across page breaks are
     handled by tracking the most recent Class/Primitive row per file."""
     binding: dict[str, str] = {}
+    conflicts: list[str] = []
     for content in files.values():
         current: str | None = None
         for line in content.splitlines():
+            # a new table/caption invalidates a stale class row; page-split
+            # continuations repeat their own Class row after the caption
+            if line.startswith("#") or re.match(r"^Table \d", line):
+                current = None
+                continue
             match = (CLASS_ROW.match(line) or PRIMITIVE_ROW.match(line)
                      or ENUMERATION_ROW.match(line) or LITERAL_ROW.match(line))
             if match:
@@ -50,6 +56,9 @@ def parse_markdown(files: dict[str, str]) -> Placement:
                 continue
             match = PACKAGE_ROW.match(line)
             if match and current:
+                if current in binding and binding[current] != match.group(1):
+                    conflicts.append(current)   # keep the first binding
+                    continue
                 binding[current] = match.group(1)
     return Placement(binding)
 

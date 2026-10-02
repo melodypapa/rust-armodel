@@ -21,6 +21,9 @@ PRIMITIVES = {
     "AnyServiceInstanceId", "AnyVersionString", "DateTime", "VerbatimString",
     "VerbatimStringPlain", "RegularExpression", "SymbolString", "McdIdentifier",
     "MimeTypeString", "NameTokens", "ViewTokens", "Numerical", "Float", "TimeValue",
+    # P0-parity quirk: language codes (AdminData.language, LanguageSpecific.l)
+    # are stored as plain String in the P0 model, not as the generated LEnum.
+    "LEnum",
 }
 
 
@@ -46,6 +49,9 @@ def map_field(field: FieldIr, ir: Ir, overrides: Overrides) -> RustField:
     alias = overrides.type_alias(inner)
     if alias:
         return RustField(FieldIr.rust_name_for(field.name), alias, field.kind, link=None)
+    if inner == "ElementRef":
+        # type-erased handle (CollectableElement/ARPackage element lists)
+        return RustField(FieldIr.rust_name_for(field.name), "ElementRef", field.kind, link=None)
     if inner in PRIMITIVES or inner in ("str", "int", "float", "bool", "Any"):
         return RustField(FieldIr.rust_name_for(field.name), "String", field.kind, link=None)
     cls = ir.get(inner)

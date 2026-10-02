@@ -132,7 +132,7 @@ impl Referrable {
         &self.short_name_fragments
     }
 
-    pub fn push_short_name_fragments(&mut self, value: ShortNameFragmentId) {
+    pub fn push_short_name_fragment(&mut self, value: ShortNameFragmentId) {
         self.short_name_fragments.push(value);
     }
 }
@@ -264,7 +264,7 @@ impl Identifiable {
         &self.annotations
     }
 
-    pub fn push_annotations(&mut self, value: AnnotationId) {
+    pub fn push_annotation(&mut self, value: AnnotationId) {
         self.annotations.push(value);
     }
 
@@ -272,7 +272,7 @@ impl Identifiable {
         &self.elements
     }
 
-    pub fn push_elements(&mut self, value: ElementRef) {
+    pub fn push_element(&mut self, value: ElementRef) {
         self.elements.push(value);
     }
 }
@@ -573,11 +573,12 @@ impl ARPackage {
     }
 }
 
-/// spec class `ReferenceBase` — `ReferenceBase : ARElement`.
+/// spec class `ReferenceBase` — `ReferenceBase : ARObject`
+/// (py-armodel ARPackage.py:386; the P0 skeleton had modelled ARElement).
 /// P0 placeholder: `AdminDataWhitespace.arxml` has none; fields arrive in P1.
 #[derive(Debug, Default)]
 pub struct ReferenceBase {
-    base: ARElement,
+    base: ARObject,
 }
 
 impl ReferenceBase {
@@ -585,11 +586,11 @@ impl ReferenceBase {
         Self::default()
     }
 
-    pub fn base(&self) -> &ARElement {
+    pub fn base(&self) -> &ARObject {
         &self.base
     }
 
-    pub fn base_mut(&mut self) -> &mut ARElement {
+    pub fn base_mut(&mut self) -> &mut ARObject {
         &mut self.base
     }
 }
@@ -949,8 +950,15 @@ impl Document {
                         package_b,
                         &format!("{path}.ELEMENTS[{index}]"),
                     )?;
-                } // (P0 has the single ARPackage variant; the P1 converter's
-                  // generated enum adds the kind-mismatch arm back.)
+                }
+                _ => {
+                    // the generated ElementRef enum has one variant per
+                    // ARPackage create-directory entry; kind mismatches are
+                    // structural differences
+                    return Err(format!(
+                        "{path}.ELEMENTS[{index}]: element kind mismatch"
+                    ));
+                }
             }
         }
 

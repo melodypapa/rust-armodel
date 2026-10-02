@@ -37,8 +37,8 @@ class Overrides:
             tag_overrides={},
             alias_module={
                 "XmlSpace": "m2::msr::documentation::text_model::language_data_model",
-                # primitive scalar aliases resolve to the owning module of their py class
-                **{},
+                # the type-erased handle lives in the pinned ar_object.rs template
+                "ElementRef": "m2::autosar_templates::generic_structure::general_template_classes::ar_object",
             },
         )
 

@@ -5,7 +5,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from emit_model import emit_module
 from extract import extract_source
-from ir import ClassIr
+from ir import ClassIr, FieldIr
 from overrides import Overrides
 from placement import Placement
 
@@ -61,6 +61,12 @@ class TestEmitModule(unittest.TestCase):
     def setUp(self):
         self.ir = extract_source(FIXTURE, "m")
         # classes referenced by the fixture but defined in other py files
+        arobject = ClassIr(name="ARObject", module_py="m", bases=[])
+        arobject.fields = [
+            FieldIr(name="checksum", type_expr="Optional[String]", kind="optional", inner="String"),
+            FieldIr(name="timestamp", type_expr="Optional[DateTime]", kind="optional", inner="DateTime"),
+        ]
+        self.ir.add(arobject)
         self.ir.add(ClassIr(name="Sdf", module_py="m", bases=["ARObject"]))
         self.ir.add(ClassIr(name="SdgCaption", module_py="m", bases=["ARObject"]))
         self.ir.add(ClassIr(name="XmlSpaceEnum", module_py="m", bases=["AREnum"], is_enum=True))
@@ -100,6 +106,25 @@ class TestEmitModule(unittest.TestCase):
         self.assertIn("pub fn get_sd(&self) -> &[SdId]", out)
         self.assertIn("pub fn push_sd(&mut self, value: SdId)", out)
         self.assertIn("use crate::m2::other::SdgCaptionId;", out)
+
+
+    def test_inherited_accessors_are_forwarded(self):
+        out = emit_module(self.ir, self.overrides, PLACEMENT,
+                          [self.ir.get("Sd")], ["m2", "test"])
+        # ARObject's checksum/timestamp arrive through the base chain
+        self.assertIn("pub fn get_checksum(&self) -> Option<&str> {", out)
+        self.assertIn("self.base().get_checksum()", out)
+        self.assertIn("pub fn set_checksum(&mut self, value: impl Into<String>) -> &mut Self", out)
+
+    def test_parent_forwarder_from_referrable_template(self):
+        self.ir.add(ClassIr(name="Referrable", module_py="m", bases=["ARObject"]))
+        child = ClassIr(name="Child", module_py="m", bases=["Referrable"])
+        self.ir.add(child)
+        out = emit_module(self.ir, self.overrides, PLACEMENT, [child], ["m2", "test"])
+        self.assertIn("pub fn set_parent(&mut self, parent: Option<ElementRef>) -> &mut Self", out)
+        self.assertIn("self.base().set_parent(parent);", out)
+        self.assertIn("use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;",
+                      out)
 
 
 if __name__ == "__main__":

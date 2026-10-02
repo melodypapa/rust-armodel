@@ -1,6 +1,12 @@
-"""Emit one rust module file: imports, enums, structs, key types, accessors."""
+"""Emit one rust module file: imports, enums, structs, key types, accessors, forwarders.
+
+Generated classes forward every inherited accessor through the base chain
+(py subclasses inherit getX/setX; docs/code_guide.md §3 requires the public
+API to match py-armodel 1:1).
+"""
 from __future__ import annotations
 
+import templates
 from ir import ClassIr, FieldIr, Ir, snake_case
 from overrides import Overrides
 from placement import Placement
@@ -35,27 +41,28 @@ def _emit_struct_field(rf: RustField) -> str:
     return f"    {rf.rust_name}: Option<{rf.rust_type}>,"
 
 
-def _emit_accessors(rf: RustField) -> list[str]:
+def _accessors_for(rf: RustField, recv: str) -> list[str]:
+    """Accessors for a field reached via `recv` (e.g. `self.gid`)."""
     name, t = rf.rust_name, rf.rust_type
     if rf.wrapper == "list":
         return [
             f"    pub fn get_{name}(&self) -> &[{t}] {{",
-            f"        &self.{name}",
+            f"        &{recv}",
             "    }",
             "",
             f"    pub fn push_{name}(&mut self, value: {t}) {{",
-            f"        self.{name}.push(value);",
+            f"        {recv}.push(value);",
             "    }",
             "",
         ]
     if t == "String":
         return [
             f"    pub fn get_{name}(&self) -> Option<&str> {{",
-            f"        self.{name}.as_deref()",
+            f"        {recv}.as_deref()",
             "    }",
             "",
             f"    pub fn set_{name}(&mut self, value: impl Into<String>) -> &mut Self {{",
-            f"        self.{name} = Some(value.into());",
+            f"        {recv} = Some(value.into());",
             "        self",
             "    }",
             "",
@@ -63,11 +70,64 @@ def _emit_accessors(rf: RustField) -> list[str]:
     # Copy enum or arena link: both are Option<T> with plain get/set
     return [
         f"    pub fn get_{name}(&self) -> Option<{t}> {{",
-        f"        self.{name}",
+        f"        {recv}.clone()",
         "    }",
         "",
         f"    pub fn set_{name}(&mut self, value: {t}) -> &mut Self {{",
-        f"        self.{name} = Some(value);",
+        f"        {recv} = Some(value);",
+        "        self",
+        "    }",
+        "",
+    ]
+
+
+def _forwarded_accessors(rf: RustField, path: str) -> list[str]:
+    """Forwarded accessors delegating to the ancestor's accessor methods."""
+    name, t = rf.rust_name, rf.rust_type
+    if rf.wrapper == "list":
+        return [
+            f"    pub fn get_{name}(&self) -> &[{t}] {{",
+            f"        {path}.get_{name}()",
+            "    }",
+            "",
+            f"    pub fn push_{name}(&mut self, value: {t}) {{",
+            f"        {path}.push_{name}(value)",
+            "    }",
+            "",
+        ]
+    if t == "String":
+        return [
+            f"    pub fn get_{name}(&self) -> Option<&str> {{",
+            f"        {path}.get_{name}()",
+            "    }",
+            "",
+            f"    pub fn set_{name}(&mut self, value: impl Into<String>) -> &mut Self {{",
+            f"        {path}.set_{name}(value);",
+            "        self",
+            "    }",
+            "",
+        ]
+    return [
+        f"    pub fn get_{name}(&self) -> Option<{t}> {{",
+        f"        {path}.get_{name}()",
+        "    }",
+        "",
+        f"    pub fn set_{name}(&mut self, value: {t}) -> &mut Self {{",
+        f"        {path}.set_{name}(value);",
+        "        self",
+        "    }",
+        "",
+    ]
+
+
+def _emit_parent_forwarders(path: str) -> list[str]:
+    return [
+        "    pub fn get_parent(&self) -> Option<ElementRef> {",
+        f"        {path}.get_parent()",
+        "    }",
+        "",
+        "    pub fn set_parent(&mut self, parent: Option<ElementRef>) -> &mut Self {",
+        f"        {path}.set_parent(parent);",
         "        self",
         "    }",
         "",
@@ -86,73 +146,136 @@ def _base_accessor(base: str, first: bool) -> list[str]:
     return [f"    pub fn {name}(&self) -> &{base} {{", f"        &self.{name}", "    }", ""]
 
 
+def _template_pseudo_fields(cur_name: str) -> list[FieldIr]:
+    """Param-derived template accessors (constructor quirks) as pseudo fields."""
+    out = []
+    for name, kind in templates.TEMPLATE_ACCESSORS.get(cur_name, []):
+        if kind == "string":
+            out.append(FieldIr(name=name, type_expr="Optional[String]", kind="optional", inner="String"))
+        elif kind == "parent":
+            out.append(FieldIr(name=name, type_expr="Optional[ElementRef]", kind="optional", inner="ElementRef"))
+    return out
+
+
+def _inherit_items(ir: Ir, cls: ClassIr) -> list[tuple[str, FieldIr]]:
+    """(access_path, field) for every accessor inherited from ancestors.
+
+    access_path is a rust expression on &self reaching the ancestor struct:
+    `self.base()` along the first-base chain, `self.<mixin>()` for extra bases.
+    """
+    items: list[tuple[str, FieldIr]] = []
+    seen: set[str] = {FieldIr.rust_name_for(f.name) for f in cls.fields}
+    path = "self.base()"
+    cur = ir.get(cls.bases[0]) if cls.bases else None
+    walked: set[str] = set()
+    while cur is not None and cur.name not in walked:
+        walked.add(cur.name)
+        for f in cur.fields + _template_pseudo_fields(cur.name):
+            rn = FieldIr.rust_name_for(f.name)
+            if rn not in seen:
+                items.append((path, f))
+                seen.add(rn)
+        if not cur.bases:
+            break
+        path += ".base()"
+        cur = ir.get(cur.bases[0])
+    for extra in cls.bases[1:]:
+        extra_cls = ir.get(extra)
+        if extra_cls is None:
+            continue
+        acc = snake_case(extra)
+        for f in extra_cls.fields + _template_pseudo_fields(extra_cls.name):
+            rn = FieldIr.rust_name_for(f.name)
+            if rn not in seen:
+                items.append((f"self.{acc}()", f))
+                seen.add(rn)
+    return items
+
+
+def _inherited(ir: Ir, cls: ClassIr, overrides: Overrides) -> tuple[list[tuple[str, RustField]], bool]:
+    """([(path, mapped field)], needs_parent_forwarder) for a class, own fields shadowing."""
+    own_rust = {FieldIr.rust_name_for(f.name) for f in cls.fields}
+    out: list[tuple[str, RustField]] = []
+    needs_parent = False
+    for path, f in _inherit_items(ir, cls):
+        if FieldIr.rust_name_for(f.name) in own_rust:
+            continue
+        if f.inner == "ElementRef":
+            needs_parent = True
+            continue
+        out.append((path, map_field(f, ir, overrides)))
+    return out, needs_parent
+
+
 def _emit_struct(cls: ClassIr, ir: Ir, overrides: Overrides) -> list[str]:
     lines = [f"/// spec class `{cls.name}`" + (" (abstract)" if cls.is_abstract else "")]
     if cls.doc:
         lines += [f"/// {line}".rstrip() for line in cls.doc.splitlines()[:3] if line.strip()]
     lines += ["#[derive(Debug, Default)]", f"pub struct {cls.name} {{"]
-    rust_fields = []
     for i, base in enumerate(cls.bases):
         lines.append(_base_field(base, i == 0))
     for f in cls.fields:
-        rf = map_field(f, ir, overrides)
-        rust_fields.append(rf)
-        lines.append(_emit_struct_field(rf))
+        lines.append(_emit_struct_field(map_field(f, ir, overrides)))
     lines += ["}", "", f"impl {cls.name} {{", "    pub fn new() -> Self {", "        Self::default()", "    }", ""]
     for i, base in enumerate(cls.bases):
         lines.extend(_base_accessor(base, i == 0))
-    for rf in rust_fields:
-        lines.extend(_emit_accessors(rf))
+    for f in cls.fields:
+        rf = map_field(f, ir, overrides)
+        lines.extend(_accessors_for(rf, f"self.{rf.rust_name}"))
+    inherited, needs_parent = _inherited(ir, cls, overrides)
+    for path, rf in inherited:
+        lines.extend(_forwarded_accessors(rf, path))
+    if needs_parent:
+        for path, f in _inherit_items(ir, cls):
+            if f.inner == "ElementRef":
+                lines.extend(_emit_parent_forwarders(path))
+                break
     lines += ["}"]
     return lines
 
 
-def _rust_module_of(name: str, overrides: Overrides, placement: Placement) -> str | None:
-    """Module path of a referenced type: generated classes via placement, aliased
-    hand-written types via overrides.alias_module."""
-    segments = placement.module_of(name)
-    if segments:
-        return "::".join(segments)
-    return overrides.alias_module.get(name)
+def _referenced_types(ir: Ir, overrides: Overrides, classes: list[ClassIr]) -> set[str]:
+    """Rust type names referenced by this module's structs but not defined here."""
+    own = {c.name for c in classes}
+    refs: set[str] = set()
+    for cls in classes:
+        if cls.is_enum or not overrides.emits(cls.name):
+            continue
+        for b in cls.bases:
+            if b not in own:
+                refs.add(b)
+        own_rust = {FieldIr.rust_name_for(f.name) for f in cls.fields}
+        all_fields = [map_field(f, ir, overrides) for f in cls.fields]
+        inherited, needs_parent = _inherited(ir, cls, overrides)
+        for rf in all_fields + [rf for _, rf in inherited]:
+            if rf.rust_name in own_rust and rf not in all_fields:
+                continue
+            if rf.link:
+                refs.add(f"{rf.link}Id")
+            elif rf.rust_type != "String":
+                refs.add(rf.rust_type)
+        if needs_parent:
+            refs.add("ElementRef")
+    return refs
 
 
 def collect_imports(ir: Ir, overrides: Overrides, placement: Placement,
                     classes: list[ClassIr]) -> list[str]:
-    """use-lines for every referenced type not defined in this module."""
+    refs = _referenced_types(ir, overrides, classes)
     own = {c.name for c in classes}
-    referenced: set[str] = set()
-    has_struct = False
-    for cls in classes:
-        if cls.is_enum or not overrides.emits(cls.name):
-            continue
-        has_struct = True
-        referenced.update(b for b in cls.bases if b not in own)
-        for f in cls.fields:
-            if f.inner in own:
-                continue
-            alias = overrides.type_alias(f.inner)
-            if alias:
-                referenced.add(alias)
-                continue
-            target = ir.get(f.inner)
-            if target is None:
-                referenced.add(f.inner)              # unknown -> placement/alias decides
-            elif target.is_enum:
-                referenced.add(f.inner)              # generated enum in its own module
-            elif target.is_primitive:
-                continue                             # maps to String
-            else:
-                referenced.add(f"{f.inner}Id")       # arena link
     lines: list[str] = []
-    for name in sorted(referenced):
-        # arena-link names carry the Id suffix; placement knows the bare class
+    for name in sorted(refs):
+        if name in own:
+            continue
         lookup = name[:-2] if name.endswith("Id") else name
-        module = _rust_module_of(lookup, overrides, placement)
-        if module:
-            lines.append(f"use crate::{module}::{name};")
+        module = placement.module_of(lookup)
+        module_path = "::".join(module) if module else overrides.alias_module.get(name)
+        if module_path:
+            lines.append(f"use crate::{module_path}::{name};")
+    has_struct = any(not c.is_enum and overrides.emits(c.name) for c in classes)
     if has_struct:
         lines.append("use crate::Document;")  # the generated compare fn needs it
-    return sorted(set(lines))
+    return lines
 
 
 def emit_module(ir: Ir, overrides: Overrides, placement: Placement,
@@ -165,8 +288,9 @@ def emit_module(ir: Ir, overrides: Overrides, placement: Placement,
         out += ["new_key_type! {"]
         out += [f"    pub struct {c.name}Id;" for c in concrete]
         out += ["}", ""]
-    out += collect_imports(ir, overrides, placement, classes)
-    if collect_imports(ir, overrides, placement, classes):
+    imports = collect_imports(ir, overrides, placement, classes)
+    if imports:
+        out += imports
         out.append("")
     for cls in classes:
         if cls.is_enum and overrides.emits(cls.name):

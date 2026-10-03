@@ -21,16 +21,23 @@ pub enum WriteError {
     Io(#[from] io::Error),
 }
 
-/// Emits `<name attrs>text</name>` on one line; when `text` is `None` the
-/// element is still expanded (`<name></name>`, not self-closing) to match
-/// py's `short_empty_elements=False`. The empty inline `Text` event is what
-/// keeps the end tag on the same line under `new_with_indent`.
+/// Emits `<name attrs>text</name>` on one line. Empty text (`None` or `""`)
+/// follows py's net serialization rule (minidom self-closes, then `patch_xml`
+/// expands only attribute-less empties): an empty element **with attributes**
+/// is self-closing (`<L-2 L="EN"/>`), one **without attributes** is expanded
+/// (`<TAG></TAG>`). The empty inline `Text` event is what keeps the end tag
+/// on the same line under `new_with_indent`.
 pub(crate) fn write_text_element<W: Write>(
     writer: &mut Writer<W>,
     name: &str,
     element: BytesStart<'_>,
     text: Option<&str>,
 ) -> Result<(), WriteError> {
+    let empty = text.is_none_or(str::is_empty);
+    if empty && element.attributes().count() > 0 {
+        writer.write_event(Event::Empty(element))?;
+        return Ok(());
+    }
     writer.write_event(Event::Start(element))?;
     match text {
         Some(value) => {
@@ -140,6 +147,19 @@ mod tests {
         write_text_element(&mut writer, "LANGUAGE", element, None).unwrap();
         writer.write_event(Event::Eof).unwrap();
         assert_eq!(String::from_utf8(buffer).unwrap(), "<LANGUAGE></LANGUAGE>");
+    }
+
+    /// py `patch_xml` expands only attribute-less empty elements — one with
+    /// attributes stays self-closing (`<L-2 L="EN"/>`).
+    #[test]
+    fn empty_element_with_attributes_self_closes() {
+        let mut buffer: Vec<u8> = Vec::new();
+        let mut writer = Writer::new_with_indent(&mut buffer, b' ', 2);
+        let mut element = BytesStart::new("L-2");
+        element.push_attribute(("L", "EN"));
+        write_text_element(&mut writer, "L-2", element, Some("")).unwrap();
+        writer.write_event(Event::Eof).unwrap();
+        assert_eq!(String::from_utf8(buffer).unwrap(), "<L-2 L=\"EN\"/>");
     }
 
     #[test]

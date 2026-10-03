@@ -9,7 +9,7 @@ use thiserror::Error;
 
 use crate::m2::autosar_templates::autosar_top_level_structure::Document;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::{
-    RefType, RefTypeId,
+    Limit, RefType, RefTypeId,
 };
 
 /// Error model for the writer (mirrors `ParseError`).
@@ -110,6 +110,28 @@ pub(crate) fn write_optional_ref_type<W: Write>(
         }
         write_text_element(writer, tag, element, r#ref.get_value())?;
     }
+    Ok(())
+}
+
+/// py `setChildLimitElement` — S/T attrs, INTERVAL-TYPE attr, text.
+/// `allow(dead_code)` until Task 3 wires the Compu arms.
+#[allow(dead_code)]
+pub(crate) fn write_limit_element<W: Write>(
+    writer: &mut Writer<W>,
+    key: &str,
+    limit: &Limit,
+) -> Result<(), WriteError> {
+    let mut element = BytesStart::new(key);
+    if let Some(checksum) = limit.get_checksum() {
+        element.push_attribute(("S", checksum));
+    }
+    if let Some(timestamp) = limit.get_timestamp() {
+        element.push_attribute(("T", timestamp));
+    }
+    if let Some(interval) = limit.get_interval_type() {
+        element.push_attribute(("INTERVAL-TYPE", interval.as_str()));
+    }
+    write_text_element(writer, key, element, limit.get_value())?;
     Ok(())
 }
 

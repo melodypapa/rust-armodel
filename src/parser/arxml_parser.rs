@@ -18,7 +18,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::e
     AutoCollectEnum, CollectionId,
 };
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::{
-    ByteOrderEnum, RefTypeId,
+    ByteOrderEnum, IntervalTypeEnum, Limit, LimitId, RefTypeId,
 };
 use crate::m2::autosar_templates::generic_structure::life_cycles::{
     LifeCycleInfo, LifeCycleInfoId, LifeCycleInfoSetId, LifeCyclePeriod, LifeCyclePeriodId,
@@ -1020,6 +1020,43 @@ impl ARXMLParser {
             }
         }
         Ok(())
+    }
+
+    /// py `getChildLimitElement` — a `<LOWER-LIMIT INTERVAL-TYPE="…">value
+    /// </LOWER-LIMIT>` child as an arena-stored `Limit`.
+    /// `allow(dead_code)` until Task 3 wires the Compu arms.
+    #[allow(dead_code)]
+    fn get_child_limit_element(
+        &mut self,
+        element: &Node,
+        key: &str,
+        document: &mut Document,
+    ) -> Result<Option<LimitId>, ParseError> {
+        let Some(limit_node) = find(element, key) else {
+            return Ok(None);
+        };
+        let mut limit = Limit::new();
+        if let Some(checksum) = limit_node.attrs.get("S") {
+            limit.set_checksum(checksum.as_str());
+        }
+        if let Some(timestamp) = limit_node.attrs.get("T") {
+            limit.set_timestamp(timestamp.as_str());
+        }
+        if let Some(interval) = limit_node.attrs.get("INTERVAL-TYPE") {
+            match IntervalTypeEnum::try_from(interval.as_str()) {
+                Ok(value) => {
+                    limit.set_interval_type(value);
+                }
+                Err(_) => {
+                    let message = format!("Unsupported INTERVAL-TYPE <{interval}>");
+                    self.not_implemented(message)?;
+                }
+            }
+        }
+        if let Some(text) = &limit_node.text {
+            limit.set_value(text.as_str());
+        }
+        Ok(Some(document.limits.insert(limit)))
     }
 
     /// py `readBaseTypeDirectDefinition`.

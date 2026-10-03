@@ -24,6 +24,11 @@ PRIMITIVES = {
     # P0-parity quirk: language codes (AdminData.language, LanguageSpecific.l)
     # are stored as plain String in the P0 model, not as the generated LEnum.
     "LEnum",
+    # P2-parity quirk: py AREnum.setValue stores attribute text verbatim and
+    # the writer emits getValue() — fixtures carry INTERVAL-TYPE="CLOSED"
+    # (uppercase) against the enum's lowercase literal, so the field must be
+    # a verbatim String, not the generated enum.
+    "IntervalTypeEnum",
 }
 # RefType/TRefType are deliberately NOT primitives (P2 Task 0 / batch-2
 # Task 0): collapsing them to String drops the BASE/DEST attributes the byte

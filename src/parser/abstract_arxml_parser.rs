@@ -51,19 +51,16 @@ impl Node {
     }
 }
 
-/// Whitespace rule (P0 design §6): text is captured verbatim when the element
-/// carries `xml:space="preserve"`, dropped when whitespace-only, and trimmed
-/// otherwise. This is required for the `SD` value `"special   data"`.
+/// Whitespace rule: mixed-content text is captured **verbatim** — py's
+/// ElementTree readers never trim, and fixtures legitimately carry text with
+/// trailing newlines (e.g. `<L-2>` wrapping in the CompuMethod blueprint).
+/// Whitespace-only text (the indentation between container tags) becomes
+/// `None`: no py reader consumes container text, so dropping it is
+/// behavior-identical and keeps writer output free of stray whitespace.
 fn apply_whitespace_rule(node: &mut Node) {
-    if node.attrs.get("xml:space").map(String::as_str) == Some("preserve") {
-        return;
-    }
     if let Some(text) = node.text.as_mut() {
-        let trimmed = text.trim();
-        if trimmed.is_empty() {
+        if text.trim().is_empty() {
             node.text = None;
-        } else {
-            *text = trimmed.to_string();
         }
     }
 }
@@ -313,8 +310,10 @@ mod tests {
             Some("preserve")
         );
 
+        // py parity (P2 batch 2): mixed-content text is verbatim — no
+        // trimming, so padded text and trailing newlines survive round-trips.
         let plain = find(&root, "PLAIN").unwrap();
-        assert_eq!(plain.text.as_deref(), Some("padded"));
+        assert_eq!(plain.text.as_deref(), Some("  padded  "));
 
         let short_name = find(&root, "SHORT-NAME").unwrap();
         assert_eq!(short_name.text.as_deref(), Some("Demo"));

@@ -129,7 +129,7 @@ pub(crate) fn write_limit_element<W: Write>(
         element.push_attribute(("T", timestamp));
     }
     if let Some(interval) = limit.get_interval_type() {
-        element.push_attribute(("INTERVAL-TYPE", interval.as_str()));
+        element.push_attribute(("INTERVAL-TYPE", interval));
     }
     write_text_element(writer, key, element, limit.get_value())?;
     Ok(())

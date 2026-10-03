@@ -17,6 +17,7 @@ new_key_type! {
 
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::IntervalTypeEnum;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::variant_handling::BindingTimeEnum;
 use crate::m2::autosar_templates::generic_structure::variant_handling::SwSystemconstDependentFormula;
 use crate::Document;
@@ -98,20 +99,20 @@ impl AbstractEnumerationValueVariationPoint {
         self
     }
 
-    pub fn get_sysc_ref(&self) -> Option<&str> {
+    pub fn get_sysc_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sysc_ref()
     }
 
-    pub fn set_sysc_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sysc_ref(value);
         self
     }
 
-    pub fn get_sysc_string_ref(&self) -> Option<&str> {
+    pub fn get_sysc_string_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sysc_string_ref()
     }
 
-    pub fn set_sysc_string_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_string_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sysc_string_ref(value);
         self
     }
@@ -222,20 +223,20 @@ impl AbstractNumericalVariationPoint {
         self
     }
 
-    pub fn get_sysc_ref(&self) -> Option<&str> {
+    pub fn get_sysc_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sysc_ref()
     }
 
-    pub fn set_sysc_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sysc_ref(value);
         self
     }
 
-    pub fn get_sysc_string_ref(&self) -> Option<&str> {
+    pub fn get_sysc_string_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sysc_string_ref()
     }
 
-    pub fn set_sysc_string_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_string_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sysc_string_ref(value);
         self
     }
@@ -349,20 +350,20 @@ impl AttributeValueVariationPoint {
         self
     }
 
-    pub fn get_sysc_ref(&self) -> Option<&str> {
+    pub fn get_sysc_ref(&self) -> Option<RefTypeId> {
         self.base().get_sysc_ref()
     }
 
-    pub fn set_sysc_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_sysc_ref(value);
         self
     }
 
-    pub fn get_sysc_string_ref(&self) -> Option<&str> {
+    pub fn get_sysc_string_ref(&self) -> Option<RefTypeId> {
         self.base().get_sysc_string_ref()
     }
 
-    pub fn set_sysc_string_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_string_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_sysc_string_ref(value);
         self
     }
@@ -459,20 +460,20 @@ impl BooleanValueVariationPoint {
         self
     }
 
-    pub fn get_sysc_ref(&self) -> Option<&str> {
+    pub fn get_sysc_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sysc_ref()
     }
 
-    pub fn set_sysc_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sysc_ref(value);
         self
     }
 
-    pub fn get_sysc_string_ref(&self) -> Option<&str> {
+    pub fn get_sysc_string_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sysc_string_ref()
     }
 
-    pub fn set_sysc_string_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_string_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sysc_string_ref(value);
         self
     }
@@ -583,20 +584,20 @@ impl FloatValueVariationPoint {
         self
     }
 
-    pub fn get_sysc_ref(&self) -> Option<&str> {
+    pub fn get_sysc_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sysc_ref()
     }
 
-    pub fn set_sysc_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sysc_ref(value);
         self
     }
 
-    pub fn get_sysc_string_ref(&self) -> Option<&str> {
+    pub fn get_sysc_string_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sysc_string_ref()
     }
 
-    pub fn set_sysc_string_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_string_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sysc_string_ref(value);
         self
     }
@@ -707,20 +708,20 @@ impl IntegerValueVariationPoint {
         self
     }
 
-    pub fn get_sysc_ref(&self) -> Option<&str> {
+    pub fn get_sysc_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sysc_ref()
     }
 
-    pub fn set_sysc_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sysc_ref(value);
         self
     }
 
-    pub fn get_sysc_string_ref(&self) -> Option<&str> {
+    pub fn get_sysc_string_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sysc_string_ref()
     }
 
-    pub fn set_sysc_string_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_string_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sysc_string_ref(value);
         self
     }
@@ -841,20 +842,20 @@ impl LimitValueVariationPoint {
         self
     }
 
-    pub fn get_sysc_ref(&self) -> Option<&str> {
+    pub fn get_sysc_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_sysc_ref()
     }
 
-    pub fn set_sysc_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().base_mut().set_sysc_ref(value);
         self
     }
 
-    pub fn get_sysc_string_ref(&self) -> Option<&str> {
+    pub fn get_sysc_string_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_sysc_string_ref()
     }
 
-    pub fn set_sysc_string_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_string_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -972,20 +973,20 @@ impl NumericalValueVariationPoint {
         self
     }
 
-    pub fn get_sysc_ref(&self) -> Option<&str> {
+    pub fn get_sysc_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_sysc_ref()
     }
 
-    pub fn set_sysc_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().base_mut().set_sysc_ref(value);
         self
     }
 
-    pub fn get_sysc_string_ref(&self) -> Option<&str> {
+    pub fn get_sysc_string_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_sysc_string_ref()
     }
 
-    pub fn set_sysc_string_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_string_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -1103,20 +1104,20 @@ impl PositiveIntegerValueVariationPoint {
         self
     }
 
-    pub fn get_sysc_ref(&self) -> Option<&str> {
+    pub fn get_sysc_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sysc_ref()
     }
 
-    pub fn set_sysc_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sysc_ref(value);
         self
     }
 
-    pub fn get_sysc_string_ref(&self) -> Option<&str> {
+    pub fn get_sysc_string_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sysc_string_ref()
     }
 
-    pub fn set_sysc_string_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_string_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sysc_string_ref(value);
         self
     }
@@ -1227,20 +1228,20 @@ impl TimeValueValueVariationPoint {
         self
     }
 
-    pub fn get_sysc_ref(&self) -> Option<&str> {
+    pub fn get_sysc_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sysc_ref()
     }
 
-    pub fn set_sysc_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sysc_ref(value);
         self
     }
 
-    pub fn get_sysc_string_ref(&self) -> Option<&str> {
+    pub fn get_sysc_string_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sysc_string_ref()
     }
 
-    pub fn set_sysc_string_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_string_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sysc_string_ref(value);
         self
     }
@@ -1351,20 +1352,20 @@ impl UnlimitedIntegerValueVariationPoint {
         self
     }
 
-    pub fn get_sysc_ref(&self) -> Option<&str> {
+    pub fn get_sysc_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sysc_ref()
     }
 
-    pub fn set_sysc_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sysc_ref(value);
         self
     }
 
-    pub fn get_sysc_string_ref(&self) -> Option<&str> {
+    pub fn get_sysc_string_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sysc_string_ref()
     }
 
-    pub fn set_sysc_string_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_string_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sysc_string_ref(value);
         self
     }

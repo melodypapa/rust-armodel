@@ -20,6 +20,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::SingleLanguageReferrable;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::documentation::block_elements::UrlId;
 use crate::m2::msr::documentation::text_model::inline_attribute_enums::ResolutionPolicyEnum;
 use crate::m2::msr::documentation::text_model::inline_attribute_enums::ShowContentEnum;
@@ -78,6 +79,7 @@ impl Br {
 #[derive(Debug, Default)]
 pub struct EmphasisText {
     base: ARObject,
+    value: Option<String>,
     color: Option<String>,
     font: Option<String>,
     sub: Option<String>,
@@ -97,6 +99,15 @@ impl EmphasisText {
 
     pub fn base_mut(&mut self) -> &mut ARObject {
         &mut self.base
+    }
+
+    pub fn get_value(&self) -> Option<&str> {
+        self.value.as_deref()
+    }
+
+    pub fn set_value(&mut self, value: impl Into<String>) -> &mut Self {
+        self.value = Some(value.into());
+        self
     }
 
     pub fn get_color(&self) -> Option<&str> {
@@ -177,6 +188,7 @@ impl EmphasisText {
 #[derive(Debug, Default)]
 pub struct IndexEntry {
     base: ARObject,
+    value: Option<String>,
     sub: Option<String>,
     sup: Option<String>,
 }
@@ -192,6 +204,15 @@ impl IndexEntry {
 
     pub fn base_mut(&mut self) -> &mut ARObject {
         &mut self.base
+    }
+
+    pub fn get_value(&self) -> Option<&str> {
+        self.value.as_deref()
+    }
+
+    pub fn set_value(&mut self, value: impl Into<String>) -> &mut Self {
+        self.value = Some(value.into());
+        self
     }
 
     pub fn get_sub(&self) -> Option<&str> {
@@ -360,6 +381,7 @@ impl Std {
 #[derive(Debug, Default)]
 pub struct Tt {
     base: ARObject,
+    value: Option<String>,
     tex_render: Option<String>,
     r#type: Option<String>,
 }
@@ -375,6 +397,15 @@ impl Tt {
 
     pub fn base_mut(&mut self) -> &mut ARObject {
         &mut self.base
+    }
+
+    pub fn get_value(&self) -> Option<&str> {
+        self.value.as_deref()
+    }
+
+    pub fn set_value(&mut self, value: impl Into<String>) -> &mut Self {
+        self.value = Some(value.into());
+        self
     }
 
     pub fn get_tex_render(&self) -> Option<&str> {
@@ -658,7 +689,7 @@ impl Xfile {
 pub struct Xref {
     base: ARObject,
     label1: Option<SingleLanguageLongNameId>,
-    referrable_ref: Option<String>,
+    referrable_ref: Option<RefTypeId>,
     resolution_policy: Option<ResolutionPolicyEnum>,
     show_content: Option<ShowContentEnum>,
     show_resource_alias_name: Option<ShowResourceAliasNameEnum>,
@@ -693,12 +724,12 @@ impl Xref {
         self
     }
 
-    pub fn get_referrable_ref(&self) -> Option<&str> {
-        self.referrable_ref.as_deref()
+    pub fn get_referrable_ref(&self) -> Option<RefTypeId> {
+        self.referrable_ref
     }
 
-    pub fn set_referrable_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.referrable_ref = Some(value.into());
+    pub fn set_referrable_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.referrable_ref = Some(value);
         self
     }
 
@@ -905,6 +936,9 @@ impl Document {
         path: &str,
     ) -> Result<(), String> {
         Self::compare_ar_object(a.base(), b.base(), path)?;
+        if a.get_value() != b.get_value() {
+            return Err(format!("{path}: VALUE mismatch"));
+        }
         if a.get_color() != b.get_color() {
             return Err(format!("{path}: COLOR mismatch"));
         }
@@ -934,6 +968,9 @@ impl Document {
         path: &str,
     ) -> Result<(), String> {
         Self::compare_ar_object(a.base(), b.base(), path)?;
+        if a.get_value() != b.get_value() {
+            return Err(format!("{path}: VALUE mismatch"));
+        }
         if a.get_sub() != b.get_sub() {
             return Err(format!("{path}: SUB mismatch"));
         }
@@ -977,6 +1014,9 @@ impl Document {
         path: &str,
     ) -> Result<(), String> {
         Self::compare_ar_object(a.base(), b.base(), path)?;
+        if a.get_value() != b.get_value() {
+            return Err(format!("{path}: VALUE mismatch"));
+        }
         if a.get_tex_render() != b.get_tex_render() {
             return Err(format!("{path}: TEX_RENDER mismatch"));
         }

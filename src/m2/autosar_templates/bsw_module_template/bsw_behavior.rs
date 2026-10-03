@@ -68,6 +68,7 @@ use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguage
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
 use crate::m2::autosar_templates::sw_component_template::datatype::data_prototypes::ParameterDataPrototypeId;
 use crate::m2::autosar_templates::common_structure::internal_behavior::ReentrancyLevelEnum;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Referrable;
 use crate::m2::autosar_templates::common_structure::service_needs::RoleBasedDataAssignmentId;
 use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::service_mapping::RoleBasedDataTypeAssignmentId;
@@ -163,7 +164,7 @@ impl BswApiOptions {
 #[derive(Debug, Default)]
 pub struct BswAsynchronousServerCallPoint {
     base: BswModuleCallPoint,
-    called_entry_ref: Option<String>,
+    called_entry_ref: Option<RefTypeId>,
 }
 
 impl BswAsynchronousServerCallPoint {
@@ -179,20 +180,20 @@ impl BswAsynchronousServerCallPoint {
         &mut self.base
     }
 
-    pub fn get_called_entry_ref(&self) -> Option<&str> {
-        self.called_entry_ref.as_deref()
+    pub fn get_called_entry_ref(&self) -> Option<RefTypeId> {
+        self.called_entry_ref
     }
 
-    pub fn set_called_entry_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.called_entry_ref = Some(value.into());
+    pub fn set_called_entry_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.called_entry_ref = Some(value);
         self
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         self.base().get_context_limitation_refs()
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_context_limitation_ref(value)
     }
 
@@ -247,7 +248,7 @@ impl BswAsynchronousServerCallPoint {
 #[derive(Debug, Default)]
 pub struct BswAsynchronousServerCallResultPoint {
     base: BswModuleCallPoint,
-    asynchronous_server_call_point_ref: Option<String>,
+    asynchronous_server_call_point_ref: Option<RefTypeId>,
 }
 
 impl BswAsynchronousServerCallResultPoint {
@@ -263,23 +264,20 @@ impl BswAsynchronousServerCallResultPoint {
         &mut self.base
     }
 
-    pub fn get_asynchronous_server_call_point_ref(&self) -> Option<&str> {
-        self.asynchronous_server_call_point_ref.as_deref()
+    pub fn get_asynchronous_server_call_point_ref(&self) -> Option<RefTypeId> {
+        self.asynchronous_server_call_point_ref
     }
 
-    pub fn set_asynchronous_server_call_point_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
-        self.asynchronous_server_call_point_ref = Some(value.into());
+    pub fn set_asynchronous_server_call_point_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.asynchronous_server_call_point_ref = Some(value);
         self
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         self.base().get_context_limitation_refs()
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_context_limitation_ref(value)
     }
 
@@ -335,7 +333,7 @@ impl BswAsynchronousServerCallResultPoint {
 #[derive(Debug, Default)]
 pub struct BswAsynchronousServerCallReturnsEvent {
     base: BswScheduleEvent,
-    event_source_ref: Option<String>,
+    event_source_ref: Option<RefTypeId>,
 }
 
 impl BswAsynchronousServerCallReturnsEvent {
@@ -351,20 +349,20 @@ impl BswAsynchronousServerCallReturnsEvent {
         &mut self.base
     }
 
-    pub fn get_event_source_ref(&self) -> Option<&str> {
-        self.event_source_ref.as_deref()
+    pub fn get_event_source_ref(&self) -> Option<RefTypeId> {
+        self.event_source_ref
     }
 
-    pub fn set_event_source_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.event_source_ref = Some(value.into());
+    pub fn set_event_source_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.event_source_ref = Some(value);
         self
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         self.base().base().get_context_limitation_refs()
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_context_limitation_ref(value)
@@ -380,26 +378,23 @@ impl BswAsynchronousServerCallReturnsEvent {
             .push_disabled_in_mode_i_ref(value)
     }
 
-    pub fn get_starts_on_event_ref(&self) -> Option<&str> {
+    pub fn get_starts_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_starts_on_event_ref()
     }
 
-    pub fn set_starts_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_starts_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_starts_on_event_ref(value);
         self
     }
 
-    pub fn get_activation_reason_representation_ref(&self) -> Option<&str> {
+    pub fn get_activation_reason_representation_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
             .get_activation_reason_representation_ref()
     }
 
-    pub fn set_activation_reason_representation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
+    pub fn set_activation_reason_representation_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -644,11 +639,11 @@ impl BswBackgroundEvent {
         &mut self.base
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         self.base().base().get_context_limitation_refs()
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_context_limitation_ref(value)
@@ -664,26 +659,23 @@ impl BswBackgroundEvent {
             .push_disabled_in_mode_i_ref(value)
     }
 
-    pub fn get_starts_on_event_ref(&self) -> Option<&str> {
+    pub fn get_starts_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_starts_on_event_ref()
     }
 
-    pub fn set_starts_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_starts_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_starts_on_event_ref(value);
         self
     }
 
-    pub fn get_activation_reason_representation_ref(&self) -> Option<&str> {
+    pub fn get_activation_reason_representation_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
             .get_activation_reason_representation_ref()
     }
 
-    pub fn set_activation_reason_representation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
+    pub fn set_activation_reason_representation_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -927,19 +919,19 @@ impl BswCalledEntity {
         &mut self.base
     }
 
-    pub fn get_accessed_mode_group_refs(&self) -> &[String] {
+    pub fn get_accessed_mode_group_refs(&self) -> &[RefTypeId] {
         self.base().get_accessed_mode_group_refs()
     }
 
-    pub fn push_accessed_mode_group_ref(&mut self, value: String) {
+    pub fn push_accessed_mode_group_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_accessed_mode_group_ref(value)
     }
 
-    pub fn get_activation_point_refs(&self) -> &[String] {
+    pub fn get_activation_point_refs(&self) -> &[RefTypeId] {
         self.base().get_activation_point_refs()
     }
 
-    pub fn push_activation_point_ref(&mut self, value: String) {
+    pub fn push_activation_point_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_activation_point_ref(value)
     }
 
@@ -967,36 +959,36 @@ impl BswCalledEntity {
         self.base_mut().push_data_send_point(value)
     }
 
-    pub fn get_implemented_entry_ref(&self) -> Option<&str> {
+    pub fn get_implemented_entry_ref(&self) -> Option<RefTypeId> {
         self.base().get_implemented_entry_ref()
     }
 
-    pub fn set_implemented_entry_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_implemented_entry_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_implemented_entry_ref(value);
         self
     }
 
-    pub fn get_issued_trigger_refs(&self) -> &[String] {
+    pub fn get_issued_trigger_refs(&self) -> &[RefTypeId] {
         self.base().get_issued_trigger_refs()
     }
 
-    pub fn push_issued_trigger_ref(&mut self, value: String) {
+    pub fn push_issued_trigger_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_issued_trigger_ref(value)
     }
 
-    pub fn get_managed_mode_group_refs(&self) -> &[String] {
+    pub fn get_managed_mode_group_refs(&self) -> &[RefTypeId] {
         self.base().get_managed_mode_group_refs()
     }
 
-    pub fn push_managed_mode_group_ref(&mut self, value: String) {
+    pub fn push_managed_mode_group_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_managed_mode_group_ref(value)
     }
 
-    pub fn get_scheduler_name_prefix_ref(&self) -> Option<&str> {
+    pub fn get_scheduler_name_prefix_ref(&self) -> Option<RefTypeId> {
         self.base().get_scheduler_name_prefix_ref()
     }
 
-    pub fn set_scheduler_name_prefix_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_scheduler_name_prefix_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_scheduler_name_prefix_ref(value);
         self
     }
@@ -1009,19 +1001,19 @@ impl BswCalledEntity {
         self.base_mut().base_mut().push_activation_reason(value)
     }
 
-    pub fn get_can_enter_refs(&self) -> &[String] {
+    pub fn get_can_enter_refs(&self) -> &[RefTypeId] {
         self.base().base().get_can_enter_refs()
     }
 
-    pub fn push_can_enter_ref(&mut self, value: String) {
+    pub fn push_can_enter_ref(&mut self, value: RefTypeId) {
         self.base_mut().base_mut().push_can_enter_ref(value)
     }
 
-    pub fn get_exclusive_area_nesting_order_refs(&self) -> &[String] {
+    pub fn get_exclusive_area_nesting_order_refs(&self) -> &[RefTypeId] {
         self.base().base().get_exclusive_area_nesting_order_refs()
     }
 
-    pub fn push_exclusive_area_nesting_order_ref(&mut self, value: String) {
+    pub fn push_exclusive_area_nesting_order_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_exclusive_area_nesting_order_ref(value)
@@ -1045,19 +1037,19 @@ impl BswCalledEntity {
         self
     }
 
-    pub fn get_runs_inside_refs(&self) -> &[String] {
+    pub fn get_runs_inside_refs(&self) -> &[RefTypeId] {
         self.base().base().get_runs_inside_refs()
     }
 
-    pub fn push_runs_inside_ref(&mut self, value: String) {
+    pub fn push_runs_inside_ref(&mut self, value: RefTypeId) {
         self.base_mut().base_mut().push_runs_inside_ref(value)
     }
 
-    pub fn get_sw_addr_method_ref(&self) -> Option<&str> {
+    pub fn get_sw_addr_method_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sw_addr_method_ref()
     }
 
-    pub fn set_sw_addr_method_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sw_addr_method_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sw_addr_method_ref(value);
         self
     }
@@ -1239,7 +1231,7 @@ impl BswCalledEntity {
 pub struct BswClientPolicy {
     base: BswApiOptions,
     variation_point_capable: VariationPointCapable,
-    required_client_server_entry_ref: Option<String>,
+    required_client_server_entry_ref: Option<RefTypeId>,
 }
 
 impl BswClientPolicy {
@@ -1263,12 +1255,12 @@ impl BswClientPolicy {
         &mut self.variation_point_capable
     }
 
-    pub fn get_required_client_server_entry_ref(&self) -> Option<&str> {
-        self.required_client_server_entry_ref.as_deref()
+    pub fn get_required_client_server_entry_ref(&self) -> Option<RefTypeId> {
+        self.required_client_server_entry_ref
     }
 
-    pub fn set_required_client_server_entry_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.required_client_server_entry_ref = Some(value.into());
+    pub fn set_required_client_server_entry_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.required_client_server_entry_ref = Some(value);
         self
     }
 
@@ -1315,7 +1307,7 @@ impl BswClientPolicy {
 #[derive(Debug, Default)]
 pub struct BswDataReceivedEvent {
     base: BswScheduleEvent,
-    data_ref: Option<String>,
+    data_ref: Option<RefTypeId>,
 }
 
 impl BswDataReceivedEvent {
@@ -1331,20 +1323,20 @@ impl BswDataReceivedEvent {
         &mut self.base
     }
 
-    pub fn get_data_ref(&self) -> Option<&str> {
-        self.data_ref.as_deref()
+    pub fn get_data_ref(&self) -> Option<RefTypeId> {
+        self.data_ref
     }
 
-    pub fn set_data_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.data_ref = Some(value.into());
+    pub fn set_data_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.data_ref = Some(value);
         self
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         self.base().base().get_context_limitation_refs()
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_context_limitation_ref(value)
@@ -1360,26 +1352,23 @@ impl BswDataReceivedEvent {
             .push_disabled_in_mode_i_ref(value)
     }
 
-    pub fn get_starts_on_event_ref(&self) -> Option<&str> {
+    pub fn get_starts_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_starts_on_event_ref()
     }
 
-    pub fn set_starts_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_starts_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_starts_on_event_ref(value);
         self
     }
 
-    pub fn get_activation_reason_representation_ref(&self) -> Option<&str> {
+    pub fn get_activation_reason_representation_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
             .get_activation_reason_representation_ref()
     }
 
-    pub fn set_activation_reason_representation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
+    pub fn set_activation_reason_representation_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -1608,7 +1597,7 @@ impl BswDataReceivedEvent {
 pub struct BswDataReceptionPolicy {
     base: BswApiOptions,
     variation_point_capable: VariationPointCapable,
-    received_data_ref: Option<String>,
+    received_data_ref: Option<RefTypeId>,
 }
 
 impl BswDataReceptionPolicy {
@@ -1632,12 +1621,12 @@ impl BswDataReceptionPolicy {
         &mut self.variation_point_capable
     }
 
-    pub fn get_received_data_ref(&self) -> Option<&str> {
-        self.received_data_ref.as_deref()
+    pub fn get_received_data_ref(&self) -> Option<RefTypeId> {
+        self.received_data_ref
     }
 
-    pub fn set_received_data_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.received_data_ref = Some(value.into());
+    pub fn set_received_data_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.received_data_ref = Some(value);
         self
     }
 
@@ -1685,8 +1674,8 @@ impl BswDataReceptionPolicy {
 pub struct BswDataSendPolicy {
     base: BswApiOptions,
     variation_point_capable: VariationPointCapable,
-    provided_data_ref: Option<String>,
-    proviede_data_ref: Option<String>,
+    provided_data_ref: Option<RefTypeId>,
+    proviede_data_ref: Option<RefTypeId>,
 }
 
 impl BswDataSendPolicy {
@@ -1710,21 +1699,21 @@ impl BswDataSendPolicy {
         &mut self.variation_point_capable
     }
 
-    pub fn get_provided_data_ref(&self) -> Option<&str> {
-        self.provided_data_ref.as_deref()
+    pub fn get_provided_data_ref(&self) -> Option<RefTypeId> {
+        self.provided_data_ref
     }
 
-    pub fn set_provided_data_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.provided_data_ref = Some(value.into());
+    pub fn set_provided_data_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.provided_data_ref = Some(value);
         self
     }
 
-    pub fn get_proviede_data_ref(&self) -> Option<&str> {
-        self.proviede_data_ref.as_deref()
+    pub fn get_proviede_data_ref(&self) -> Option<RefTypeId> {
+        self.proviede_data_ref
     }
 
-    pub fn set_proviede_data_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.proviede_data_ref = Some(value.into());
+    pub fn set_proviede_data_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.proviede_data_ref = Some(value);
         self
     }
 
@@ -1771,8 +1760,8 @@ impl BswDataSendPolicy {
 #[derive(Debug, Default)]
 pub struct BswDirectCallPoint {
     base: BswModuleCallPoint,
-    called_entry_ref: Option<String>,
-    called_from_within_exclusive_area_ref: Option<String>,
+    called_entry_ref: Option<RefTypeId>,
+    called_from_within_exclusive_area_ref: Option<RefTypeId>,
 }
 
 impl BswDirectCallPoint {
@@ -1788,32 +1777,29 @@ impl BswDirectCallPoint {
         &mut self.base
     }
 
-    pub fn get_called_entry_ref(&self) -> Option<&str> {
-        self.called_entry_ref.as_deref()
+    pub fn get_called_entry_ref(&self) -> Option<RefTypeId> {
+        self.called_entry_ref
     }
 
-    pub fn set_called_entry_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.called_entry_ref = Some(value.into());
+    pub fn set_called_entry_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.called_entry_ref = Some(value);
         self
     }
 
-    pub fn get_called_from_within_exclusive_area_ref(&self) -> Option<&str> {
-        self.called_from_within_exclusive_area_ref.as_deref()
+    pub fn get_called_from_within_exclusive_area_ref(&self) -> Option<RefTypeId> {
+        self.called_from_within_exclusive_area_ref
     }
 
-    pub fn set_called_from_within_exclusive_area_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
-        self.called_from_within_exclusive_area_ref = Some(value.into());
+    pub fn set_called_from_within_exclusive_area_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.called_from_within_exclusive_area_ref = Some(value);
         self
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         self.base().get_context_limitation_refs()
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_context_limitation_ref(value)
     }
 
@@ -1954,9 +1940,9 @@ impl BswDistinguishedPartition {
 pub struct BswEvent {
     base: AbstractEvent,
     variation_point_capable: VariationPointCapable,
-    context_limitation_refs: Vec<String>,
+    context_limitation_refs: Vec<RefTypeId>,
     disabled_in_mode_i_refs: Vec<ModeInBswModuleDescriptionInstanceRefId>,
-    starts_on_event_ref: Option<String>,
+    starts_on_event_ref: Option<RefTypeId>,
 }
 
 impl BswEvent {
@@ -1980,11 +1966,11 @@ impl BswEvent {
         &mut self.variation_point_capable
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         &self.context_limitation_refs
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.context_limitation_refs.push(value);
     }
 
@@ -1996,23 +1982,20 @@ impl BswEvent {
         self.disabled_in_mode_i_refs.push(value);
     }
 
-    pub fn get_starts_on_event_ref(&self) -> Option<&str> {
-        self.starts_on_event_ref.as_deref()
+    pub fn get_starts_on_event_ref(&self) -> Option<RefTypeId> {
+        self.starts_on_event_ref
     }
 
-    pub fn set_starts_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.starts_on_event_ref = Some(value.into());
+    pub fn set_starts_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.starts_on_event_ref = Some(value);
         self
     }
 
-    pub fn get_activation_reason_representation_ref(&self) -> Option<&str> {
+    pub fn get_activation_reason_representation_ref(&self) -> Option<RefTypeId> {
         self.base().get_activation_reason_representation_ref()
     }
 
-    pub fn set_activation_reason_representation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
+    pub fn set_activation_reason_representation_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .set_activation_reason_representation_ref(value);
         self
@@ -2177,7 +2160,7 @@ pub struct BswExclusiveAreaPolicy {
     base: BswApiOptions,
     variation_point_capable: VariationPointCapable,
     api_principle: Option<ApiPrincipleEnum>,
-    exclusive_area_ref: Option<String>,
+    exclusive_area_ref: Option<RefTypeId>,
 }
 
 impl BswExclusiveAreaPolicy {
@@ -2210,12 +2193,12 @@ impl BswExclusiveAreaPolicy {
         self
     }
 
-    pub fn get_exclusive_area_ref(&self) -> Option<&str> {
-        self.exclusive_area_ref.as_deref()
+    pub fn get_exclusive_area_ref(&self) -> Option<RefTypeId> {
+        self.exclusive_area_ref
     }
 
-    pub fn set_exclusive_area_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.exclusive_area_ref = Some(value.into());
+    pub fn set_exclusive_area_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.exclusive_area_ref = Some(value);
         self
     }
 
@@ -2262,7 +2245,7 @@ impl BswExclusiveAreaPolicy {
 #[derive(Debug, Default)]
 pub struct BswExternalTriggerOccurredEvent {
     base: BswScheduleEvent,
-    trigger_ref: Option<String>,
+    trigger_ref: Option<RefTypeId>,
 }
 
 impl BswExternalTriggerOccurredEvent {
@@ -2278,20 +2261,20 @@ impl BswExternalTriggerOccurredEvent {
         &mut self.base
     }
 
-    pub fn get_trigger_ref(&self) -> Option<&str> {
-        self.trigger_ref.as_deref()
+    pub fn get_trigger_ref(&self) -> Option<RefTypeId> {
+        self.trigger_ref
     }
 
-    pub fn set_trigger_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.trigger_ref = Some(value.into());
+    pub fn set_trigger_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.trigger_ref = Some(value);
         self
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         self.base().base().get_context_limitation_refs()
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_context_limitation_ref(value)
@@ -2307,26 +2290,23 @@ impl BswExternalTriggerOccurredEvent {
             .push_disabled_in_mode_i_ref(value)
     }
 
-    pub fn get_starts_on_event_ref(&self) -> Option<&str> {
+    pub fn get_starts_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_starts_on_event_ref()
     }
 
-    pub fn set_starts_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_starts_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_starts_on_event_ref(value);
         self
     }
 
-    pub fn get_activation_reason_representation_ref(&self) -> Option<&str> {
+    pub fn get_activation_reason_representation_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
             .get_activation_reason_representation_ref()
     }
 
-    pub fn set_activation_reason_representation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
+    pub fn set_activation_reason_representation_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -2781,19 +2761,19 @@ impl BswInternalBehavior {
         self.base_mut().push_constant_memorie(value)
     }
 
-    pub fn get_constant_value_mapping_refs(&self) -> &[String] {
+    pub fn get_constant_value_mapping_refs(&self) -> &[RefTypeId] {
         self.base().get_constant_value_mapping_refs()
     }
 
-    pub fn push_constant_value_mapping_ref(&mut self, value: String) {
+    pub fn push_constant_value_mapping_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_constant_value_mapping_ref(value)
     }
 
-    pub fn get_data_type_mapping_refs(&self) -> &[String] {
+    pub fn get_data_type_mapping_refs(&self) -> &[RefTypeId] {
         self.base().get_data_type_mapping_refs()
     }
 
-    pub fn push_data_type_mapping_ref(&mut self, value: String) {
+    pub fn push_data_type_mapping_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_data_type_mapping_ref(value)
     }
 
@@ -3052,7 +3032,7 @@ impl BswInternalBehavior {
 #[derive(Debug, Default)]
 pub struct BswInternalTriggerOccurredEvent {
     base: BswScheduleEvent,
-    event_source_ref: Option<String>,
+    event_source_ref: Option<RefTypeId>,
 }
 
 impl BswInternalTriggerOccurredEvent {
@@ -3068,20 +3048,20 @@ impl BswInternalTriggerOccurredEvent {
         &mut self.base
     }
 
-    pub fn get_event_source_ref(&self) -> Option<&str> {
-        self.event_source_ref.as_deref()
+    pub fn get_event_source_ref(&self) -> Option<RefTypeId> {
+        self.event_source_ref
     }
 
-    pub fn set_event_source_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.event_source_ref = Some(value.into());
+    pub fn set_event_source_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.event_source_ref = Some(value);
         self
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         self.base().base().get_context_limitation_refs()
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_context_limitation_ref(value)
@@ -3097,26 +3077,23 @@ impl BswInternalTriggerOccurredEvent {
             .push_disabled_in_mode_i_ref(value)
     }
 
-    pub fn get_starts_on_event_ref(&self) -> Option<&str> {
+    pub fn get_starts_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_starts_on_event_ref()
     }
 
-    pub fn set_starts_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_starts_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_starts_on_event_ref(value);
         self
     }
 
-    pub fn get_activation_reason_representation_ref(&self) -> Option<&str> {
+    pub fn get_activation_reason_representation_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
             .get_activation_reason_representation_ref()
     }
 
-    pub fn set_activation_reason_representation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
+    pub fn set_activation_reason_representation_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -3525,7 +3502,7 @@ impl BswInternalTriggeringPoint {
 pub struct BswInternalTriggeringPointPolicy {
     base: BswApiOptions,
     variation_point_capable: VariationPointCapable,
-    bsw_internal_triggering_point_ref: Option<String>,
+    bsw_internal_triggering_point_ref: Option<RefTypeId>,
 }
 
 impl BswInternalTriggeringPointPolicy {
@@ -3549,12 +3526,12 @@ impl BswInternalTriggeringPointPolicy {
         &mut self.variation_point_capable
     }
 
-    pub fn get_bsw_internal_triggering_point_ref(&self) -> Option<&str> {
-        self.bsw_internal_triggering_point_ref.as_deref()
+    pub fn get_bsw_internal_triggering_point_ref(&self) -> Option<RefTypeId> {
+        self.bsw_internal_triggering_point_ref
     }
 
-    pub fn set_bsw_internal_triggering_point_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.bsw_internal_triggering_point_ref = Some(value.into());
+    pub fn set_bsw_internal_triggering_point_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.bsw_internal_triggering_point_ref = Some(value);
         self
     }
 
@@ -3636,19 +3613,19 @@ impl BswInterruptEntity {
         self
     }
 
-    pub fn get_accessed_mode_group_refs(&self) -> &[String] {
+    pub fn get_accessed_mode_group_refs(&self) -> &[RefTypeId] {
         self.base().get_accessed_mode_group_refs()
     }
 
-    pub fn push_accessed_mode_group_ref(&mut self, value: String) {
+    pub fn push_accessed_mode_group_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_accessed_mode_group_ref(value)
     }
 
-    pub fn get_activation_point_refs(&self) -> &[String] {
+    pub fn get_activation_point_refs(&self) -> &[RefTypeId] {
         self.base().get_activation_point_refs()
     }
 
-    pub fn push_activation_point_ref(&mut self, value: String) {
+    pub fn push_activation_point_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_activation_point_ref(value)
     }
 
@@ -3676,36 +3653,36 @@ impl BswInterruptEntity {
         self.base_mut().push_data_send_point(value)
     }
 
-    pub fn get_implemented_entry_ref(&self) -> Option<&str> {
+    pub fn get_implemented_entry_ref(&self) -> Option<RefTypeId> {
         self.base().get_implemented_entry_ref()
     }
 
-    pub fn set_implemented_entry_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_implemented_entry_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_implemented_entry_ref(value);
         self
     }
 
-    pub fn get_issued_trigger_refs(&self) -> &[String] {
+    pub fn get_issued_trigger_refs(&self) -> &[RefTypeId] {
         self.base().get_issued_trigger_refs()
     }
 
-    pub fn push_issued_trigger_ref(&mut self, value: String) {
+    pub fn push_issued_trigger_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_issued_trigger_ref(value)
     }
 
-    pub fn get_managed_mode_group_refs(&self) -> &[String] {
+    pub fn get_managed_mode_group_refs(&self) -> &[RefTypeId] {
         self.base().get_managed_mode_group_refs()
     }
 
-    pub fn push_managed_mode_group_ref(&mut self, value: String) {
+    pub fn push_managed_mode_group_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_managed_mode_group_ref(value)
     }
 
-    pub fn get_scheduler_name_prefix_ref(&self) -> Option<&str> {
+    pub fn get_scheduler_name_prefix_ref(&self) -> Option<RefTypeId> {
         self.base().get_scheduler_name_prefix_ref()
     }
 
-    pub fn set_scheduler_name_prefix_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_scheduler_name_prefix_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_scheduler_name_prefix_ref(value);
         self
     }
@@ -3718,19 +3695,19 @@ impl BswInterruptEntity {
         self.base_mut().base_mut().push_activation_reason(value)
     }
 
-    pub fn get_can_enter_refs(&self) -> &[String] {
+    pub fn get_can_enter_refs(&self) -> &[RefTypeId] {
         self.base().base().get_can_enter_refs()
     }
 
-    pub fn push_can_enter_ref(&mut self, value: String) {
+    pub fn push_can_enter_ref(&mut self, value: RefTypeId) {
         self.base_mut().base_mut().push_can_enter_ref(value)
     }
 
-    pub fn get_exclusive_area_nesting_order_refs(&self) -> &[String] {
+    pub fn get_exclusive_area_nesting_order_refs(&self) -> &[RefTypeId] {
         self.base().base().get_exclusive_area_nesting_order_refs()
     }
 
-    pub fn push_exclusive_area_nesting_order_ref(&mut self, value: String) {
+    pub fn push_exclusive_area_nesting_order_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_exclusive_area_nesting_order_ref(value)
@@ -3754,19 +3731,19 @@ impl BswInterruptEntity {
         self
     }
 
-    pub fn get_runs_inside_refs(&self) -> &[String] {
+    pub fn get_runs_inside_refs(&self) -> &[RefTypeId] {
         self.base().base().get_runs_inside_refs()
     }
 
-    pub fn push_runs_inside_ref(&mut self, value: String) {
+    pub fn push_runs_inside_ref(&mut self, value: RefTypeId) {
         self.base_mut().base_mut().push_runs_inside_ref(value)
     }
 
-    pub fn get_sw_addr_method_ref(&self) -> Option<&str> {
+    pub fn get_sw_addr_method_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sw_addr_method_ref()
     }
 
-    pub fn set_sw_addr_method_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sw_addr_method_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sw_addr_method_ref(value);
         self
     }
@@ -3962,11 +3939,11 @@ impl BswInterruptEvent {
         &mut self.base
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         self.base().get_context_limitation_refs()
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_context_limitation_ref(value)
     }
 
@@ -3978,25 +3955,22 @@ impl BswInterruptEvent {
         self.base_mut().push_disabled_in_mode_i_ref(value)
     }
 
-    pub fn get_starts_on_event_ref(&self) -> Option<&str> {
+    pub fn get_starts_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_starts_on_event_ref()
     }
 
-    pub fn set_starts_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_starts_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_starts_on_event_ref(value);
         self
     }
 
-    pub fn get_activation_reason_representation_ref(&self) -> Option<&str> {
+    pub fn get_activation_reason_representation_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .get_activation_reason_representation_ref()
     }
 
-    pub fn set_activation_reason_representation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
+    pub fn set_activation_reason_representation_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .set_activation_reason_representation_ref(value);
@@ -4179,7 +4153,7 @@ impl BswInterruptEvent {
 #[derive(Debug, Default)]
 pub struct BswModeManagerErrorEvent {
     base: BswScheduleEvent,
-    mode_group_ref: Option<String>,
+    mode_group_ref: Option<RefTypeId>,
 }
 
 impl BswModeManagerErrorEvent {
@@ -4195,20 +4169,20 @@ impl BswModeManagerErrorEvent {
         &mut self.base
     }
 
-    pub fn get_mode_group_ref(&self) -> Option<&str> {
-        self.mode_group_ref.as_deref()
+    pub fn get_mode_group_ref(&self) -> Option<RefTypeId> {
+        self.mode_group_ref
     }
 
-    pub fn set_mode_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.mode_group_ref = Some(value.into());
+    pub fn set_mode_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.mode_group_ref = Some(value);
         self
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         self.base().base().get_context_limitation_refs()
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_context_limitation_ref(value)
@@ -4224,26 +4198,23 @@ impl BswModeManagerErrorEvent {
             .push_disabled_in_mode_i_ref(value)
     }
 
-    pub fn get_starts_on_event_ref(&self) -> Option<&str> {
+    pub fn get_starts_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_starts_on_event_ref()
     }
 
-    pub fn set_starts_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_starts_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_starts_on_event_ref(value);
         self
     }
 
-    pub fn get_activation_reason_representation_ref(&self) -> Option<&str> {
+    pub fn get_activation_reason_representation_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
             .get_activation_reason_representation_ref()
     }
 
-    pub fn set_activation_reason_representation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
+    pub fn set_activation_reason_representation_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -4473,7 +4444,7 @@ pub struct BswModeReceiverPolicy {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
     enhanced_mode_api: Option<String>,
-    required_mode_group_ref: Option<String>,
+    required_mode_group_ref: Option<RefTypeId>,
     supports_asynchronous_mode_switch: Option<String>,
 }
 
@@ -4507,12 +4478,12 @@ impl BswModeReceiverPolicy {
         self
     }
 
-    pub fn get_required_mode_group_ref(&self) -> Option<&str> {
-        self.required_mode_group_ref.as_deref()
+    pub fn get_required_mode_group_ref(&self) -> Option<RefTypeId> {
+        self.required_mode_group_ref
     }
 
-    pub fn set_required_mode_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.required_mode_group_ref = Some(value.into());
+    pub fn set_required_mode_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.required_mode_group_ref = Some(value);
         self
     }
 
@@ -4562,7 +4533,7 @@ pub struct BswModeSenderPolicy {
     variation_point_capable: VariationPointCapable,
     ack_request: Option<BswModeSwitchAckRequestId>,
     enhanced_mode_api: Option<String>,
-    provided_mode_group_ref: Option<String>,
+    provided_mode_group_ref: Option<RefTypeId>,
     queue_length: Option<String>,
 }
 
@@ -4605,12 +4576,12 @@ impl BswModeSenderPolicy {
         self
     }
 
-    pub fn get_provided_mode_group_ref(&self) -> Option<&str> {
-        self.provided_mode_group_ref.as_deref()
+    pub fn get_provided_mode_group_ref(&self) -> Option<RefTypeId> {
+        self.provided_mode_group_ref
     }
 
-    pub fn set_provided_mode_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.provided_mode_group_ref = Some(value.into());
+    pub fn set_provided_mode_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.provided_mode_group_ref = Some(value);
         self
     }
 
@@ -4740,11 +4711,11 @@ impl BswModeSwitchEvent {
         self.mode_i_refs.push(value);
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         self.base().base().get_context_limitation_refs()
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_context_limitation_ref(value)
@@ -4760,26 +4731,23 @@ impl BswModeSwitchEvent {
             .push_disabled_in_mode_i_ref(value)
     }
 
-    pub fn get_starts_on_event_ref(&self) -> Option<&str> {
+    pub fn get_starts_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_starts_on_event_ref()
     }
 
-    pub fn set_starts_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_starts_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_starts_on_event_ref(value);
         self
     }
 
-    pub fn get_activation_reason_representation_ref(&self) -> Option<&str> {
+    pub fn get_activation_reason_representation_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
             .get_activation_reason_representation_ref()
     }
 
-    pub fn set_activation_reason_representation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
+    pub fn set_activation_reason_representation_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -5007,7 +4975,7 @@ impl BswModeSwitchEvent {
 #[derive(Debug, Default)]
 pub struct BswModeSwitchedAckEvent {
     base: BswScheduleEvent,
-    mode_group_ref: Option<String>,
+    mode_group_ref: Option<RefTypeId>,
 }
 
 impl BswModeSwitchedAckEvent {
@@ -5023,20 +4991,20 @@ impl BswModeSwitchedAckEvent {
         &mut self.base
     }
 
-    pub fn get_mode_group_ref(&self) -> Option<&str> {
-        self.mode_group_ref.as_deref()
+    pub fn get_mode_group_ref(&self) -> Option<RefTypeId> {
+        self.mode_group_ref
     }
 
-    pub fn set_mode_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.mode_group_ref = Some(value.into());
+    pub fn set_mode_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.mode_group_ref = Some(value);
         self
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         self.base().base().get_context_limitation_refs()
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_context_limitation_ref(value)
@@ -5052,26 +5020,23 @@ impl BswModeSwitchedAckEvent {
             .push_disabled_in_mode_i_ref(value)
     }
 
-    pub fn get_starts_on_event_ref(&self) -> Option<&str> {
+    pub fn get_starts_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_starts_on_event_ref()
     }
 
-    pub fn set_starts_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_starts_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_starts_on_event_ref(value);
         self
     }
 
-    pub fn get_activation_reason_representation_ref(&self) -> Option<&str> {
+    pub fn get_activation_reason_representation_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
             .get_activation_reason_representation_ref()
     }
 
-    pub fn set_activation_reason_representation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
+    pub fn set_activation_reason_representation_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -5300,7 +5265,7 @@ impl BswModeSwitchedAckEvent {
 pub struct BswModuleCallPoint {
     base: Referrable,
     variation_point_capable: VariationPointCapable,
-    context_limitation_refs: Vec<String>,
+    context_limitation_refs: Vec<RefTypeId>,
 }
 
 impl BswModuleCallPoint {
@@ -5324,11 +5289,11 @@ impl BswModuleCallPoint {
         &mut self.variation_point_capable
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         &self.context_limitation_refs
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.context_limitation_refs.push(value);
     }
 
@@ -5393,15 +5358,15 @@ impl BswModuleCallPoint {
 pub struct BswModuleEntity {
     base: ExecutableEntity,
     variation_point_capable: VariationPointCapable,
-    accessed_mode_group_refs: Vec<String>,
-    activation_point_refs: Vec<String>,
+    accessed_mode_group_refs: Vec<RefTypeId>,
+    activation_point_refs: Vec<RefTypeId>,
     call_points: Vec<ElementRef>,
     data_receive_points: Vec<BswVariableAccessId>,
     data_send_points: Vec<BswVariableAccessId>,
-    implemented_entry_ref: Option<String>,
-    issued_trigger_refs: Vec<String>,
-    managed_mode_group_refs: Vec<String>,
-    scheduler_name_prefix_ref: Option<String>,
+    implemented_entry_ref: Option<RefTypeId>,
+    issued_trigger_refs: Vec<RefTypeId>,
+    managed_mode_group_refs: Vec<RefTypeId>,
+    scheduler_name_prefix_ref: Option<RefTypeId>,
 }
 
 impl BswModuleEntity {
@@ -5425,19 +5390,19 @@ impl BswModuleEntity {
         &mut self.variation_point_capable
     }
 
-    pub fn get_accessed_mode_group_refs(&self) -> &[String] {
+    pub fn get_accessed_mode_group_refs(&self) -> &[RefTypeId] {
         &self.accessed_mode_group_refs
     }
 
-    pub fn push_accessed_mode_group_ref(&mut self, value: String) {
+    pub fn push_accessed_mode_group_ref(&mut self, value: RefTypeId) {
         self.accessed_mode_group_refs.push(value);
     }
 
-    pub fn get_activation_point_refs(&self) -> &[String] {
+    pub fn get_activation_point_refs(&self) -> &[RefTypeId] {
         &self.activation_point_refs
     }
 
-    pub fn push_activation_point_ref(&mut self, value: String) {
+    pub fn push_activation_point_ref(&mut self, value: RefTypeId) {
         self.activation_point_refs.push(value);
     }
 
@@ -5465,37 +5430,37 @@ impl BswModuleEntity {
         self.data_send_points.push(value);
     }
 
-    pub fn get_implemented_entry_ref(&self) -> Option<&str> {
-        self.implemented_entry_ref.as_deref()
+    pub fn get_implemented_entry_ref(&self) -> Option<RefTypeId> {
+        self.implemented_entry_ref
     }
 
-    pub fn set_implemented_entry_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.implemented_entry_ref = Some(value.into());
+    pub fn set_implemented_entry_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.implemented_entry_ref = Some(value);
         self
     }
 
-    pub fn get_issued_trigger_refs(&self) -> &[String] {
+    pub fn get_issued_trigger_refs(&self) -> &[RefTypeId] {
         &self.issued_trigger_refs
     }
 
-    pub fn push_issued_trigger_ref(&mut self, value: String) {
+    pub fn push_issued_trigger_ref(&mut self, value: RefTypeId) {
         self.issued_trigger_refs.push(value);
     }
 
-    pub fn get_managed_mode_group_refs(&self) -> &[String] {
+    pub fn get_managed_mode_group_refs(&self) -> &[RefTypeId] {
         &self.managed_mode_group_refs
     }
 
-    pub fn push_managed_mode_group_ref(&mut self, value: String) {
+    pub fn push_managed_mode_group_ref(&mut self, value: RefTypeId) {
         self.managed_mode_group_refs.push(value);
     }
 
-    pub fn get_scheduler_name_prefix_ref(&self) -> Option<&str> {
-        self.scheduler_name_prefix_ref.as_deref()
+    pub fn get_scheduler_name_prefix_ref(&self) -> Option<RefTypeId> {
+        self.scheduler_name_prefix_ref
     }
 
-    pub fn set_scheduler_name_prefix_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.scheduler_name_prefix_ref = Some(value.into());
+    pub fn set_scheduler_name_prefix_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.scheduler_name_prefix_ref = Some(value);
         self
     }
 
@@ -5507,19 +5472,19 @@ impl BswModuleEntity {
         self.base_mut().push_activation_reason(value)
     }
 
-    pub fn get_can_enter_refs(&self) -> &[String] {
+    pub fn get_can_enter_refs(&self) -> &[RefTypeId] {
         self.base().get_can_enter_refs()
     }
 
-    pub fn push_can_enter_ref(&mut self, value: String) {
+    pub fn push_can_enter_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_can_enter_ref(value)
     }
 
-    pub fn get_exclusive_area_nesting_order_refs(&self) -> &[String] {
+    pub fn get_exclusive_area_nesting_order_refs(&self) -> &[RefTypeId] {
         self.base().get_exclusive_area_nesting_order_refs()
     }
 
-    pub fn push_exclusive_area_nesting_order_ref(&mut self, value: String) {
+    pub fn push_exclusive_area_nesting_order_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_exclusive_area_nesting_order_ref(value)
     }
 
@@ -5541,19 +5506,19 @@ impl BswModuleEntity {
         self
     }
 
-    pub fn get_runs_inside_refs(&self) -> &[String] {
+    pub fn get_runs_inside_refs(&self) -> &[RefTypeId] {
         self.base().get_runs_inside_refs()
     }
 
-    pub fn push_runs_inside_ref(&mut self, value: String) {
+    pub fn push_runs_inside_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_runs_inside_ref(value)
     }
 
-    pub fn get_sw_addr_method_ref(&self) -> Option<&str> {
+    pub fn get_sw_addr_method_ref(&self) -> Option<RefTypeId> {
         self.base().get_sw_addr_method_ref()
     }
 
-    pub fn set_sw_addr_method_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sw_addr_method_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_sw_addr_method_ref(value);
         self
     }
@@ -5715,7 +5680,7 @@ impl BswModuleEntity {
 #[derive(Debug, Default)]
 pub struct BswOperationInvokedEvent {
     base: BswEvent,
-    entry_ref: Option<String>,
+    entry_ref: Option<RefTypeId>,
 }
 
 impl BswOperationInvokedEvent {
@@ -5731,20 +5696,20 @@ impl BswOperationInvokedEvent {
         &mut self.base
     }
 
-    pub fn get_entry_ref(&self) -> Option<&str> {
-        self.entry_ref.as_deref()
+    pub fn get_entry_ref(&self) -> Option<RefTypeId> {
+        self.entry_ref
     }
 
-    pub fn set_entry_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.entry_ref = Some(value.into());
+    pub fn set_entry_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.entry_ref = Some(value);
         self
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         self.base().get_context_limitation_refs()
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_context_limitation_ref(value)
     }
 
@@ -5756,25 +5721,22 @@ impl BswOperationInvokedEvent {
         self.base_mut().push_disabled_in_mode_i_ref(value)
     }
 
-    pub fn get_starts_on_event_ref(&self) -> Option<&str> {
+    pub fn get_starts_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_starts_on_event_ref()
     }
 
-    pub fn set_starts_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_starts_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_starts_on_event_ref(value);
         self
     }
 
-    pub fn get_activation_reason_representation_ref(&self) -> Option<&str> {
+    pub fn get_activation_reason_representation_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .get_activation_reason_representation_ref()
     }
 
-    pub fn set_activation_reason_representation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
+    pub fn set_activation_reason_representation_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .set_activation_reason_representation_ref(value);
@@ -5974,11 +5936,11 @@ impl BswOsTaskExecutionEvent {
         &mut self.base
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         self.base().base().get_context_limitation_refs()
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_context_limitation_ref(value)
@@ -5994,26 +5956,23 @@ impl BswOsTaskExecutionEvent {
             .push_disabled_in_mode_i_ref(value)
     }
 
-    pub fn get_starts_on_event_ref(&self) -> Option<&str> {
+    pub fn get_starts_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_starts_on_event_ref()
     }
 
-    pub fn set_starts_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_starts_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_starts_on_event_ref(value);
         self
     }
 
-    pub fn get_activation_reason_representation_ref(&self) -> Option<&str> {
+    pub fn get_activation_reason_representation_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
             .get_activation_reason_representation_ref()
     }
 
-    pub fn set_activation_reason_representation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
+    pub fn set_activation_reason_representation_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -6242,7 +6201,7 @@ impl BswOsTaskExecutionEvent {
 pub struct BswParameterPolicy {
     base: BswApiOptions,
     variation_point_capable: VariationPointCapable,
-    per_instance_parameter_ref: Option<String>,
+    per_instance_parameter_ref: Option<RefTypeId>,
 }
 
 impl BswParameterPolicy {
@@ -6266,12 +6225,12 @@ impl BswParameterPolicy {
         &mut self.variation_point_capable
     }
 
-    pub fn get_per_instance_parameter_ref(&self) -> Option<&str> {
-        self.per_instance_parameter_ref.as_deref()
+    pub fn get_per_instance_parameter_ref(&self) -> Option<RefTypeId> {
+        self.per_instance_parameter_ref
     }
 
-    pub fn set_per_instance_parameter_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.per_instance_parameter_ref = Some(value.into());
+    pub fn set_per_instance_parameter_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.per_instance_parameter_ref = Some(value);
         self
     }
 
@@ -6319,7 +6278,7 @@ impl BswParameterPolicy {
 pub struct BswPerInstanceMemoryPolicy {
     base: BswApiOptions,
     variation_point_capable: VariationPointCapable,
-    ar_typed_per_instance_memory_ref: Option<String>,
+    ar_typed_per_instance_memory_ref: Option<RefTypeId>,
 }
 
 impl BswPerInstanceMemoryPolicy {
@@ -6343,12 +6302,12 @@ impl BswPerInstanceMemoryPolicy {
         &mut self.variation_point_capable
     }
 
-    pub fn get_ar_typed_per_instance_memory_ref(&self) -> Option<&str> {
-        self.ar_typed_per_instance_memory_ref.as_deref()
+    pub fn get_ar_typed_per_instance_memory_ref(&self) -> Option<RefTypeId> {
+        self.ar_typed_per_instance_memory_ref
     }
 
-    pub fn set_ar_typed_per_instance_memory_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ar_typed_per_instance_memory_ref = Some(value.into());
+    pub fn set_ar_typed_per_instance_memory_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ar_typed_per_instance_memory_ref = Some(value);
         self
     }
 
@@ -6420,11 +6379,11 @@ impl BswQueuedDataReceptionPolicy {
         self
     }
 
-    pub fn get_received_data_ref(&self) -> Option<&str> {
+    pub fn get_received_data_ref(&self) -> Option<RefTypeId> {
         self.base().get_received_data_ref()
     }
 
-    pub fn set_received_data_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_received_data_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_received_data_ref(value);
         self
     }
@@ -6463,7 +6422,7 @@ impl BswQueuedDataReceptionPolicy {
 pub struct BswReleasedTriggerPolicy {
     base: BswApiOptions,
     variation_point_capable: VariationPointCapable,
-    released_trigger_ref: Option<String>,
+    released_trigger_ref: Option<RefTypeId>,
 }
 
 impl BswReleasedTriggerPolicy {
@@ -6487,12 +6446,12 @@ impl BswReleasedTriggerPolicy {
         &mut self.variation_point_capable
     }
 
-    pub fn get_released_trigger_ref(&self) -> Option<&str> {
-        self.released_trigger_ref.as_deref()
+    pub fn get_released_trigger_ref(&self) -> Option<RefTypeId> {
+        self.released_trigger_ref
     }
 
-    pub fn set_released_trigger_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.released_trigger_ref = Some(value.into());
+    pub fn set_released_trigger_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.released_trigger_ref = Some(value);
         self
     }
 
@@ -6555,19 +6514,19 @@ impl BswSchedulableEntity {
         &mut self.base
     }
 
-    pub fn get_accessed_mode_group_refs(&self) -> &[String] {
+    pub fn get_accessed_mode_group_refs(&self) -> &[RefTypeId] {
         self.base().get_accessed_mode_group_refs()
     }
 
-    pub fn push_accessed_mode_group_ref(&mut self, value: String) {
+    pub fn push_accessed_mode_group_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_accessed_mode_group_ref(value)
     }
 
-    pub fn get_activation_point_refs(&self) -> &[String] {
+    pub fn get_activation_point_refs(&self) -> &[RefTypeId] {
         self.base().get_activation_point_refs()
     }
 
-    pub fn push_activation_point_ref(&mut self, value: String) {
+    pub fn push_activation_point_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_activation_point_ref(value)
     }
 
@@ -6595,36 +6554,36 @@ impl BswSchedulableEntity {
         self.base_mut().push_data_send_point(value)
     }
 
-    pub fn get_implemented_entry_ref(&self) -> Option<&str> {
+    pub fn get_implemented_entry_ref(&self) -> Option<RefTypeId> {
         self.base().get_implemented_entry_ref()
     }
 
-    pub fn set_implemented_entry_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_implemented_entry_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_implemented_entry_ref(value);
         self
     }
 
-    pub fn get_issued_trigger_refs(&self) -> &[String] {
+    pub fn get_issued_trigger_refs(&self) -> &[RefTypeId] {
         self.base().get_issued_trigger_refs()
     }
 
-    pub fn push_issued_trigger_ref(&mut self, value: String) {
+    pub fn push_issued_trigger_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_issued_trigger_ref(value)
     }
 
-    pub fn get_managed_mode_group_refs(&self) -> &[String] {
+    pub fn get_managed_mode_group_refs(&self) -> &[RefTypeId] {
         self.base().get_managed_mode_group_refs()
     }
 
-    pub fn push_managed_mode_group_ref(&mut self, value: String) {
+    pub fn push_managed_mode_group_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_managed_mode_group_ref(value)
     }
 
-    pub fn get_scheduler_name_prefix_ref(&self) -> Option<&str> {
+    pub fn get_scheduler_name_prefix_ref(&self) -> Option<RefTypeId> {
         self.base().get_scheduler_name_prefix_ref()
     }
 
-    pub fn set_scheduler_name_prefix_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_scheduler_name_prefix_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_scheduler_name_prefix_ref(value);
         self
     }
@@ -6637,19 +6596,19 @@ impl BswSchedulableEntity {
         self.base_mut().base_mut().push_activation_reason(value)
     }
 
-    pub fn get_can_enter_refs(&self) -> &[String] {
+    pub fn get_can_enter_refs(&self) -> &[RefTypeId] {
         self.base().base().get_can_enter_refs()
     }
 
-    pub fn push_can_enter_ref(&mut self, value: String) {
+    pub fn push_can_enter_ref(&mut self, value: RefTypeId) {
         self.base_mut().base_mut().push_can_enter_ref(value)
     }
 
-    pub fn get_exclusive_area_nesting_order_refs(&self) -> &[String] {
+    pub fn get_exclusive_area_nesting_order_refs(&self) -> &[RefTypeId] {
         self.base().base().get_exclusive_area_nesting_order_refs()
     }
 
-    pub fn push_exclusive_area_nesting_order_ref(&mut self, value: String) {
+    pub fn push_exclusive_area_nesting_order_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_exclusive_area_nesting_order_ref(value)
@@ -6673,19 +6632,19 @@ impl BswSchedulableEntity {
         self
     }
 
-    pub fn get_runs_inside_refs(&self) -> &[String] {
+    pub fn get_runs_inside_refs(&self) -> &[RefTypeId] {
         self.base().base().get_runs_inside_refs()
     }
 
-    pub fn push_runs_inside_ref(&mut self, value: String) {
+    pub fn push_runs_inside_ref(&mut self, value: RefTypeId) {
         self.base_mut().base_mut().push_runs_inside_ref(value)
     }
 
-    pub fn get_sw_addr_method_ref(&self) -> Option<&str> {
+    pub fn get_sw_addr_method_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sw_addr_method_ref()
     }
 
-    pub fn set_sw_addr_method_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sw_addr_method_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sw_addr_method_ref(value);
         self
     }
@@ -6881,11 +6840,11 @@ impl BswScheduleEvent {
         &mut self.base
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         self.base().get_context_limitation_refs()
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_context_limitation_ref(value)
     }
 
@@ -6897,25 +6856,22 @@ impl BswScheduleEvent {
         self.base_mut().push_disabled_in_mode_i_ref(value)
     }
 
-    pub fn get_starts_on_event_ref(&self) -> Option<&str> {
+    pub fn get_starts_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_starts_on_event_ref()
     }
 
-    pub fn set_starts_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_starts_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_starts_on_event_ref(value);
         self
     }
 
-    pub fn get_activation_reason_representation_ref(&self) -> Option<&str> {
+    pub fn get_activation_reason_representation_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .get_activation_reason_representation_ref()
     }
 
-    pub fn set_activation_reason_representation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
+    pub fn set_activation_reason_representation_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .set_activation_reason_representation_ref(value);
@@ -7317,8 +7273,8 @@ impl BswServiceDependency {
 #[derive(Debug, Default)]
 pub struct BswSynchronousServerCallPoint {
     base: BswModuleCallPoint,
-    called_entry_ref: Option<String>,
-    called_from_within_exclusive_area_ref: Option<String>,
+    called_entry_ref: Option<RefTypeId>,
+    called_from_within_exclusive_area_ref: Option<RefTypeId>,
 }
 
 impl BswSynchronousServerCallPoint {
@@ -7334,32 +7290,29 @@ impl BswSynchronousServerCallPoint {
         &mut self.base
     }
 
-    pub fn get_called_entry_ref(&self) -> Option<&str> {
-        self.called_entry_ref.as_deref()
+    pub fn get_called_entry_ref(&self) -> Option<RefTypeId> {
+        self.called_entry_ref
     }
 
-    pub fn set_called_entry_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.called_entry_ref = Some(value.into());
+    pub fn set_called_entry_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.called_entry_ref = Some(value);
         self
     }
 
-    pub fn get_called_from_within_exclusive_area_ref(&self) -> Option<&str> {
-        self.called_from_within_exclusive_area_ref.as_deref()
+    pub fn get_called_from_within_exclusive_area_ref(&self) -> Option<RefTypeId> {
+        self.called_from_within_exclusive_area_ref
     }
 
-    pub fn set_called_from_within_exclusive_area_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
-        self.called_from_within_exclusive_area_ref = Some(value.into());
+    pub fn set_called_from_within_exclusive_area_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.called_from_within_exclusive_area_ref = Some(value);
         self
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         self.base().get_context_limitation_refs()
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_context_limitation_ref(value)
     }
 
@@ -7438,11 +7391,11 @@ impl BswTimingEvent {
         self
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         self.base().base().get_context_limitation_refs()
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_context_limitation_ref(value)
@@ -7458,26 +7411,23 @@ impl BswTimingEvent {
             .push_disabled_in_mode_i_ref(value)
     }
 
-    pub fn get_starts_on_event_ref(&self) -> Option<&str> {
+    pub fn get_starts_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_starts_on_event_ref()
     }
 
-    pub fn set_starts_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_starts_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_starts_on_event_ref(value);
         self
     }
 
-    pub fn get_activation_reason_representation_ref(&self) -> Option<&str> {
+    pub fn get_activation_reason_representation_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
             .get_activation_reason_representation_ref()
     }
 
-    pub fn set_activation_reason_representation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
+    pub fn set_activation_reason_representation_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -7707,7 +7657,7 @@ pub struct BswTriggerDirectImplementation {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
     cat2_isr: Option<String>,
-    mastered_trigger_ref: Option<String>,
+    mastered_trigger_ref: Option<RefTypeId>,
     task: Option<String>,
 }
 
@@ -7741,12 +7691,12 @@ impl BswTriggerDirectImplementation {
         self
     }
 
-    pub fn get_mastered_trigger_ref(&self) -> Option<&str> {
-        self.mastered_trigger_ref.as_deref()
+    pub fn get_mastered_trigger_ref(&self) -> Option<RefTypeId> {
+        self.mastered_trigger_ref
     }
 
-    pub fn set_mastered_trigger_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.mastered_trigger_ref = Some(value.into());
+    pub fn set_mastered_trigger_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.mastered_trigger_ref = Some(value);
         self
     }
 
@@ -7794,8 +7744,8 @@ impl BswTriggerDirectImplementation {
 pub struct BswVariableAccess {
     base: Referrable,
     variation_point_capable: VariationPointCapable,
-    accessed_variable_ref: Option<String>,
-    context_limitation_refs: Vec<String>,
+    accessed_variable_ref: Option<RefTypeId>,
+    context_limitation_refs: Vec<RefTypeId>,
 }
 
 impl BswVariableAccess {
@@ -7819,20 +7769,20 @@ impl BswVariableAccess {
         &mut self.variation_point_capable
     }
 
-    pub fn get_accessed_variable_ref(&self) -> Option<&str> {
-        self.accessed_variable_ref.as_deref()
+    pub fn get_accessed_variable_ref(&self) -> Option<RefTypeId> {
+        self.accessed_variable_ref
     }
 
-    pub fn set_accessed_variable_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.accessed_variable_ref = Some(value.into());
+    pub fn set_accessed_variable_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.accessed_variable_ref = Some(value);
         self
     }
 
-    pub fn get_context_limitation_refs(&self) -> &[String] {
+    pub fn get_context_limitation_refs(&self) -> &[RefTypeId] {
         &self.context_limitation_refs
     }
 
-    pub fn push_context_limitation_ref(&mut self, value: String) {
+    pub fn push_context_limitation_ref(&mut self, value: RefTypeId) {
         self.context_limitation_refs.push(value);
     }
 
@@ -7899,7 +7849,7 @@ impl BswVariableAccess {
 pub struct RoleBasedBswModuleEntryAssignment {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
-    assigned_entry_ref: Option<String>,
+    assigned_entry_ref: Option<RefTypeId>,
     role: Option<String>,
 }
 
@@ -7924,12 +7874,12 @@ impl RoleBasedBswModuleEntryAssignment {
         &mut self.variation_point_capable
     }
 
-    pub fn get_assigned_entry_ref(&self) -> Option<&str> {
-        self.assigned_entry_ref.as_deref()
+    pub fn get_assigned_entry_ref(&self) -> Option<RefTypeId> {
+        self.assigned_entry_ref
     }
 
-    pub fn set_assigned_entry_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.assigned_entry_ref = Some(value.into());
+    pub fn set_assigned_entry_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.assigned_entry_ref = Some(value);
         self
     }
 
@@ -8188,9 +8138,18 @@ impl Document {
             return Err(format!("{path}: CONTEXT_LIMITATION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.CONTEXT_LIMITATION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.CONTEXT_LIMITATION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.CONTEXT_LIMITATION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONTEXT_LIMITATION_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_disabled_in_mode_i_refs();
         let list_b = b.get_disabled_in_mode_i_refs();
@@ -8912,9 +8871,18 @@ impl Document {
             return Err(format!("{path}: CONTEXT_LIMITATION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.CONTEXT_LIMITATION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.CONTEXT_LIMITATION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.CONTEXT_LIMITATION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONTEXT_LIMITATION_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }
@@ -8939,9 +8907,18 @@ impl Document {
             return Err(format!("{path}: ACCESSED_MODE_GROUP_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.ACCESSED_MODE_GROUP_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.ACCESSED_MODE_GROUP_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.ACCESSED_MODE_GROUP_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.ACCESSED_MODE_GROUP_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_activation_point_refs();
         let list_b = b.get_activation_point_refs();
@@ -8949,9 +8926,18 @@ impl Document {
             return Err(format!("{path}: ACTIVATION_POINT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.ACTIVATION_POINT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.ACTIVATION_POINT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.ACTIVATION_POINT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.ACTIVATION_POINT_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_call_points();
         let list_b = b.get_call_points();
@@ -9010,9 +8996,13 @@ impl Document {
             return Err(format!("{path}: ISSUED_TRIGGER_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.ISSUED_TRIGGER_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.ISSUED_TRIGGER_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.ISSUED_TRIGGER_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.ISSUED_TRIGGER_REFS[{index}]"))?;
         }
         let list_a = a.get_managed_mode_group_refs();
         let list_b = b.get_managed_mode_group_refs();
@@ -9020,9 +9010,18 @@ impl Document {
             return Err(format!("{path}: MANAGED_MODE_GROUP_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.MANAGED_MODE_GROUP_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.MANAGED_MODE_GROUP_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.MANAGED_MODE_GROUP_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.MANAGED_MODE_GROUP_REFS[{index}]"),
+            )?;
         }
         if a.get_scheduler_name_prefix_ref() != b.get_scheduler_name_prefix_ref() {
             return Err(format!("{path}: SCHEDULER_NAME_PREFIX_REF mismatch"));
@@ -9319,9 +9318,18 @@ impl Document {
             return Err(format!("{path}: CONTEXT_LIMITATION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.CONTEXT_LIMITATION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.CONTEXT_LIMITATION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.CONTEXT_LIMITATION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONTEXT_LIMITATION_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }

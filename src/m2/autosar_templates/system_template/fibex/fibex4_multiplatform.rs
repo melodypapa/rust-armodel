@@ -17,6 +17,7 @@ new_key_type! {
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::system_template::fibex::fibex_core::FibexElement;
@@ -94,8 +95,8 @@ pub struct FrameMapping {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
     introduction: Option<DocumentationBlockId>,
-    source_frame_ref: Option<String>,
-    target_frame_ref: Option<String>,
+    source_frame_ref: Option<RefTypeId>,
+    target_frame_ref: Option<RefTypeId>,
 }
 
 impl FrameMapping {
@@ -128,21 +129,21 @@ impl FrameMapping {
         self
     }
 
-    pub fn get_source_frame_ref(&self) -> Option<&str> {
-        self.source_frame_ref.as_deref()
+    pub fn get_source_frame_ref(&self) -> Option<RefTypeId> {
+        self.source_frame_ref
     }
 
-    pub fn set_source_frame_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.source_frame_ref = Some(value.into());
+    pub fn set_source_frame_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.source_frame_ref = Some(value);
         self
     }
 
-    pub fn get_target_frame_ref(&self) -> Option<&str> {
-        self.target_frame_ref.as_deref()
+    pub fn get_target_frame_ref(&self) -> Option<RefTypeId> {
+        self.target_frame_ref
     }
 
-    pub fn set_target_frame_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_frame_ref = Some(value.into());
+    pub fn set_target_frame_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_frame_ref = Some(value);
         self
     }
 
@@ -180,7 +181,7 @@ impl FrameMapping {
 #[derive(Debug, Default)]
 pub struct Gateway {
     base: FibexElement,
-    ecu_ref: Option<String>,
+    ecu_ref: Option<RefTypeId>,
     frame_mappings: Vec<FrameMappingId>,
     i_pdu_mappings: Vec<IPduMappingId>,
     signal_mappings: Vec<ISignalMappingId>,
@@ -199,12 +200,12 @@ impl Gateway {
         &mut self.base
     }
 
-    pub fn get_ecu_ref(&self) -> Option<&str> {
-        self.ecu_ref.as_deref()
+    pub fn get_ecu_ref(&self) -> Option<RefTypeId> {
+        self.ecu_ref
     }
 
-    pub fn set_ecu_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ecu_ref = Some(value.into());
+    pub fn set_ecu_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ecu_ref = Some(value);
         self
     }
 
@@ -456,7 +457,7 @@ pub struct IPduMapping {
     introduction: Option<DocumentationBlockId>,
     pdu_max_length: Option<String>,
     pdur_tp_chunk_size: Option<String>,
-    source_i_pdu_ref: Option<String>,
+    source_i_pdu_ref: Option<RefTypeId>,
     target_i_pdu: Option<TargetIPduRefId>,
 }
 
@@ -508,12 +509,12 @@ impl IPduMapping {
         self
     }
 
-    pub fn get_source_i_pdu_ref(&self) -> Option<&str> {
-        self.source_i_pdu_ref.as_deref()
+    pub fn get_source_i_pdu_ref(&self) -> Option<RefTypeId> {
+        self.source_i_pdu_ref
     }
 
-    pub fn set_source_i_pdu_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.source_i_pdu_ref = Some(value.into());
+    pub fn set_source_i_pdu_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.source_i_pdu_ref = Some(value);
         self
     }
 
@@ -563,8 +564,8 @@ pub struct ISignalMapping {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
     introduction: Option<DocumentationBlockId>,
-    source_signal_ref: Option<String>,
-    target_signal_ref: Option<String>,
+    source_signal_ref: Option<RefTypeId>,
+    target_signal_ref: Option<RefTypeId>,
 }
 
 impl ISignalMapping {
@@ -597,21 +598,21 @@ impl ISignalMapping {
         self
     }
 
-    pub fn get_source_signal_ref(&self) -> Option<&str> {
-        self.source_signal_ref.as_deref()
+    pub fn get_source_signal_ref(&self) -> Option<RefTypeId> {
+        self.source_signal_ref
     }
 
-    pub fn set_source_signal_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.source_signal_ref = Some(value.into());
+    pub fn set_source_signal_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.source_signal_ref = Some(value);
         self
     }
 
-    pub fn get_target_signal_ref(&self) -> Option<&str> {
-        self.target_signal_ref.as_deref()
+    pub fn get_target_signal_ref(&self) -> Option<RefTypeId> {
+        self.target_signal_ref
     }
 
-    pub fn set_target_signal_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_signal_ref = Some(value.into());
+    pub fn set_target_signal_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_signal_ref = Some(value);
         self
     }
 
@@ -699,7 +700,7 @@ impl PduMappingDefaultValue {
 pub struct TargetIPduRef {
     base: ARObject,
     default_value: Option<PduMappingDefaultValueId>,
-    target_i_pdu_ref: Option<String>,
+    target_i_pdu_ref: Option<RefTypeId>,
 }
 
 impl TargetIPduRef {
@@ -724,12 +725,12 @@ impl TargetIPduRef {
         self
     }
 
-    pub fn get_target_i_pdu_ref(&self) -> Option<&str> {
-        self.target_i_pdu_ref.as_deref()
+    pub fn get_target_i_pdu_ref(&self) -> Option<RefTypeId> {
+        self.target_i_pdu_ref
     }
 
-    pub fn set_target_i_pdu_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_i_pdu_ref = Some(value.into());
+    pub fn set_target_i_pdu_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_i_pdu_ref = Some(value);
         self
     }
 

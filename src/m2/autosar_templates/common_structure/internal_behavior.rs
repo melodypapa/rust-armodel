@@ -16,6 +16,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Referrable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::sw_component_template::datatype::data_prototypes::ParameterDataPrototypeId;
@@ -89,7 +90,7 @@ impl TryFrom<&str> for ReentrancyLevelEnum {
 #[derive(Debug, Default)]
 pub struct AbstractEvent {
     base: Identifiable,
-    activation_reason_representation_ref: Option<String>,
+    activation_reason_representation_ref: Option<RefTypeId>,
 }
 
 impl AbstractEvent {
@@ -105,15 +106,12 @@ impl AbstractEvent {
         &mut self.base
     }
 
-    pub fn get_activation_reason_representation_ref(&self) -> Option<&str> {
-        self.activation_reason_representation_ref.as_deref()
+    pub fn get_activation_reason_representation_ref(&self) -> Option<RefTypeId> {
+        self.activation_reason_representation_ref
     }
 
-    pub fn set_activation_reason_representation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
-        self.activation_reason_representation_ref = Some(value.into());
+    pub fn set_activation_reason_representation_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.activation_reason_representation_ref = Some(value);
         self
     }
 
@@ -424,7 +422,7 @@ impl ExclusiveArea {
 pub struct ExclusiveAreaNestingOrder {
     base: Referrable,
     variation_point_capable: VariationPointCapable,
-    exclusive_area_refs: Vec<String>,
+    exclusive_area_refs: Vec<RefTypeId>,
 }
 
 impl ExclusiveAreaNestingOrder {
@@ -448,11 +446,11 @@ impl ExclusiveAreaNestingOrder {
         &mut self.variation_point_capable
     }
 
-    pub fn get_exclusive_area_refs(&self) -> &[String] {
+    pub fn get_exclusive_area_refs(&self) -> &[RefTypeId] {
         &self.exclusive_area_refs
     }
 
-    pub fn push_exclusive_area_ref(&mut self, value: String) {
+    pub fn push_exclusive_area_ref(&mut self, value: RefTypeId) {
         self.exclusive_area_refs.push(value);
     }
 
@@ -517,12 +515,12 @@ impl ExclusiveAreaNestingOrder {
 pub struct ExecutableEntity {
     base: Identifiable,
     activation_reasons: Vec<ExecutableEntityActivationReasonId>,
-    can_enter_refs: Vec<String>,
-    exclusive_area_nesting_order_refs: Vec<String>,
+    can_enter_refs: Vec<RefTypeId>,
+    exclusive_area_nesting_order_refs: Vec<RefTypeId>,
     minimum_start_interval: Option<String>,
     reentrancy_level: Option<ReentrancyLevelEnum>,
-    runs_inside_refs: Vec<String>,
-    sw_addr_method_ref: Option<String>,
+    runs_inside_refs: Vec<RefTypeId>,
+    sw_addr_method_ref: Option<RefTypeId>,
 }
 
 impl ExecutableEntity {
@@ -546,19 +544,19 @@ impl ExecutableEntity {
         self.activation_reasons.push(value);
     }
 
-    pub fn get_can_enter_refs(&self) -> &[String] {
+    pub fn get_can_enter_refs(&self) -> &[RefTypeId] {
         &self.can_enter_refs
     }
 
-    pub fn push_can_enter_ref(&mut self, value: String) {
+    pub fn push_can_enter_ref(&mut self, value: RefTypeId) {
         self.can_enter_refs.push(value);
     }
 
-    pub fn get_exclusive_area_nesting_order_refs(&self) -> &[String] {
+    pub fn get_exclusive_area_nesting_order_refs(&self) -> &[RefTypeId] {
         &self.exclusive_area_nesting_order_refs
     }
 
-    pub fn push_exclusive_area_nesting_order_ref(&mut self, value: String) {
+    pub fn push_exclusive_area_nesting_order_ref(&mut self, value: RefTypeId) {
         self.exclusive_area_nesting_order_refs.push(value);
     }
 
@@ -580,20 +578,20 @@ impl ExecutableEntity {
         self
     }
 
-    pub fn get_runs_inside_refs(&self) -> &[String] {
+    pub fn get_runs_inside_refs(&self) -> &[RefTypeId] {
         &self.runs_inside_refs
     }
 
-    pub fn push_runs_inside_ref(&mut self, value: String) {
+    pub fn push_runs_inside_ref(&mut self, value: RefTypeId) {
         self.runs_inside_refs.push(value);
     }
 
-    pub fn get_sw_addr_method_ref(&self) -> Option<&str> {
-        self.sw_addr_method_ref.as_deref()
+    pub fn get_sw_addr_method_ref(&self) -> Option<RefTypeId> {
+        self.sw_addr_method_ref
     }
 
-    pub fn set_sw_addr_method_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.sw_addr_method_ref = Some(value.into());
+    pub fn set_sw_addr_method_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sw_addr_method_ref = Some(value);
         self
     }
 
@@ -820,8 +818,8 @@ impl ExecutableEntityActivationReason {
 pub struct InternalBehavior {
     base: AtpStructureElement,
     constant_memories: Vec<ParameterDataPrototypeId>,
-    constant_value_mapping_refs: Vec<String>,
-    data_type_mapping_refs: Vec<String>,
+    constant_value_mapping_refs: Vec<RefTypeId>,
+    data_type_mapping_refs: Vec<RefTypeId>,
     exclusive_areas: Vec<ExclusiveAreaId>,
     exclusive_area_nesting_orders: Vec<ExclusiveAreaNestingOrderId>,
     static_memories: Vec<VariableDataPrototypeId>,
@@ -848,19 +846,19 @@ impl InternalBehavior {
         self.constant_memories.push(value);
     }
 
-    pub fn get_constant_value_mapping_refs(&self) -> &[String] {
+    pub fn get_constant_value_mapping_refs(&self) -> &[RefTypeId] {
         &self.constant_value_mapping_refs
     }
 
-    pub fn push_constant_value_mapping_ref(&mut self, value: String) {
+    pub fn push_constant_value_mapping_ref(&mut self, value: RefTypeId) {
         self.constant_value_mapping_refs.push(value);
     }
 
-    pub fn get_data_type_mapping_refs(&self) -> &[String] {
+    pub fn get_data_type_mapping_refs(&self) -> &[RefTypeId] {
         &self.data_type_mapping_refs
     }
 
-    pub fn push_data_type_mapping_ref(&mut self, value: String) {
+    pub fn push_data_type_mapping_ref(&mut self, value: RefTypeId) {
         self.data_type_mapping_refs.push(value);
     }
 
@@ -1123,9 +1121,13 @@ impl Document {
             return Err(format!("{path}: EXCLUSIVE_AREA_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.EXCLUSIVE_AREA_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.EXCLUSIVE_AREA_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.EXCLUSIVE_AREA_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.EXCLUSIVE_AREA_REFS[{index}]"))?;
         }
         Ok(())
     }
@@ -1169,9 +1171,13 @@ impl Document {
             return Err(format!("{path}: CAN_ENTER_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.CAN_ENTER_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.CAN_ENTER_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.CAN_ENTER_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.CAN_ENTER_REFS[{index}]"))?;
         }
         let list_a = a.get_exclusive_area_nesting_order_refs();
         let list_b = b.get_exclusive_area_nesting_order_refs();
@@ -1181,11 +1187,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.EXCLUSIVE_AREA_NESTING_ORDER_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!(
+                    "{path}.EXCLUSIVE_AREA_NESTING_ORDER_REFS[{index}]: id not found in own arena"
+                )
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| format!("{path}.EXCLUSIVE_AREA_NESTING_ORDER_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.EXCLUSIVE_AREA_NESTING_ORDER_REFS[{index}]"),
+            )?;
         }
         if a.get_minimum_start_interval() != b.get_minimum_start_interval() {
             return Err(format!("{path}: MINIMUM_START_INTERVAL mismatch"));
@@ -1199,9 +1212,13 @@ impl Document {
             return Err(format!("{path}: RUNS_INSIDE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.RUNS_INSIDE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.RUNS_INSIDE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.RUNS_INSIDE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.RUNS_INSIDE_REFS[{index}]"))?;
         }
         if a.get_sw_addr_method_ref() != b.get_sw_addr_method_ref() {
             return Err(format!("{path}: SW_ADDR_METHOD_REF mismatch"));
@@ -1258,11 +1275,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.CONSTANT_VALUE_MAPPING_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.CONSTANT_VALUE_MAPPING_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.CONSTANT_VALUE_MAPPING_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONSTANT_VALUE_MAPPING_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_data_type_mapping_refs();
         let list_b = b.get_data_type_mapping_refs();
@@ -1270,9 +1294,18 @@ impl Document {
             return Err(format!("{path}: DATA_TYPE_MAPPING_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.DATA_TYPE_MAPPING_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.DATA_TYPE_MAPPING_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.DATA_TYPE_MAPPING_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.DATA_TYPE_MAPPING_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_exclusive_areas();
         let list_b = b.get_exclusive_areas();

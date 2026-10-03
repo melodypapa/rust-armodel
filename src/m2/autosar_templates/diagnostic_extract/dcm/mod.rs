@@ -21,6 +21,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -74,9 +75,9 @@ impl TryFrom<&str> for DiagnosticJumpToBootLoaderEnum {
 pub struct DiagnosticAccessPermission {
     base: DiagnosticCommonElement,
     authentication_enabled: Option<DiagnosticAuthRoleProxyId>,
-    diagnostic_session_refs: Vec<String>,
-    environmental_condition_ref: Option<String>,
-    security_level_refs: Vec<String>,
+    diagnostic_session_refs: Vec<RefTypeId>,
+    environmental_condition_ref: Option<RefTypeId>,
+    security_level_refs: Vec<RefTypeId>,
 }
 
 impl DiagnosticAccessPermission {
@@ -101,28 +102,28 @@ impl DiagnosticAccessPermission {
         self
     }
 
-    pub fn get_diagnostic_session_refs(&self) -> &[String] {
+    pub fn get_diagnostic_session_refs(&self) -> &[RefTypeId] {
         &self.diagnostic_session_refs
     }
 
-    pub fn push_diagnostic_session_ref(&mut self, value: String) {
+    pub fn push_diagnostic_session_ref(&mut self, value: RefTypeId) {
         self.diagnostic_session_refs.push(value);
     }
 
-    pub fn get_environmental_condition_ref(&self) -> Option<&str> {
-        self.environmental_condition_ref.as_deref()
+    pub fn get_environmental_condition_ref(&self) -> Option<RefTypeId> {
+        self.environmental_condition_ref
     }
 
-    pub fn set_environmental_condition_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.environmental_condition_ref = Some(value.into());
+    pub fn set_environmental_condition_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.environmental_condition_ref = Some(value);
         self
     }
 
-    pub fn get_security_level_refs(&self) -> &[String] {
+    pub fn get_security_level_refs(&self) -> &[RefTypeId] {
         &self.security_level_refs
     }
 
-    pub fn push_security_level_ref(&mut self, value: String) {
+    pub fn push_security_level_ref(&mut self, value: RefTypeId) {
         self.security_level_refs.push(value);
     }
 
@@ -632,7 +633,7 @@ impl DiagnosticAuthRole {
 #[derive(Debug, Default)]
 pub struct DiagnosticAuthRoleProxy {
     base: ARObject,
-    authentication_role_refs: Vec<String>,
+    authentication_role_refs: Vec<RefTypeId>,
 }
 
 impl DiagnosticAuthRoleProxy {
@@ -648,11 +649,11 @@ impl DiagnosticAuthRoleProxy {
         &mut self.base
     }
 
-    pub fn get_authentication_role_refs(&self) -> &[String] {
+    pub fn get_authentication_role_refs(&self) -> &[RefTypeId] {
         &self.authentication_role_refs
     }
 
-    pub fn push_authentication_role_ref(&mut self, value: String) {
+    pub fn push_authentication_role_ref(&mut self, value: RefTypeId) {
         self.authentication_role_refs.push(value);
     }
 
@@ -1315,9 +1316,18 @@ impl Document {
             return Err(format!("{path}: DIAGNOSTIC_SESSION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.DIAGNOSTIC_SESSION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.DIAGNOSTIC_SESSION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.DIAGNOSTIC_SESSION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.DIAGNOSTIC_SESSION_REFS[{index}]"),
+            )?;
         }
         if a.get_environmental_condition_ref() != b.get_environmental_condition_ref() {
             return Err(format!("{path}: ENVIRONMENTAL_CONDITION_REF mismatch"));
@@ -1328,9 +1338,13 @@ impl Document {
             return Err(format!("{path}: SECURITY_LEVEL_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SECURITY_LEVEL_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SECURITY_LEVEL_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SECURITY_LEVEL_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SECURITY_LEVEL_REFS[{index}]"))?;
         }
         Ok(())
     }
@@ -1354,7 +1368,7 @@ impl Document {
 
     pub(crate) fn compare_diagnostic_auth_role_proxy(
         &self,
-        _other: &Document,
+        other: &Document,
         a: &DiagnosticAuthRoleProxy,
         b: &DiagnosticAuthRoleProxy,
         path: &str,
@@ -1366,9 +1380,18 @@ impl Document {
             return Err(format!("{path}: AUTHENTICATION_ROLE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.AUTHENTICATION_ROLE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.AUTHENTICATION_ROLE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.AUTHENTICATION_ROLE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.AUTHENTICATION_ROLE_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }

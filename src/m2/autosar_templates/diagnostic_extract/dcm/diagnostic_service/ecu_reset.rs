@@ -13,6 +13,7 @@ use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::c
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -53,7 +54,7 @@ impl TryFrom<&str> for DiagnosticResponseToEcuResetEnum {
 pub struct DiagnosticEcuReset {
     base: ARElement,
     custom_sub_function_number: Option<String>,
-    ecu_reset_class: Option<String>,
+    ecu_reset_class: Option<RefTypeId>,
 }
 
 impl DiagnosticEcuReset {
@@ -78,12 +79,12 @@ impl DiagnosticEcuReset {
         self
     }
 
-    pub fn get_ecu_reset_class(&self) -> Option<&str> {
-        self.ecu_reset_class.as_deref()
+    pub fn get_ecu_reset_class(&self) -> Option<RefTypeId> {
+        self.ecu_reset_class
     }
 
-    pub fn set_ecu_reset_class(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ecu_reset_class = Some(value.into());
+    pub fn set_ecu_reset_class(&mut self, value: RefTypeId) -> &mut Self {
+        self.ecu_reset_class = Some(value);
         self
     }
 

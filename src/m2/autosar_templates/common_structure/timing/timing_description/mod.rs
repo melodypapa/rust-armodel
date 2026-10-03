@@ -13,6 +13,7 @@ new_key_type! {
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -197,7 +198,7 @@ impl TimingDescription {
 #[derive(Debug, Default)]
 pub struct TimingDescriptionEvent {
     base: TimingDescription,
-    clock_reference_ref: Option<String>,
+    clock_reference_ref: Option<RefTypeId>,
 }
 
 impl TimingDescriptionEvent {
@@ -213,12 +214,12 @@ impl TimingDescriptionEvent {
         &mut self.base
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
-        self.clock_reference_ref.as_deref()
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
+        self.clock_reference_ref
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.clock_reference_ref = Some(value.into());
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.clock_reference_ref = Some(value);
         self
     }
 
@@ -370,9 +371,9 @@ impl TimingDescriptionEvent {
 pub struct TimingDescriptionEventChain {
     base: TimingDescription,
     is_pipelining_permitted: Option<String>,
-    response_ref: Option<String>,
-    segment_refs: Vec<String>,
-    stimulus_ref: Option<String>,
+    response_ref: Option<RefTypeId>,
+    segment_refs: Vec<RefTypeId>,
+    stimulus_ref: Option<RefTypeId>,
 }
 
 impl TimingDescriptionEventChain {
@@ -397,29 +398,29 @@ impl TimingDescriptionEventChain {
         self
     }
 
-    pub fn get_response_ref(&self) -> Option<&str> {
-        self.response_ref.as_deref()
+    pub fn get_response_ref(&self) -> Option<RefTypeId> {
+        self.response_ref
     }
 
-    pub fn set_response_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.response_ref = Some(value.into());
+    pub fn set_response_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.response_ref = Some(value);
         self
     }
 
-    pub fn get_segment_refs(&self) -> &[String] {
+    pub fn get_segment_refs(&self) -> &[RefTypeId] {
         &self.segment_refs
     }
 
-    pub fn push_segment_ref(&mut self, value: String) {
+    pub fn push_segment_ref(&mut self, value: RefTypeId) {
         self.segment_refs.push(value);
     }
 
-    pub fn get_stimulus_ref(&self) -> Option<&str> {
-        self.stimulus_ref.as_deref()
+    pub fn get_stimulus_ref(&self) -> Option<RefTypeId> {
+        self.stimulus_ref
     }
 
-    pub fn set_stimulus_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.stimulus_ref = Some(value.into());
+    pub fn set_stimulus_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.stimulus_ref = Some(value);
         self
     }
 
@@ -617,9 +618,13 @@ impl Document {
             return Err(format!("{path}: SEGMENT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SEGMENT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SEGMENT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SEGMENT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SEGMENT_REFS[{index}]"))?;
         }
         if a.get_stimulus_ref() != b.get_stimulus_ref() {
             return Err(format!("{path}: STIMULUS_REF mismatch"));

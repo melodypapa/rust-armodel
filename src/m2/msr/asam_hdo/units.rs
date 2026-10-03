@@ -17,6 +17,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -667,7 +668,7 @@ pub struct Unit {
     display_name: Option<SingleLanguageUnitNamesId>,
     factor_si_to_unit: Option<String>,
     offset_si_to_unit: Option<String>,
-    physical_dimension_ref: Option<String>,
+    physical_dimension_ref: Option<RefTypeId>,
 }
 
 impl Unit {
@@ -710,12 +711,12 @@ impl Unit {
         self
     }
 
-    pub fn get_physical_dimension_ref(&self) -> Option<&str> {
-        self.physical_dimension_ref.as_deref()
+    pub fn get_physical_dimension_ref(&self) -> Option<RefTypeId> {
+        self.physical_dimension_ref
     }
 
-    pub fn set_physical_dimension_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.physical_dimension_ref = Some(value.into());
+    pub fn set_physical_dimension_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.physical_dimension_ref = Some(value);
         self
     }
 
@@ -939,7 +940,7 @@ impl Unit {
 #[derive(Debug, Default)]
 pub struct UnitGroup {
     base: ARElement,
-    unit_refs: Vec<String>,
+    unit_refs: Vec<RefTypeId>,
 }
 
 impl UnitGroup {
@@ -955,11 +956,11 @@ impl UnitGroup {
         &mut self.base
     }
 
-    pub fn get_unit_refs(&self) -> &[String] {
+    pub fn get_unit_refs(&self) -> &[RefTypeId] {
         &self.unit_refs
     }
 
-    pub fn push_unit_ref(&mut self, value: String) {
+    pub fn push_unit_ref(&mut self, value: RefTypeId) {
         self.unit_refs.push(value);
     }
 
@@ -1281,9 +1282,15 @@ impl Document {
             return Err(format!("{path}: UNIT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.UNIT_REFS[{index}] mismatch"));
-            }
+            let x = self
+                .ref_types
+                .get(*x)
+                .ok_or_else(|| format!("{path}.UNIT_REFS[{index}]: id not found in own arena"))?;
+            let y = other
+                .ref_types
+                .get(*y)
+                .ok_or_else(|| format!("{path}.UNIT_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(other, x, y, &format!("{path}.UNIT_REFS[{index}]"))?;
         }
         Ok(())
     }

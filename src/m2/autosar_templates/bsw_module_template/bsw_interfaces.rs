@@ -22,6 +22,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Referrable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::msr::data_dictionary::service_process_task::SwServiceArgId;
@@ -159,8 +160,8 @@ impl TryFrom<&str> for BswExecutionContext {
 pub struct BswEntryRelationship {
     base: ARObject,
     bsw_entry_relationship_type: Option<BswEntryRelationshipEnum>,
-    from_ref: Option<String>,
-    to_ref: Option<String>,
+    from_ref: Option<RefTypeId>,
+    to_ref: Option<RefTypeId>,
 }
 
 impl BswEntryRelationship {
@@ -188,21 +189,21 @@ impl BswEntryRelationship {
         self
     }
 
-    pub fn get_from_ref(&self) -> Option<&str> {
-        self.from_ref.as_deref()
+    pub fn get_from_ref(&self) -> Option<RefTypeId> {
+        self.from_ref
     }
 
-    pub fn set_from_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.from_ref = Some(value.into());
+    pub fn set_from_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.from_ref = Some(value);
         self
     }
 
-    pub fn get_to_ref(&self) -> Option<&str> {
-        self.to_ref.as_deref()
+    pub fn get_to_ref(&self) -> Option<RefTypeId> {
+        self.to_ref
     }
 
-    pub fn set_to_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.to_ref = Some(value.into());
+    pub fn set_to_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.to_ref = Some(value);
         self
     }
 
@@ -475,7 +476,7 @@ impl BswEntryRelationshipSet {
 pub struct BswModuleClientServerEntry {
     base: Referrable,
     variation_point_capable: VariationPointCapable,
-    encapsulated_entry_ref: Option<String>,
+    encapsulated_entry_ref: Option<RefTypeId>,
     is_reentrant: Option<String>,
     is_synchronous: Option<String>,
 }
@@ -501,12 +502,12 @@ impl BswModuleClientServerEntry {
         &mut self.variation_point_capable
     }
 
-    pub fn get_encapsulated_entry_ref(&self) -> Option<&str> {
-        self.encapsulated_entry_ref.as_deref()
+    pub fn get_encapsulated_entry_ref(&self) -> Option<RefTypeId> {
+        self.encapsulated_entry_ref
     }
 
-    pub fn set_encapsulated_entry_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.encapsulated_entry_ref = Some(value.into());
+    pub fn set_encapsulated_entry_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.encapsulated_entry_ref = Some(value);
         self
     }
 
@@ -589,7 +590,7 @@ impl BswModuleClientServerEntry {
 pub struct BswModuleDependency {
     base: Identifiable,
     target_module_id: Option<String>,
-    target_module_ref: Option<String>,
+    target_module_ref: Option<RefTypeId>,
 }
 
 impl BswModuleDependency {
@@ -614,12 +615,12 @@ impl BswModuleDependency {
         self
     }
 
-    pub fn get_target_module_ref(&self) -> Option<&str> {
-        self.target_module_ref.as_deref()
+    pub fn get_target_module_ref(&self) -> Option<RefTypeId> {
+        self.target_module_ref
     }
 
-    pub fn set_target_module_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_module_ref = Some(value.into());
+    pub fn set_target_module_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_module_ref = Some(value);
         self
     }
 

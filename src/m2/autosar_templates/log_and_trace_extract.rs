@@ -19,6 +19,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -38,7 +39,7 @@ pub struct DltApplication {
     variation_point_capable: VariationPointCapable,
     application_description: Option<String>,
     application_id: Option<String>,
-    context_refs: Vec<String>,
+    context_refs: Vec<RefTypeId>,
 }
 
 impl DltApplication {
@@ -80,11 +81,11 @@ impl DltApplication {
         self
     }
 
-    pub fn get_context_refs(&self) -> &[String] {
+    pub fn get_context_refs(&self) -> &[RefTypeId] {
         &self.context_refs
     }
 
-    pub fn push_context_ref(&mut self, value: String) {
+    pub fn push_context_ref(&mut self, value: RefTypeId) {
         self.context_refs.push(value);
     }
 
@@ -448,7 +449,7 @@ pub struct DltContext {
     base: ARElement,
     context_description: Option<String>,
     context_id: Option<String>,
-    dlt_message_refs: Vec<String>,
+    dlt_message_refs: Vec<RefTypeId>,
 }
 
 impl DltContext {
@@ -482,11 +483,11 @@ impl DltContext {
         self
     }
 
-    pub fn get_dlt_message_refs(&self) -> &[String] {
+    pub fn get_dlt_message_refs(&self) -> &[RefTypeId] {
         &self.dlt_message_refs
     }
 
-    pub fn push_dlt_message_ref(&mut self, value: String) {
+    pub fn push_dlt_message_ref(&mut self, value: RefTypeId) {
         self.dlt_message_refs.push(value);
     }
 
@@ -1430,7 +1431,7 @@ impl LogAndTraceMessageCollectionSet {
 #[derive(Debug, Default)]
 pub struct PrivacyLevel {
     base: ARObject,
-    compu_method_ref: Option<String>,
+    compu_method_ref: Option<RefTypeId>,
     privacy_level: Option<String>,
 }
 
@@ -1447,12 +1448,12 @@ impl PrivacyLevel {
         &mut self.base
     }
 
-    pub fn get_compu_method_ref(&self) -> Option<&str> {
-        self.compu_method_ref.as_deref()
+    pub fn get_compu_method_ref(&self) -> Option<RefTypeId> {
+        self.compu_method_ref
     }
 
-    pub fn set_compu_method_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.compu_method_ref = Some(value.into());
+    pub fn set_compu_method_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.compu_method_ref = Some(value);
         self
     }
 
@@ -1511,9 +1512,13 @@ impl Document {
             return Err(format!("{path}: CONTEXT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.CONTEXT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.CONTEXT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.CONTEXT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.CONTEXT_REFS[{index}]"))?;
         }
         Ok(())
     }
@@ -1583,9 +1588,13 @@ impl Document {
             return Err(format!("{path}: DLT_MESSAGE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.DLT_MESSAGE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.DLT_MESSAGE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.DLT_MESSAGE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.DLT_MESSAGE_REFS[{index}]"))?;
         }
         Ok(())
     }

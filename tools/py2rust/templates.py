@@ -610,11 +610,25 @@ impl ARPackage {
 }
 
 /// spec class `ReferenceBase` — `ReferenceBase : ARObject`
-/// (py-armodel ARPackage.py:386; the P0 skeleton had modelled ARElement).
-/// P0 placeholder: `AdminDataWhitespace.arxml` has none; fields arrive in P1.
+/// This meta-class establishes a basis for relative references. Reference
+/// bases are identified by the short Label which shall be unique in the
+/// current package.
+/// (py-armodel ARPackage.py:386; pinned because it sits beside the pinned
+/// ARPackage. Ref-typed fields are RefTypeId arena links (code_guide §6) so
+/// the generated keep-compares resolve through Document.ref_types. py's
+/// `globalElements` holds `ReferrableSubtypesEnum` literals — kept as
+/// `String` because py's enum `setValue` never validates and the byte
+/// round-trip needs the text verbatim.)
 #[derive(Debug, Default)]
 pub struct ReferenceBase {
     base: ARObject,
+    base_is_this_package: Option<bool>,
+    global_elements: Vec<String>,
+    global_in_package_refs: Vec<RefTypeId>,
+    is_default: Option<bool>,
+    is_global: Option<bool>,
+    package_ref: Option<RefTypeId>,
+    short_label: Option<String>,
 }
 
 impl ReferenceBase {
@@ -628,6 +642,87 @@ impl ReferenceBase {
 
     pub fn base_mut(&mut self) -> &mut ARObject {
         &mut self.base
+    }
+
+    pub fn get_base_is_this_package(&self) -> Option<bool> {
+        self.base_is_this_package
+    }
+
+    pub fn set_base_is_this_package(&mut self, value: bool) -> &mut Self {
+        self.base_is_this_package = Some(value);
+        self
+    }
+
+    pub fn get_global_elements(&self) -> &[String] {
+        &self.global_elements
+    }
+
+    pub fn push_global_elements(&mut self, value: impl Into<String>) -> &mut Self {
+        self.global_elements.push(value.into());
+        self
+    }
+
+    pub fn get_global_in_package_refs(&self) -> &[RefTypeId] {
+        &self.global_in_package_refs
+    }
+
+    pub fn push_global_in_package_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.global_in_package_refs.push(value);
+        self
+    }
+
+    pub fn get_is_default(&self) -> Option<bool> {
+        self.is_default
+    }
+
+    pub fn set_is_default(&mut self, value: bool) -> &mut Self {
+        self.is_default = Some(value);
+        self
+    }
+
+    pub fn get_is_global(&self) -> Option<bool> {
+        self.is_global
+    }
+
+    pub fn set_is_global(&mut self, value: bool) -> &mut Self {
+        self.is_global = Some(value);
+        self
+    }
+
+    pub fn get_package_ref(&self) -> Option<RefTypeId> {
+        self.package_ref
+    }
+
+    pub fn set_package_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.package_ref = Some(value);
+        self
+    }
+
+    pub fn get_short_label(&self) -> Option<&str> {
+        self.short_label.as_deref()
+    }
+
+    pub fn set_short_label(&mut self, value: impl Into<String>) -> &mut Self {
+        self.short_label = Some(value.into());
+        self
+    }
+
+    pub fn get_checksum(&self) -> Option<&str> {
+        self.base.get_checksum()
+    }
+
+    pub fn set_checksum(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base.set_checksum(value);
+        self
+    }
+
+    pub fn get_timestamp(&self) -> Option<&str> {
+        self.base.get_timestamp()
+    }
+
+    pub fn set_timestamp(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base.set_timestamp(value);
+        self
     }
 }
 

@@ -14,6 +14,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -27,7 +28,7 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct InterpolationRoutine {
     base: ARObject,
-    interpolation_routine_ref: Option<String>,
+    interpolation_routine_ref: Option<RefTypeId>,
     is_default: Option<String>,
     short_label: Option<String>,
 }
@@ -45,12 +46,12 @@ impl InterpolationRoutine {
         &mut self.base
     }
 
-    pub fn get_interpolation_routine_ref(&self) -> Option<&str> {
-        self.interpolation_routine_ref.as_deref()
+    pub fn get_interpolation_routine_ref(&self) -> Option<RefTypeId> {
+        self.interpolation_routine_ref
     }
 
-    pub fn set_interpolation_routine_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.interpolation_routine_ref = Some(value.into());
+    pub fn set_interpolation_routine_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.interpolation_routine_ref = Some(value);
         self
     }
 
@@ -98,7 +99,7 @@ impl InterpolationRoutine {
 pub struct InterpolationRoutineMapping {
     base: ARObject,
     interpolation_routines: Vec<InterpolationRoutineId>,
-    sw_record_layout_ref: Option<String>,
+    sw_record_layout_ref: Option<RefTypeId>,
 }
 
 impl InterpolationRoutineMapping {
@@ -122,12 +123,12 @@ impl InterpolationRoutineMapping {
         self.interpolation_routines.push(value);
     }
 
-    pub fn get_sw_record_layout_ref(&self) -> Option<&str> {
-        self.sw_record_layout_ref.as_deref()
+    pub fn get_sw_record_layout_ref(&self) -> Option<RefTypeId> {
+        self.sw_record_layout_ref
     }
 
-    pub fn set_sw_record_layout_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.sw_record_layout_ref = Some(value.into());
+    pub fn set_sw_record_layout_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sw_record_layout_ref = Some(value);
         self
     }
 

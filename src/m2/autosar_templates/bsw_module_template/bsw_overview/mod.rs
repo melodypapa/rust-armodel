@@ -18,6 +18,7 @@ use crate::m2::autosar_templates::common_structure::trigger_declaration::Trigger
 use crate::m2::autosar_templates::generic_structure::abstract_structure::AtpStructureElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::sw_component_template::datatype::data_prototypes::VariableDataPrototypeId;
 use crate::m2::autosar_templates::sw_component_template::software_component_documentation::SwComponentDocumentationId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -34,8 +35,8 @@ pub struct BswModuleDescription {
     base: AtpStructureElement,
     bsw_module_dependencies: Vec<BswModuleDependencyId>,
     bsw_module_documentation: Option<SwComponentDocumentationId>,
-    expected_entry_refs: Vec<String>,
-    implemented_entry_refs: Vec<String>,
+    expected_entry_refs: Vec<RefTypeId>,
+    implemented_entry_refs: Vec<RefTypeId>,
     internal_behaviors: Vec<BswInternalBehaviorId>,
     module_id: Option<String>,
     provided_client_server_entries: Vec<BswModuleClientServerEntryId>,
@@ -78,19 +79,19 @@ impl BswModuleDescription {
         self
     }
 
-    pub fn get_expected_entry_refs(&self) -> &[String] {
+    pub fn get_expected_entry_refs(&self) -> &[RefTypeId] {
         &self.expected_entry_refs
     }
 
-    pub fn push_expected_entry_ref(&mut self, value: String) {
+    pub fn push_expected_entry_ref(&mut self, value: RefTypeId) {
         self.expected_entry_refs.push(value);
     }
 
-    pub fn get_implemented_entry_refs(&self) -> &[String] {
+    pub fn get_implemented_entry_refs(&self) -> &[RefTypeId] {
         &self.implemented_entry_refs
     }
 
-    pub fn push_implemented_entry_ref(&mut self, value: String) {
+    pub fn push_implemented_entry_ref(&mut self, value: RefTypeId) {
         self.implemented_entry_refs.push(value);
     }
 
@@ -391,9 +392,13 @@ impl Document {
             return Err(format!("{path}: EXPECTED_ENTRY_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.EXPECTED_ENTRY_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.EXPECTED_ENTRY_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.EXPECTED_ENTRY_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.EXPECTED_ENTRY_REFS[{index}]"))?;
         }
         let list_a = a.get_implemented_entry_refs();
         let list_b = b.get_implemented_entry_refs();
@@ -401,9 +406,18 @@ impl Document {
             return Err(format!("{path}: IMPLEMENTED_ENTRY_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.IMPLEMENTED_ENTRY_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.IMPLEMENTED_ENTRY_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.IMPLEMENTED_ENTRY_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.IMPLEMENTED_ENTRY_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_internal_behaviors();
         let list_b = b.get_internal_behaviors();

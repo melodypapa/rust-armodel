@@ -9,6 +9,7 @@ new_key_type! {
 }
 
 use crate::m2::autosar_templates::common_structure::standardization_template::abstract_blueprint_structure::AtpBlueprintMapping;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::Document;
 
 /// spec class `PortInterfaceBlueprintMapping`
@@ -16,8 +17,8 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct PortInterfaceBlueprintMapping {
     base: AtpBlueprintMapping,
-    port_interface_blueprint_ref: Option<String>,
-    derived_port_interface_ref: Option<String>,
+    port_interface_blueprint_ref: Option<RefTypeId>,
+    derived_port_interface_ref: Option<RefTypeId>,
 }
 
 impl PortInterfaceBlueprintMapping {
@@ -33,38 +34,38 @@ impl PortInterfaceBlueprintMapping {
         &mut self.base
     }
 
-    pub fn get_port_interface_blueprint_ref(&self) -> Option<&str> {
-        self.port_interface_blueprint_ref.as_deref()
+    pub fn get_port_interface_blueprint_ref(&self) -> Option<RefTypeId> {
+        self.port_interface_blueprint_ref
     }
 
-    pub fn set_port_interface_blueprint_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.port_interface_blueprint_ref = Some(value.into());
+    pub fn set_port_interface_blueprint_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.port_interface_blueprint_ref = Some(value);
         self
     }
 
-    pub fn get_derived_port_interface_ref(&self) -> Option<&str> {
-        self.derived_port_interface_ref.as_deref()
+    pub fn get_derived_port_interface_ref(&self) -> Option<RefTypeId> {
+        self.derived_port_interface_ref
     }
 
-    pub fn set_derived_port_interface_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.derived_port_interface_ref = Some(value.into());
+    pub fn set_derived_port_interface_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.derived_port_interface_ref = Some(value);
         self
     }
 
-    pub fn get_atp_blueprint_ref(&self) -> Option<&str> {
+    pub fn get_atp_blueprint_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_blueprint_ref()
     }
 
-    pub fn set_atp_blueprint_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_blueprint_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_blueprint_ref(value);
         self
     }
 
-    pub fn get_atp_blueprinted_element_ref(&self) -> Option<&str> {
+    pub fn get_atp_blueprinted_element_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_blueprinted_element_ref()
     }
 
-    pub fn set_atp_blueprinted_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_blueprinted_element_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_blueprinted_element_ref(value);
         self
     }

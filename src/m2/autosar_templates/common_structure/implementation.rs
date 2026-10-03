@@ -19,6 +19,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::e
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Referrable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -100,7 +101,7 @@ impl TryFrom<&str> for ProgramminglanguageEnum {
 pub struct Code {
     base: Identifiable,
     artifact_descriptors: Vec<AutosarEngineeringObjectId>,
-    callback_header_refs: Vec<String>,
+    callback_header_refs: Vec<RefTypeId>,
 }
 
 impl Code {
@@ -124,11 +125,11 @@ impl Code {
         self.artifact_descriptors.push(value);
     }
 
-    pub fn get_callback_header_refs(&self) -> &[String] {
+    pub fn get_callback_header_refs(&self) -> &[RefTypeId] {
         &self.callback_header_refs
     }
 
-    pub fn push_callback_header_ref(&mut self, value: String) {
+    pub fn push_callback_header_ref(&mut self, value: RefTypeId) {
         self.callback_header_refs.push(value);
     }
 
@@ -650,18 +651,18 @@ impl DependencyOnArtifact {
 #[derive(Debug, Default)]
 pub struct Implementation {
     base: ARElement,
-    build_action_manifest_ref: Option<String>,
+    build_action_manifest_ref: Option<RefTypeId>,
     code_descriptors: Vec<CodeId>,
     compilers: Vec<CompilerId>,
     generated_artifacts: Vec<DependencyOnArtifactId>,
-    hw_element_refs: Vec<String>,
+    hw_element_refs: Vec<RefTypeId>,
     linkers: Vec<LinkerId>,
     mc_support: Option<McSupportDataId>,
     programming_language: Option<ProgramminglanguageEnum>,
     required_artifacts: Vec<DependencyOnArtifactId>,
     required_generator_tools: Vec<DependencyOnArtifactId>,
     resource_consumption: Option<ResourceConsumptionId>,
-    swc_bsw_mapping_ref: Option<String>,
+    swc_bsw_mapping_ref: Option<RefTypeId>,
     sw_version: Option<String>,
     used_code_generator: Option<String>,
     vendor_id: Option<String>,
@@ -680,12 +681,12 @@ impl Implementation {
         &mut self.base
     }
 
-    pub fn get_build_action_manifest_ref(&self) -> Option<&str> {
-        self.build_action_manifest_ref.as_deref()
+    pub fn get_build_action_manifest_ref(&self) -> Option<RefTypeId> {
+        self.build_action_manifest_ref
     }
 
-    pub fn set_build_action_manifest_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.build_action_manifest_ref = Some(value.into());
+    pub fn set_build_action_manifest_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.build_action_manifest_ref = Some(value);
         self
     }
 
@@ -713,11 +714,11 @@ impl Implementation {
         self.generated_artifacts.push(value);
     }
 
-    pub fn get_hw_element_refs(&self) -> &[String] {
+    pub fn get_hw_element_refs(&self) -> &[RefTypeId] {
         &self.hw_element_refs
     }
 
-    pub fn push_hw_element_ref(&mut self, value: String) {
+    pub fn push_hw_element_ref(&mut self, value: RefTypeId) {
         self.hw_element_refs.push(value);
     }
 
@@ -772,12 +773,12 @@ impl Implementation {
         self
     }
 
-    pub fn get_swc_bsw_mapping_ref(&self) -> Option<&str> {
-        self.swc_bsw_mapping_ref.as_deref()
+    pub fn get_swc_bsw_mapping_ref(&self) -> Option<RefTypeId> {
+        self.swc_bsw_mapping_ref
     }
 
-    pub fn set_swc_bsw_mapping_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.swc_bsw_mapping_ref = Some(value.into());
+    pub fn set_swc_bsw_mapping_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.swc_bsw_mapping_ref = Some(value);
         self
     }
 
@@ -1323,9 +1324,18 @@ impl Document {
             return Err(format!("{path}: CALLBACK_HEADER_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.CALLBACK_HEADER_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.CALLBACK_HEADER_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.CALLBACK_HEADER_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CALLBACK_HEADER_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }
@@ -1449,9 +1459,13 @@ impl Document {
             return Err(format!("{path}: HW_ELEMENT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.HW_ELEMENT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.HW_ELEMENT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.HW_ELEMENT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.HW_ELEMENT_REFS[{index}]"))?;
         }
         let list_a = a.get_linkers();
         let list_b = b.get_linkers();

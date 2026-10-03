@@ -15,6 +15,7 @@ use crate::m2::autosar_templates::common_structure::resource_consumption::Softwa
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -84,11 +85,11 @@ impl MeasuredStackUsage {
         self
     }
 
-    pub fn get_executable_entity_ref(&self) -> Option<&str> {
+    pub fn get_executable_entity_ref(&self) -> Option<RefTypeId> {
         self.base().get_executable_entity_ref()
     }
 
-    pub fn set_executable_entity_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_executable_entity_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_executable_entity_ref(value);
         self
     }
@@ -102,11 +103,11 @@ impl MeasuredStackUsage {
         self
     }
 
-    pub fn get_hw_element_ref(&self) -> Option<&str> {
+    pub fn get_hw_element_ref(&self) -> Option<RefTypeId> {
         self.base().get_hw_element_ref()
     }
 
-    pub fn set_hw_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_hw_element_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_hw_element_ref(value);
         self
     }
@@ -292,11 +293,11 @@ impl RoughEstimateStackUsage {
         self
     }
 
-    pub fn get_executable_entity_ref(&self) -> Option<&str> {
+    pub fn get_executable_entity_ref(&self) -> Option<RefTypeId> {
         self.base().get_executable_entity_ref()
     }
 
-    pub fn set_executable_entity_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_executable_entity_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_executable_entity_ref(value);
         self
     }
@@ -310,11 +311,11 @@ impl RoughEstimateStackUsage {
         self
     }
 
-    pub fn get_hw_element_ref(&self) -> Option<&str> {
+    pub fn get_hw_element_ref(&self) -> Option<RefTypeId> {
         self.base().get_hw_element_ref()
     }
 
-    pub fn set_hw_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_hw_element_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_hw_element_ref(value);
         self
     }
@@ -476,9 +477,9 @@ impl RoughEstimateStackUsage {
 pub struct StackUsage {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    executable_entity_ref: Option<String>,
+    executable_entity_ref: Option<RefTypeId>,
     hardware_configuration: Option<HardwareConfigurationId>,
-    hw_element_ref: Option<String>,
+    hw_element_ref: Option<RefTypeId>,
     software_context: Option<SoftwareContextId>,
 }
 
@@ -503,12 +504,12 @@ impl StackUsage {
         &mut self.variation_point_capable
     }
 
-    pub fn get_executable_entity_ref(&self) -> Option<&str> {
-        self.executable_entity_ref.as_deref()
+    pub fn get_executable_entity_ref(&self) -> Option<RefTypeId> {
+        self.executable_entity_ref
     }
 
-    pub fn set_executable_entity_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.executable_entity_ref = Some(value.into());
+    pub fn set_executable_entity_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.executable_entity_ref = Some(value);
         self
     }
 
@@ -521,12 +522,12 @@ impl StackUsage {
         self
     }
 
-    pub fn get_hw_element_ref(&self) -> Option<&str> {
-        self.hw_element_ref.as_deref()
+    pub fn get_hw_element_ref(&self) -> Option<RefTypeId> {
+        self.hw_element_ref
     }
 
-    pub fn set_hw_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.hw_element_ref = Some(value.into());
+    pub fn set_hw_element_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.hw_element_ref = Some(value);
         self
     }
 
@@ -710,11 +711,11 @@ impl WorstCaseStackUsage {
         self
     }
 
-    pub fn get_executable_entity_ref(&self) -> Option<&str> {
+    pub fn get_executable_entity_ref(&self) -> Option<RefTypeId> {
         self.base().get_executable_entity_ref()
     }
 
-    pub fn set_executable_entity_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_executable_entity_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_executable_entity_ref(value);
         self
     }
@@ -728,11 +729,11 @@ impl WorstCaseStackUsage {
         self
     }
 
-    pub fn get_hw_element_ref(&self) -> Option<&str> {
+    pub fn get_hw_element_ref(&self) -> Option<RefTypeId> {
         self.base().get_hw_element_ref()
     }
 
-    pub fn set_hw_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_hw_element_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_hw_element_ref(value);
         self
     }

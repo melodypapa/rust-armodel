@@ -34,6 +34,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Describable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::sw_component_template::communication::TransformationComSpecProps;
@@ -409,7 +410,7 @@ pub struct DataPrototypeTransformationProps {
     base: ARObject,
     data_prototype_in_port_interface_ref: Option<DataPrototypeInPortInterfaceRefId>,
     network_representation_props: Option<SwDataDefPropsId>,
-    transformation_props_ref: Option<String>,
+    transformation_props_ref: Option<RefTypeId>,
 }
 
 impl DataPrototypeTransformationProps {
@@ -448,12 +449,12 @@ impl DataPrototypeTransformationProps {
         self
     }
 
-    pub fn get_transformation_props_ref(&self) -> Option<&str> {
-        self.transformation_props_ref.as_deref()
+    pub fn get_transformation_props_ref(&self) -> Option<RefTypeId> {
+        self.transformation_props_ref
     }
 
-    pub fn set_transformation_props_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.transformation_props_ref = Some(value.into());
+    pub fn set_transformation_props_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.transformation_props_ref = Some(value);
         self
     }
 
@@ -484,7 +485,7 @@ pub struct DataTransformation {
     variation_point_capable: VariationPointCapable,
     data_transformation_kind: Option<DataTransformationKindEnum>,
     execute_despite_data_unavailability: Option<String>,
-    transformer_chain_refs: Vec<String>,
+    transformer_chain_refs: Vec<RefTypeId>,
 }
 
 impl DataTransformation {
@@ -529,11 +530,11 @@ impl DataTransformation {
         self
     }
 
-    pub fn get_transformer_chain_refs(&self) -> &[String] {
+    pub fn get_transformer_chain_refs(&self) -> &[RefTypeId] {
         &self.transformer_chain_refs
     }
 
-    pub fn push_transformer_chain_ref(&mut self, value: String) {
+    pub fn push_transformer_chain_ref(&mut self, value: RefTypeId) {
         self.transformer_chain_refs.push(value);
     }
 
@@ -1184,7 +1185,7 @@ pub struct EndToEndTransformationComSpecProps {
     clear_from_valid_to_invalid: Option<String>,
     disable_end_to_end_check: Option<String>,
     disable_end_to_end_state_machine: Option<String>,
-    e2e_profile_compatibility_props_ref: Option<String>,
+    e2e_profile_compatibility_props_ref: Option<RefTypeId>,
     max_delta_counter: Option<String>,
     max_error_state_init: Option<String>,
     max_error_state_invalid: Option<String>,
@@ -1239,15 +1240,12 @@ impl EndToEndTransformationComSpecProps {
         self
     }
 
-    pub fn get_e2e_profile_compatibility_props_ref(&self) -> Option<&str> {
-        self.e2e_profile_compatibility_props_ref.as_deref()
+    pub fn get_e2e_profile_compatibility_props_ref(&self) -> Option<RefTypeId> {
+        self.e2e_profile_compatibility_props_ref
     }
 
-    pub fn set_e2e_profile_compatibility_props_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
-        self.e2e_profile_compatibility_props_ref = Some(value.into());
+    pub fn set_e2e_profile_compatibility_props_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.e2e_profile_compatibility_props_ref = Some(value);
         self
     }
 
@@ -1429,7 +1427,7 @@ pub struct EndToEndTransformationDescription {
     crc_offset: Option<String>,
     data_id_mode: Option<DataIdModeEnum>,
     data_id_nibble_offset: Option<String>,
-    e2e_profile_compatibility_props_ref: Option<String>,
+    e2e_profile_compatibility_props_ref: Option<RefTypeId>,
     max_delta_counter: Option<String>,
     max_error_state_init: Option<String>,
     max_error_state_invalid: Option<String>,
@@ -1506,15 +1504,12 @@ impl EndToEndTransformationDescription {
         self
     }
 
-    pub fn get_e2e_profile_compatibility_props_ref(&self) -> Option<&str> {
-        self.e2e_profile_compatibility_props_ref.as_deref()
+    pub fn get_e2e_profile_compatibility_props_ref(&self) -> Option<RefTypeId> {
+        self.e2e_profile_compatibility_props_ref
     }
 
-    pub fn set_e2e_profile_compatibility_props_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
-        self.e2e_profile_compatibility_props_ref = Some(value.into());
+    pub fn set_e2e_profile_compatibility_props_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.e2e_profile_compatibility_props_ref = Some(value);
         self
     }
 
@@ -1812,11 +1807,11 @@ impl EndToEndTransformationISignalProps {
             .push_data_prototype_transformation_prop(value)
     }
 
-    pub fn get_transformer_ref(&self) -> Option<&str> {
+    pub fn get_transformer_ref(&self) -> Option<RefTypeId> {
         self.base().get_transformer_ref()
     }
 
-    pub fn set_transformer_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_transformer_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_transformer_ref(value);
         self
     }
@@ -1973,7 +1968,7 @@ pub struct SOMEIPTransformationISignalProps {
     size_of_string_length_fields: Option<String>,
     size_of_struct_length_fields: Option<String>,
     size_of_union_length_fields: Option<String>,
-    tlv_data_id_definition_refs: Vec<String>,
+    tlv_data_id_definition_refs: Vec<RefTypeId>,
 }
 
 impl SOMEIPTransformationISignalProps {
@@ -2064,11 +2059,11 @@ impl SOMEIPTransformationISignalProps {
         self
     }
 
-    pub fn get_tlv_data_id_definition_refs(&self) -> &[String] {
+    pub fn get_tlv_data_id_definition_refs(&self) -> &[RefTypeId] {
         &self.tlv_data_id_definition_refs
     }
 
-    pub fn push_tlv_data_id_definition_ref(&mut self, value: String) {
+    pub fn push_tlv_data_id_definition_ref(&mut self, value: RefTypeId) {
         self.tlv_data_id_definition_refs.push(value);
     }
 
@@ -2093,11 +2088,11 @@ impl SOMEIPTransformationISignalProps {
             .push_data_prototype_transformation_prop(value)
     }
 
-    pub fn get_transformer_ref(&self) -> Option<&str> {
+    pub fn get_transformer_ref(&self) -> Option<RefTypeId> {
         self.base().get_transformer_ref()
     }
 
-    pub fn set_transformer_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_transformer_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_transformer_ref(value);
         self
     }
@@ -2318,9 +2313,9 @@ impl SOMEIPTransformationProps {
 pub struct TlvDataIdDefinition {
     base: ARObject,
     id: Option<String>,
-    tlv_argument_ref: Option<String>,
-    tlv_implementation_data_type_element_ref: Option<String>,
-    tlv_record_element_ref: Option<String>,
+    tlv_argument_ref: Option<RefTypeId>,
+    tlv_implementation_data_type_element_ref: Option<RefTypeId>,
+    tlv_record_element_ref: Option<RefTypeId>,
 }
 
 impl TlvDataIdDefinition {
@@ -2345,33 +2340,30 @@ impl TlvDataIdDefinition {
         self
     }
 
-    pub fn get_tlv_argument_ref(&self) -> Option<&str> {
-        self.tlv_argument_ref.as_deref()
+    pub fn get_tlv_argument_ref(&self) -> Option<RefTypeId> {
+        self.tlv_argument_ref
     }
 
-    pub fn set_tlv_argument_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.tlv_argument_ref = Some(value.into());
+    pub fn set_tlv_argument_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.tlv_argument_ref = Some(value);
         self
     }
 
-    pub fn get_tlv_implementation_data_type_element_ref(&self) -> Option<&str> {
-        self.tlv_implementation_data_type_element_ref.as_deref()
+    pub fn get_tlv_implementation_data_type_element_ref(&self) -> Option<RefTypeId> {
+        self.tlv_implementation_data_type_element_ref
     }
 
-    pub fn set_tlv_implementation_data_type_element_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
-        self.tlv_implementation_data_type_element_ref = Some(value.into());
+    pub fn set_tlv_implementation_data_type_element_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.tlv_implementation_data_type_element_ref = Some(value);
         self
     }
 
-    pub fn get_tlv_record_element_ref(&self) -> Option<&str> {
-        self.tlv_record_element_ref.as_deref()
+    pub fn get_tlv_record_element_ref(&self) -> Option<RefTypeId> {
+        self.tlv_record_element_ref
     }
 
-    pub fn set_tlv_record_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.tlv_record_element_ref = Some(value.into());
+    pub fn set_tlv_record_element_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.tlv_record_element_ref = Some(value);
         self
     }
 
@@ -2744,7 +2736,7 @@ pub struct TransformationISignalProps {
     base: Describable,
     cs_error_reaction: Option<CSTransformerErrorReactionEnum>,
     data_prototype_transformation_props: Vec<DataPrototypeTransformationPropsId>,
-    transformer_ref: Option<String>,
+    transformer_ref: Option<RefTypeId>,
 }
 
 impl TransformationISignalProps {
@@ -2780,12 +2772,12 @@ impl TransformationISignalProps {
         self.data_prototype_transformation_props.push(value);
     }
 
-    pub fn get_transformer_ref(&self) -> Option<&str> {
-        self.transformer_ref.as_deref()
+    pub fn get_transformer_ref(&self) -> Option<RefTypeId> {
+        self.transformer_ref
     }
 
-    pub fn set_transformer_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.transformer_ref = Some(value.into());
+    pub fn set_transformer_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.transformer_ref = Some(value);
         self
     }
 
@@ -3481,11 +3473,11 @@ impl UserDefinedTransformationISignalProps {
             .push_data_prototype_transformation_prop(value)
     }
 
-    pub fn get_transformer_ref(&self) -> Option<&str> {
+    pub fn get_transformer_ref(&self) -> Option<RefTypeId> {
         self.base().get_transformer_ref()
     }
 
-    pub fn set_transformer_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_transformer_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_transformer_ref(value);
         self
     }
@@ -3804,9 +3796,18 @@ impl Document {
             return Err(format!("{path}: TRANSFORMER_CHAIN_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.TRANSFORMER_CHAIN_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.TRANSFORMER_CHAIN_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.TRANSFORMER_CHAIN_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.TRANSFORMER_CHAIN_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }
@@ -4108,11 +4109,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.TLV_DATA_ID_DEFINITION_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.TLV_DATA_ID_DEFINITION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.TLV_DATA_ID_DEFINITION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.TLV_DATA_ID_DEFINITION_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }

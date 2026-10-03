@@ -6,6 +6,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -178,8 +179,8 @@ impl AtpBlueprint {
 #[derive(Debug, Default)]
 pub struct AtpBlueprintMapping {
     base: ARObject,
-    atp_blueprint_ref: Option<String>,
-    atp_blueprinted_element_ref: Option<String>,
+    atp_blueprint_ref: Option<RefTypeId>,
+    atp_blueprinted_element_ref: Option<RefTypeId>,
 }
 
 impl AtpBlueprintMapping {
@@ -195,21 +196,21 @@ impl AtpBlueprintMapping {
         &mut self.base
     }
 
-    pub fn get_atp_blueprint_ref(&self) -> Option<&str> {
-        self.atp_blueprint_ref.as_deref()
+    pub fn get_atp_blueprint_ref(&self) -> Option<RefTypeId> {
+        self.atp_blueprint_ref
     }
 
-    pub fn set_atp_blueprint_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.atp_blueprint_ref = Some(value.into());
+    pub fn set_atp_blueprint_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.atp_blueprint_ref = Some(value);
         self
     }
 
-    pub fn get_atp_blueprinted_element_ref(&self) -> Option<&str> {
-        self.atp_blueprinted_element_ref.as_deref()
+    pub fn get_atp_blueprinted_element_ref(&self) -> Option<RefTypeId> {
+        self.atp_blueprinted_element_ref
     }
 
-    pub fn set_atp_blueprinted_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.atp_blueprinted_element_ref = Some(value.into());
+    pub fn set_atp_blueprinted_element_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.atp_blueprinted_element_ref = Some(value);
         self
     }
 

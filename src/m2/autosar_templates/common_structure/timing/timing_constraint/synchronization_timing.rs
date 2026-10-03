@@ -16,6 +16,7 @@ use crate::m2::autosar_templates::common_structure::timing::timing_constraint::s
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::multidimensional_time::MultidimensionalTimeId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::autosar_templates::common_structure::timing::timing_constraint::synchronization_timing_constraint::SynchronizationTypeEnum;
 use crate::m2::autosar_templates::common_structure::timing::timing_constraint::TimingConstraint;
@@ -27,8 +28,8 @@ use crate::Document;
 pub struct SynchronizationTimingConstraint {
     base: TimingConstraint,
     event_occurrence_kind: Option<EventOccurrenceKindEnum>,
-    scope_refs: Vec<String>,
-    scope_event_refs: Vec<String>,
+    scope_refs: Vec<RefTypeId>,
+    scope_event_refs: Vec<RefTypeId>,
     synchronization_constraint_type: Option<SynchronizationTypeEnum>,
     tolerance: Option<MultidimensionalTimeId>,
 }
@@ -55,19 +56,19 @@ impl SynchronizationTimingConstraint {
         self
     }
 
-    pub fn get_scope_refs(&self) -> &[String] {
+    pub fn get_scope_refs(&self) -> &[RefTypeId] {
         &self.scope_refs
     }
 
-    pub fn push_scope_ref(&mut self, value: String) {
+    pub fn push_scope_ref(&mut self, value: RefTypeId) {
         self.scope_refs.push(value);
     }
 
-    pub fn get_scope_event_refs(&self) -> &[String] {
+    pub fn get_scope_event_refs(&self) -> &[RefTypeId] {
         &self.scope_event_refs
     }
 
-    pub fn push_scope_event_ref(&mut self, value: String) {
+    pub fn push_scope_event_ref(&mut self, value: RefTypeId) {
         self.scope_event_refs.push(value);
     }
 
@@ -92,20 +93,20 @@ impl SynchronizationTimingConstraint {
         self
     }
 
-    pub fn get_timing_condition_ref(&self) -> Option<&str> {
+    pub fn get_timing_condition_ref(&self) -> Option<RefTypeId> {
         self.base().get_timing_condition_ref()
     }
 
-    pub fn set_timing_condition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_timing_condition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_timing_condition_ref(value);
         self
     }
 
-    pub fn get_trace_refs(&self) -> &[String] {
+    pub fn get_trace_refs(&self) -> &[RefTypeId] {
         self.base().base().get_trace_refs()
     }
 
-    pub fn push_trace_ref(&mut self, value: String) {
+    pub fn push_trace_ref(&mut self, value: RefTypeId) {
         self.base_mut().base_mut().push_trace_ref(value)
     }
 
@@ -298,9 +299,14 @@ impl Document {
             return Err(format!("{path}: SCOPE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SCOPE_REFS[{index}] mismatch"));
-            }
+            let x = self
+                .ref_types
+                .get(*x)
+                .ok_or_else(|| format!("{path}.SCOPE_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SCOPE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SCOPE_REFS[{index}]"))?;
         }
         let list_a = a.get_scope_event_refs();
         let list_b = b.get_scope_event_refs();
@@ -308,9 +314,13 @@ impl Document {
             return Err(format!("{path}: SCOPE_EVENT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SCOPE_EVENT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SCOPE_EVENT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SCOPE_EVENT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SCOPE_EVENT_REFS[{index}]"))?;
         }
         if a.get_synchronization_constraint_type() != b.get_synchronization_constraint_type() {
             return Err(format!("{path}: SYNCHRONIZATION_CONSTRAINT_TYPE mismatch"));

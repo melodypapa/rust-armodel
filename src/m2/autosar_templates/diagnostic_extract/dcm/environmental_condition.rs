@@ -19,6 +19,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Referrable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::data_dictionary::data_def_properties::SwDataDefPropsId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
@@ -99,7 +100,7 @@ impl TryFrom<&str> for DiagnosticLogicalOperatorEnum {
 #[derive(Debug, Default)]
 pub struct DiagnosticEnvBswModeElement {
     base: DiagnosticEnvModeElement,
-    mode_i_ref: Option<String>,
+    mode_i_ref: Option<RefTypeId>,
 }
 
 impl DiagnosticEnvBswModeElement {
@@ -115,12 +116,12 @@ impl DiagnosticEnvBswModeElement {
         &mut self.base
     }
 
-    pub fn get_mode_i_ref(&self) -> Option<&str> {
-        self.mode_i_ref.as_deref()
+    pub fn get_mode_i_ref(&self) -> Option<RefTypeId> {
+        self.mode_i_ref
     }
 
-    pub fn set_mode_i_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.mode_i_ref = Some(value.into());
+    pub fn set_mode_i_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.mode_i_ref = Some(value);
         self
     }
 
@@ -332,7 +333,7 @@ impl DiagnosticEnvConditionFormulaPart {
 pub struct DiagnosticEnvDataCondition {
     base: DiagnosticEnvCompareCondition,
     compare_value: Option<ElementRef>,
-    data_element_ref: Option<String>,
+    data_element_ref: Option<RefTypeId>,
 }
 
 impl DiagnosticEnvDataCondition {
@@ -357,12 +358,12 @@ impl DiagnosticEnvDataCondition {
         self
     }
 
-    pub fn get_data_element_ref(&self) -> Option<&str> {
-        self.data_element_ref.as_deref()
+    pub fn get_data_element_ref(&self) -> Option<RefTypeId> {
+        self.data_element_ref
     }
 
-    pub fn set_data_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.data_element_ref = Some(value.into());
+    pub fn set_data_element_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.data_element_ref = Some(value);
         self
     }
 
@@ -401,7 +402,7 @@ impl DiagnosticEnvDataCondition {
 pub struct DiagnosticEnvDataElementCondition {
     base: DiagnosticEnvCompareCondition,
     compare_value: Option<ElementRef>,
-    data_prototype_i_ref: Option<String>,
+    data_prototype_i_ref: Option<RefTypeId>,
     sw_data_def_props: Option<SwDataDefPropsId>,
 }
 
@@ -427,12 +428,12 @@ impl DiagnosticEnvDataElementCondition {
         self
     }
 
-    pub fn get_data_prototype_i_ref(&self) -> Option<&str> {
-        self.data_prototype_i_ref.as_deref()
+    pub fn get_data_prototype_i_ref(&self) -> Option<RefTypeId> {
+        self.data_prototype_i_ref
     }
 
-    pub fn set_data_prototype_i_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.data_prototype_i_ref = Some(value.into());
+    pub fn set_data_prototype_i_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.data_prototype_i_ref = Some(value);
         self
     }
 
@@ -582,7 +583,7 @@ impl DiagnosticEnvModeElement {
 #[derive(Debug, Default)]
 pub struct DiagnosticEnvSwcModeElement {
     base: DiagnosticEnvModeElement,
-    mode_i_ref: Option<String>,
+    mode_i_ref: Option<RefTypeId>,
 }
 
 impl DiagnosticEnvSwcModeElement {
@@ -598,12 +599,12 @@ impl DiagnosticEnvSwcModeElement {
         &mut self.base
     }
 
-    pub fn get_mode_i_ref(&self) -> Option<&str> {
-        self.mode_i_ref.as_deref()
+    pub fn get_mode_i_ref(&self) -> Option<RefTypeId> {
+        self.mode_i_ref
     }
 
-    pub fn set_mode_i_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.mode_i_ref = Some(value.into());
+    pub fn set_mode_i_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.mode_i_ref = Some(value);
         self
     }
 

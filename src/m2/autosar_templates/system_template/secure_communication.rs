@@ -33,6 +33,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::system_template::fibex::fibex_core::core_communication::CommunicationDirectionType;
@@ -656,7 +657,7 @@ pub struct CryptoServiceCertificate {
     algorithm_family: Option<CryptoCertificateAlgorithmFamilyEnum>,
     format: Option<CryptoCertificateFormatEnum>,
     maximum_length: Option<String>,
-    next_higher_certificate_ref: Option<String>,
+    next_higher_certificate_ref: Option<RefTypeId>,
     server_name_identification: Option<String>,
 }
 
@@ -703,12 +704,12 @@ impl CryptoServiceCertificate {
         self
     }
 
-    pub fn get_next_higher_certificate_ref(&self) -> Option<&str> {
-        self.next_higher_certificate_ref.as_deref()
+    pub fn get_next_higher_certificate_ref(&self) -> Option<RefTypeId> {
+        self.next_higher_certificate_ref
     }
 
-    pub fn set_next_higher_certificate_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.next_higher_certificate_ref = Some(value.into());
+    pub fn set_next_higher_certificate_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.next_higher_certificate_ref = Some(value);
         self
     }
 
@@ -2089,7 +2090,7 @@ impl CryptoSignatureScheme {
 #[derive(Debug, Default)]
 pub struct IPSecConfig {
     base: ARObject,
-    ip_sec_config_props_ref: Option<String>,
+    ip_sec_config_props_ref: Option<RefTypeId>,
     ip_sec_rules: Vec<IPSecRuleId>,
 }
 
@@ -2106,12 +2107,12 @@ impl IPSecConfig {
         &mut self.base
     }
 
-    pub fn get_ip_sec_config_props_ref(&self) -> Option<&str> {
-        self.ip_sec_config_props_ref.as_deref()
+    pub fn get_ip_sec_config_props_ref(&self) -> Option<RefTypeId> {
+        self.ip_sec_config_props_ref
     }
 
-    pub fn set_ip_sec_config_props_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ip_sec_config_props_ref = Some(value.into());
+    pub fn set_ip_sec_config_props_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ip_sec_config_props_ref = Some(value);
         self
     }
 
@@ -2505,17 +2506,17 @@ pub struct IPSecRule {
     direction: Option<CommunicationDirectionType>,
     header_type: Option<IPsecHeaderTypeEnum>,
     ip_protocol: Option<IPsecIpProtocolEnum>,
-    local_certificate_refs: Vec<String>,
+    local_certificate_refs: Vec<RefTypeId>,
     local_id: Option<String>,
     local_port_range_end: Option<String>,
     local_port_range_start: Option<String>,
     mode: Option<IPsecModeEnum>,
     policy: Option<IPsecPolicyEnum>,
-    pre_shared_key_ref: Option<String>,
+    pre_shared_key_ref: Option<RefTypeId>,
     priority: Option<String>,
-    remote_certificate_refs: Vec<String>,
+    remote_certificate_refs: Vec<RefTypeId>,
     remote_id: Option<String>,
-    remote_ip_address_refs: Vec<String>,
+    remote_ip_address_refs: Vec<RefTypeId>,
     remote_port_range_end: Option<String>,
     remote_port_range_start: Option<String>,
 }
@@ -2560,11 +2561,11 @@ impl IPSecRule {
         self
     }
 
-    pub fn get_local_certificate_refs(&self) -> &[String] {
+    pub fn get_local_certificate_refs(&self) -> &[RefTypeId] {
         &self.local_certificate_refs
     }
 
-    pub fn push_local_certificate_ref(&mut self, value: String) {
+    pub fn push_local_certificate_ref(&mut self, value: RefTypeId) {
         self.local_certificate_refs.push(value);
     }
 
@@ -2613,12 +2614,12 @@ impl IPSecRule {
         self
     }
 
-    pub fn get_pre_shared_key_ref(&self) -> Option<&str> {
-        self.pre_shared_key_ref.as_deref()
+    pub fn get_pre_shared_key_ref(&self) -> Option<RefTypeId> {
+        self.pre_shared_key_ref
     }
 
-    pub fn set_pre_shared_key_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.pre_shared_key_ref = Some(value.into());
+    pub fn set_pre_shared_key_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.pre_shared_key_ref = Some(value);
         self
     }
 
@@ -2631,11 +2632,11 @@ impl IPSecRule {
         self
     }
 
-    pub fn get_remote_certificate_refs(&self) -> &[String] {
+    pub fn get_remote_certificate_refs(&self) -> &[RefTypeId] {
         &self.remote_certificate_refs
     }
 
-    pub fn push_remote_certificate_ref(&mut self, value: String) {
+    pub fn push_remote_certificate_ref(&mut self, value: RefTypeId) {
         self.remote_certificate_refs.push(value);
     }
 
@@ -2648,11 +2649,11 @@ impl IPSecRule {
         self
     }
 
-    pub fn get_remote_ip_address_refs(&self) -> &[String] {
+    pub fn get_remote_ip_address_refs(&self) -> &[RefTypeId] {
         &self.remote_ip_address_refs
     }
 
-    pub fn push_remote_ip_address_ref(&mut self, value: String) {
+    pub fn push_remote_ip_address_ref(&mut self, value: RefTypeId) {
         self.remote_ip_address_refs.push(value);
     }
 
@@ -3213,9 +3214,9 @@ impl MacSecGlobalKayProps {
 #[derive(Debug, Default)]
 pub struct MacSecKayParticipant {
     base: Identifiable,
-    ckn_ref: Option<String>,
+    ckn_ref: Option<RefTypeId>,
     crypto_algo_config: Option<MacSecCryptoAlgoConfigId>,
-    sak_ref: Option<String>,
+    sak_ref: Option<RefTypeId>,
 }
 
 impl MacSecKayParticipant {
@@ -3231,12 +3232,12 @@ impl MacSecKayParticipant {
         &mut self.base
     }
 
-    pub fn get_ckn_ref(&self) -> Option<&str> {
-        self.ckn_ref.as_deref()
+    pub fn get_ckn_ref(&self) -> Option<RefTypeId> {
+        self.ckn_ref
     }
 
-    pub fn set_ckn_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ckn_ref = Some(value.into());
+    pub fn set_ckn_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ckn_ref = Some(value);
         self
     }
 
@@ -3249,12 +3250,12 @@ impl MacSecKayParticipant {
         self
     }
 
-    pub fn get_sak_ref(&self) -> Option<&str> {
-        self.sak_ref.as_deref()
+    pub fn get_sak_ref(&self) -> Option<RefTypeId> {
+        self.sak_ref
     }
 
-    pub fn set_sak_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.sak_ref = Some(value.into());
+    pub fn set_sak_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sak_ref = Some(value);
         self
     }
 
@@ -3395,9 +3396,9 @@ impl MacSecKayParticipant {
 pub struct MacSecLocalKayProps {
     base: ARObject,
     destination_mac_address: Option<String>,
-    global_kay_props_ref: Option<String>,
+    global_kay_props_ref: Option<RefTypeId>,
     key_server_priority: Option<String>,
-    mka_participant_refs: Vec<String>,
+    mka_participant_refs: Vec<RefTypeId>,
     role: Option<MacSecRoleEnum>,
     source_mac_address: Option<String>,
 }
@@ -3424,12 +3425,12 @@ impl MacSecLocalKayProps {
         self
     }
 
-    pub fn get_global_kay_props_ref(&self) -> Option<&str> {
-        self.global_kay_props_ref.as_deref()
+    pub fn get_global_kay_props_ref(&self) -> Option<RefTypeId> {
+        self.global_kay_props_ref
     }
 
-    pub fn set_global_kay_props_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.global_kay_props_ref = Some(value.into());
+    pub fn set_global_kay_props_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.global_kay_props_ref = Some(value);
         self
     }
 
@@ -3442,11 +3443,11 @@ impl MacSecLocalKayProps {
         self
     }
 
-    pub fn get_mka_participant_refs(&self) -> &[String] {
+    pub fn get_mka_participant_refs(&self) -> &[RefTypeId] {
         &self.mka_participant_refs
     }
 
-    pub fn push_mka_participant_ref(&mut self, value: String) {
+    pub fn push_mka_participant_ref(&mut self, value: RefTypeId) {
         self.mka_participant_refs.push(value);
     }
 
@@ -3818,9 +3819,9 @@ impl MacSecProps {
 #[derive(Debug, Default)]
 pub struct SecOcCryptoServiceMapping {
     base: CryptoServiceMapping,
-    authentication_ref: Option<String>,
-    crypto_service_key_ref: Option<String>,
-    crypto_service_queue_ref: Option<String>,
+    authentication_ref: Option<RefTypeId>,
+    crypto_service_key_ref: Option<RefTypeId>,
+    crypto_service_queue_ref: Option<RefTypeId>,
 }
 
 impl SecOcCryptoServiceMapping {
@@ -3836,30 +3837,30 @@ impl SecOcCryptoServiceMapping {
         &mut self.base
     }
 
-    pub fn get_authentication_ref(&self) -> Option<&str> {
-        self.authentication_ref.as_deref()
+    pub fn get_authentication_ref(&self) -> Option<RefTypeId> {
+        self.authentication_ref
     }
 
-    pub fn set_authentication_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.authentication_ref = Some(value.into());
+    pub fn set_authentication_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.authentication_ref = Some(value);
         self
     }
 
-    pub fn get_crypto_service_key_ref(&self) -> Option<&str> {
-        self.crypto_service_key_ref.as_deref()
+    pub fn get_crypto_service_key_ref(&self) -> Option<RefTypeId> {
+        self.crypto_service_key_ref
     }
 
-    pub fn set_crypto_service_key_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.crypto_service_key_ref = Some(value.into());
+    pub fn set_crypto_service_key_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.crypto_service_key_ref = Some(value);
         self
     }
 
-    pub fn get_crypto_service_queue_ref(&self) -> Option<&str> {
-        self.crypto_service_queue_ref.as_deref()
+    pub fn get_crypto_service_queue_ref(&self) -> Option<RefTypeId> {
+        self.crypto_service_queue_ref
     }
 
-    pub fn set_crypto_service_queue_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.crypto_service_queue_ref = Some(value.into());
+    pub fn set_crypto_service_queue_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.crypto_service_queue_ref = Some(value);
         self
     }
 
@@ -4010,19 +4011,19 @@ impl SecOcCryptoServiceMapping {
 #[derive(Debug, Default)]
 pub struct TlsCryptoCipherSuite {
     base: Identifiable,
-    authentication_ref: Option<String>,
-    certificate_ref: Option<String>,
+    authentication_ref: Option<RefTypeId>,
+    certificate_ref: Option<RefTypeId>,
     cipher_suite_id: Option<String>,
     cipher_suite_short_label: Option<String>,
-    elliptic_curve_refs: Vec<String>,
-    encryption_ref: Option<String>,
-    key_exchange_refs: Vec<String>,
-    key_exchange_authentication_refs: Vec<String>,
+    elliptic_curve_refs: Vec<RefTypeId>,
+    encryption_ref: Option<RefTypeId>,
+    key_exchange_refs: Vec<RefTypeId>,
+    key_exchange_authentication_refs: Vec<RefTypeId>,
     priority: Option<String>,
     props: Option<TlsCryptoCipherSuitePropsId>,
     psk_identity: Option<TlsPskIdentityId>,
-    remote_certificate_ref: Option<String>,
-    signature_scheme_refs: Vec<String>,
+    remote_certificate_ref: Option<RefTypeId>,
+    signature_scheme_refs: Vec<RefTypeId>,
     version: Option<TlsVersionEnum>,
 }
 
@@ -4039,21 +4040,21 @@ impl TlsCryptoCipherSuite {
         &mut self.base
     }
 
-    pub fn get_authentication_ref(&self) -> Option<&str> {
-        self.authentication_ref.as_deref()
+    pub fn get_authentication_ref(&self) -> Option<RefTypeId> {
+        self.authentication_ref
     }
 
-    pub fn set_authentication_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.authentication_ref = Some(value.into());
+    pub fn set_authentication_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.authentication_ref = Some(value);
         self
     }
 
-    pub fn get_certificate_ref(&self) -> Option<&str> {
-        self.certificate_ref.as_deref()
+    pub fn get_certificate_ref(&self) -> Option<RefTypeId> {
+        self.certificate_ref
     }
 
-    pub fn set_certificate_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.certificate_ref = Some(value.into());
+    pub fn set_certificate_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.certificate_ref = Some(value);
         self
     }
 
@@ -4075,36 +4076,36 @@ impl TlsCryptoCipherSuite {
         self
     }
 
-    pub fn get_elliptic_curve_refs(&self) -> &[String] {
+    pub fn get_elliptic_curve_refs(&self) -> &[RefTypeId] {
         &self.elliptic_curve_refs
     }
 
-    pub fn push_elliptic_curve_ref(&mut self, value: String) {
+    pub fn push_elliptic_curve_ref(&mut self, value: RefTypeId) {
         self.elliptic_curve_refs.push(value);
     }
 
-    pub fn get_encryption_ref(&self) -> Option<&str> {
-        self.encryption_ref.as_deref()
+    pub fn get_encryption_ref(&self) -> Option<RefTypeId> {
+        self.encryption_ref
     }
 
-    pub fn set_encryption_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.encryption_ref = Some(value.into());
+    pub fn set_encryption_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.encryption_ref = Some(value);
         self
     }
 
-    pub fn get_key_exchange_refs(&self) -> &[String] {
+    pub fn get_key_exchange_refs(&self) -> &[RefTypeId] {
         &self.key_exchange_refs
     }
 
-    pub fn push_key_exchange_ref(&mut self, value: String) {
+    pub fn push_key_exchange_ref(&mut self, value: RefTypeId) {
         self.key_exchange_refs.push(value);
     }
 
-    pub fn get_key_exchange_authentication_refs(&self) -> &[String] {
+    pub fn get_key_exchange_authentication_refs(&self) -> &[RefTypeId] {
         &self.key_exchange_authentication_refs
     }
 
-    pub fn push_key_exchange_authentication_ref(&mut self, value: String) {
+    pub fn push_key_exchange_authentication_ref(&mut self, value: RefTypeId) {
         self.key_exchange_authentication_refs.push(value);
     }
 
@@ -4135,20 +4136,20 @@ impl TlsCryptoCipherSuite {
         self
     }
 
-    pub fn get_remote_certificate_ref(&self) -> Option<&str> {
-        self.remote_certificate_ref.as_deref()
+    pub fn get_remote_certificate_ref(&self) -> Option<RefTypeId> {
+        self.remote_certificate_ref
     }
 
-    pub fn set_remote_certificate_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.remote_certificate_ref = Some(value.into());
+    pub fn set_remote_certificate_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.remote_certificate_ref = Some(value);
         self
     }
 
-    pub fn get_signature_scheme_refs(&self) -> &[String] {
+    pub fn get_signature_scheme_refs(&self) -> &[RefTypeId] {
         &self.signature_scheme_refs
     }
 
-    pub fn push_signature_scheme_ref(&mut self, value: String) {
+    pub fn push_signature_scheme_ref(&mut self, value: RefTypeId) {
         self.signature_scheme_refs.push(value);
     }
 
@@ -4462,7 +4463,7 @@ impl TlsCryptoCipherSuiteProps {
 #[derive(Debug, Default)]
 pub struct TlsCryptoServiceMapping {
     base: CryptoServiceMapping,
-    key_exchange_refs: Vec<String>,
+    key_exchange_refs: Vec<RefTypeId>,
     tls_cipher_suites: Vec<TlsCryptoCipherSuiteId>,
     use_client_authentication_request: Option<String>,
     use_security_extension_record_size_limit: Option<String>,
@@ -4481,11 +4482,11 @@ impl TlsCryptoServiceMapping {
         &mut self.base
     }
 
-    pub fn get_key_exchange_refs(&self) -> &[String] {
+    pub fn get_key_exchange_refs(&self) -> &[RefTypeId] {
         &self.key_exchange_refs
     }
 
-    pub fn push_key_exchange_ref(&mut self, value: String) {
+    pub fn push_key_exchange_ref(&mut self, value: RefTypeId) {
         self.key_exchange_refs.push(value);
     }
 
@@ -4665,7 +4666,7 @@ impl TlsCryptoServiceMapping {
 #[derive(Debug, Default)]
 pub struct TlsPskIdentity {
     base: ARObject,
-    pre_shared_key_ref: Option<String>,
+    pre_shared_key_ref: Option<RefTypeId>,
     psk_identity: Option<String>,
     psk_identity_hint: Option<String>,
 }
@@ -4683,12 +4684,12 @@ impl TlsPskIdentity {
         &mut self.base
     }
 
-    pub fn get_pre_shared_key_ref(&self) -> Option<&str> {
-        self.pre_shared_key_ref.as_deref()
+    pub fn get_pre_shared_key_ref(&self) -> Option<RefTypeId> {
+        self.pre_shared_key_ref
     }
 
-    pub fn set_pre_shared_key_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.pre_shared_key_ref = Some(value.into());
+    pub fn set_pre_shared_key_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.pre_shared_key_ref = Some(value);
         self
     }
 
@@ -4955,9 +4956,18 @@ impl Document {
             return Err(format!("{path}: LOCAL_CERTIFICATE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.LOCAL_CERTIFICATE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.LOCAL_CERTIFICATE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.LOCAL_CERTIFICATE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.LOCAL_CERTIFICATE_REFS[{index}]"),
+            )?;
         }
         if a.get_local_id() != b.get_local_id() {
             return Err(format!("{path}: LOCAL_ID mismatch"));
@@ -4986,9 +4996,18 @@ impl Document {
             return Err(format!("{path}: REMOTE_CERTIFICATE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.REMOTE_CERTIFICATE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.REMOTE_CERTIFICATE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.REMOTE_CERTIFICATE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.REMOTE_CERTIFICATE_REFS[{index}]"),
+            )?;
         }
         if a.get_remote_id() != b.get_remote_id() {
             return Err(format!("{path}: REMOTE_ID mismatch"));
@@ -4999,9 +5018,18 @@ impl Document {
             return Err(format!("{path}: REMOTE_IP_ADDRESS_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.REMOTE_IP_ADDRESS_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.REMOTE_IP_ADDRESS_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.REMOTE_IP_ADDRESS_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.REMOTE_IP_ADDRESS_REFS[{index}]"),
+            )?;
         }
         if a.get_remote_port_range_end() != b.get_remote_port_range_end() {
             return Err(format!("{path}: REMOTE_PORT_RANGE_END mismatch"));
@@ -5124,7 +5152,7 @@ impl Document {
 
     pub(crate) fn compare_mac_sec_local_kay_props(
         &self,
-        _other: &Document,
+        other: &Document,
         a: &MacSecLocalKayProps,
         b: &MacSecLocalKayProps,
         path: &str,
@@ -5145,9 +5173,18 @@ impl Document {
             return Err(format!("{path}: MKA_PARTICIPANT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.MKA_PARTICIPANT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.MKA_PARTICIPANT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.MKA_PARTICIPANT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.MKA_PARTICIPANT_REFS[{index}]"),
+            )?;
         }
         if a.get_role() != b.get_role() {
             return Err(format!("{path}: ROLE mismatch"));
@@ -5241,9 +5278,13 @@ impl Document {
             return Err(format!("{path}: ELLIPTIC_CURVE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.ELLIPTIC_CURVE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.ELLIPTIC_CURVE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.ELLIPTIC_CURVE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.ELLIPTIC_CURVE_REFS[{index}]"))?;
         }
         if a.get_encryption_ref() != b.get_encryption_ref() {
             return Err(format!("{path}: ENCRYPTION_REF mismatch"));
@@ -5254,9 +5295,13 @@ impl Document {
             return Err(format!("{path}: KEY_EXCHANGE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.KEY_EXCHANGE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.KEY_EXCHANGE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.KEY_EXCHANGE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.KEY_EXCHANGE_REFS[{index}]"))?;
         }
         let list_a = a.get_key_exchange_authentication_refs();
         let list_b = b.get_key_exchange_authentication_refs();
@@ -5266,11 +5311,22 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.KEY_EXCHANGE_AUTHENTICATION_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!(
+                    "{path}.KEY_EXCHANGE_AUTHENTICATION_REFS[{index}]: id not found in own arena"
+                )
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!(
+                    "{path}.KEY_EXCHANGE_AUTHENTICATION_REFS[{index}]: id not found in other arena"
+                )
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.KEY_EXCHANGE_AUTHENTICATION_REFS[{index}]"),
+            )?;
         }
         if a.get_priority() != b.get_priority() {
             return Err(format!("{path}: PRIORITY mismatch"));
@@ -5290,9 +5346,18 @@ impl Document {
             return Err(format!("{path}: SIGNATURE_SCHEME_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SIGNATURE_SCHEME_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SIGNATURE_SCHEME_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SIGNATURE_SCHEME_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.SIGNATURE_SCHEME_REFS[{index}]"),
+            )?;
         }
         if a.get_version() != b.get_version() {
             return Err(format!("{path}: VERSION mismatch"));
@@ -5332,9 +5397,13 @@ impl Document {
             return Err(format!("{path}: KEY_EXCHANGE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.KEY_EXCHANGE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.KEY_EXCHANGE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.KEY_EXCHANGE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.KEY_EXCHANGE_REFS[{index}]"))?;
         }
         let list_a = a.get_tls_cipher_suites();
         let list_b = b.get_tls_cipher_suites();

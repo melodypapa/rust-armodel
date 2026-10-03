@@ -18,6 +18,7 @@ use crate::m2::autosar_templates::common_structure::measurement_calibration_supp
 use crate::m2::autosar_templates::common_structure::resource_consumption::ResourceConsumptionId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -31,11 +32,11 @@ use crate::Document;
 pub struct BswImplementation {
     base: Implementation,
     ar_release_version: Option<String>,
-    behavior_ref: Option<String>,
-    preconfigured_configuration_refs: Vec<String>,
-    recommended_configuration_refs: Vec<String>,
+    behavior_ref: Option<RefTypeId>,
+    preconfigured_configuration_refs: Vec<RefTypeId>,
+    recommended_configuration_refs: Vec<RefTypeId>,
     vendor_api_infix: Option<String>,
-    vendor_specific_module_def_refs: Vec<String>,
+    vendor_specific_module_def_refs: Vec<RefTypeId>,
 }
 
 impl BswImplementation {
@@ -60,28 +61,28 @@ impl BswImplementation {
         self
     }
 
-    pub fn get_behavior_ref(&self) -> Option<&str> {
-        self.behavior_ref.as_deref()
+    pub fn get_behavior_ref(&self) -> Option<RefTypeId> {
+        self.behavior_ref
     }
 
-    pub fn set_behavior_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.behavior_ref = Some(value.into());
+    pub fn set_behavior_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.behavior_ref = Some(value);
         self
     }
 
-    pub fn get_preconfigured_configuration_refs(&self) -> &[String] {
+    pub fn get_preconfigured_configuration_refs(&self) -> &[RefTypeId] {
         &self.preconfigured_configuration_refs
     }
 
-    pub fn push_preconfigured_configuration_ref(&mut self, value: String) {
+    pub fn push_preconfigured_configuration_ref(&mut self, value: RefTypeId) {
         self.preconfigured_configuration_refs.push(value);
     }
 
-    pub fn get_recommended_configuration_refs(&self) -> &[String] {
+    pub fn get_recommended_configuration_refs(&self) -> &[RefTypeId] {
         &self.recommended_configuration_refs
     }
 
-    pub fn push_recommended_configuration_ref(&mut self, value: String) {
+    pub fn push_recommended_configuration_ref(&mut self, value: RefTypeId) {
         self.recommended_configuration_refs.push(value);
     }
 
@@ -94,19 +95,19 @@ impl BswImplementation {
         self
     }
 
-    pub fn get_vendor_specific_module_def_refs(&self) -> &[String] {
+    pub fn get_vendor_specific_module_def_refs(&self) -> &[RefTypeId] {
         &self.vendor_specific_module_def_refs
     }
 
-    pub fn push_vendor_specific_module_def_ref(&mut self, value: String) {
+    pub fn push_vendor_specific_module_def_ref(&mut self, value: RefTypeId) {
         self.vendor_specific_module_def_refs.push(value);
     }
 
-    pub fn get_build_action_manifest_ref(&self) -> Option<&str> {
+    pub fn get_build_action_manifest_ref(&self) -> Option<RefTypeId> {
         self.base().get_build_action_manifest_ref()
     }
 
-    pub fn set_build_action_manifest_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_build_action_manifest_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_build_action_manifest_ref(value);
         self
     }
@@ -135,11 +136,11 @@ impl BswImplementation {
         self.base_mut().push_generated_artifact(value)
     }
 
-    pub fn get_hw_element_refs(&self) -> &[String] {
+    pub fn get_hw_element_refs(&self) -> &[RefTypeId] {
         self.base().get_hw_element_refs()
     }
 
-    pub fn push_hw_element_ref(&mut self, value: String) {
+    pub fn push_hw_element_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_hw_element_ref(value)
     }
 
@@ -194,11 +195,11 @@ impl BswImplementation {
         self
     }
 
-    pub fn get_swc_bsw_mapping_ref(&self) -> Option<&str> {
+    pub fn get_swc_bsw_mapping_ref(&self) -> Option<RefTypeId> {
         self.base().get_swc_bsw_mapping_ref()
     }
 
-    pub fn set_swc_bsw_mapping_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_swc_bsw_mapping_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_swc_bsw_mapping_ref(value);
         self
     }
@@ -499,11 +500,22 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.PRECONFIGURED_CONFIGURATION_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!(
+                    "{path}.PRECONFIGURED_CONFIGURATION_REFS[{index}]: id not found in own arena"
+                )
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!(
+                    "{path}.PRECONFIGURED_CONFIGURATION_REFS[{index}]: id not found in other arena"
+                )
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.PRECONFIGURED_CONFIGURATION_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_recommended_configuration_refs();
         let list_b = b.get_recommended_configuration_refs();
@@ -513,11 +525,20 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.RECOMMENDED_CONFIGURATION_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.RECOMMENDED_CONFIGURATION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!(
+                    "{path}.RECOMMENDED_CONFIGURATION_REFS[{index}]: id not found in other arena"
+                )
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.RECOMMENDED_CONFIGURATION_REFS[{index}]"),
+            )?;
         }
         if a.get_vendor_api_infix() != b.get_vendor_api_infix() {
             return Err(format!("{path}: VENDOR_API_INFIX mismatch"));
@@ -530,11 +551,22 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.VENDOR_SPECIFIC_MODULE_DEF_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!(
+                    "{path}.VENDOR_SPECIFIC_MODULE_DEF_REFS[{index}]: id not found in own arena"
+                )
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!(
+                    "{path}.VENDOR_SPECIFIC_MODULE_DEF_REFS[{index}]: id not found in other arena"
+                )
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.VENDOR_SPECIFIC_MODULE_DEF_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }

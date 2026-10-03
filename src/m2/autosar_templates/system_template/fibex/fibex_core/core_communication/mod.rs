@@ -53,6 +53,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::i
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::ByteOrderEnum;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::sw_component_template::communication::HandleInvalidEnum;
@@ -304,7 +305,7 @@ impl TryFrom<&str> for TriggerMode {
 pub struct ContainedIPduProps {
     base: ARObject,
     collection_semantics: Option<ContainedIPduCollectionSemanticsEnum>,
-    contained_pdu_triggering_ref: Option<String>,
+    contained_pdu_triggering_ref: Option<RefTypeId>,
     header_id_long_header: Option<String>,
     header_id_short_header: Option<String>,
     offset: Option<String>,
@@ -339,12 +340,12 @@ impl ContainedIPduProps {
         self
     }
 
-    pub fn get_contained_pdu_triggering_ref(&self) -> Option<&str> {
-        self.contained_pdu_triggering_ref.as_deref()
+    pub fn get_contained_pdu_triggering_ref(&self) -> Option<RefTypeId> {
+        self.contained_pdu_triggering_ref
     }
 
-    pub fn set_contained_pdu_triggering_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.contained_pdu_triggering_ref = Some(value.into());
+    pub fn set_contained_pdu_triggering_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.contained_pdu_triggering_ref = Some(value);
         self
     }
 
@@ -474,6 +475,7 @@ impl ContainerIPdu {
 #[derive(Debug, Default)]
 pub struct DcmIPdu {
     base: IPdu,
+    diag_pdu_type: Option<String>,
 }
 
 impl DcmIPdu {
@@ -489,12 +491,39 @@ impl DcmIPdu {
         &mut self.base
     }
 
+    pub fn get_diag_pdu_type(&self) -> Option<&str> {
+        self.diag_pdu_type.as_deref()
+    }
+
+    pub fn set_diag_pdu_type(&mut self, value: impl Into<String>) -> &mut Self {
+        self.diag_pdu_type = Some(value.into());
+        self
+    }
+
     pub fn get_contained_i_pdu_props(&self) -> Option<ContainedIPduPropsId> {
         self.base().get_contained_i_pdu_props()
     }
 
     pub fn set_contained_i_pdu_props(&mut self, value: ContainedIPduPropsId) -> &mut Self {
         self.base_mut().set_contained_i_pdu_props(value);
+        self
+    }
+
+    pub fn get_has_dynamic_length(&self) -> Option<&str> {
+        self.base().base().get_has_dynamic_length()
+    }
+
+    pub fn set_has_dynamic_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().base_mut().set_has_dynamic_length(value);
+        self
+    }
+
+    pub fn get_length(&self) -> Option<&str> {
+        self.base().base().get_length()
+    }
+
+    pub fn set_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().base_mut().set_length(value);
         self
     }
 
@@ -876,7 +905,7 @@ impl DynamicPart {
 pub struct DynamicPartAlternative {
     base: ARObject,
     initial_dynamic_part: Option<String>,
-    i_pdu_ref: Option<String>,
+    i_pdu_ref: Option<RefTypeId>,
     selector_field_code: Option<String>,
 }
 
@@ -902,12 +931,12 @@ impl DynamicPartAlternative {
         self
     }
 
-    pub fn get_i_pdu_ref(&self) -> Option<&str> {
-        self.i_pdu_ref.as_deref()
+    pub fn get_i_pdu_ref(&self) -> Option<RefTypeId> {
+        self.i_pdu_ref
     }
 
-    pub fn set_i_pdu_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.i_pdu_ref = Some(value.into());
+    pub fn set_i_pdu_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.i_pdu_ref = Some(value);
         self
     }
 
@@ -1372,9 +1401,9 @@ impl FramePort {
 pub struct FrameTriggering {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    frame_ref: Option<String>,
-    frame_port_refs: Vec<String>,
-    pdu_triggering_refs: Vec<String>,
+    frame_ref: Option<RefTypeId>,
+    frame_port_refs: Vec<RefTypeId>,
+    pdu_triggering_refs: Vec<RefTypeId>,
 }
 
 impl FrameTriggering {
@@ -1398,28 +1427,28 @@ impl FrameTriggering {
         &mut self.variation_point_capable
     }
 
-    pub fn get_frame_ref(&self) -> Option<&str> {
-        self.frame_ref.as_deref()
+    pub fn get_frame_ref(&self) -> Option<RefTypeId> {
+        self.frame_ref
     }
 
-    pub fn set_frame_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.frame_ref = Some(value.into());
+    pub fn set_frame_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.frame_ref = Some(value);
         self
     }
 
-    pub fn get_frame_port_refs(&self) -> &[String] {
+    pub fn get_frame_port_refs(&self) -> &[RefTypeId] {
         &self.frame_port_refs
     }
 
-    pub fn push_frame_port_ref(&mut self, value: String) {
+    pub fn push_frame_port_ref(&mut self, value: RefTypeId) {
         self.frame_port_refs.push(value);
     }
 
-    pub fn get_pdu_triggering_refs(&self) -> &[String] {
+    pub fn get_pdu_triggering_refs(&self) -> &[RefTypeId] {
         &self.pdu_triggering_refs
     }
 
-    pub fn push_pdu_triggering_ref(&mut self, value: String) {
+    pub fn push_pdu_triggering_ref(&mut self, value: RefTypeId) {
         self.pdu_triggering_refs.push(value);
     }
 
@@ -1591,6 +1620,24 @@ impl GeneralPurposeIPdu {
 
     pub fn set_contained_i_pdu_props(&mut self, value: ContainedIPduPropsId) -> &mut Self {
         self.base_mut().set_contained_i_pdu_props(value);
+        self
+    }
+
+    pub fn get_has_dynamic_length(&self) -> Option<&str> {
+        self.base().base().get_has_dynamic_length()
+    }
+
+    pub fn set_has_dynamic_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().base_mut().set_has_dynamic_length(value);
+        self
+    }
+
+    pub fn get_length(&self) -> Option<&str> {
+        self.base().base().get_length()
+    }
+
+    pub fn set_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().base_mut().set_length(value);
         self
     }
 
@@ -1911,6 +1958,24 @@ impl GeneralPurposePdu {
         &mut self.base
     }
 
+    pub fn get_has_dynamic_length(&self) -> Option<&str> {
+        self.base().get_has_dynamic_length()
+    }
+
+    pub fn set_has_dynamic_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().set_has_dynamic_length(value);
+        self
+    }
+
+    pub fn get_length(&self) -> Option<&str> {
+        self.base().get_length()
+    }
+
+    pub fn set_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().set_length(value);
+        self
+    }
+
     pub fn get_admin_data(&self) -> Option<AdminDataId> {
         self.base().base().base().base().base().get_admin_data()
     }
@@ -2184,6 +2249,24 @@ impl IPdu {
 
     pub fn set_contained_i_pdu_props(&mut self, value: ContainedIPduPropsId) -> &mut Self {
         self.contained_i_pdu_props = Some(value);
+        self
+    }
+
+    pub fn get_has_dynamic_length(&self) -> Option<&str> {
+        self.base().get_has_dynamic_length()
+    }
+
+    pub fn set_has_dynamic_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().set_has_dynamic_length(value);
+        self
+    }
+
+    pub fn get_length(&self) -> Option<&str> {
+        self.base().get_length()
+    }
+
+    pub fn set_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().set_length(value);
         self
     }
 
@@ -2772,14 +2855,14 @@ impl IPduTiming {
 #[derive(Debug, Default)]
 pub struct ISignal {
     base: FibexElement,
-    data_transformation_ref: Option<String>,
+    data_transformation_ref: Option<RefTypeId>,
     data_type_policy: Option<DataTypePolicyEnum>,
     init_value: Option<ElementRef>,
     i_signal_props: Option<ISignalPropsId>,
     i_signal_type: Option<ISignalTypeEnum>,
     length: Option<String>,
     network_representation_props: Option<SwDataDefPropsId>,
-    system_signal_ref: Option<String>,
+    system_signal_ref: Option<RefTypeId>,
     timeout_substitution_value: Option<ElementRef>,
     transformation_i_signal_props: Vec<ElementRef>,
 }
@@ -2797,12 +2880,12 @@ impl ISignal {
         &mut self.base
     }
 
-    pub fn get_data_transformation_ref(&self) -> Option<&str> {
-        self.data_transformation_ref.as_deref()
+    pub fn get_data_transformation_ref(&self) -> Option<RefTypeId> {
+        self.data_transformation_ref
     }
 
-    pub fn set_data_transformation_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.data_transformation_ref = Some(value.into());
+    pub fn set_data_transformation_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.data_transformation_ref = Some(value);
         self
     }
 
@@ -2860,12 +2943,12 @@ impl ISignal {
         self
     }
 
-    pub fn get_system_signal_ref(&self) -> Option<&str> {
-        self.system_signal_ref.as_deref()
+    pub fn get_system_signal_ref(&self) -> Option<RefTypeId> {
+        self.system_signal_ref
     }
 
-    pub fn set_system_signal_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.system_signal_ref = Some(value.into());
+    pub fn set_system_signal_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.system_signal_ref = Some(value);
         self
     }
 
@@ -3106,9 +3189,9 @@ impl ISignal {
 #[derive(Debug, Default)]
 pub struct ISignalGroup {
     base: FibexElement,
-    com_based_signal_group_transformation_ref: Option<String>,
-    i_signal_refs: Vec<String>,
-    system_signal_group_ref: Option<String>,
+    com_based_signal_group_transformation_ref: Option<RefTypeId>,
+    i_signal_refs: Vec<RefTypeId>,
+    system_signal_group_ref: Option<RefTypeId>,
     transformation_i_signal_props: Vec<ElementRef>,
 }
 
@@ -3125,32 +3208,29 @@ impl ISignalGroup {
         &mut self.base
     }
 
-    pub fn get_com_based_signal_group_transformation_ref(&self) -> Option<&str> {
-        self.com_based_signal_group_transformation_ref.as_deref()
+    pub fn get_com_based_signal_group_transformation_ref(&self) -> Option<RefTypeId> {
+        self.com_based_signal_group_transformation_ref
     }
 
-    pub fn set_com_based_signal_group_transformation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
-        self.com_based_signal_group_transformation_ref = Some(value.into());
+    pub fn set_com_based_signal_group_transformation_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.com_based_signal_group_transformation_ref = Some(value);
         self
     }
 
-    pub fn get_i_signal_refs(&self) -> &[String] {
+    pub fn get_i_signal_refs(&self) -> &[RefTypeId] {
         &self.i_signal_refs
     }
 
-    pub fn push_i_signal_ref(&mut self, value: String) {
+    pub fn push_i_signal_ref(&mut self, value: RefTypeId) {
         self.i_signal_refs.push(value);
     }
 
-    pub fn get_system_signal_group_ref(&self) -> Option<&str> {
-        self.system_signal_group_ref.as_deref()
+    pub fn get_system_signal_group_ref(&self) -> Option<RefTypeId> {
+        self.system_signal_group_ref
     }
 
-    pub fn set_system_signal_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.system_signal_group_ref = Some(value.into());
+    pub fn set_system_signal_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.system_signal_group_ref = Some(value);
         self
     }
 
@@ -3432,6 +3512,24 @@ impl ISignalIPdu {
 
     pub fn set_contained_i_pdu_props(&mut self, value: ContainedIPduPropsId) -> &mut Self {
         self.base_mut().set_contained_i_pdu_props(value);
+        self
+    }
+
+    pub fn get_has_dynamic_length(&self) -> Option<&str> {
+        self.base().base().get_has_dynamic_length()
+    }
+
+    pub fn set_has_dynamic_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().base_mut().set_has_dynamic_length(value);
+        self
+    }
+
+    pub fn get_length(&self) -> Option<&str> {
+        self.base().base().get_length()
+    }
+
+    pub fn set_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().base_mut().set_length(value);
         self
     }
 
@@ -3738,9 +3836,9 @@ pub struct ISignalIPduGroup {
     base: FibexElement,
     communication_direction: Option<CommunicationDirectionType>,
     communication_mode: Option<String>,
-    contained_i_signal_i_pdu_group_refs: Vec<String>,
-    i_signal_i_pdu_refs: Vec<String>,
-    nm_pdu_refs: Vec<String>,
+    contained_i_signal_i_pdu_group_refs: Vec<RefTypeId>,
+    i_signal_i_pdu_refs: Vec<RefTypeId>,
+    nm_pdu_refs: Vec<RefTypeId>,
 }
 
 impl ISignalIPduGroup {
@@ -3774,27 +3872,27 @@ impl ISignalIPduGroup {
         self
     }
 
-    pub fn get_contained_i_signal_i_pdu_group_refs(&self) -> &[String] {
+    pub fn get_contained_i_signal_i_pdu_group_refs(&self) -> &[RefTypeId] {
         &self.contained_i_signal_i_pdu_group_refs
     }
 
-    pub fn push_contained_i_signal_i_pdu_group_ref(&mut self, value: String) {
+    pub fn push_contained_i_signal_i_pdu_group_ref(&mut self, value: RefTypeId) {
         self.contained_i_signal_i_pdu_group_refs.push(value);
     }
 
-    pub fn get_i_signal_i_pdu_refs(&self) -> &[String] {
+    pub fn get_i_signal_i_pdu_refs(&self) -> &[RefTypeId] {
         &self.i_signal_i_pdu_refs
     }
 
-    pub fn push_i_signal_i_pdu_ref(&mut self, value: String) {
+    pub fn push_i_signal_i_pdu_ref(&mut self, value: RefTypeId) {
         self.i_signal_i_pdu_refs.push(value);
     }
 
-    pub fn get_nm_pdu_refs(&self) -> &[String] {
+    pub fn get_nm_pdu_refs(&self) -> &[RefTypeId] {
         &self.nm_pdu_refs
     }
 
-    pub fn push_nm_pdu_ref(&mut self, value: String) {
+    pub fn push_nm_pdu_ref(&mut self, value: RefTypeId) {
         self.nm_pdu_refs.push(value);
     }
 
@@ -4019,7 +4117,7 @@ impl ISignalIPduGroup {
 pub struct ISignalPort {
     base: CommConnectorPort,
     data_filter: Option<DataFilterId>,
-    dds_qos_profile_ref: Option<String>,
+    dds_qos_profile_ref: Option<RefTypeId>,
     first_timeout: Option<String>,
     handle_invalid: Option<HandleInvalidEnum>,
     timeout: Option<String>,
@@ -4047,12 +4145,12 @@ impl ISignalPort {
         self
     }
 
-    pub fn get_dds_qos_profile_ref(&self) -> Option<&str> {
-        self.dds_qos_profile_ref.as_deref()
+    pub fn get_dds_qos_profile_ref(&self) -> Option<RefTypeId> {
+        self.dds_qos_profile_ref
     }
 
-    pub fn set_dds_qos_profile_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.dds_qos_profile_ref = Some(value.into());
+    pub fn set_dds_qos_profile_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.dds_qos_profile_ref = Some(value);
         self
     }
 
@@ -4289,8 +4387,8 @@ impl ISignalProps {
 pub struct ISignalToIPduMapping {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    i_signal_ref: Option<String>,
-    i_signal_group_ref: Option<String>,
+    i_signal_ref: Option<RefTypeId>,
+    i_signal_group_ref: Option<RefTypeId>,
     packing_byte_order: Option<ByteOrderEnum>,
     start_position: Option<String>,
     transfer_property: Option<TransferPropertyEnum>,
@@ -4318,21 +4416,21 @@ impl ISignalToIPduMapping {
         &mut self.variation_point_capable
     }
 
-    pub fn get_i_signal_ref(&self) -> Option<&str> {
-        self.i_signal_ref.as_deref()
+    pub fn get_i_signal_ref(&self) -> Option<RefTypeId> {
+        self.i_signal_ref
     }
 
-    pub fn set_i_signal_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.i_signal_ref = Some(value.into());
+    pub fn set_i_signal_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.i_signal_ref = Some(value);
         self
     }
 
-    pub fn get_i_signal_group_ref(&self) -> Option<&str> {
-        self.i_signal_group_ref.as_deref()
+    pub fn get_i_signal_group_ref(&self) -> Option<RefTypeId> {
+        self.i_signal_group_ref
     }
 
-    pub fn set_i_signal_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.i_signal_group_ref = Some(value.into());
+    pub fn set_i_signal_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.i_signal_group_ref = Some(value);
         self
     }
 
@@ -4519,9 +4617,9 @@ impl ISignalToIPduMapping {
 pub struct ISignalTriggering {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    i_signal_ref: Option<String>,
-    i_signal_group_ref: Option<String>,
-    i_signal_port_refs: Vec<String>,
+    i_signal_ref: Option<RefTypeId>,
+    i_signal_group_ref: Option<RefTypeId>,
+    i_signal_port_refs: Vec<RefTypeId>,
 }
 
 impl ISignalTriggering {
@@ -4545,29 +4643,29 @@ impl ISignalTriggering {
         &mut self.variation_point_capable
     }
 
-    pub fn get_i_signal_ref(&self) -> Option<&str> {
-        self.i_signal_ref.as_deref()
+    pub fn get_i_signal_ref(&self) -> Option<RefTypeId> {
+        self.i_signal_ref
     }
 
-    pub fn set_i_signal_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.i_signal_ref = Some(value.into());
+    pub fn set_i_signal_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.i_signal_ref = Some(value);
         self
     }
 
-    pub fn get_i_signal_group_ref(&self) -> Option<&str> {
-        self.i_signal_group_ref.as_deref()
+    pub fn get_i_signal_group_ref(&self) -> Option<RefTypeId> {
+        self.i_signal_group_ref
     }
 
-    pub fn set_i_signal_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.i_signal_group_ref = Some(value.into());
+    pub fn set_i_signal_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.i_signal_group_ref = Some(value);
         self
     }
 
-    pub fn get_i_signal_port_refs(&self) -> &[String] {
+    pub fn get_i_signal_port_refs(&self) -> &[RefTypeId] {
         &self.i_signal_port_refs
     }
 
-    pub fn push_i_signal_port_ref(&mut self, value: String) {
+    pub fn push_i_signal_port_ref(&mut self, value: RefTypeId) {
         self.i_signal_port_refs.push(value);
     }
 
@@ -4737,6 +4835,24 @@ impl J1939DcmIPdu {
 
     pub fn set_contained_i_pdu_props(&mut self, value: ContainedIPduPropsId) -> &mut Self {
         self.base_mut().set_contained_i_pdu_props(value);
+        self
+    }
+
+    pub fn get_has_dynamic_length(&self) -> Option<&str> {
+        self.base().base().get_has_dynamic_length()
+    }
+
+    pub fn set_has_dynamic_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().base_mut().set_has_dynamic_length(value);
+        self
+    }
+
+    pub fn get_length(&self) -> Option<&str> {
+        self.base().base().get_length()
+    }
+
+    pub fn set_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().base_mut().set_length(value);
         self
     }
 
@@ -5135,6 +5251,24 @@ impl MultiplexedIPdu {
         self
     }
 
+    pub fn get_has_dynamic_length(&self) -> Option<&str> {
+        self.base().base().get_has_dynamic_length()
+    }
+
+    pub fn set_has_dynamic_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().base_mut().set_has_dynamic_length(value);
+        self
+    }
+
+    pub fn get_length(&self) -> Option<&str> {
+        self.base().base().get_length()
+    }
+
+    pub fn set_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().base_mut().set_length(value);
+        self
+    }
+
     pub fn get_admin_data(&self) -> Option<AdminDataId> {
         self.base()
             .base()
@@ -5509,6 +5643,24 @@ impl NPdu {
         self
     }
 
+    pub fn get_has_dynamic_length(&self) -> Option<&str> {
+        self.base().base().get_has_dynamic_length()
+    }
+
+    pub fn set_has_dynamic_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().base_mut().set_has_dynamic_length(value);
+        self
+    }
+
+    pub fn get_length(&self) -> Option<&str> {
+        self.base().base().get_length()
+    }
+
+    pub fn set_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().base_mut().set_length(value);
+        self
+    }
+
     pub fn get_admin_data(&self) -> Option<AdminDataId> {
         self.base()
             .base()
@@ -5864,6 +6016,24 @@ impl NmPdu {
         self
     }
 
+    pub fn get_has_dynamic_length(&self) -> Option<&str> {
+        self.base().get_has_dynamic_length()
+    }
+
+    pub fn set_has_dynamic_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().set_has_dynamic_length(value);
+        self
+    }
+
+    pub fn get_length(&self) -> Option<&str> {
+        self.base().get_length()
+    }
+
+    pub fn set_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().set_length(value);
+        self
+    }
+
     pub fn get_admin_data(&self) -> Option<AdminDataId> {
         self.base().base().base().base().base().get_admin_data()
     }
@@ -6115,6 +6285,8 @@ impl NmPdu {
 #[derive(Debug, Default)]
 pub struct Pdu {
     base: FibexElement,
+    has_dynamic_length: Option<String>,
+    length: Option<String>,
 }
 
 impl Pdu {
@@ -6128,6 +6300,24 @@ impl Pdu {
 
     pub fn base_mut(&mut self) -> &mut FibexElement {
         &mut self.base
+    }
+
+    pub fn get_has_dynamic_length(&self) -> Option<&str> {
+        self.has_dynamic_length.as_deref()
+    }
+
+    pub fn set_has_dynamic_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.has_dynamic_length = Some(value.into());
+        self
+    }
+
+    pub fn get_length(&self) -> Option<&str> {
+        self.length.as_deref()
+    }
+
+    pub fn set_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.length = Some(value.into());
+        self
     }
 
     pub fn get_admin_data(&self) -> Option<AdminDataId> {
@@ -6352,7 +6542,7 @@ pub struct PduToFrameMapping {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
     packing_byte_order: Option<ByteOrderEnum>,
-    pdu_ref: Option<String>,
+    pdu_ref: Option<RefTypeId>,
     start_position: Option<String>,
     update_indication_bit_position: Option<String>,
 }
@@ -6387,12 +6577,12 @@ impl PduToFrameMapping {
         self
     }
 
-    pub fn get_pdu_ref(&self) -> Option<&str> {
-        self.pdu_ref.as_deref()
+    pub fn get_pdu_ref(&self) -> Option<RefTypeId> {
+        self.pdu_ref
     }
 
-    pub fn set_pdu_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.pdu_ref = Some(value.into());
+    pub fn set_pdu_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.pdu_ref = Some(value);
         self
     }
 
@@ -6561,10 +6751,10 @@ impl PduToFrameMapping {
 pub struct PduTriggering {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    i_pdu_ref: Option<String>,
-    i_pdu_port_refs: Vec<String>,
-    i_signal_triggering_refs: Vec<String>,
-    sec_oc_crypto_mapping_ref: Option<String>,
+    i_pdu_ref: Option<RefTypeId>,
+    i_pdu_port_refs: Vec<RefTypeId>,
+    i_signal_triggering_refs: Vec<RefTypeId>,
+    sec_oc_crypto_mapping_ref: Option<RefTypeId>,
     trigger_i_pdu_send_conditions: Vec<TriggerIPduSendConditionId>,
 }
 
@@ -6589,37 +6779,37 @@ impl PduTriggering {
         &mut self.variation_point_capable
     }
 
-    pub fn get_i_pdu_ref(&self) -> Option<&str> {
-        self.i_pdu_ref.as_deref()
+    pub fn get_i_pdu_ref(&self) -> Option<RefTypeId> {
+        self.i_pdu_ref
     }
 
-    pub fn set_i_pdu_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.i_pdu_ref = Some(value.into());
+    pub fn set_i_pdu_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.i_pdu_ref = Some(value);
         self
     }
 
-    pub fn get_i_pdu_port_refs(&self) -> &[String] {
+    pub fn get_i_pdu_port_refs(&self) -> &[RefTypeId] {
         &self.i_pdu_port_refs
     }
 
-    pub fn push_i_pdu_port_ref(&mut self, value: String) {
+    pub fn push_i_pdu_port_ref(&mut self, value: RefTypeId) {
         self.i_pdu_port_refs.push(value);
     }
 
-    pub fn get_i_signal_triggering_refs(&self) -> &[String] {
+    pub fn get_i_signal_triggering_refs(&self) -> &[RefTypeId] {
         &self.i_signal_triggering_refs
     }
 
-    pub fn push_i_signal_triggering_ref(&mut self, value: String) {
+    pub fn push_i_signal_triggering_ref(&mut self, value: RefTypeId) {
         self.i_signal_triggering_refs.push(value);
     }
 
-    pub fn get_sec_oc_crypto_mapping_ref(&self) -> Option<&str> {
-        self.sec_oc_crypto_mapping_ref.as_deref()
+    pub fn get_sec_oc_crypto_mapping_ref(&self) -> Option<RefTypeId> {
+        self.sec_oc_crypto_mapping_ref
     }
 
-    pub fn set_sec_oc_crypto_mapping_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.sec_oc_crypto_mapping_ref = Some(value.into());
+    pub fn set_sec_oc_crypto_mapping_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sec_oc_crypto_mapping_ref = Some(value);
         self
     }
 
@@ -6778,7 +6968,7 @@ impl PduTriggering {
 pub struct PdurIPduGroup {
     base: FibexElement,
     communication_mode: Option<String>,
-    i_pdu_refs: Vec<String>,
+    i_pdu_refs: Vec<RefTypeId>,
 }
 
 impl PdurIPduGroup {
@@ -6803,11 +6993,11 @@ impl PdurIPduGroup {
         self
     }
 
-    pub fn get_i_pdu_refs(&self) -> &[String] {
+    pub fn get_i_pdu_refs(&self) -> &[RefTypeId] {
         &self.i_pdu_refs
     }
 
-    pub fn push_i_pdu_ref(&mut self, value: String) {
+    pub fn push_i_pdu_ref(&mut self, value: RefTypeId) {
         self.i_pdu_refs.push(value);
     }
 
@@ -7801,10 +7991,10 @@ impl SecureCommunicationPropsSet {
 #[derive(Debug, Default)]
 pub struct SecuredIPdu {
     base: IPdu,
-    authentication_props_ref: Option<String>,
+    authentication_props_ref: Option<RefTypeId>,
     dynamic_runtime_length_handling: Option<String>,
-    freshness_props_ref: Option<String>,
-    payload_ref: Option<String>,
+    freshness_props_ref: Option<RefTypeId>,
+    payload_ref: Option<RefTypeId>,
     secure_communication_props: Option<SecureCommunicationPropsId>,
     use_as_cryptographic_i_pdu: Option<String>,
     use_secured_pdu_header: Option<SecuredPduHeaderEnum>,
@@ -7823,12 +8013,12 @@ impl SecuredIPdu {
         &mut self.base
     }
 
-    pub fn get_authentication_props_ref(&self) -> Option<&str> {
-        self.authentication_props_ref.as_deref()
+    pub fn get_authentication_props_ref(&self) -> Option<RefTypeId> {
+        self.authentication_props_ref
     }
 
-    pub fn set_authentication_props_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.authentication_props_ref = Some(value.into());
+    pub fn set_authentication_props_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.authentication_props_ref = Some(value);
         self
     }
 
@@ -7841,21 +8031,21 @@ impl SecuredIPdu {
         self
     }
 
-    pub fn get_freshness_props_ref(&self) -> Option<&str> {
-        self.freshness_props_ref.as_deref()
+    pub fn get_freshness_props_ref(&self) -> Option<RefTypeId> {
+        self.freshness_props_ref
     }
 
-    pub fn set_freshness_props_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.freshness_props_ref = Some(value.into());
+    pub fn set_freshness_props_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.freshness_props_ref = Some(value);
         self
     }
 
-    pub fn get_payload_ref(&self) -> Option<&str> {
-        self.payload_ref.as_deref()
+    pub fn get_payload_ref(&self) -> Option<RefTypeId> {
+        self.payload_ref
     }
 
-    pub fn set_payload_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.payload_ref = Some(value.into());
+    pub fn set_payload_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.payload_ref = Some(value);
         self
     }
 
@@ -7895,6 +8085,24 @@ impl SecuredIPdu {
 
     pub fn set_contained_i_pdu_props(&mut self, value: ContainedIPduPropsId) -> &mut Self {
         self.base_mut().set_contained_i_pdu_props(value);
+        self
+    }
+
+    pub fn get_has_dynamic_length(&self) -> Option<&str> {
+        self.base().base().get_has_dynamic_length()
+    }
+
+    pub fn set_has_dynamic_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().base_mut().set_has_dynamic_length(value);
+        self
+    }
+
+    pub fn get_length(&self) -> Option<&str> {
+        self.base().base().get_length()
+    }
+
+    pub fn set_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().base_mut().set_length(value);
         self
     }
 
@@ -8270,7 +8478,7 @@ impl SegmentPosition {
 pub struct StaticPart {
     base: MultiplexedPart,
     variation_point_capable: VariationPointCapable,
-    i_pdu_ref: Option<String>,
+    i_pdu_ref: Option<RefTypeId>,
 }
 
 impl StaticPart {
@@ -8294,12 +8502,12 @@ impl StaticPart {
         &mut self.variation_point_capable
     }
 
-    pub fn get_i_pdu_ref(&self) -> Option<&str> {
-        self.i_pdu_ref.as_deref()
+    pub fn get_i_pdu_ref(&self) -> Option<RefTypeId> {
+        self.i_pdu_ref
     }
 
-    pub fn set_i_pdu_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.i_pdu_ref = Some(value.into());
+    pub fn set_i_pdu_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.i_pdu_ref = Some(value);
         self
     }
 
@@ -8600,8 +8808,8 @@ impl SystemSignal {
 #[derive(Debug, Default)]
 pub struct SystemSignalGroup {
     base: ARElement,
-    system_signal_refs: Vec<String>,
-    transforming_system_signal_ref: Option<String>,
+    system_signal_refs: Vec<RefTypeId>,
+    transforming_system_signal_ref: Option<RefTypeId>,
 }
 
 impl SystemSignalGroup {
@@ -8617,20 +8825,20 @@ impl SystemSignalGroup {
         &mut self.base
     }
 
-    pub fn get_system_signal_refs(&self) -> &[String] {
+    pub fn get_system_signal_refs(&self) -> &[RefTypeId] {
         &self.system_signal_refs
     }
 
-    pub fn push_system_signal_ref(&mut self, value: String) {
+    pub fn push_system_signal_ref(&mut self, value: RefTypeId) {
         self.system_signal_refs.push(value);
     }
 
-    pub fn get_transforming_system_signal_ref(&self) -> Option<&str> {
-        self.transforming_system_signal_ref.as_deref()
+    pub fn get_transforming_system_signal_ref(&self) -> Option<RefTypeId> {
+        self.transforming_system_signal_ref
     }
 
-    pub fn set_transforming_system_signal_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.transforming_system_signal_ref = Some(value.into());
+    pub fn set_transforming_system_signal_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.transforming_system_signal_ref = Some(value);
         self
     }
 
@@ -8885,6 +9093,24 @@ impl UserDefinedIPdu {
 
     pub fn set_contained_i_pdu_props(&mut self, value: ContainedIPduPropsId) -> &mut Self {
         self.base_mut().set_contained_i_pdu_props(value);
+        self
+    }
+
+    pub fn get_has_dynamic_length(&self) -> Option<&str> {
+        self.base().base().get_has_dynamic_length()
+    }
+
+    pub fn set_has_dynamic_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().base_mut().set_has_dynamic_length(value);
+        self
+    }
+
+    pub fn get_length(&self) -> Option<&str> {
+        self.base().base().get_length()
+    }
+
+    pub fn set_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().base_mut().set_length(value);
         self
     }
 
@@ -9214,6 +9440,24 @@ impl UserDefinedPdu {
         self
     }
 
+    pub fn get_has_dynamic_length(&self) -> Option<&str> {
+        self.base().get_has_dynamic_length()
+    }
+
+    pub fn set_has_dynamic_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().set_has_dynamic_length(value);
+        self
+    }
+
+    pub fn get_length(&self) -> Option<&str> {
+        self.base().get_length()
+    }
+
+    pub fn set_length(&mut self, value: impl Into<String>) -> &mut Self {
+        self.base_mut().set_length(value);
+        self
+    }
+
     pub fn get_admin_data(&self) -> Option<AdminDataId> {
         self.base().base().base().base().base().get_admin_data()
     }
@@ -9518,6 +9762,9 @@ impl Document {
         path: &str,
     ) -> Result<(), String> {
         self.compare_i_pdu(other, a.base(), b.base(), path)?;
+        if a.get_diag_pdu_type() != b.get_diag_pdu_type() {
+            return Err(format!("{path}: DIAG_PDU_TYPE mismatch"));
+        }
         Ok(())
     }
 
@@ -9644,9 +9891,13 @@ impl Document {
             return Err(format!("{path}: FRAME_PORT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.FRAME_PORT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.FRAME_PORT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.FRAME_PORT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.FRAME_PORT_REFS[{index}]"))?;
         }
         let list_a = a.get_pdu_triggering_refs();
         let list_b = b.get_pdu_triggering_refs();
@@ -9654,9 +9905,13 @@ impl Document {
             return Err(format!("{path}: PDU_TRIGGERING_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.PDU_TRIGGERING_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.PDU_TRIGGERING_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.PDU_TRIGGERING_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.PDU_TRIGGERING_REFS[{index}]"))?;
         }
         Ok(())
     }
@@ -9816,9 +10071,13 @@ impl Document {
             return Err(format!("{path}: I_SIGNAL_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.I_SIGNAL_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.I_SIGNAL_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.I_SIGNAL_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.I_SIGNAL_REFS[{index}]"))?;
         }
         if a.get_system_signal_group_ref() != b.get_system_signal_group_ref() {
             return Err(format!("{path}: SYSTEM_SIGNAL_GROUP_REF mismatch"));
@@ -9898,11 +10157,14 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.CONTAINED_I_SIGNAL_I_PDU_GROUP_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| format!("{path}.CONTAINED_I_SIGNAL_I_PDU_GROUP_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| format!("{path}.CONTAINED_I_SIGNAL_I_PDU_GROUP_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONTAINED_I_SIGNAL_I_PDU_GROUP_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_i_signal_i_pdu_refs();
         let list_b = b.get_i_signal_i_pdu_refs();
@@ -9910,9 +10172,13 @@ impl Document {
             return Err(format!("{path}: I_SIGNAL_I_PDU_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.I_SIGNAL_I_PDU_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.I_SIGNAL_I_PDU_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.I_SIGNAL_I_PDU_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.I_SIGNAL_I_PDU_REFS[{index}]"))?;
         }
         let list_a = a.get_nm_pdu_refs();
         let list_b = b.get_nm_pdu_refs();
@@ -9920,9 +10186,14 @@ impl Document {
             return Err(format!("{path}: NM_PDU_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.NM_PDU_REFS[{index}] mismatch"));
-            }
+            let x = self
+                .ref_types
+                .get(*x)
+                .ok_or_else(|| format!("{path}.NM_PDU_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.NM_PDU_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.NM_PDU_REFS[{index}]"))?;
         }
         Ok(())
     }
@@ -10028,9 +10299,13 @@ impl Document {
             return Err(format!("{path}: I_SIGNAL_PORT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.I_SIGNAL_PORT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.I_SIGNAL_PORT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.I_SIGNAL_PORT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.I_SIGNAL_PORT_REFS[{index}]"))?;
         }
         Ok(())
     }
@@ -10168,6 +10443,12 @@ impl Document {
         path: &str,
     ) -> Result<(), String> {
         self.compare_fibex_element(other, a.base(), b.base(), path)?;
+        if a.get_has_dynamic_length() != b.get_has_dynamic_length() {
+            return Err(format!("{path}: HAS_DYNAMIC_LENGTH mismatch"));
+        }
+        if a.get_length() != b.get_length() {
+            return Err(format!("{path}: LENGTH mismatch"));
+        }
         Ok(())
     }
 
@@ -10223,9 +10504,13 @@ impl Document {
             return Err(format!("{path}: I_PDU_PORT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.I_PDU_PORT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.I_PDU_PORT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.I_PDU_PORT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.I_PDU_PORT_REFS[{index}]"))?;
         }
         let list_a = a.get_i_signal_triggering_refs();
         let list_b = b.get_i_signal_triggering_refs();
@@ -10233,9 +10518,18 @@ impl Document {
             return Err(format!("{path}: I_SIGNAL_TRIGGERING_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.I_SIGNAL_TRIGGERING_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.I_SIGNAL_TRIGGERING_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.I_SIGNAL_TRIGGERING_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.I_SIGNAL_TRIGGERING_REFS[{index}]"),
+            )?;
         }
         if a.get_sec_oc_crypto_mapping_ref() != b.get_sec_oc_crypto_mapping_ref() {
             return Err(format!("{path}: SEC_OC_CRYPTO_MAPPING_REF mismatch"));
@@ -10283,9 +10577,14 @@ impl Document {
             return Err(format!("{path}: I_PDU_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.I_PDU_REFS[{index}] mismatch"));
-            }
+            let x = self
+                .ref_types
+                .get(*x)
+                .ok_or_else(|| format!("{path}.I_PDU_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.I_PDU_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.I_PDU_REFS[{index}]"))?;
         }
         Ok(())
     }
@@ -10545,9 +10844,13 @@ impl Document {
             return Err(format!("{path}: SYSTEM_SIGNAL_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SYSTEM_SIGNAL_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SYSTEM_SIGNAL_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SYSTEM_SIGNAL_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SYSTEM_SIGNAL_REFS[{index}]"))?;
         }
         if a.get_transforming_system_signal_ref() != b.get_transforming_system_signal_ref() {
             return Err(format!("{path}: TRANSFORMING_SYSTEM_SIGNAL_REF mismatch"));

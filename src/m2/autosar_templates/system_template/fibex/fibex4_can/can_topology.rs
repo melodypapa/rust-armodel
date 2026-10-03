@@ -23,6 +23,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::system_template::fibex::fibex_core::core_communication::ISignalTriggeringId;
 use crate::m2::autosar_templates::system_template::fibex::fibex_core::core_communication::PduTriggeringId;
 use crate::m2::autosar_templates::system_template::fibex::fibex_core::core_topology::AbstractCanCluster;
@@ -57,11 +58,11 @@ impl AbstractCanCommunicationConnector {
         &mut self.base
     }
 
-    pub fn get_comm_controller_ref(&self) -> Option<&str> {
+    pub fn get_comm_controller_ref(&self) -> Option<RefTypeId> {
         self.base().get_comm_controller_ref()
     }
 
-    pub fn set_comm_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_comm_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_comm_controller_ref(value);
         self
     }
@@ -551,11 +552,11 @@ impl AbstractCanPhysicalChannel {
         &mut self.base
     }
 
-    pub fn get_comm_connector_refs(&self) -> &[String] {
+    pub fn get_comm_connector_refs(&self) -> &[RefTypeId] {
         self.base().get_comm_connector_refs()
     }
 
-    pub fn push_comm_connector_ref(&mut self, value: String) {
+    pub fn push_comm_connector_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_comm_connector_ref(value)
     }
 
@@ -575,11 +576,11 @@ impl AbstractCanPhysicalChannel {
         self.base_mut().push_i_signal_triggering(value)
     }
 
-    pub fn get_managed_physical_channel_refs(&self) -> &[String] {
+    pub fn get_managed_physical_channel_refs(&self) -> &[RefTypeId] {
         self.base().get_managed_physical_channel_refs()
     }
 
-    pub fn push_managed_physical_channel_ref(&mut self, value: String) {
+    pub fn push_managed_physical_channel_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_managed_physical_channel_ref(value)
     }
 
@@ -892,11 +893,11 @@ impl CanCommunicationConnector {
         self
     }
 
-    pub fn get_comm_controller_ref(&self) -> Option<&str> {
+    pub fn get_comm_controller_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_comm_controller_ref()
     }
 
-    pub fn set_comm_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_comm_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_comm_controller_ref(value);
         self
     }
@@ -2237,11 +2238,11 @@ impl CanPhysicalChannel {
         &mut self.base
     }
 
-    pub fn get_comm_connector_refs(&self) -> &[String] {
+    pub fn get_comm_connector_refs(&self) -> &[RefTypeId] {
         self.base().base().get_comm_connector_refs()
     }
 
-    pub fn push_comm_connector_ref(&mut self, value: String) {
+    pub fn push_comm_connector_ref(&mut self, value: RefTypeId) {
         self.base_mut().base_mut().push_comm_connector_ref(value)
     }
 
@@ -2261,11 +2262,11 @@ impl CanPhysicalChannel {
         self.base_mut().base_mut().push_i_signal_triggering(value)
     }
 
-    pub fn get_managed_physical_channel_refs(&self) -> &[String] {
+    pub fn get_managed_physical_channel_refs(&self) -> &[RefTypeId] {
         self.base().base().get_managed_physical_channel_refs()
     }
 
-    pub fn push_managed_physical_channel_ref(&mut self, value: String) {
+    pub fn push_managed_physical_channel_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_managed_physical_channel_ref(value)

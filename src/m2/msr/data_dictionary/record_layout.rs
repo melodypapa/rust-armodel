@@ -15,6 +15,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -275,7 +276,7 @@ pub struct SwRecordLayoutGroup {
     category: Option<String>,
     desc: Option<MultiLanguageOverviewParagraphId>,
     short_label: Option<String>,
-    sw_generic_axis_param_type_ref: Option<String>,
+    sw_generic_axis_param_type_ref: Option<RefTypeId>,
     sw_record_layout_component: Option<String>,
     sw_record_layout_group_axis: Option<String>,
     sw_record_layout_group_content_type: Option<SwRecordLayoutGroupContentId>,
@@ -325,12 +326,12 @@ impl SwRecordLayoutGroup {
         self
     }
 
-    pub fn get_sw_generic_axis_param_type_ref(&self) -> Option<&str> {
-        self.sw_generic_axis_param_type_ref.as_deref()
+    pub fn get_sw_generic_axis_param_type_ref(&self) -> Option<RefTypeId> {
+        self.sw_generic_axis_param_type_ref
     }
 
-    pub fn set_sw_generic_axis_param_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.sw_generic_axis_param_type_ref = Some(value.into());
+    pub fn set_sw_generic_axis_param_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sw_generic_axis_param_type_ref = Some(value);
         self
     }
 
@@ -424,7 +425,7 @@ impl SwRecordLayoutGroup {
 #[derive(Debug, Default)]
 pub struct SwRecordLayoutGroupContent {
     base: ARObject,
-    sw_record_layout_ref: Option<String>,
+    sw_record_layout_ref: Option<RefTypeId>,
     sw_record_layout_group: Option<SwRecordLayoutGroupId>,
     sw_record_layout_v: Option<SwRecordLayoutVId>,
 }
@@ -442,12 +443,12 @@ impl SwRecordLayoutGroupContent {
         &mut self.base
     }
 
-    pub fn get_sw_record_layout_ref(&self) -> Option<&str> {
-        self.sw_record_layout_ref.as_deref()
+    pub fn get_sw_record_layout_ref(&self) -> Option<RefTypeId> {
+        self.sw_record_layout_ref
     }
 
-    pub fn set_sw_record_layout_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.sw_record_layout_ref = Some(value.into());
+    pub fn set_sw_record_layout_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sw_record_layout_ref = Some(value);
         self
     }
 
@@ -493,10 +494,10 @@ impl SwRecordLayoutGroupContent {
 #[derive(Debug, Default)]
 pub struct SwRecordLayoutV {
     base: ARObject,
-    base_type_ref: Option<String>,
+    base_type_ref: Option<RefTypeId>,
     desc: Option<MultiLanguageOverviewParagraphId>,
     short_label: Option<String>,
-    sw_generic_axis_param_type_ref: Option<String>,
+    sw_generic_axis_param_type_ref: Option<RefTypeId>,
     sw_record_layout_v_axis: Option<String>,
     sw_record_layout_v_fix_value: Option<String>,
     sw_record_layout_v_index: Option<String>,
@@ -516,12 +517,12 @@ impl SwRecordLayoutV {
         &mut self.base
     }
 
-    pub fn get_base_type_ref(&self) -> Option<&str> {
-        self.base_type_ref.as_deref()
+    pub fn get_base_type_ref(&self) -> Option<RefTypeId> {
+        self.base_type_ref
     }
 
-    pub fn set_base_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_type_ref = Some(value.into());
+    pub fn set_base_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_type_ref = Some(value);
         self
     }
 
@@ -543,12 +544,12 @@ impl SwRecordLayoutV {
         self
     }
 
-    pub fn get_sw_generic_axis_param_type_ref(&self) -> Option<&str> {
-        self.sw_generic_axis_param_type_ref.as_deref()
+    pub fn get_sw_generic_axis_param_type_ref(&self) -> Option<RefTypeId> {
+        self.sw_generic_axis_param_type_ref
     }
 
-    pub fn set_sw_generic_axis_param_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.sw_generic_axis_param_type_ref = Some(value.into());
+    pub fn set_sw_generic_axis_param_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sw_generic_axis_param_type_ref = Some(value);
         self
     }
 

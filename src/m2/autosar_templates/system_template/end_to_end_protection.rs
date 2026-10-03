@@ -9,6 +9,7 @@ new_key_type! {
 }
 
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::Document;
@@ -21,8 +22,8 @@ pub struct EndToEndProtectionISignalIPdu {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
     data_offset: Option<String>,
-    i_signal_group_ref: Option<String>,
-    i_signal_i_pdu_ref: Option<String>,
+    i_signal_group_ref: Option<RefTypeId>,
+    i_signal_i_pdu_ref: Option<RefTypeId>,
 }
 
 impl EndToEndProtectionISignalIPdu {
@@ -55,21 +56,21 @@ impl EndToEndProtectionISignalIPdu {
         self
     }
 
-    pub fn get_i_signal_group_ref(&self) -> Option<&str> {
-        self.i_signal_group_ref.as_deref()
+    pub fn get_i_signal_group_ref(&self) -> Option<RefTypeId> {
+        self.i_signal_group_ref
     }
 
-    pub fn set_i_signal_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.i_signal_group_ref = Some(value.into());
+    pub fn set_i_signal_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.i_signal_group_ref = Some(value);
         self
     }
 
-    pub fn get_i_signal_i_pdu_ref(&self) -> Option<&str> {
-        self.i_signal_i_pdu_ref.as_deref()
+    pub fn get_i_signal_i_pdu_ref(&self) -> Option<RefTypeId> {
+        self.i_signal_i_pdu_ref
     }
 
-    pub fn set_i_signal_i_pdu_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.i_signal_i_pdu_ref = Some(value.into());
+    pub fn set_i_signal_i_pdu_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.i_signal_i_pdu_ref = Some(value);
         self
     }
 

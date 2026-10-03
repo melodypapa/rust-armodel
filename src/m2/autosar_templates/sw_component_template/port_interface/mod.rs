@@ -55,6 +55,7 @@ use crate::m2::autosar_templates::common_structure::mode_declaration::ModeDeclar
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
 use crate::m2::autosar_templates::sw_component_template::datatype::data_prototypes::ParameterDataPrototypeId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::common_structure::service_needs::ServiceProviderEnum;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::msr::data_dictionary::data_def_properties::SwDataDefPropsId;
@@ -411,11 +412,11 @@ impl ArgumentDataPrototype {
         self
     }
 
-    pub fn get_atp_type_ref(&self) -> Option<&str> {
+    pub fn get_atp_type_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_atp_type_ref()
     }
 
-    pub fn set_atp_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_type_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -685,8 +686,8 @@ impl ArgumentDataPrototype {
 #[derive(Debug, Default)]
 pub struct ClientServerApplicationErrorMapping {
     base: ARObject,
-    first_application_error_ref: Option<String>,
-    second_application_error_ref: Option<String>,
+    first_application_error_ref: Option<RefTypeId>,
+    second_application_error_ref: Option<RefTypeId>,
 }
 
 impl ClientServerApplicationErrorMapping {
@@ -702,21 +703,21 @@ impl ClientServerApplicationErrorMapping {
         &mut self.base
     }
 
-    pub fn get_first_application_error_ref(&self) -> Option<&str> {
-        self.first_application_error_ref.as_deref()
+    pub fn get_first_application_error_ref(&self) -> Option<RefTypeId> {
+        self.first_application_error_ref
     }
 
-    pub fn set_first_application_error_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.first_application_error_ref = Some(value.into());
+    pub fn set_first_application_error_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.first_application_error_ref = Some(value);
         self
     }
 
-    pub fn get_second_application_error_ref(&self) -> Option<&str> {
-        self.second_application_error_ref.as_deref()
+    pub fn get_second_application_error_ref(&self) -> Option<RefTypeId> {
+        self.second_application_error_ref
     }
 
-    pub fn set_second_application_error_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.second_application_error_ref = Some(value.into());
+    pub fn set_second_application_error_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.second_application_error_ref = Some(value);
         self
     }
 
@@ -1239,7 +1240,7 @@ pub struct ClientServerOperation {
     variation_point_capable: VariationPointCapable,
     arguments: Vec<ArgumentDataPrototypeId>,
     diag_arg_integrity: Option<String>,
-    possible_error_refs: Vec<String>,
+    possible_error_refs: Vec<RefTypeId>,
 }
 
 impl ClientServerOperation {
@@ -1280,11 +1281,11 @@ impl ClientServerOperation {
         self
     }
 
-    pub fn get_possible_error_refs(&self) -> &[String] {
+    pub fn get_possible_error_refs(&self) -> &[RefTypeId] {
         &self.possible_error_refs
     }
 
-    pub fn push_possible_error_ref(&mut self, value: String) {
+    pub fn push_possible_error_ref(&mut self, value: RefTypeId) {
         self.possible_error_refs.push(value);
     }
 
@@ -1484,9 +1485,9 @@ impl ClientServerOperation {
 pub struct ClientServerOperationMapping {
     base: ARObject,
     argument_mappings: Vec<DataPrototypeMappingId>,
-    first_operation_ref: Option<String>,
-    first_to_second_data_transformation_ref: Option<String>,
-    second_operation_ref: Option<String>,
+    first_operation_ref: Option<RefTypeId>,
+    first_to_second_data_transformation_ref: Option<RefTypeId>,
+    second_operation_ref: Option<RefTypeId>,
 }
 
 impl ClientServerOperationMapping {
@@ -1510,33 +1511,30 @@ impl ClientServerOperationMapping {
         self.argument_mappings.push(value);
     }
 
-    pub fn get_first_operation_ref(&self) -> Option<&str> {
-        self.first_operation_ref.as_deref()
+    pub fn get_first_operation_ref(&self) -> Option<RefTypeId> {
+        self.first_operation_ref
     }
 
-    pub fn set_first_operation_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.first_operation_ref = Some(value.into());
+    pub fn set_first_operation_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.first_operation_ref = Some(value);
         self
     }
 
-    pub fn get_first_to_second_data_transformation_ref(&self) -> Option<&str> {
-        self.first_to_second_data_transformation_ref.as_deref()
+    pub fn get_first_to_second_data_transformation_ref(&self) -> Option<RefTypeId> {
+        self.first_to_second_data_transformation_ref
     }
 
-    pub fn set_first_to_second_data_transformation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
-        self.first_to_second_data_transformation_ref = Some(value.into());
+    pub fn set_first_to_second_data_transformation_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.first_to_second_data_transformation_ref = Some(value);
         self
     }
 
-    pub fn get_second_operation_ref(&self) -> Option<&str> {
-        self.second_operation_ref.as_deref()
+    pub fn get_second_operation_ref(&self) -> Option<RefTypeId> {
+        self.second_operation_ref
     }
 
-    pub fn set_second_operation_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.second_operation_ref = Some(value.into());
+    pub fn set_second_operation_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.second_operation_ref = Some(value);
         self
     }
 
@@ -1828,10 +1826,10 @@ impl DataInterface {
 #[derive(Debug, Default)]
 pub struct DataPrototypeMapping {
     base: ARObject,
-    first_data_prototype_ref: Option<String>,
-    first_to_second_data_transformation_ref: Option<String>,
-    second_data_prototype_ref: Option<String>,
-    second_to_first_data_transformation_ref: Option<String>,
+    first_data_prototype_ref: Option<RefTypeId>,
+    first_to_second_data_transformation_ref: Option<RefTypeId>,
+    second_data_prototype_ref: Option<RefTypeId>,
+    second_to_first_data_transformation_ref: Option<RefTypeId>,
     sub_element_mappings: Vec<SubElementMappingId>,
     text_table_mappings: Vec<TextTableMappingId>,
 }
@@ -1849,45 +1847,39 @@ impl DataPrototypeMapping {
         &mut self.base
     }
 
-    pub fn get_first_data_prototype_ref(&self) -> Option<&str> {
-        self.first_data_prototype_ref.as_deref()
+    pub fn get_first_data_prototype_ref(&self) -> Option<RefTypeId> {
+        self.first_data_prototype_ref
     }
 
-    pub fn set_first_data_prototype_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.first_data_prototype_ref = Some(value.into());
+    pub fn set_first_data_prototype_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.first_data_prototype_ref = Some(value);
         self
     }
 
-    pub fn get_first_to_second_data_transformation_ref(&self) -> Option<&str> {
-        self.first_to_second_data_transformation_ref.as_deref()
+    pub fn get_first_to_second_data_transformation_ref(&self) -> Option<RefTypeId> {
+        self.first_to_second_data_transformation_ref
     }
 
-    pub fn set_first_to_second_data_transformation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
-        self.first_to_second_data_transformation_ref = Some(value.into());
+    pub fn set_first_to_second_data_transformation_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.first_to_second_data_transformation_ref = Some(value);
         self
     }
 
-    pub fn get_second_data_prototype_ref(&self) -> Option<&str> {
-        self.second_data_prototype_ref.as_deref()
+    pub fn get_second_data_prototype_ref(&self) -> Option<RefTypeId> {
+        self.second_data_prototype_ref
     }
 
-    pub fn set_second_data_prototype_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.second_data_prototype_ref = Some(value.into());
+    pub fn set_second_data_prototype_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.second_data_prototype_ref = Some(value);
         self
     }
 
-    pub fn get_second_to_first_data_transformation_ref(&self) -> Option<&str> {
-        self.second_to_first_data_transformation_ref.as_deref()
+    pub fn get_second_to_first_data_transformation_ref(&self) -> Option<RefTypeId> {
+        self.second_to_first_data_transformation_ref
     }
 
-    pub fn set_second_to_first_data_transformation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
-        self.second_to_first_data_transformation_ref = Some(value.into());
+    pub fn set_second_to_first_data_transformation_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.second_to_first_data_transformation_ref = Some(value);
         self
     }
 
@@ -1969,7 +1961,7 @@ impl ImplementationDataTypeSubElementRef {
 #[derive(Debug, Default)]
 pub struct InvalidationPolicy {
     base: ARObject,
-    data_element_ref: Option<String>,
+    data_element_ref: Option<RefTypeId>,
     handle_invalid: Option<HandleInvalidEnum>,
 }
 
@@ -1986,12 +1978,12 @@ impl InvalidationPolicy {
         &mut self.base
     }
 
-    pub fn get_data_element_ref(&self) -> Option<&str> {
-        self.data_element_ref.as_deref()
+    pub fn get_data_element_ref(&self) -> Option<RefTypeId> {
+        self.data_element_ref
     }
 
-    pub fn set_data_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.data_element_ref = Some(value.into());
+    pub fn set_data_element_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.data_element_ref = Some(value);
         self
     }
 
@@ -2087,7 +2079,7 @@ impl MetaDataItem {
 #[derive(Debug, Default)]
 pub struct MetaDataItemSet {
     base: ARObject,
-    data_element_refs: Vec<String>,
+    data_element_refs: Vec<RefTypeId>,
     meta_data_items: Vec<MetaDataItemId>,
 }
 
@@ -2104,11 +2096,11 @@ impl MetaDataItemSet {
         &mut self.base
     }
 
-    pub fn get_data_element_refs(&self) -> &[String] {
+    pub fn get_data_element_refs(&self) -> &[RefTypeId] {
         &self.data_element_refs
     }
 
-    pub fn push_data_element_ref(&mut self, value: String) {
+    pub fn push_data_element_ref(&mut self, value: RefTypeId) {
         self.data_element_refs.push(value);
     }
 
@@ -2144,8 +2136,8 @@ impl MetaDataItemSet {
 #[derive(Debug, Default)]
 pub struct ModeDeclarationMapping {
     base: AtpStructureElement,
-    first_mode_refs: Vec<String>,
-    second_mode_ref: Option<String>,
+    first_mode_refs: Vec<RefTypeId>,
+    second_mode_ref: Option<RefTypeId>,
 }
 
 impl ModeDeclarationMapping {
@@ -2161,20 +2153,20 @@ impl ModeDeclarationMapping {
         &mut self.base
     }
 
-    pub fn get_first_mode_refs(&self) -> &[String] {
+    pub fn get_first_mode_refs(&self) -> &[RefTypeId] {
         &self.first_mode_refs
     }
 
-    pub fn push_first_mode_ref(&mut self, value: String) {
+    pub fn push_first_mode_ref(&mut self, value: RefTypeId) {
         self.first_mode_refs.push(value);
     }
 
-    pub fn get_second_mode_ref(&self) -> Option<&str> {
-        self.second_mode_ref.as_deref()
+    pub fn get_second_mode_ref(&self) -> Option<RefTypeId> {
+        self.second_mode_ref
     }
 
-    pub fn set_second_mode_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.second_mode_ref = Some(value.into());
+    pub fn set_second_mode_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.second_mode_ref = Some(value);
         self
     }
 
@@ -5772,9 +5764,13 @@ impl Document {
             return Err(format!("{path}: POSSIBLE_ERROR_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.POSSIBLE_ERROR_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.POSSIBLE_ERROR_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.POSSIBLE_ERROR_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.POSSIBLE_ERROR_REFS[{index}]"))?;
         }
         Ok(())
     }
@@ -5961,9 +5957,13 @@ impl Document {
             return Err(format!("{path}: DATA_ELEMENT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.DATA_ELEMENT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.DATA_ELEMENT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.DATA_ELEMENT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.DATA_ELEMENT_REFS[{index}]"))?;
         }
         let list_a = a.get_meta_data_items();
         let list_b = b.get_meta_data_items();
@@ -5996,9 +5996,13 @@ impl Document {
             return Err(format!("{path}: FIRST_MODE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.FIRST_MODE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.FIRST_MODE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.FIRST_MODE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.FIRST_MODE_REFS[{index}]"))?;
         }
         if a.get_second_mode_ref() != b.get_second_mode_ref() {
             return Err(format!("{path}: SECOND_MODE_REF mismatch"));

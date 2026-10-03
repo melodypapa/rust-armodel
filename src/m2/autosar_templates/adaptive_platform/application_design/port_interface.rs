@@ -10,6 +10,7 @@ new_key_type! {
 
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::sw_component_template::datatype::data_prototypes::AutosarDataPrototype;
@@ -98,11 +99,11 @@ impl Field {
         self
     }
 
-    pub fn get_atp_type_ref(&self) -> Option<&str> {
+    pub fn get_atp_type_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_atp_type_ref()
     }
 
-    pub fn set_atp_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_type_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()

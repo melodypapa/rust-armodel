@@ -172,6 +172,7 @@ impl EndToEndDescription {
 pub struct EndToEndProtection {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
+    end_to_end_profile: Option<EndToEndDescriptionId>,
     end_to_end_protection_i_signal_i_pdus: Vec<EndToEndProtectionISignalIPduId>,
     end_to_end_protection_variable_prototypes: Vec<EndToEndProtectionVariablePrototypeId>,
 }
@@ -195,6 +196,15 @@ impl EndToEndProtection {
 
     pub fn variation_point_capable_mut(&mut self) -> &mut VariationPointCapable {
         &mut self.variation_point_capable
+    }
+
+    pub fn get_end_to_end_profile(&self) -> Option<EndToEndDescriptionId> {
+        self.end_to_end_profile
+    }
+
+    pub fn set_end_to_end_profile(&mut self, value: EndToEndDescriptionId) -> &mut Self {
+        self.end_to_end_profile = Some(value);
+        self
     }
 
     pub fn get_end_to_end_protection_i_signal_i_pdus(&self) -> &[EndToEndProtectionISignalIPduId] {
@@ -759,6 +769,9 @@ impl Document {
             b.variation_point_capable(),
             path,
         )?;
+        if a.get_end_to_end_profile() != b.get_end_to_end_profile() {
+            return Err(format!("{path}: END_TO_END_PROFILE mismatch"));
+        }
         let list_a = a.get_end_to_end_protection_i_signal_i_pdus();
         let list_b = b.get_end_to_end_protection_i_signal_i_pdus();
         if list_a.len() != list_b.len() {

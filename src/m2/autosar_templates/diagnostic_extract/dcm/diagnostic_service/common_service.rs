@@ -11,6 +11,7 @@ new_key_type! {
 use crate::m2::autosar_templates::diagnostic_extract::common_diagnostics::DiagnosticCommonElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -616,8 +617,8 @@ impl DiagnosticServiceClass {
 #[derive(Debug, Default)]
 pub struct DiagnosticServiceInstance {
     base: DiagnosticCommonElement,
-    access_permission_ref: Option<String>,
-    service_class_ref: Option<String>,
+    access_permission_ref: Option<RefTypeId>,
+    service_class_ref: Option<RefTypeId>,
 }
 
 impl DiagnosticServiceInstance {
@@ -633,21 +634,21 @@ impl DiagnosticServiceInstance {
         &mut self.base
     }
 
-    pub fn get_access_permission_ref(&self) -> Option<&str> {
-        self.access_permission_ref.as_deref()
+    pub fn get_access_permission_ref(&self) -> Option<RefTypeId> {
+        self.access_permission_ref
     }
 
-    pub fn set_access_permission_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.access_permission_ref = Some(value.into());
+    pub fn set_access_permission_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.access_permission_ref = Some(value);
         self
     }
 
-    pub fn get_service_class_ref(&self) -> Option<&str> {
-        self.service_class_ref.as_deref()
+    pub fn get_service_class_ref(&self) -> Option<RefTypeId> {
+        self.service_class_ref
     }
 
-    pub fn set_service_class_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.service_class_ref = Some(value.into());
+    pub fn set_service_class_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.service_class_ref = Some(value);
         self
     }
 

@@ -25,6 +25,7 @@ use crate::m2::msr::documentation::text_model::block_elements::DocumentationBloc
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::msr::data_dictionary::data_def_properties::SwCalibrationAccessEnum;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
@@ -330,7 +331,7 @@ impl ModeDeclaration {
 #[derive(Debug, Default)]
 pub struct ModeDeclarationGroup {
     base: AtpType,
-    initial_mode_ref: Option<String>,
+    initial_mode_ref: Option<RefTypeId>,
     mode_declarations: Vec<ModeDeclarationId>,
     mode_manager_error_behavior: Option<ModeErrorBehaviorId>,
     mode_transitions: Vec<ModeTransitionId>,
@@ -351,12 +352,12 @@ impl ModeDeclarationGroup {
         &mut self.base
     }
 
-    pub fn get_initial_mode_ref(&self) -> Option<&str> {
-        self.initial_mode_ref.as_deref()
+    pub fn get_initial_mode_ref(&self) -> Option<RefTypeId> {
+        self.initial_mode_ref
     }
 
-    pub fn set_initial_mode_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.initial_mode_ref = Some(value.into());
+    pub fn set_initial_mode_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.initial_mode_ref = Some(value);
         self
     }
 
@@ -631,11 +632,11 @@ impl ModeDeclarationGroupPrototype {
         self
     }
 
-    pub fn get_atp_type_ref(&self) -> Option<&str> {
+    pub fn get_atp_type_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_type_ref()
     }
 
-    pub fn set_atp_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_type_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_type_ref(value);
         self
     }
@@ -826,9 +827,9 @@ impl ModeDeclarationGroupPrototype {
 #[derive(Debug, Default)]
 pub struct ModeDeclarationGroupPrototypeMapping {
     base: ARObject,
-    first_mode_group_ref: Option<String>,
-    mode_declaration_mapping_set_ref: Option<String>,
-    second_mode_group_ref: Option<String>,
+    first_mode_group_ref: Option<RefTypeId>,
+    mode_declaration_mapping_set_ref: Option<RefTypeId>,
+    second_mode_group_ref: Option<RefTypeId>,
 }
 
 impl ModeDeclarationGroupPrototypeMapping {
@@ -844,30 +845,30 @@ impl ModeDeclarationGroupPrototypeMapping {
         &mut self.base
     }
 
-    pub fn get_first_mode_group_ref(&self) -> Option<&str> {
-        self.first_mode_group_ref.as_deref()
+    pub fn get_first_mode_group_ref(&self) -> Option<RefTypeId> {
+        self.first_mode_group_ref
     }
 
-    pub fn set_first_mode_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.first_mode_group_ref = Some(value.into());
+    pub fn set_first_mode_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.first_mode_group_ref = Some(value);
         self
     }
 
-    pub fn get_mode_declaration_mapping_set_ref(&self) -> Option<&str> {
-        self.mode_declaration_mapping_set_ref.as_deref()
+    pub fn get_mode_declaration_mapping_set_ref(&self) -> Option<RefTypeId> {
+        self.mode_declaration_mapping_set_ref
     }
 
-    pub fn set_mode_declaration_mapping_set_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.mode_declaration_mapping_set_ref = Some(value.into());
+    pub fn set_mode_declaration_mapping_set_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.mode_declaration_mapping_set_ref = Some(value);
         self
     }
 
-    pub fn get_second_mode_group_ref(&self) -> Option<&str> {
-        self.second_mode_group_ref.as_deref()
+    pub fn get_second_mode_group_ref(&self) -> Option<RefTypeId> {
+        self.second_mode_group_ref
     }
 
-    pub fn set_second_mode_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.second_mode_group_ref = Some(value.into());
+    pub fn set_second_mode_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.second_mode_group_ref = Some(value);
         self
     }
 
@@ -895,7 +896,7 @@ impl ModeDeclarationGroupPrototypeMapping {
 #[derive(Debug, Default)]
 pub struct ModeErrorBehavior {
     base: ARObject,
-    default_mode_ref: Option<String>,
+    default_mode_ref: Option<RefTypeId>,
     error_reaction_policy: Option<ModeErrorReactionPolicyEnum>,
 }
 
@@ -912,12 +913,12 @@ impl ModeErrorBehavior {
         &mut self.base
     }
 
-    pub fn get_default_mode_ref(&self) -> Option<&str> {
-        self.default_mode_ref.as_deref()
+    pub fn get_default_mode_ref(&self) -> Option<RefTypeId> {
+        self.default_mode_ref
     }
 
-    pub fn set_default_mode_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.default_mode_ref = Some(value.into());
+    pub fn set_default_mode_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.default_mode_ref = Some(value);
         self
     }
 
@@ -955,8 +956,8 @@ impl ModeErrorBehavior {
 #[derive(Debug, Default)]
 pub struct ModeRequestTypeMap {
     base: ARObject,
-    implementation_data_type_ref: Option<String>,
-    mode_group_ref: Option<String>,
+    implementation_data_type_ref: Option<RefTypeId>,
+    mode_group_ref: Option<RefTypeId>,
 }
 
 impl ModeRequestTypeMap {
@@ -972,21 +973,21 @@ impl ModeRequestTypeMap {
         &mut self.base
     }
 
-    pub fn get_implementation_data_type_ref(&self) -> Option<&str> {
-        self.implementation_data_type_ref.as_deref()
+    pub fn get_implementation_data_type_ref(&self) -> Option<RefTypeId> {
+        self.implementation_data_type_ref
     }
 
-    pub fn set_implementation_data_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.implementation_data_type_ref = Some(value.into());
+    pub fn set_implementation_data_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.implementation_data_type_ref = Some(value);
         self
     }
 
-    pub fn get_mode_group_ref(&self) -> Option<&str> {
-        self.mode_group_ref.as_deref()
+    pub fn get_mode_group_ref(&self) -> Option<RefTypeId> {
+        self.mode_group_ref
     }
 
-    pub fn set_mode_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.mode_group_ref = Some(value.into());
+    pub fn set_mode_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.mode_group_ref = Some(value);
         self
     }
 
@@ -1014,8 +1015,8 @@ impl ModeRequestTypeMap {
 #[derive(Debug, Default)]
 pub struct ModeTransition {
     base: AtpStructureElement,
-    entered_mode_ref: Option<String>,
-    exited_mode_ref: Option<String>,
+    entered_mode_ref: Option<RefTypeId>,
+    exited_mode_ref: Option<RefTypeId>,
 }
 
 impl ModeTransition {
@@ -1031,21 +1032,21 @@ impl ModeTransition {
         &mut self.base
     }
 
-    pub fn get_entered_mode_ref(&self) -> Option<&str> {
-        self.entered_mode_ref.as_deref()
+    pub fn get_entered_mode_ref(&self) -> Option<RefTypeId> {
+        self.entered_mode_ref
     }
 
-    pub fn set_entered_mode_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.entered_mode_ref = Some(value.into());
+    pub fn set_entered_mode_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.entered_mode_ref = Some(value);
         self
     }
 
-    pub fn get_exited_mode_ref(&self) -> Option<&str> {
-        self.exited_mode_ref.as_deref()
+    pub fn get_exited_mode_ref(&self) -> Option<RefTypeId> {
+        self.exited_mode_ref
     }
 
-    pub fn set_exited_mode_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.exited_mode_ref = Some(value.into());
+    pub fn set_exited_mode_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.exited_mode_ref = Some(value);
         self
     }
 

@@ -38,6 +38,7 @@ use crate::m2::autosar_templates::system_template::fibex::fibex_core::FibexEleme
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Referrable;
 use crate::m2::autosar_templates::system_template::fibex::fibex4_ethernet::ethernet_topology::SdClientConfigId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
@@ -229,7 +230,7 @@ pub struct AbstractServiceInstance {
     capability_records: Vec<TagWithOptionalValueId>,
     major_version: Option<String>,
     method_activation_routing_group: Option<PduActivationRoutingGroupId>,
-    routing_group_refs: Vec<String>,
+    routing_group_refs: Vec<RefTypeId>,
 }
 
 impl AbstractServiceInstance {
@@ -282,11 +283,11 @@ impl AbstractServiceInstance {
         self
     }
 
-    pub fn get_routing_group_refs(&self) -> &[String] {
+    pub fn get_routing_group_refs(&self) -> &[RefTypeId] {
         &self.routing_group_refs
     }
 
-    pub fn push_routing_group_ref(&mut self, value: String) {
+    pub fn push_routing_group_ref(&mut self, value: RefTypeId) {
         self.routing_group_refs.push(value);
     }
 
@@ -437,15 +438,15 @@ impl AbstractServiceInstance {
 pub struct ConsumedEventGroup {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    application_endpoint_ref: Option<String>,
+    application_endpoint_ref: Option<RefTypeId>,
     auto_require: Option<String>,
     event_group_identifier: Option<String>,
-    event_multicast_address_refs: Vec<String>,
+    event_multicast_address_refs: Vec<RefTypeId>,
     pdu_activation_routing_groups: Vec<PduActivationRoutingGroupId>,
     priority: Option<String>,
-    routing_group_refs: Vec<String>,
+    routing_group_refs: Vec<RefTypeId>,
     sd_client_config: Option<SdClientConfigId>,
-    sd_client_timer_config_ref: Option<String>,
+    sd_client_timer_config_ref: Option<RefTypeId>,
 }
 
 impl ConsumedEventGroup {
@@ -469,12 +470,12 @@ impl ConsumedEventGroup {
         &mut self.variation_point_capable
     }
 
-    pub fn get_application_endpoint_ref(&self) -> Option<&str> {
-        self.application_endpoint_ref.as_deref()
+    pub fn get_application_endpoint_ref(&self) -> Option<RefTypeId> {
+        self.application_endpoint_ref
     }
 
-    pub fn set_application_endpoint_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.application_endpoint_ref = Some(value.into());
+    pub fn set_application_endpoint_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.application_endpoint_ref = Some(value);
         self
     }
 
@@ -496,11 +497,11 @@ impl ConsumedEventGroup {
         self
     }
 
-    pub fn get_event_multicast_address_refs(&self) -> &[String] {
+    pub fn get_event_multicast_address_refs(&self) -> &[RefTypeId] {
         &self.event_multicast_address_refs
     }
 
-    pub fn push_event_multicast_address_ref(&mut self, value: String) {
+    pub fn push_event_multicast_address_ref(&mut self, value: RefTypeId) {
         self.event_multicast_address_refs.push(value);
     }
 
@@ -521,11 +522,11 @@ impl ConsumedEventGroup {
         self
     }
 
-    pub fn get_routing_group_refs(&self) -> &[String] {
+    pub fn get_routing_group_refs(&self) -> &[RefTypeId] {
         &self.routing_group_refs
     }
 
-    pub fn push_routing_group_ref(&mut self, value: String) {
+    pub fn push_routing_group_ref(&mut self, value: RefTypeId) {
         self.routing_group_refs.push(value);
     }
 
@@ -538,12 +539,12 @@ impl ConsumedEventGroup {
         self
     }
 
-    pub fn get_sd_client_timer_config_ref(&self) -> Option<&str> {
-        self.sd_client_timer_config_ref.as_deref()
+    pub fn get_sd_client_timer_config_ref(&self) -> Option<RefTypeId> {
+        self.sd_client_timer_config_ref
     }
 
-    pub fn set_sd_client_timer_config_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.sd_client_timer_config_ref = Some(value.into());
+    pub fn set_sd_client_timer_config_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sd_client_timer_config_ref = Some(value);
         self
     }
 
@@ -693,8 +694,8 @@ impl ConsumedEventGroup {
 #[derive(Debug, Default)]
 pub struct ConsumedProvidedServiceInstanceGroup {
     base: FibexElement,
-    consumed_service_instance_refs: Vec<String>,
-    provided_service_instance_refs: Vec<String>,
+    consumed_service_instance_refs: Vec<RefTypeId>,
+    provided_service_instance_refs: Vec<RefTypeId>,
 }
 
 impl ConsumedProvidedServiceInstanceGroup {
@@ -710,19 +711,19 @@ impl ConsumedProvidedServiceInstanceGroup {
         &mut self.base
     }
 
-    pub fn get_consumed_service_instance_refs(&self) -> &[String] {
+    pub fn get_consumed_service_instance_refs(&self) -> &[RefTypeId] {
         &self.consumed_service_instance_refs
     }
 
-    pub fn push_consumed_service_instance_ref(&mut self, value: String) {
+    pub fn push_consumed_service_instance_ref(&mut self, value: RefTypeId) {
         self.consumed_service_instance_refs.push(value);
     }
 
-    pub fn get_provided_service_instance_refs(&self) -> &[String] {
+    pub fn get_provided_service_instance_refs(&self) -> &[RefTypeId] {
         &self.provided_service_instance_refs
     }
 
-    pub fn push_provided_service_instance_ref(&mut self, value: String) {
+    pub fn push_provided_service_instance_ref(&mut self, value: RefTypeId) {
         self.provided_service_instance_refs.push(value);
     }
 
@@ -946,18 +947,18 @@ impl ConsumedProvidedServiceInstanceGroup {
 #[derive(Debug, Default)]
 pub struct ConsumedServiceInstance {
     base: AbstractServiceInstance,
-    allowed_service_provider_refs: Vec<String>,
+    allowed_service_provider_refs: Vec<RefTypeId>,
     auto_require: Option<String>,
     blocklisted_versions: Vec<SomeipServiceVersionId>,
     consumed_event_groups: Vec<ConsumedEventGroupId>,
-    event_multicast_subscription_address_ref: Option<String>,
+    event_multicast_subscription_address_ref: Option<RefTypeId>,
     instance_identifier: Option<String>,
-    local_unicast_address_refs: Vec<String>,
+    local_unicast_address_refs: Vec<RefTypeId>,
     minor_version: Option<String>,
-    provided_service_instance_ref: Option<String>,
-    remote_unicast_address_refs: Vec<String>,
+    provided_service_instance_ref: Option<RefTypeId>,
+    remote_unicast_address_refs: Vec<RefTypeId>,
     sd_client_config: Option<SdClientConfigId>,
-    sd_client_timer_config_ref: Option<String>,
+    sd_client_timer_config_ref: Option<RefTypeId>,
     service_identifier: Option<String>,
     version_driven_find_behavior: Option<ServiceVersionAcceptanceKindEnum>,
 }
@@ -975,11 +976,11 @@ impl ConsumedServiceInstance {
         &mut self.base
     }
 
-    pub fn get_allowed_service_provider_refs(&self) -> &[String] {
+    pub fn get_allowed_service_provider_refs(&self) -> &[RefTypeId] {
         &self.allowed_service_provider_refs
     }
 
-    pub fn push_allowed_service_provider_ref(&mut self, value: String) {
+    pub fn push_allowed_service_provider_ref(&mut self, value: RefTypeId) {
         self.allowed_service_provider_refs.push(value);
     }
 
@@ -1008,15 +1009,12 @@ impl ConsumedServiceInstance {
         self.consumed_event_groups.push(value);
     }
 
-    pub fn get_event_multicast_subscription_address_ref(&self) -> Option<&str> {
-        self.event_multicast_subscription_address_ref.as_deref()
+    pub fn get_event_multicast_subscription_address_ref(&self) -> Option<RefTypeId> {
+        self.event_multicast_subscription_address_ref
     }
 
-    pub fn set_event_multicast_subscription_address_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
-        self.event_multicast_subscription_address_ref = Some(value.into());
+    pub fn set_event_multicast_subscription_address_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.event_multicast_subscription_address_ref = Some(value);
         self
     }
 
@@ -1029,11 +1027,11 @@ impl ConsumedServiceInstance {
         self
     }
 
-    pub fn get_local_unicast_address_refs(&self) -> &[String] {
+    pub fn get_local_unicast_address_refs(&self) -> &[RefTypeId] {
         &self.local_unicast_address_refs
     }
 
-    pub fn push_local_unicast_address_ref(&mut self, value: String) {
+    pub fn push_local_unicast_address_ref(&mut self, value: RefTypeId) {
         self.local_unicast_address_refs.push(value);
     }
 
@@ -1046,20 +1044,20 @@ impl ConsumedServiceInstance {
         self
     }
 
-    pub fn get_provided_service_instance_ref(&self) -> Option<&str> {
-        self.provided_service_instance_ref.as_deref()
+    pub fn get_provided_service_instance_ref(&self) -> Option<RefTypeId> {
+        self.provided_service_instance_ref
     }
 
-    pub fn set_provided_service_instance_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.provided_service_instance_ref = Some(value.into());
+    pub fn set_provided_service_instance_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.provided_service_instance_ref = Some(value);
         self
     }
 
-    pub fn get_remote_unicast_address_refs(&self) -> &[String] {
+    pub fn get_remote_unicast_address_refs(&self) -> &[RefTypeId] {
         &self.remote_unicast_address_refs
     }
 
-    pub fn push_remote_unicast_address_ref(&mut self, value: String) {
+    pub fn push_remote_unicast_address_ref(&mut self, value: RefTypeId) {
         self.remote_unicast_address_refs.push(value);
     }
 
@@ -1072,12 +1070,12 @@ impl ConsumedServiceInstance {
         self
     }
 
-    pub fn get_sd_client_timer_config_ref(&self) -> Option<&str> {
-        self.sd_client_timer_config_ref.as_deref()
+    pub fn get_sd_client_timer_config_ref(&self) -> Option<RefTypeId> {
+        self.sd_client_timer_config_ref
     }
 
-    pub fn set_sd_client_timer_config_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.sd_client_timer_config_ref = Some(value.into());
+    pub fn set_sd_client_timer_config_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sd_client_timer_config_ref = Some(value);
         self
     }
 
@@ -1131,11 +1129,11 @@ impl ConsumedServiceInstance {
         self
     }
 
-    pub fn get_routing_group_refs(&self) -> &[String] {
+    pub fn get_routing_group_refs(&self) -> &[RefTypeId] {
         self.base().get_routing_group_refs()
     }
 
-    pub fn push_routing_group_ref(&mut self, value: String) {
+    pub fn push_routing_group_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_routing_group_ref(value)
     }
 
@@ -1287,14 +1285,14 @@ impl ConsumedServiceInstance {
 pub struct EventHandler {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    consumed_event_group_refs: Vec<String>,
+    consumed_event_group_refs: Vec<RefTypeId>,
     event_group_identifier: Option<String>,
-    event_multicast_address_ref: Option<String>,
+    event_multicast_address_ref: Option<RefTypeId>,
     multicast_threshold: Option<String>,
     pdu_activation_routing_groups: Vec<PduActivationRoutingGroupId>,
-    routing_group_refs: Vec<String>,
+    routing_group_refs: Vec<RefTypeId>,
     sd_server_config: Option<SdServerConfigId>,
-    sd_server_eg_timing_config_ref: Option<String>,
+    sd_server_eg_timing_config_ref: Option<RefTypeId>,
 }
 
 impl EventHandler {
@@ -1318,11 +1316,11 @@ impl EventHandler {
         &mut self.variation_point_capable
     }
 
-    pub fn get_consumed_event_group_refs(&self) -> &[String] {
+    pub fn get_consumed_event_group_refs(&self) -> &[RefTypeId] {
         &self.consumed_event_group_refs
     }
 
-    pub fn push_consumed_event_group_ref(&mut self, value: String) {
+    pub fn push_consumed_event_group_ref(&mut self, value: RefTypeId) {
         self.consumed_event_group_refs.push(value);
     }
 
@@ -1335,12 +1333,12 @@ impl EventHandler {
         self
     }
 
-    pub fn get_event_multicast_address_ref(&self) -> Option<&str> {
-        self.event_multicast_address_ref.as_deref()
+    pub fn get_event_multicast_address_ref(&self) -> Option<RefTypeId> {
+        self.event_multicast_address_ref
     }
 
-    pub fn set_event_multicast_address_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.event_multicast_address_ref = Some(value.into());
+    pub fn set_event_multicast_address_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.event_multicast_address_ref = Some(value);
         self
     }
 
@@ -1361,11 +1359,11 @@ impl EventHandler {
         self.pdu_activation_routing_groups.push(value);
     }
 
-    pub fn get_routing_group_refs(&self) -> &[String] {
+    pub fn get_routing_group_refs(&self) -> &[RefTypeId] {
         &self.routing_group_refs
     }
 
-    pub fn push_routing_group_ref(&mut self, value: String) {
+    pub fn push_routing_group_ref(&mut self, value: RefTypeId) {
         self.routing_group_refs.push(value);
     }
 
@@ -1378,12 +1376,12 @@ impl EventHandler {
         self
     }
 
-    pub fn get_sd_server_eg_timing_config_ref(&self) -> Option<&str> {
-        self.sd_server_eg_timing_config_ref.as_deref()
+    pub fn get_sd_server_eg_timing_config_ref(&self) -> Option<RefTypeId> {
+        self.sd_server_eg_timing_config_ref
     }
 
-    pub fn set_sd_server_eg_timing_config_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.sd_server_eg_timing_config_ref = Some(value.into());
+    pub fn set_sd_server_eg_timing_config_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sd_server_eg_timing_config_ref = Some(value);
         self
     }
 
@@ -1614,8 +1612,8 @@ pub struct PduActivationRoutingGroup {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
     event_group_control_type: Option<EventGroupControlTypeEnum>,
-    i_pdu_identifier_tcp_refs: Vec<String>,
-    i_pdu_identifier_udp_refs: Vec<String>,
+    i_pdu_identifier_tcp_refs: Vec<RefTypeId>,
+    i_pdu_identifier_udp_refs: Vec<RefTypeId>,
 }
 
 impl PduActivationRoutingGroup {
@@ -1648,19 +1646,19 @@ impl PduActivationRoutingGroup {
         self
     }
 
-    pub fn get_i_pdu_identifier_tcp_refs(&self) -> &[String] {
+    pub fn get_i_pdu_identifier_tcp_refs(&self) -> &[RefTypeId] {
         &self.i_pdu_identifier_tcp_refs
     }
 
-    pub fn push_i_pdu_identifier_tcp_ref(&mut self, value: String) {
+    pub fn push_i_pdu_identifier_tcp_ref(&mut self, value: RefTypeId) {
         self.i_pdu_identifier_tcp_refs.push(value);
     }
 
-    pub fn get_i_pdu_identifier_udp_refs(&self) -> &[String] {
+    pub fn get_i_pdu_identifier_udp_refs(&self) -> &[RefTypeId] {
         &self.i_pdu_identifier_udp_refs
     }
 
-    pub fn push_i_pdu_identifier_udp_ref(&mut self, value: String) {
+    pub fn push_i_pdu_identifier_udp_ref(&mut self, value: RefTypeId) {
         self.i_pdu_identifier_udp_refs.push(value);
     }
 
@@ -1810,19 +1808,19 @@ impl PduActivationRoutingGroup {
 #[derive(Debug, Default)]
 pub struct ProvidedServiceInstance {
     base: AbstractServiceInstance,
-    allowed_service_consumer_refs: Vec<String>,
+    allowed_service_consumer_refs: Vec<RefTypeId>,
     auto_available: Option<String>,
     event_handlers: Vec<EventHandlerId>,
     instance_identifier: Option<String>,
     load_balancing_priority: Option<String>,
     load_balancing_weight: Option<String>,
-    local_unicast_address_refs: Vec<String>,
+    local_unicast_address_refs: Vec<RefTypeId>,
     minor_version: Option<String>,
     priority: Option<String>,
-    remote_multicast_subscription_address_refs: Vec<String>,
-    remote_unicast_address_refs: Vec<String>,
+    remote_multicast_subscription_address_refs: Vec<RefTypeId>,
+    remote_unicast_address_refs: Vec<RefTypeId>,
     sd_server_config: Option<SdServerConfigId>,
-    sd_server_timer_config_ref: Option<String>,
+    sd_server_timer_config_ref: Option<RefTypeId>,
     service_identifier: Option<String>,
 }
 
@@ -1839,11 +1837,11 @@ impl ProvidedServiceInstance {
         &mut self.base
     }
 
-    pub fn get_allowed_service_consumer_refs(&self) -> &[String] {
+    pub fn get_allowed_service_consumer_refs(&self) -> &[RefTypeId] {
         &self.allowed_service_consumer_refs
     }
 
-    pub fn push_allowed_service_consumer_ref(&mut self, value: String) {
+    pub fn push_allowed_service_consumer_ref(&mut self, value: RefTypeId) {
         self.allowed_service_consumer_refs.push(value);
     }
 
@@ -1891,11 +1889,11 @@ impl ProvidedServiceInstance {
         self
     }
 
-    pub fn get_local_unicast_address_refs(&self) -> &[String] {
+    pub fn get_local_unicast_address_refs(&self) -> &[RefTypeId] {
         &self.local_unicast_address_refs
     }
 
-    pub fn push_local_unicast_address_ref(&mut self, value: String) {
+    pub fn push_local_unicast_address_ref(&mut self, value: RefTypeId) {
         self.local_unicast_address_refs.push(value);
     }
 
@@ -1917,19 +1915,19 @@ impl ProvidedServiceInstance {
         self
     }
 
-    pub fn get_remote_multicast_subscription_address_refs(&self) -> &[String] {
+    pub fn get_remote_multicast_subscription_address_refs(&self) -> &[RefTypeId] {
         &self.remote_multicast_subscription_address_refs
     }
 
-    pub fn push_remote_multicast_subscription_address_ref(&mut self, value: String) {
+    pub fn push_remote_multicast_subscription_address_ref(&mut self, value: RefTypeId) {
         self.remote_multicast_subscription_address_refs.push(value);
     }
 
-    pub fn get_remote_unicast_address_refs(&self) -> &[String] {
+    pub fn get_remote_unicast_address_refs(&self) -> &[RefTypeId] {
         &self.remote_unicast_address_refs
     }
 
-    pub fn push_remote_unicast_address_ref(&mut self, value: String) {
+    pub fn push_remote_unicast_address_ref(&mut self, value: RefTypeId) {
         self.remote_unicast_address_refs.push(value);
     }
 
@@ -1942,12 +1940,12 @@ impl ProvidedServiceInstance {
         self
     }
 
-    pub fn get_sd_server_timer_config_ref(&self) -> Option<&str> {
-        self.sd_server_timer_config_ref.as_deref()
+    pub fn get_sd_server_timer_config_ref(&self) -> Option<RefTypeId> {
+        self.sd_server_timer_config_ref
     }
 
-    pub fn set_sd_server_timer_config_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.sd_server_timer_config_ref = Some(value.into());
+    pub fn set_sd_server_timer_config_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sd_server_timer_config_ref = Some(value);
         self
     }
 
@@ -1989,11 +1987,11 @@ impl ProvidedServiceInstance {
         self
     }
 
-    pub fn get_routing_group_refs(&self) -> &[String] {
+    pub fn get_routing_group_refs(&self) -> &[RefTypeId] {
         self.base().get_routing_group_refs()
     }
 
-    pub fn push_routing_group_ref(&mut self, value: String) {
+    pub fn push_routing_group_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_routing_group_ref(value)
     }
 
@@ -2676,13 +2674,13 @@ impl SoConIPduIdentifier {
 pub struct SocketAddress {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    allowed_i_pv6_ext_headers_ref: Option<String>,
-    allowed_tcp_options_ref: Option<String>,
+    allowed_i_pv6_ext_headers_ref: Option<RefTypeId>,
+    allowed_tcp_options_ref: Option<RefTypeId>,
     application_endpoint: Option<ApplicationEndpointId>,
-    connector_ref: Option<String>,
+    connector_ref: Option<RefTypeId>,
     differentiated_service_field: Option<String>,
     flow_label: Option<String>,
-    multicast_connector_refs: Vec<String>,
+    multicast_connector_refs: Vec<RefTypeId>,
     path_mtu_discovery_enabled: Option<String>,
     pdu_collection_max_buffer_size: Option<String>,
     pdu_collection_timeout: Option<String>,
@@ -2711,21 +2709,21 @@ impl SocketAddress {
         &mut self.variation_point_capable
     }
 
-    pub fn get_allowed_i_pv6_ext_headers_ref(&self) -> Option<&str> {
-        self.allowed_i_pv6_ext_headers_ref.as_deref()
+    pub fn get_allowed_i_pv6_ext_headers_ref(&self) -> Option<RefTypeId> {
+        self.allowed_i_pv6_ext_headers_ref
     }
 
-    pub fn set_allowed_i_pv6_ext_headers_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.allowed_i_pv6_ext_headers_ref = Some(value.into());
+    pub fn set_allowed_i_pv6_ext_headers_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.allowed_i_pv6_ext_headers_ref = Some(value);
         self
     }
 
-    pub fn get_allowed_tcp_options_ref(&self) -> Option<&str> {
-        self.allowed_tcp_options_ref.as_deref()
+    pub fn get_allowed_tcp_options_ref(&self) -> Option<RefTypeId> {
+        self.allowed_tcp_options_ref
     }
 
-    pub fn set_allowed_tcp_options_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.allowed_tcp_options_ref = Some(value.into());
+    pub fn set_allowed_tcp_options_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.allowed_tcp_options_ref = Some(value);
         self
     }
 
@@ -2738,12 +2736,12 @@ impl SocketAddress {
         self
     }
 
-    pub fn get_connector_ref(&self) -> Option<&str> {
-        self.connector_ref.as_deref()
+    pub fn get_connector_ref(&self) -> Option<RefTypeId> {
+        self.connector_ref
     }
 
-    pub fn set_connector_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.connector_ref = Some(value.into());
+    pub fn set_connector_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.connector_ref = Some(value);
         self
     }
 
@@ -2765,11 +2763,11 @@ impl SocketAddress {
         self
     }
 
-    pub fn get_multicast_connector_refs(&self) -> &[String] {
+    pub fn get_multicast_connector_refs(&self) -> &[RefTypeId] {
         &self.multicast_connector_refs
     }
 
-    pub fn push_multicast_connector_ref(&mut self, value: String) {
+    pub fn push_multicast_connector_ref(&mut self, value: RefTypeId) {
         self.multicast_connector_refs.push(value);
     }
 
@@ -4080,8 +4078,8 @@ impl SomeipServiceVersion {
 pub struct StaticSocketConnection {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    i_pdu_identifier_refs: Vec<String>,
-    remote_address_ref: Option<String>,
+    i_pdu_identifier_refs: Vec<RefTypeId>,
+    remote_address_ref: Option<RefTypeId>,
     tcp_connect_timeout: Option<String>,
     tcp_role: Option<TcpRoleEnum>,
 }
@@ -4107,20 +4105,20 @@ impl StaticSocketConnection {
         &mut self.variation_point_capable
     }
 
-    pub fn get_i_pdu_identifier_refs(&self) -> &[String] {
+    pub fn get_i_pdu_identifier_refs(&self) -> &[RefTypeId] {
         &self.i_pdu_identifier_refs
     }
 
-    pub fn push_i_pdu_identifier_ref(&mut self, value: String) {
+    pub fn push_i_pdu_identifier_ref(&mut self, value: RefTypeId) {
         self.i_pdu_identifier_refs.push(value);
     }
 
-    pub fn get_remote_address_ref(&self) -> Option<&str> {
-        self.remote_address_ref.as_deref()
+    pub fn get_remote_address_ref(&self) -> Option<RefTypeId> {
+        self.remote_address_ref
     }
 
-    pub fn set_remote_address_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.remote_address_ref = Some(value.into());
+    pub fn set_remote_address_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.remote_address_ref = Some(value);
         self
     }
 
@@ -4329,9 +4327,13 @@ impl Document {
             return Err(format!("{path}: ROUTING_GROUP_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.ROUTING_GROUP_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.ROUTING_GROUP_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.ROUTING_GROUP_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.ROUTING_GROUP_REFS[{index}]"))?;
         }
         Ok(())
     }
@@ -4367,11 +4369,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.EVENT_MULTICAST_ADDRESS_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.EVENT_MULTICAST_ADDRESS_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.EVENT_MULTICAST_ADDRESS_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.EVENT_MULTICAST_ADDRESS_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_pdu_activation_routing_groups();
         let list_b = b.get_pdu_activation_routing_groups();
@@ -4405,9 +4414,13 @@ impl Document {
             return Err(format!("{path}: ROUTING_GROUP_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.ROUTING_GROUP_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.ROUTING_GROUP_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.ROUTING_GROUP_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.ROUTING_GROUP_REFS[{index}]"))?;
         }
         if a.get_sd_client_config() != b.get_sd_client_config() {
             return Err(format!("{path}: SD_CLIENT_CONFIG mismatch"));
@@ -4434,11 +4447,20 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.CONSUMED_SERVICE_INSTANCE_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.CONSUMED_SERVICE_INSTANCE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!(
+                    "{path}.CONSUMED_SERVICE_INSTANCE_REFS[{index}]: id not found in other arena"
+                )
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONSUMED_SERVICE_INSTANCE_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_provided_service_instance_refs();
         let list_b = b.get_provided_service_instance_refs();
@@ -4448,11 +4470,20 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.PROVIDED_SERVICE_INSTANCE_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.PROVIDED_SERVICE_INSTANCE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!(
+                    "{path}.PROVIDED_SERVICE_INSTANCE_REFS[{index}]: id not found in other arena"
+                )
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.PROVIDED_SERVICE_INSTANCE_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }
@@ -4473,11 +4504,20 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.ALLOWED_SERVICE_PROVIDER_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.ALLOWED_SERVICE_PROVIDER_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!(
+                    "{path}.ALLOWED_SERVICE_PROVIDER_REFS[{index}]: id not found in other arena"
+                )
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.ALLOWED_SERVICE_PROVIDER_REFS[{index}]"),
+            )?;
         }
         if a.get_auto_require() != b.get_auto_require() {
             return Err(format!("{path}: AUTO_REQUIRE mismatch"));
@@ -4538,11 +4578,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.LOCAL_UNICAST_ADDRESS_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.LOCAL_UNICAST_ADDRESS_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.LOCAL_UNICAST_ADDRESS_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.LOCAL_UNICAST_ADDRESS_REFS[{index}]"),
+            )?;
         }
         if a.get_minor_version() != b.get_minor_version() {
             return Err(format!("{path}: MINOR_VERSION mismatch"));
@@ -4558,11 +4605,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.REMOTE_UNICAST_ADDRESS_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.REMOTE_UNICAST_ADDRESS_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.REMOTE_UNICAST_ADDRESS_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.REMOTE_UNICAST_ADDRESS_REFS[{index}]"),
+            )?;
         }
         if a.get_sd_client_config() != b.get_sd_client_config() {
             return Err(format!("{path}: SD_CLIENT_CONFIG mismatch"));
@@ -4599,11 +4653,18 @@ impl Document {
             return Err(format!("{path}: CONSUMED_EVENT_GROUP_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.CONSUMED_EVENT_GROUP_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.CONSUMED_EVENT_GROUP_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.CONSUMED_EVENT_GROUP_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONSUMED_EVENT_GROUP_REFS[{index}]"),
+            )?;
         }
         if a.get_event_group_identifier() != b.get_event_group_identifier() {
             return Err(format!("{path}: EVENT_GROUP_IDENTIFIER mismatch"));
@@ -4643,9 +4704,13 @@ impl Document {
             return Err(format!("{path}: ROUTING_GROUP_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.ROUTING_GROUP_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.ROUTING_GROUP_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.ROUTING_GROUP_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.ROUTING_GROUP_REFS[{index}]"))?;
         }
         if a.get_sd_server_config() != b.get_sd_server_config() {
             return Err(format!("{path}: SD_SERVER_CONFIG mismatch"));
@@ -4702,11 +4767,18 @@ impl Document {
             return Err(format!("{path}: I_PDU_IDENTIFIER_TCP_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.I_PDU_IDENTIFIER_TCP_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.I_PDU_IDENTIFIER_TCP_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.I_PDU_IDENTIFIER_TCP_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.I_PDU_IDENTIFIER_TCP_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_i_pdu_identifier_udp_refs();
         let list_b = b.get_i_pdu_identifier_udp_refs();
@@ -4714,11 +4786,18 @@ impl Document {
             return Err(format!("{path}: I_PDU_IDENTIFIER_UDP_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.I_PDU_IDENTIFIER_UDP_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.I_PDU_IDENTIFIER_UDP_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.I_PDU_IDENTIFIER_UDP_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.I_PDU_IDENTIFIER_UDP_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }
@@ -4739,11 +4818,20 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.ALLOWED_SERVICE_CONSUMER_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.ALLOWED_SERVICE_CONSUMER_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!(
+                    "{path}.ALLOWED_SERVICE_CONSUMER_REFS[{index}]: id not found in other arena"
+                )
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.ALLOWED_SERVICE_CONSUMER_REFS[{index}]"),
+            )?;
         }
         if a.get_auto_available() != b.get_auto_available() {
             return Err(format!("{path}: AUTO_AVAILABLE mismatch"));
@@ -4779,11 +4867,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.LOCAL_UNICAST_ADDRESS_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.LOCAL_UNICAST_ADDRESS_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.LOCAL_UNICAST_ADDRESS_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.LOCAL_UNICAST_ADDRESS_REFS[{index}]"),
+            )?;
         }
         if a.get_minor_version() != b.get_minor_version() {
             return Err(format!("{path}: MINOR_VERSION mismatch"));
@@ -4799,11 +4894,14 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.REMOTE_MULTICAST_SUBSCRIPTION_ADDRESS_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| format!("{path}.REMOTE_MULTICAST_SUBSCRIPTION_ADDRESS_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| format!("{path}.REMOTE_MULTICAST_SUBSCRIPTION_ADDRESS_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.REMOTE_MULTICAST_SUBSCRIPTION_ADDRESS_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_remote_unicast_address_refs();
         let list_b = b.get_remote_unicast_address_refs();
@@ -4813,11 +4911,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.REMOTE_UNICAST_ADDRESS_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.REMOTE_UNICAST_ADDRESS_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.REMOTE_UNICAST_ADDRESS_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.REMOTE_UNICAST_ADDRESS_REFS[{index}]"),
+            )?;
         }
         if a.get_sd_server_config() != b.get_sd_server_config() {
             return Err(format!("{path}: SD_SERVER_CONFIG mismatch"));
@@ -5015,9 +5120,18 @@ impl Document {
             return Err(format!("{path}: MULTICAST_CONNECTOR_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.MULTICAST_CONNECTOR_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.MULTICAST_CONNECTOR_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.MULTICAST_CONNECTOR_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.MULTICAST_CONNECTOR_REFS[{index}]"),
+            )?;
         }
         if a.get_path_mtu_discovery_enabled() != b.get_path_mtu_discovery_enabled() {
             return Err(format!("{path}: PATH_MTU_DISCOVERY_ENABLED mismatch"));
@@ -5169,9 +5283,18 @@ impl Document {
             return Err(format!("{path}: I_PDU_IDENTIFIER_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.I_PDU_IDENTIFIER_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.I_PDU_IDENTIFIER_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.I_PDU_IDENTIFIER_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.I_PDU_IDENTIFIER_REFS[{index}]"),
+            )?;
         }
         if a.get_remote_address_ref() != b.get_remote_address_ref() {
             return Err(format!("{path}: REMOTE_ADDRESS_REF mismatch"));

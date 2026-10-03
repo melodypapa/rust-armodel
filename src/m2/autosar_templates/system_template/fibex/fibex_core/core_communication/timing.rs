@@ -21,6 +21,7 @@ new_key_type! {
 use crate::m2::autosar_templates::common_structure::filter::DataFilterId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Describable;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId;
@@ -270,7 +271,7 @@ impl EventControlledTiming {
 #[derive(Debug, Default)]
 pub struct ModeDrivenTransmissionModeCondition {
     base: ARObject,
-    mode_declaration_refs: Vec<String>,
+    mode_declaration_refs: Vec<RefTypeId>,
 }
 
 impl ModeDrivenTransmissionModeCondition {
@@ -286,11 +287,11 @@ impl ModeDrivenTransmissionModeCondition {
         &mut self.base
     }
 
-    pub fn get_mode_declaration_refs(&self) -> &[String] {
+    pub fn get_mode_declaration_refs(&self) -> &[RefTypeId] {
         &self.mode_declaration_refs
     }
 
-    pub fn push_mode_declaration_ref(&mut self, value: String) {
+    pub fn push_mode_declaration_ref(&mut self, value: RefTypeId) {
         self.mode_declaration_refs.push(value);
     }
 
@@ -455,7 +456,7 @@ impl TimeRangeTypeTolerance {
 pub struct TransmissionModeCondition {
     base: ARObject,
     data_filter: Option<DataFilterId>,
-    i_signal_in_i_pdu_ref: Option<String>,
+    i_signal_in_i_pdu_ref: Option<RefTypeId>,
 }
 
 impl TransmissionModeCondition {
@@ -480,12 +481,12 @@ impl TransmissionModeCondition {
         self
     }
 
-    pub fn get_i_signal_in_i_pdu_ref(&self) -> Option<&str> {
-        self.i_signal_in_i_pdu_ref.as_deref()
+    pub fn get_i_signal_in_i_pdu_ref(&self) -> Option<RefTypeId> {
+        self.i_signal_in_i_pdu_ref
     }
 
-    pub fn set_i_signal_in_i_pdu_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.i_signal_in_i_pdu_ref = Some(value.into());
+    pub fn set_i_signal_in_i_pdu_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.i_signal_in_i_pdu_ref = Some(value);
         self
     }
 
@@ -670,7 +671,7 @@ impl TransmissionModeTiming {
 #[derive(Debug, Default)]
 pub struct TriggerIPduSendCondition {
     base: ARObject,
-    mode_declaration_refs: Vec<String>,
+    mode_declaration_refs: Vec<RefTypeId>,
 }
 
 impl TriggerIPduSendCondition {
@@ -686,11 +687,11 @@ impl TriggerIPduSendCondition {
         &mut self.base
     }
 
-    pub fn get_mode_declaration_refs(&self) -> &[String] {
+    pub fn get_mode_declaration_refs(&self) -> &[RefTypeId] {
         &self.mode_declaration_refs
     }
 
-    pub fn push_mode_declaration_ref(&mut self, value: String) {
+    pub fn push_mode_declaration_ref(&mut self, value: RefTypeId) {
         self.mode_declaration_refs.push(value);
     }
 
@@ -761,7 +762,7 @@ impl Document {
 
     pub(crate) fn compare_mode_driven_transmission_mode_condition(
         &self,
-        _other: &Document,
+        other: &Document,
         a: &ModeDrivenTransmissionModeCondition,
         b: &ModeDrivenTransmissionModeCondition,
         path: &str,
@@ -773,9 +774,18 @@ impl Document {
             return Err(format!("{path}: MODE_DECLARATION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.MODE_DECLARATION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.MODE_DECLARATION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.MODE_DECLARATION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.MODE_DECLARATION_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }
@@ -955,7 +965,7 @@ impl Document {
 
     pub(crate) fn compare_trigger_i_pdu_send_condition(
         &self,
-        _other: &Document,
+        other: &Document,
         a: &TriggerIPduSendCondition,
         b: &TriggerIPduSendCondition,
         path: &str,
@@ -967,9 +977,18 @@ impl Document {
             return Err(format!("{path}: MODE_DECLARATION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.MODE_DECLARATION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.MODE_DECLARATION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.MODE_DECLARATION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.MODE_DECLARATION_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }

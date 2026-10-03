@@ -18,6 +18,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -34,7 +35,7 @@ pub struct HwAttributeDef {
     base: Identifiable,
     hw_attribute_literals: Vec<HwAttributeLiteralDefId>,
     is_required: Option<String>,
-    unit_ref: Option<String>,
+    unit_ref: Option<RefTypeId>,
 }
 
 impl HwAttributeDef {
@@ -67,12 +68,12 @@ impl HwAttributeDef {
         self
     }
 
-    pub fn get_unit_ref(&self) -> Option<&str> {
-        self.unit_ref.as_deref()
+    pub fn get_unit_ref(&self) -> Option<RefTypeId> {
+        self.unit_ref
     }
 
-    pub fn set_unit_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.unit_ref = Some(value.into());
+    pub fn set_unit_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.unit_ref = Some(value);
         self
     }
 
@@ -365,7 +366,7 @@ pub struct HwAttributeValue {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
     annotation: Option<AnnotationId>,
-    hw_attribute_def_ref: Option<String>,
+    hw_attribute_def_ref: Option<RefTypeId>,
     v: Option<String>,
     vt: Option<String>,
 }
@@ -400,12 +401,12 @@ impl HwAttributeValue {
         self
     }
 
-    pub fn get_hw_attribute_def_ref(&self) -> Option<&str> {
-        self.hw_attribute_def_ref.as_deref()
+    pub fn get_hw_attribute_def_ref(&self) -> Option<RefTypeId> {
+        self.hw_attribute_def_ref
     }
 
-    pub fn set_hw_attribute_def_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.hw_attribute_def_ref = Some(value.into());
+    pub fn set_hw_attribute_def_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.hw_attribute_def_ref = Some(value);
         self
     }
 
@@ -937,19 +938,19 @@ impl HwType {
             .push_hw_attribute_value(value)
     }
 
-    pub fn get_hw_category_refs(&self) -> &[String] {
+    pub fn get_hw_category_refs(&self) -> &[RefTypeId] {
         self.hw_description_entity().get_hw_category_refs()
     }
 
-    pub fn push_hw_category_ref(&mut self, value: String) {
+    pub fn push_hw_category_ref(&mut self, value: RefTypeId) {
         self.hw_description_entity_mut().push_hw_category_ref(value)
     }
 
-    pub fn get_hw_type_ref(&self) -> Option<&str> {
+    pub fn get_hw_type_ref(&self) -> Option<RefTypeId> {
         self.hw_description_entity().get_hw_type_ref()
     }
 
-    pub fn set_hw_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_hw_type_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.hw_description_entity_mut().set_hw_type_ref(value);
         self
     }

@@ -25,6 +25,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::asam_hdo::special_data::SdgId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
@@ -99,20 +100,20 @@ impl ConditionByFormula {
         self
     }
 
-    pub fn get_sysc_ref(&self) -> Option<&str> {
+    pub fn get_sysc_ref(&self) -> Option<RefTypeId> {
         self.base().get_sysc_ref()
     }
 
-    pub fn set_sysc_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_sysc_ref(value);
         self
     }
 
-    pub fn get_sysc_string_ref(&self) -> Option<&str> {
+    pub fn get_sysc_string_ref(&self) -> Option<RefTypeId> {
         self.base().get_sysc_string_ref()
     }
 
-    pub fn set_sysc_string_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_string_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_sysc_string_ref(value);
         self
     }
@@ -158,8 +159,8 @@ impl ConditionByFormula {
 pub struct EvaluatedVariantSet {
     base: ARElement,
     approval_status: Option<String>,
-    evaluated_element_refs: Vec<String>,
-    evaluated_variant_refs: Vec<String>,
+    evaluated_element_refs: Vec<RefTypeId>,
+    evaluated_variant_refs: Vec<RefTypeId>,
 }
 
 impl EvaluatedVariantSet {
@@ -184,19 +185,19 @@ impl EvaluatedVariantSet {
         self
     }
 
-    pub fn get_evaluated_element_refs(&self) -> &[String] {
+    pub fn get_evaluated_element_refs(&self) -> &[RefTypeId] {
         &self.evaluated_element_refs
     }
 
-    pub fn push_evaluated_element_ref(&mut self, value: String) {
+    pub fn push_evaluated_element_ref(&mut self, value: RefTypeId) {
         self.evaluated_element_refs.push(value);
     }
 
-    pub fn get_evaluated_variant_refs(&self) -> &[String] {
+    pub fn get_evaluated_variant_refs(&self) -> &[RefTypeId] {
         &self.evaluated_variant_refs
     }
 
-    pub fn push_evaluated_variant_ref(&mut self, value: String) {
+    pub fn push_evaluated_variant_ref(&mut self, value: RefTypeId) {
         self.evaluated_variant_refs.push(value);
     }
 
@@ -420,6 +421,7 @@ impl EvaluatedVariantSet {
 #[derive(Debug, Default)]
 pub struct PostBuildVariantCondition {
     base: ARObject,
+    matching_criterion_ref: Option<RefTypeId>,
     value: Option<String>,
 }
 
@@ -434,6 +436,15 @@ impl PostBuildVariantCondition {
 
     pub fn base_mut(&mut self) -> &mut ARObject {
         &mut self.base
+    }
+
+    pub fn get_matching_criterion_ref(&self) -> Option<RefTypeId> {
+        self.matching_criterion_ref
+    }
+
+    pub fn set_matching_criterion_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.matching_criterion_ref = Some(value);
+        self
     }
 
     pub fn get_value(&self) -> Option<&str> {
@@ -469,6 +480,7 @@ impl PostBuildVariantCondition {
 #[derive(Debug, Default)]
 pub struct PostBuildVariantCriterion {
     base: ARElement,
+    compu_method_ref: Option<RefTypeId>,
 }
 
 impl PostBuildVariantCriterion {
@@ -482,6 +494,15 @@ impl PostBuildVariantCriterion {
 
     pub fn base_mut(&mut self) -> &mut ARElement {
         &mut self.base
+    }
+
+    pub fn get_compu_method_ref(&self) -> Option<RefTypeId> {
+        self.compu_method_ref
+    }
+
+    pub fn set_compu_method_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.compu_method_ref = Some(value);
+        self
     }
 
     pub fn get_admin_data(&self) -> Option<AdminDataId> {
@@ -706,6 +727,7 @@ pub struct PostBuildVariantCriterionValue {
     base: ARObject,
     annotations: Vec<AnnotationId>,
     value: Option<String>,
+    variant_criterion_ref: Option<RefTypeId>,
 }
 
 impl PostBuildVariantCriterionValue {
@@ -735,6 +757,15 @@ impl PostBuildVariantCriterionValue {
 
     pub fn set_value(&mut self, value: impl Into<String>) -> &mut Self {
         self.value = Some(value.into());
+        self
+    }
+
+    pub fn get_variant_criterion_ref(&self) -> Option<RefTypeId> {
+        self.variant_criterion_ref
+    }
+
+    pub fn set_variant_criterion_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.variant_criterion_ref = Some(value);
         self
     }
 
@@ -996,9 +1027,9 @@ impl PostBuildVariantCriterionValueSet {
 #[derive(Debug, Default)]
 pub struct PredefinedVariant {
     base: ARElement,
-    included_variant_refs: Vec<String>,
-    post_build_variant_criterion_value_set_refs: Vec<String>,
-    sw_systemconstant_value_set_refs: Vec<String>,
+    included_variant_refs: Vec<RefTypeId>,
+    post_build_variant_criterion_value_set_refs: Vec<RefTypeId>,
+    sw_systemconstant_value_set_refs: Vec<RefTypeId>,
 }
 
 impl PredefinedVariant {
@@ -1014,27 +1045,27 @@ impl PredefinedVariant {
         &mut self.base
     }
 
-    pub fn get_included_variant_refs(&self) -> &[String] {
+    pub fn get_included_variant_refs(&self) -> &[RefTypeId] {
         &self.included_variant_refs
     }
 
-    pub fn push_included_variant_ref(&mut self, value: String) {
+    pub fn push_included_variant_ref(&mut self, value: RefTypeId) {
         self.included_variant_refs.push(value);
     }
 
-    pub fn get_post_build_variant_criterion_value_set_refs(&self) -> &[String] {
+    pub fn get_post_build_variant_criterion_value_set_refs(&self) -> &[RefTypeId] {
         &self.post_build_variant_criterion_value_set_refs
     }
 
-    pub fn push_post_build_variant_criterion_value_set_ref(&mut self, value: String) {
+    pub fn push_post_build_variant_criterion_value_set_ref(&mut self, value: RefTypeId) {
         self.post_build_variant_criterion_value_set_refs.push(value);
     }
 
-    pub fn get_sw_systemconstant_value_set_refs(&self) -> &[String] {
+    pub fn get_sw_systemconstant_value_set_refs(&self) -> &[RefTypeId] {
         &self.sw_systemconstant_value_set_refs
     }
 
-    pub fn push_sw_systemconstant_value_set_ref(&mut self, value: String) {
+    pub fn push_sw_systemconstant_value_set_ref(&mut self, value: RefTypeId) {
         self.sw_systemconstant_value_set_refs.push(value);
     }
 
@@ -1258,8 +1289,8 @@ impl PredefinedVariant {
 #[derive(Debug, Default)]
 pub struct SwSystemconstDependentFormula {
     base: FormulaExpression,
-    sysc_ref: Option<String>,
-    sysc_string_ref: Option<String>,
+    sysc_ref: Option<RefTypeId>,
+    sysc_string_ref: Option<RefTypeId>,
 }
 
 impl SwSystemconstDependentFormula {
@@ -1275,21 +1306,21 @@ impl SwSystemconstDependentFormula {
         &mut self.base
     }
 
-    pub fn get_sysc_ref(&self) -> Option<&str> {
-        self.sysc_ref.as_deref()
+    pub fn get_sysc_ref(&self) -> Option<RefTypeId> {
+        self.sysc_ref
     }
 
-    pub fn set_sysc_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.sysc_ref = Some(value.into());
+    pub fn set_sysc_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sysc_ref = Some(value);
         self
     }
 
-    pub fn get_sysc_string_ref(&self) -> Option<&str> {
-        self.sysc_string_ref.as_deref()
+    pub fn get_sysc_string_ref(&self) -> Option<RefTypeId> {
+        self.sysc_string_ref
     }
 
-    pub fn set_sysc_string_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.sysc_string_ref = Some(value.into());
+    pub fn set_sysc_string_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sysc_string_ref = Some(value);
         self
     }
 
@@ -1334,6 +1365,7 @@ impl SwSystemconstDependentFormula {
 pub struct SwSystemconstValue {
     base: ARObject,
     annotations: Vec<AnnotationId>,
+    sw_systemconst_ref: Option<RefTypeId>,
     value: Option<String>,
 }
 
@@ -1356,6 +1388,15 @@ impl SwSystemconstValue {
 
     pub fn push_annotation(&mut self, value: AnnotationId) {
         self.annotations.push(value);
+    }
+
+    pub fn get_sw_systemconst_ref(&self) -> Option<RefTypeId> {
+        self.sw_systemconst_ref
+    }
+
+    pub fn set_sw_systemconst_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sw_systemconst_ref = Some(value);
+        self
     }
 
     pub fn get_value(&self) -> Option<&str> {
@@ -1770,9 +1811,18 @@ impl Document {
             return Err(format!("{path}: EVALUATED_ELEMENT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.EVALUATED_ELEMENT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.EVALUATED_ELEMENT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.EVALUATED_ELEMENT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.EVALUATED_ELEMENT_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_evaluated_variant_refs();
         let list_b = b.get_evaluated_variant_refs();
@@ -1780,9 +1830,18 @@ impl Document {
             return Err(format!("{path}: EVALUATED_VARIANT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.EVALUATED_VARIANT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.EVALUATED_VARIANT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.EVALUATED_VARIANT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.EVALUATED_VARIANT_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }
@@ -1795,6 +1854,9 @@ impl Document {
         path: &str,
     ) -> Result<(), String> {
         Self::compare_ar_object(a.base(), b.base(), path)?;
+        if a.get_matching_criterion_ref() != b.get_matching_criterion_ref() {
+            return Err(format!("{path}: MATCHING_CRITERION_REF mismatch"));
+        }
         if a.get_value() != b.get_value() {
             return Err(format!("{path}: VALUE mismatch"));
         }
@@ -1809,6 +1871,9 @@ impl Document {
         path: &str,
     ) -> Result<(), String> {
         self.compare_ar_element(other, a.base(), b.base(), path)?;
+        if a.get_compu_method_ref() != b.get_compu_method_ref() {
+            return Err(format!("{path}: COMPU_METHOD_REF mismatch"));
+        }
         Ok(())
     }
 
@@ -1838,6 +1903,9 @@ impl Document {
         if a.get_value() != b.get_value() {
             return Err(format!("{path}: VALUE mismatch"));
         }
+        if a.get_variant_criterion_ref() != b.get_variant_criterion_ref() {
+            return Err(format!("{path}: VARIANT_CRITERION_REF mismatch"));
+        }
         Ok(())
     }
 
@@ -1866,9 +1934,18 @@ impl Document {
             return Err(format!("{path}: INCLUDED_VARIANT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.INCLUDED_VARIANT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.INCLUDED_VARIANT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.INCLUDED_VARIANT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.INCLUDED_VARIANT_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_post_build_variant_criterion_value_set_refs();
         let list_b = b.get_post_build_variant_criterion_value_set_refs();
@@ -1878,11 +1955,14 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.POST_BUILD_VARIANT_CRITERION_VALUE_SET_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| format!("{path}.POST_BUILD_VARIANT_CRITERION_VALUE_SET_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| format!("{path}.POST_BUILD_VARIANT_CRITERION_VALUE_SET_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.POST_BUILD_VARIANT_CRITERION_VALUE_SET_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_sw_systemconstant_value_set_refs();
         let list_b = b.get_sw_systemconstant_value_set_refs();
@@ -1892,11 +1972,22 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.SW_SYSTEMCONSTANT_VALUE_SET_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!(
+                    "{path}.SW_SYSTEMCONSTANT_VALUE_SET_REFS[{index}]: id not found in own arena"
+                )
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!(
+                    "{path}.SW_SYSTEMCONSTANT_VALUE_SET_REFS[{index}]: id not found in other arena"
+                )
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.SW_SYSTEMCONSTANT_VALUE_SET_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }
@@ -1940,6 +2031,9 @@ impl Document {
                 format!("{path}.ANNOTATIONS[{index}]: id not found in other arena")
             })?;
             self.compare_annotation(other, x, y, &format!("{path}.ANNOTATIONS[{index}]"))?;
+        }
+        if a.get_sw_systemconst_ref() != b.get_sw_systemconst_ref() {
+            return Err(format!("{path}: SW_SYSTEMCONST_REF mismatch"));
         }
         if a.get_value() != b.get_value() {
             return Err(format!("{path}: VALUE mismatch"));

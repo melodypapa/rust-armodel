@@ -26,6 +26,7 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct BaseType {
     base: ARElement,
+    base_type_definition: Option<BaseTypeDirectDefinitionId>,
 }
 
 impl BaseType {
@@ -39,6 +40,15 @@ impl BaseType {
 
     pub fn base_mut(&mut self) -> &mut ARElement {
         &mut self.base
+    }
+
+    pub fn get_base_type_definition(&self) -> Option<BaseTypeDirectDefinitionId> {
+        self.base_type_definition
+    }
+
+    pub fn set_base_type_definition(&mut self, value: BaseTypeDirectDefinitionId) -> &mut Self {
+        self.base_type_definition = Some(value);
+        self
     }
 
     pub fn get_admin_data(&self) -> Option<AdminDataId> {
@@ -404,6 +414,15 @@ impl SwBaseType {
         &mut self.base
     }
 
+    pub fn get_base_type_definition(&self) -> Option<BaseTypeDirectDefinitionId> {
+        self.base().get_base_type_definition()
+    }
+
+    pub fn set_base_type_definition(&mut self, value: BaseTypeDirectDefinitionId) -> &mut Self {
+        self.base_mut().set_base_type_definition(value);
+        self
+    }
+
     pub fn get_admin_data(&self) -> Option<AdminDataId> {
         self.base().base().base().base().base().get_admin_data()
     }
@@ -659,6 +678,9 @@ impl Document {
         path: &str,
     ) -> Result<(), String> {
         self.compare_ar_element(other, a.base(), b.base(), path)?;
+        if a.get_base_type_definition() != b.get_base_type_definition() {
+            return Err(format!("{path}: BASE_TYPE_DEFINITION mismatch"));
+        }
         Ok(())
     }
 

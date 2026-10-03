@@ -15,6 +15,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::i
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::sw_component_template::components::instance_refs::PTriggerInAtomicSwcTypeInstanceRefId;
+use crate::m2::autosar_templates::sw_component_template::rpt_scenario::ExternalTriggeringPointIdentId;
 use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::access_count::AbstractAccessPoint;
 use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::access_count::RteApiReturnValueProvisionEnum;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -32,6 +33,7 @@ use crate::Document;
 pub struct ExternalTriggeringPoint {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
+    ident: Option<ExternalTriggeringPointIdentId>,
     trigger: Option<PTriggerInAtomicSwcTypeInstanceRefId>,
 }
 
@@ -54,6 +56,15 @@ impl ExternalTriggeringPoint {
 
     pub fn variation_point_capable_mut(&mut self) -> &mut VariationPointCapable {
         &mut self.variation_point_capable
+    }
+
+    pub fn get_ident(&self) -> Option<ExternalTriggeringPointIdentId> {
+        self.ident
+    }
+
+    pub fn set_ident(&mut self, value: ExternalTriggeringPointIdentId) -> &mut Self {
+        self.ident = Some(value);
+        self
     }
 
     pub fn get_trigger(&self) -> Option<PTriggerInAtomicSwcTypeInstanceRefId> {
@@ -397,6 +408,9 @@ impl Document {
             b.variation_point_capable(),
             path,
         )?;
+        if a.get_ident() != b.get_ident() {
+            return Err(format!("{path}: IDENT mismatch"));
+        }
         if a.get_trigger() != b.get_trigger() {
             return Err(format!("{path}: TRIGGER mismatch"));
         }

@@ -6,6 +6,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -329,9 +330,9 @@ impl AtpFeature {
 #[derive(Debug, Default)]
 pub struct AtpInstanceRef {
     base: ARObject,
-    atp_base_ref: Option<String>,
-    atp_context_element_refs: Vec<String>,
-    atp_target_ref: Option<String>,
+    atp_base_ref: Option<RefTypeId>,
+    atp_context_element_refs: Vec<RefTypeId>,
+    atp_target_ref: Option<RefTypeId>,
 }
 
 impl AtpInstanceRef {
@@ -347,29 +348,29 @@ impl AtpInstanceRef {
         &mut self.base
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
-        self.atp_base_ref.as_deref()
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
+        self.atp_base_ref
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.atp_base_ref = Some(value.into());
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.atp_base_ref = Some(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         &self.atp_context_element_refs
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.atp_context_element_refs.push(value);
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
-        self.atp_target_ref.as_deref()
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
+        self.atp_target_ref
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.atp_target_ref = Some(value.into());
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.atp_target_ref = Some(value);
         self
     }
 
@@ -397,7 +398,7 @@ impl AtpInstanceRef {
 #[derive(Debug, Default)]
 pub struct AtpPrototype {
     base: AtpFeature,
-    atp_type_ref: Option<String>,
+    atp_type_ref: Option<RefTypeId>,
 }
 
 impl AtpPrototype {
@@ -413,12 +414,12 @@ impl AtpPrototype {
         &mut self.base
     }
 
-    pub fn get_atp_type_ref(&self) -> Option<&str> {
-        self.atp_type_ref.as_deref()
+    pub fn get_atp_type_ref(&self) -> Option<RefTypeId> {
+        self.atp_type_ref
     }
 
-    pub fn set_atp_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.atp_type_ref = Some(value.into());
+    pub fn set_atp_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.atp_type_ref = Some(value);
         self
     }
 
@@ -948,7 +949,7 @@ impl Document {
 
     pub(crate) fn compare_atp_instance_ref(
         &self,
-        _other: &Document,
+        other: &Document,
         a: &AtpInstanceRef,
         b: &AtpInstanceRef,
         path: &str,
@@ -963,9 +964,18 @@ impl Document {
             return Err(format!("{path}: ATP_CONTEXT_ELEMENT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.ATP_CONTEXT_ELEMENT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.ATP_CONTEXT_ELEMENT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.ATP_CONTEXT_ELEMENT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.ATP_CONTEXT_ELEMENT_REFS[{index}]"),
+            )?;
         }
         if a.get_atp_target_ref() != b.get_atp_target_ref() {
             return Err(format!("{path}: ATP_TARGET_REF mismatch"));

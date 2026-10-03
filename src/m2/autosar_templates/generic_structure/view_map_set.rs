@@ -13,6 +13,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -25,10 +26,10 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct ViewMap {
     base: Identifiable,
-    first_element_refs: Vec<String>,
+    first_element_refs: Vec<RefTypeId>,
     first_element_i_refs: Vec<AnyInstanceRefId>,
     role: Option<String>,
-    second_element_refs: Vec<String>,
+    second_element_refs: Vec<RefTypeId>,
     second_element_i_refs: Vec<AnyInstanceRefId>,
 }
 
@@ -45,11 +46,11 @@ impl ViewMap {
         &mut self.base
     }
 
-    pub fn get_first_element_refs(&self) -> &[String] {
+    pub fn get_first_element_refs(&self) -> &[RefTypeId] {
         &self.first_element_refs
     }
 
-    pub fn push_first_element_ref(&mut self, value: String) {
+    pub fn push_first_element_ref(&mut self, value: RefTypeId) {
         self.first_element_refs.push(value);
     }
 
@@ -70,11 +71,11 @@ impl ViewMap {
         self
     }
 
-    pub fn get_second_element_refs(&self) -> &[String] {
+    pub fn get_second_element_refs(&self) -> &[RefTypeId] {
         &self.second_element_refs
     }
 
-    pub fn push_second_element_ref(&mut self, value: String) {
+    pub fn push_second_element_ref(&mut self, value: RefTypeId) {
         self.second_element_refs.push(value);
     }
 
@@ -392,9 +393,13 @@ impl Document {
             return Err(format!("{path}: FIRST_ELEMENT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.FIRST_ELEMENT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.FIRST_ELEMENT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.FIRST_ELEMENT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.FIRST_ELEMENT_REFS[{index}]"))?;
         }
         let list_a = a.get_first_element_i_refs();
         let list_b = b.get_first_element_i_refs();
@@ -424,9 +429,13 @@ impl Document {
             return Err(format!("{path}: SECOND_ELEMENT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SECOND_ELEMENT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SECOND_ELEMENT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SECOND_ELEMENT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SECOND_ELEMENT_REFS[{index}]"))?;
         }
         let list_a = a.get_second_element_i_refs();
         let list_b = b.get_second_element_i_refs();

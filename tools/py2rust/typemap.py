@@ -16,7 +16,7 @@ PRIMITIVES = {
     "DisplayFormatString", "NativeDeclarationString", "BaseTypeEncodingString",
     "PrimitiveIdentifier", "PositiveInteger", "Boolean", "NameToken",
     "PositiveUnlimitedInteger", "Integer", "UnlimitedInteger", "Identifier", "CIdentifier",
-    "RevisionLabelString", "Ref", "RefType", "TRefType", "DiagRequirementIdString",
+    "RevisionLabelString", "Ref", "TRefType", "DiagRequirementIdString",
     "Ip4AddressString", "Ip6AddressString", "MacAddressString", "CategoryString",
     "AnyServiceInstanceId", "AnyVersionString", "DateTime", "VerbatimString",
     "VerbatimStringPlain", "RegularExpression", "SymbolString", "McdIdentifier",
@@ -25,6 +25,10 @@ PRIMITIVES = {
     # are stored as plain String in the P0 model, not as the generated LEnum.
     "LEnum",
 }
+# RefType is deliberately NOT a primitive (P2 Task 0): collapsing it to String
+# drops the BASE/DEST attributes the byte round-trip compares. It is a real
+# generated class with a RefTypeId arena (Document.ref_types), so ref-typed
+# fields are arena links per code_guide §6.
 
 
 @dataclass

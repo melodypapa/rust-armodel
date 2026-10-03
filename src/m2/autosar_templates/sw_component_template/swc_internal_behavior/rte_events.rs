@@ -31,6 +31,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::sw_component_template::components::instance_refs::POperationInAtomicSwcInstanceRefId;
@@ -49,7 +50,7 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct AsynchronousServerCallReturnsEvent {
     base: RTEEvent,
-    event_source_ref: Option<String>,
+    event_source_ref: Option<RefTypeId>,
 }
 
 impl AsynchronousServerCallReturnsEvent {
@@ -65,12 +66,12 @@ impl AsynchronousServerCallReturnsEvent {
         &mut self.base
     }
 
-    pub fn get_event_source_ref(&self) -> Option<&str> {
-        self.event_source_ref.as_deref()
+    pub fn get_event_source_ref(&self) -> Option<RefTypeId> {
+        self.event_source_ref
     }
 
-    pub fn set_event_source_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.event_source_ref = Some(value.into());
+    pub fn set_event_source_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.event_source_ref = Some(value);
         self
     }
 
@@ -82,11 +83,11 @@ impl AsynchronousServerCallReturnsEvent {
         self.base_mut().push_disabled_mode_i_ref(value)
     }
 
-    pub fn get_start_on_event_ref(&self) -> Option<&str> {
+    pub fn get_start_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_start_on_event_ref()
     }
 
-    pub fn set_start_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_start_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_start_on_event_ref(value);
         self
     }
@@ -345,11 +346,11 @@ impl BackgroundEvent {
         self.base_mut().push_disabled_mode_i_ref(value)
     }
 
-    pub fn get_start_on_event_ref(&self) -> Option<&str> {
+    pub fn get_start_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_start_on_event_ref()
     }
 
-    pub fn set_start_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_start_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_start_on_event_ref(value);
         self
     }
@@ -619,11 +620,11 @@ impl DataReceiveErrorEvent {
         self.base_mut().push_disabled_mode_i_ref(value)
     }
 
-    pub fn get_start_on_event_ref(&self) -> Option<&str> {
+    pub fn get_start_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_start_on_event_ref()
     }
 
-    pub fn set_start_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_start_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_start_on_event_ref(value);
         self
     }
@@ -893,11 +894,11 @@ impl DataReceivedEvent {
         self.base_mut().push_disabled_mode_i_ref(value)
     }
 
-    pub fn get_start_on_event_ref(&self) -> Option<&str> {
+    pub fn get_start_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_start_on_event_ref()
     }
 
-    pub fn set_start_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_start_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_start_on_event_ref(value);
         self
     }
@@ -1134,7 +1135,7 @@ impl DataReceivedEvent {
 #[derive(Debug, Default)]
 pub struct DataSendCompletedEvent {
     base: RTEEvent,
-    event_source_ref: Option<String>,
+    event_source_ref: Option<RefTypeId>,
 }
 
 impl DataSendCompletedEvent {
@@ -1150,12 +1151,12 @@ impl DataSendCompletedEvent {
         &mut self.base
     }
 
-    pub fn get_event_source_ref(&self) -> Option<&str> {
-        self.event_source_ref.as_deref()
+    pub fn get_event_source_ref(&self) -> Option<RefTypeId> {
+        self.event_source_ref
     }
 
-    pub fn set_event_source_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.event_source_ref = Some(value.into());
+    pub fn set_event_source_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.event_source_ref = Some(value);
         self
     }
 
@@ -1167,11 +1168,11 @@ impl DataSendCompletedEvent {
         self.base_mut().push_disabled_mode_i_ref(value)
     }
 
-    pub fn get_start_on_event_ref(&self) -> Option<&str> {
+    pub fn get_start_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_start_on_event_ref()
     }
 
-    pub fn set_start_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_start_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_start_on_event_ref(value);
         self
     }
@@ -1408,7 +1409,7 @@ impl DataSendCompletedEvent {
 #[derive(Debug, Default)]
 pub struct DataWriteCompletedEvent {
     base: RTEEvent,
-    event_source_ref: Option<String>,
+    event_source_ref: Option<RefTypeId>,
 }
 
 impl DataWriteCompletedEvent {
@@ -1424,12 +1425,12 @@ impl DataWriteCompletedEvent {
         &mut self.base
     }
 
-    pub fn get_event_source_ref(&self) -> Option<&str> {
-        self.event_source_ref.as_deref()
+    pub fn get_event_source_ref(&self) -> Option<RefTypeId> {
+        self.event_source_ref
     }
 
-    pub fn set_event_source_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.event_source_ref = Some(value.into());
+    pub fn set_event_source_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.event_source_ref = Some(value);
         self
     }
 
@@ -1441,11 +1442,11 @@ impl DataWriteCompletedEvent {
         self.base_mut().push_disabled_mode_i_ref(value)
     }
 
-    pub fn get_start_on_event_ref(&self) -> Option<&str> {
+    pub fn get_start_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_start_on_event_ref()
     }
 
-    pub fn set_start_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_start_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_start_on_event_ref(value);
         self
     }
@@ -1703,11 +1704,11 @@ impl ExternalTriggerOccurredEvent {
         self.base_mut().push_disabled_mode_i_ref(value)
     }
 
-    pub fn get_start_on_event_ref(&self) -> Option<&str> {
+    pub fn get_start_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_start_on_event_ref()
     }
 
-    pub fn set_start_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_start_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_start_on_event_ref(value);
         self
     }
@@ -1966,11 +1967,11 @@ impl InitEvent {
         self.base_mut().push_disabled_mode_i_ref(value)
     }
 
-    pub fn get_start_on_event_ref(&self) -> Option<&str> {
+    pub fn get_start_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_start_on_event_ref()
     }
 
-    pub fn set_start_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_start_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_start_on_event_ref(value);
         self
     }
@@ -2207,7 +2208,7 @@ impl InitEvent {
 #[derive(Debug, Default)]
 pub struct InternalTriggerOccurredEvent {
     base: RTEEvent,
-    event_source_ref: Option<String>,
+    event_source_ref: Option<RefTypeId>,
 }
 
 impl InternalTriggerOccurredEvent {
@@ -2223,12 +2224,12 @@ impl InternalTriggerOccurredEvent {
         &mut self.base
     }
 
-    pub fn get_event_source_ref(&self) -> Option<&str> {
-        self.event_source_ref.as_deref()
+    pub fn get_event_source_ref(&self) -> Option<RefTypeId> {
+        self.event_source_ref
     }
 
-    pub fn set_event_source_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.event_source_ref = Some(value.into());
+    pub fn set_event_source_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.event_source_ref = Some(value);
         self
     }
 
@@ -2240,11 +2241,11 @@ impl InternalTriggerOccurredEvent {
         self.base_mut().push_disabled_mode_i_ref(value)
     }
 
-    pub fn get_start_on_event_ref(&self) -> Option<&str> {
+    pub fn get_start_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_start_on_event_ref()
     }
 
-    pub fn set_start_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_start_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_start_on_event_ref(value);
         self
     }
@@ -2481,6 +2482,7 @@ impl InternalTriggerOccurredEvent {
 #[derive(Debug, Default)]
 pub struct ModeSwitchedAckEvent {
     base: RTEEvent,
+    event_source_ref: Option<RefTypeId>,
 }
 
 impl ModeSwitchedAckEvent {
@@ -2496,6 +2498,15 @@ impl ModeSwitchedAckEvent {
         &mut self.base
     }
 
+    pub fn get_event_source_ref(&self) -> Option<RefTypeId> {
+        self.event_source_ref
+    }
+
+    pub fn set_event_source_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.event_source_ref = Some(value);
+        self
+    }
+
     pub fn get_disabled_mode_i_refs(&self) -> &[RModeInAtomicSwcInstanceRefId] {
         self.base().get_disabled_mode_i_refs()
     }
@@ -2504,11 +2515,11 @@ impl ModeSwitchedAckEvent {
         self.base_mut().push_disabled_mode_i_ref(value)
     }
 
-    pub fn get_start_on_event_ref(&self) -> Option<&str> {
+    pub fn get_start_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_start_on_event_ref()
     }
 
-    pub fn set_start_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_start_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_start_on_event_ref(value);
         self
     }
@@ -2778,11 +2789,11 @@ impl OperationInvokedEvent {
         self.base_mut().push_disabled_mode_i_ref(value)
     }
 
-    pub fn get_start_on_event_ref(&self) -> Option<&str> {
+    pub fn get_start_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_start_on_event_ref()
     }
 
-    pub fn set_start_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_start_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_start_on_event_ref(value);
         self
     }
@@ -3040,11 +3051,11 @@ impl OsTaskExecutionEvent {
         self.base_mut().push_disabled_mode_i_ref(value)
     }
 
-    pub fn get_start_on_event_ref(&self) -> Option<&str> {
+    pub fn get_start_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_start_on_event_ref()
     }
 
-    pub fn set_start_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_start_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_start_on_event_ref(value);
         self
     }
@@ -3283,7 +3294,7 @@ pub struct RTEEvent {
     abstract_event: AbstractEvent,
     variation_point_capable: VariationPointCapable,
     disabled_mode_i_refs: Vec<RModeInAtomicSwcInstanceRefId>,
-    start_on_event_ref: Option<String>,
+    start_on_event_ref: Option<RefTypeId>,
 }
 
 impl RTEEvent {
@@ -3323,12 +3334,12 @@ impl RTEEvent {
         self.disabled_mode_i_refs.push(value);
     }
 
-    pub fn get_start_on_event_ref(&self) -> Option<&str> {
-        self.start_on_event_ref.as_deref()
+    pub fn get_start_on_event_ref(&self) -> Option<RefTypeId> {
+        self.start_on_event_ref
     }
 
-    pub fn set_start_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.start_on_event_ref = Some(value.into());
+    pub fn set_start_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.start_on_event_ref = Some(value);
         self
     }
 
@@ -3496,15 +3507,12 @@ impl RTEEvent {
         self
     }
 
-    pub fn get_activation_reason_representation_ref(&self) -> Option<&str> {
+    pub fn get_activation_reason_representation_ref(&self) -> Option<RefTypeId> {
         self.abstract_event()
             .get_activation_reason_representation_ref()
     }
 
-    pub fn set_activation_reason_representation_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
+    pub fn set_activation_reason_representation_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.abstract_event_mut()
             .set_activation_reason_representation_ref(value);
         self
@@ -3620,11 +3628,11 @@ impl SwcModeSwitchEvent {
         self.base_mut().push_disabled_mode_i_ref(value)
     }
 
-    pub fn get_start_on_event_ref(&self) -> Option<&str> {
+    pub fn get_start_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_start_on_event_ref()
     }
 
-    pub fn set_start_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_start_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_start_on_event_ref(value);
         self
     }
@@ -3861,6 +3869,8 @@ impl SwcModeSwitchEvent {
 #[derive(Debug, Default)]
 pub struct TimingEvent {
     base: RTEEvent,
+    offset: Option<String>,
+    period: Option<String>,
 }
 
 impl TimingEvent {
@@ -3876,6 +3886,24 @@ impl TimingEvent {
         &mut self.base
     }
 
+    pub fn get_offset(&self) -> Option<&str> {
+        self.offset.as_deref()
+    }
+
+    pub fn set_offset(&mut self, value: impl Into<String>) -> &mut Self {
+        self.offset = Some(value.into());
+        self
+    }
+
+    pub fn get_period(&self) -> Option<&str> {
+        self.period.as_deref()
+    }
+
+    pub fn set_period(&mut self, value: impl Into<String>) -> &mut Self {
+        self.period = Some(value.into());
+        self
+    }
+
     pub fn get_disabled_mode_i_refs(&self) -> &[RModeInAtomicSwcInstanceRefId] {
         self.base().get_disabled_mode_i_refs()
     }
@@ -3884,11 +3912,11 @@ impl TimingEvent {
         self.base_mut().push_disabled_mode_i_ref(value)
     }
 
-    pub fn get_start_on_event_ref(&self) -> Option<&str> {
+    pub fn get_start_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_start_on_event_ref()
     }
 
-    pub fn set_start_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_start_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_start_on_event_ref(value);
         self
     }
@@ -4146,11 +4174,11 @@ impl TransformerHardErrorEvent {
         self.base_mut().push_disabled_mode_i_ref(value)
     }
 
-    pub fn get_start_on_event_ref(&self) -> Option<&str> {
+    pub fn get_start_on_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_start_on_event_ref()
     }
 
-    pub fn set_start_on_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_start_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_start_on_event_ref(value);
         self
     }
@@ -4387,7 +4415,7 @@ impl TransformerHardErrorEvent {
 pub struct WaitPoint {
     base: Identifiable,
     timeout: Option<String>,
-    trigger_ref: Option<String>,
+    trigger_ref: Option<RefTypeId>,
 }
 
 impl WaitPoint {
@@ -4412,12 +4440,12 @@ impl WaitPoint {
         self
     }
 
-    pub fn get_trigger_ref(&self) -> Option<&str> {
-        self.trigger_ref.as_deref()
+    pub fn get_trigger_ref(&self) -> Option<RefTypeId> {
+        self.trigger_ref
     }
 
-    pub fn set_trigger_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.trigger_ref = Some(value.into());
+    pub fn set_trigger_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.trigger_ref = Some(value);
         self
     }
 
@@ -4678,6 +4706,9 @@ impl Document {
         path: &str,
     ) -> Result<(), String> {
         self.compare_rte_event(other, a.base(), b.base(), path)?;
+        if a.get_event_source_ref() != b.get_event_source_ref() {
+            return Err(format!("{path}: EVENT_SOURCE_REF mismatch"));
+        }
         Ok(())
     }
 
@@ -4808,6 +4839,12 @@ impl Document {
         path: &str,
     ) -> Result<(), String> {
         self.compare_rte_event(other, a.base(), b.base(), path)?;
+        if a.get_offset() != b.get_offset() {
+            return Err(format!("{path}: OFFSET mismatch"));
+        }
+        if a.get_period() != b.get_period() {
+            return Err(format!("{path}: PERIOD mismatch"));
+        }
         Ok(())
     }
 

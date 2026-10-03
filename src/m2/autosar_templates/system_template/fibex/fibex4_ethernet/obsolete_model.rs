@@ -12,6 +12,7 @@ new_key_type! {
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Describable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::system_template::fibex::fibex4_ethernet::ethernet_communication::RuntimeAddressConfigurationEnum;
@@ -276,10 +277,10 @@ impl SoAdRoutingGroup {
 pub struct SocketConnection {
     base: Describable,
     variation_point_capable: VariationPointCapable,
-    allowed_i_pv6_ext_headers_ref: Option<String>,
-    allowed_tcp_options_ref: Option<String>,
+    allowed_i_pv6_ext_headers_ref: Option<RefTypeId>,
+    allowed_tcp_options_ref: Option<RefTypeId>,
     client_ip_addr_from_connection_request: Option<String>,
-    client_port_ref: Option<String>,
+    client_port_ref: Option<RefTypeId>,
     client_port_from_connection_request: Option<String>,
     pdus: Vec<SocketConnectionIpduIdentifierId>,
     pdu_collection_max_buffer_size: Option<String>,
@@ -310,21 +311,21 @@ impl SocketConnection {
         &mut self.variation_point_capable
     }
 
-    pub fn get_allowed_i_pv6_ext_headers_ref(&self) -> Option<&str> {
-        self.allowed_i_pv6_ext_headers_ref.as_deref()
+    pub fn get_allowed_i_pv6_ext_headers_ref(&self) -> Option<RefTypeId> {
+        self.allowed_i_pv6_ext_headers_ref
     }
 
-    pub fn set_allowed_i_pv6_ext_headers_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.allowed_i_pv6_ext_headers_ref = Some(value.into());
+    pub fn set_allowed_i_pv6_ext_headers_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.allowed_i_pv6_ext_headers_ref = Some(value);
         self
     }
 
-    pub fn get_allowed_tcp_options_ref(&self) -> Option<&str> {
-        self.allowed_tcp_options_ref.as_deref()
+    pub fn get_allowed_tcp_options_ref(&self) -> Option<RefTypeId> {
+        self.allowed_tcp_options_ref
     }
 
-    pub fn set_allowed_tcp_options_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.allowed_tcp_options_ref = Some(value.into());
+    pub fn set_allowed_tcp_options_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.allowed_tcp_options_ref = Some(value);
         self
     }
 
@@ -340,12 +341,12 @@ impl SocketConnection {
         self
     }
 
-    pub fn get_client_port_ref(&self) -> Option<&str> {
-        self.client_port_ref.as_deref()
+    pub fn get_client_port_ref(&self) -> Option<RefTypeId> {
+        self.client_port_ref
     }
 
-    pub fn set_client_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.client_port_ref = Some(value.into());
+    pub fn set_client_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.client_port_ref = Some(value);
         self
     }
 

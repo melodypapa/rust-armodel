@@ -16,15 +16,16 @@ new_key_type! {
 }
 
 use crate::m2::autosar_templates::generic_structure::abstract_structure::AtpInstanceRef;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::Document;
 
 /// spec class `InnerPortGroupInCompositionInstanceRef`
 #[derive(Debug, Default)]
 pub struct InnerPortGroupInCompositionInstanceRef {
     base: AtpInstanceRef,
-    base_ref: Option<String>,
-    context_refs: Vec<String>,
-    target_ref: Option<String>,
+    base_ref: Option<RefTypeId>,
+    context_refs: Vec<RefTypeId>,
+    target_ref: Option<RefTypeId>,
 }
 
 impl InnerPortGroupInCompositionInstanceRef {
@@ -40,54 +41,54 @@ impl InnerPortGroupInCompositionInstanceRef {
         &mut self.base
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
-        self.base_ref.as_deref()
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
+        self.base_ref
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_ref = Some(value.into());
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_ref = Some(value);
         self
     }
 
-    pub fn get_context_refs(&self) -> &[String] {
+    pub fn get_context_refs(&self) -> &[RefTypeId] {
         &self.context_refs
     }
 
-    pub fn push_context_ref(&mut self, value: String) {
+    pub fn push_context_ref(&mut self, value: RefTypeId) {
         self.context_refs.push(value);
     }
 
-    pub fn get_target_ref(&self) -> Option<&str> {
-        self.target_ref.as_deref()
+    pub fn get_target_ref(&self) -> Option<RefTypeId> {
+        self.target_ref
     }
 
-    pub fn set_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_ref = Some(value.into());
+    pub fn set_target_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_ref = Some(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_target_ref(value);
         self
     }
@@ -115,9 +116,9 @@ impl InnerPortGroupInCompositionInstanceRef {
 #[derive(Debug, Default)]
 pub struct ModeGroupInAtomicSwcInstanceRef {
     base: AtpInstanceRef,
-    base_ref: Option<String>,
-    context_port_ref: Option<String>,
-    target_ref: Option<String>,
+    base_ref: Option<RefTypeId>,
+    context_port_ref: Option<RefTypeId>,
+    target_ref: Option<RefTypeId>,
 }
 
 impl ModeGroupInAtomicSwcInstanceRef {
@@ -133,55 +134,55 @@ impl ModeGroupInAtomicSwcInstanceRef {
         &mut self.base
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
-        self.base_ref.as_deref()
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
+        self.base_ref
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_ref = Some(value.into());
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_ref = Some(value);
         self
     }
 
-    pub fn get_context_port_ref(&self) -> Option<&str> {
-        self.context_port_ref.as_deref()
+    pub fn get_context_port_ref(&self) -> Option<RefTypeId> {
+        self.context_port_ref
     }
 
-    pub fn set_context_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.context_port_ref = Some(value.into());
+    pub fn set_context_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_port_ref = Some(value);
         self
     }
 
-    pub fn get_target_ref(&self) -> Option<&str> {
-        self.target_ref.as_deref()
+    pub fn get_target_ref(&self) -> Option<RefTypeId> {
+        self.target_ref
     }
 
-    pub fn set_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_ref = Some(value.into());
+    pub fn set_target_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_ref = Some(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_target_ref(value);
         self
     }
@@ -209,9 +210,9 @@ impl ModeGroupInAtomicSwcInstanceRef {
 #[derive(Debug, Default)]
 pub struct OperationInAtomicSwcInstanceRef {
     base: AtpInstanceRef,
-    base_ref: Option<String>,
-    context_port_ref: Option<String>,
-    target_operation_ref: Option<String>,
+    base_ref: Option<RefTypeId>,
+    context_port_ref: Option<RefTypeId>,
+    target_operation_ref: Option<RefTypeId>,
 }
 
 impl OperationInAtomicSwcInstanceRef {
@@ -227,55 +228,55 @@ impl OperationInAtomicSwcInstanceRef {
         &mut self.base
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
-        self.base_ref.as_deref()
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
+        self.base_ref
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_ref = Some(value.into());
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_ref = Some(value);
         self
     }
 
-    pub fn get_context_port_ref(&self) -> Option<&str> {
-        self.context_port_ref.as_deref()
+    pub fn get_context_port_ref(&self) -> Option<RefTypeId> {
+        self.context_port_ref
     }
 
-    pub fn set_context_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.context_port_ref = Some(value.into());
+    pub fn set_context_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_port_ref = Some(value);
         self
     }
 
-    pub fn get_target_operation_ref(&self) -> Option<&str> {
-        self.target_operation_ref.as_deref()
+    pub fn get_target_operation_ref(&self) -> Option<RefTypeId> {
+        self.target_operation_ref
     }
 
-    pub fn set_target_operation_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_operation_ref = Some(value.into());
+    pub fn set_target_operation_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_operation_ref = Some(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_target_ref(value);
         self
     }
@@ -303,8 +304,8 @@ impl OperationInAtomicSwcInstanceRef {
 #[derive(Debug, Default)]
 pub struct PModeGroupInAtomicSwcInstanceRef {
     base: ModeGroupInAtomicSwcInstanceRef,
-    context_p_port_ref: Option<String>,
-    target_mode_group_ref: Option<String>,
+    context_p_port_ref: Option<RefTypeId>,
+    target_mode_group_ref: Option<RefTypeId>,
 }
 
 impl PModeGroupInAtomicSwcInstanceRef {
@@ -320,75 +321,75 @@ impl PModeGroupInAtomicSwcInstanceRef {
         &mut self.base
     }
 
-    pub fn get_context_p_port_ref(&self) -> Option<&str> {
-        self.context_p_port_ref.as_deref()
+    pub fn get_context_p_port_ref(&self) -> Option<RefTypeId> {
+        self.context_p_port_ref
     }
 
-    pub fn set_context_p_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.context_p_port_ref = Some(value.into());
+    pub fn set_context_p_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_p_port_ref = Some(value);
         self
     }
 
-    pub fn get_target_mode_group_ref(&self) -> Option<&str> {
-        self.target_mode_group_ref.as_deref()
+    pub fn get_target_mode_group_ref(&self) -> Option<RefTypeId> {
+        self.target_mode_group_ref
     }
 
-    pub fn set_target_mode_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_mode_group_ref = Some(value.into());
+    pub fn set_target_mode_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_mode_group_ref = Some(value);
         self
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_base_ref()
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_base_ref(value);
         self
     }
 
-    pub fn get_context_port_ref(&self) -> Option<&str> {
+    pub fn get_context_port_ref(&self) -> Option<RefTypeId> {
         self.base().get_context_port_ref()
     }
 
-    pub fn set_context_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_context_port_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_context_port_ref(value);
         self
     }
 
-    pub fn get_target_ref(&self) -> Option<&str> {
+    pub fn get_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_target_ref()
     }
 
-    pub fn set_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_target_ref(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_atp_target_ref(value);
         self
     }
@@ -416,8 +417,8 @@ impl PModeGroupInAtomicSwcInstanceRef {
 #[derive(Debug, Default)]
 pub struct POperationInAtomicSwcInstanceRef {
     base: OperationInAtomicSwcInstanceRef,
-    context_p_port_ref: Option<String>,
-    target_provided_operation_ref: Option<String>,
+    context_p_port_ref: Option<RefTypeId>,
+    target_provided_operation_ref: Option<RefTypeId>,
 }
 
 impl POperationInAtomicSwcInstanceRef {
@@ -433,75 +434,75 @@ impl POperationInAtomicSwcInstanceRef {
         &mut self.base
     }
 
-    pub fn get_context_p_port_ref(&self) -> Option<&str> {
-        self.context_p_port_ref.as_deref()
+    pub fn get_context_p_port_ref(&self) -> Option<RefTypeId> {
+        self.context_p_port_ref
     }
 
-    pub fn set_context_p_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.context_p_port_ref = Some(value.into());
+    pub fn set_context_p_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_p_port_ref = Some(value);
         self
     }
 
-    pub fn get_target_provided_operation_ref(&self) -> Option<&str> {
-        self.target_provided_operation_ref.as_deref()
+    pub fn get_target_provided_operation_ref(&self) -> Option<RefTypeId> {
+        self.target_provided_operation_ref
     }
 
-    pub fn set_target_provided_operation_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_provided_operation_ref = Some(value.into());
+    pub fn set_target_provided_operation_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_provided_operation_ref = Some(value);
         self
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_base_ref()
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_base_ref(value);
         self
     }
 
-    pub fn get_context_port_ref(&self) -> Option<&str> {
+    pub fn get_context_port_ref(&self) -> Option<RefTypeId> {
         self.base().get_context_port_ref()
     }
 
-    pub fn set_context_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_context_port_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_context_port_ref(value);
         self
     }
 
-    pub fn get_target_operation_ref(&self) -> Option<&str> {
+    pub fn get_target_operation_ref(&self) -> Option<RefTypeId> {
         self.base().get_target_operation_ref()
     }
 
-    pub fn set_target_operation_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_target_operation_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_target_operation_ref(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_atp_target_ref(value);
         self
     }
@@ -529,8 +530,8 @@ impl POperationInAtomicSwcInstanceRef {
 #[derive(Debug, Default)]
 pub struct PTriggerInAtomicSwcTypeInstanceRef {
     base: TriggerInAtomicSwcInstanceRef,
-    context_p_port_ref: Option<String>,
-    target_trigger_ref: Option<String>,
+    context_p_port_ref: Option<RefTypeId>,
+    target_trigger_ref: Option<RefTypeId>,
 }
 
 impl PTriggerInAtomicSwcTypeInstanceRef {
@@ -546,75 +547,75 @@ impl PTriggerInAtomicSwcTypeInstanceRef {
         &mut self.base
     }
 
-    pub fn get_context_p_port_ref(&self) -> Option<&str> {
-        self.context_p_port_ref.as_deref()
+    pub fn get_context_p_port_ref(&self) -> Option<RefTypeId> {
+        self.context_p_port_ref
     }
 
-    pub fn set_context_p_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.context_p_port_ref = Some(value.into());
+    pub fn set_context_p_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_p_port_ref = Some(value);
         self
     }
 
-    pub fn get_target_trigger_ref(&self) -> Option<&str> {
-        self.target_trigger_ref.as_deref()
+    pub fn get_target_trigger_ref(&self) -> Option<RefTypeId> {
+        self.target_trigger_ref
     }
 
-    pub fn set_target_trigger_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_trigger_ref = Some(value.into());
+    pub fn set_target_trigger_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_trigger_ref = Some(value);
         self
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_base_ref()
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_base_ref(value);
         self
     }
 
-    pub fn get_context_port_ref(&self) -> Option<&str> {
+    pub fn get_context_port_ref(&self) -> Option<RefTypeId> {
         self.base().get_context_port_ref()
     }
 
-    pub fn set_context_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_context_port_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_context_port_ref(value);
         self
     }
 
-    pub fn get_target_ref(&self) -> Option<&str> {
+    pub fn get_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_target_ref()
     }
 
-    pub fn set_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_target_ref(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_atp_target_ref(value);
         self
     }
@@ -642,8 +643,8 @@ impl PTriggerInAtomicSwcTypeInstanceRef {
 #[derive(Debug, Default)]
 pub struct RModeGroupInAtomicSWCInstanceRef {
     base: ModeGroupInAtomicSwcInstanceRef,
-    context_r_port_ref: Option<String>,
-    target_mode_group_ref: Option<String>,
+    context_r_port_ref: Option<RefTypeId>,
+    target_mode_group_ref: Option<RefTypeId>,
 }
 
 impl RModeGroupInAtomicSWCInstanceRef {
@@ -659,75 +660,75 @@ impl RModeGroupInAtomicSWCInstanceRef {
         &mut self.base
     }
 
-    pub fn get_context_r_port_ref(&self) -> Option<&str> {
-        self.context_r_port_ref.as_deref()
+    pub fn get_context_r_port_ref(&self) -> Option<RefTypeId> {
+        self.context_r_port_ref
     }
 
-    pub fn set_context_r_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.context_r_port_ref = Some(value.into());
+    pub fn set_context_r_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_r_port_ref = Some(value);
         self
     }
 
-    pub fn get_target_mode_group_ref(&self) -> Option<&str> {
-        self.target_mode_group_ref.as_deref()
+    pub fn get_target_mode_group_ref(&self) -> Option<RefTypeId> {
+        self.target_mode_group_ref
     }
 
-    pub fn set_target_mode_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_mode_group_ref = Some(value.into());
+    pub fn set_target_mode_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_mode_group_ref = Some(value);
         self
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_base_ref()
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_base_ref(value);
         self
     }
 
-    pub fn get_context_port_ref(&self) -> Option<&str> {
+    pub fn get_context_port_ref(&self) -> Option<RefTypeId> {
         self.base().get_context_port_ref()
     }
 
-    pub fn set_context_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_context_port_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_context_port_ref(value);
         self
     }
 
-    pub fn get_target_ref(&self) -> Option<&str> {
+    pub fn get_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_target_ref()
     }
 
-    pub fn set_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_target_ref(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_atp_target_ref(value);
         self
     }
@@ -755,10 +756,10 @@ impl RModeGroupInAtomicSWCInstanceRef {
 #[derive(Debug, Default)]
 pub struct RModeInAtomicSwcInstanceRef {
     base: AtpInstanceRef,
-    base_ref: Option<String>,
-    context_mode_declaration_group_prototype_ref: Option<String>,
-    context_port_ref: Option<String>,
-    target_mode_declaration_ref: Option<String>,
+    base_ref: Option<RefTypeId>,
+    context_mode_declaration_group_prototype_ref: Option<RefTypeId>,
+    context_port_ref: Option<RefTypeId>,
+    target_mode_declaration_ref: Option<RefTypeId>,
 }
 
 impl RModeInAtomicSwcInstanceRef {
@@ -774,67 +775,67 @@ impl RModeInAtomicSwcInstanceRef {
         &mut self.base
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
-        self.base_ref.as_deref()
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
+        self.base_ref
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_ref = Some(value.into());
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_ref = Some(value);
         self
     }
 
-    pub fn get_context_mode_declaration_group_prototype_ref(&self) -> Option<&str> {
-        self.context_mode_declaration_group_prototype_ref.as_deref()
+    pub fn get_context_mode_declaration_group_prototype_ref(&self) -> Option<RefTypeId> {
+        self.context_mode_declaration_group_prototype_ref
     }
 
     pub fn set_context_mode_declaration_group_prototype_ref(
         &mut self,
-        value: impl Into<String>,
+        value: RefTypeId,
     ) -> &mut Self {
-        self.context_mode_declaration_group_prototype_ref = Some(value.into());
+        self.context_mode_declaration_group_prototype_ref = Some(value);
         self
     }
 
-    pub fn get_context_port_ref(&self) -> Option<&str> {
-        self.context_port_ref.as_deref()
+    pub fn get_context_port_ref(&self) -> Option<RefTypeId> {
+        self.context_port_ref
     }
 
-    pub fn set_context_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.context_port_ref = Some(value.into());
+    pub fn set_context_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_port_ref = Some(value);
         self
     }
 
-    pub fn get_target_mode_declaration_ref(&self) -> Option<&str> {
-        self.target_mode_declaration_ref.as_deref()
+    pub fn get_target_mode_declaration_ref(&self) -> Option<RefTypeId> {
+        self.target_mode_declaration_ref
     }
 
-    pub fn set_target_mode_declaration_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_mode_declaration_ref = Some(value.into());
+    pub fn set_target_mode_declaration_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_mode_declaration_ref = Some(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_target_ref(value);
         self
     }
@@ -862,8 +863,8 @@ impl RModeInAtomicSwcInstanceRef {
 #[derive(Debug, Default)]
 pub struct ROperationInAtomicSwcInstanceRef {
     base: OperationInAtomicSwcInstanceRef,
-    context_r_port_ref: Option<String>,
-    target_required_operation_ref: Option<String>,
+    context_r_port_ref: Option<RefTypeId>,
+    target_required_operation_ref: Option<RefTypeId>,
 }
 
 impl ROperationInAtomicSwcInstanceRef {
@@ -879,75 +880,75 @@ impl ROperationInAtomicSwcInstanceRef {
         &mut self.base
     }
 
-    pub fn get_context_r_port_ref(&self) -> Option<&str> {
-        self.context_r_port_ref.as_deref()
+    pub fn get_context_r_port_ref(&self) -> Option<RefTypeId> {
+        self.context_r_port_ref
     }
 
-    pub fn set_context_r_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.context_r_port_ref = Some(value.into());
+    pub fn set_context_r_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_r_port_ref = Some(value);
         self
     }
 
-    pub fn get_target_required_operation_ref(&self) -> Option<&str> {
-        self.target_required_operation_ref.as_deref()
+    pub fn get_target_required_operation_ref(&self) -> Option<RefTypeId> {
+        self.target_required_operation_ref
     }
 
-    pub fn set_target_required_operation_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_required_operation_ref = Some(value.into());
+    pub fn set_target_required_operation_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_required_operation_ref = Some(value);
         self
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_base_ref()
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_base_ref(value);
         self
     }
 
-    pub fn get_context_port_ref(&self) -> Option<&str> {
+    pub fn get_context_port_ref(&self) -> Option<RefTypeId> {
         self.base().get_context_port_ref()
     }
 
-    pub fn set_context_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_context_port_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_context_port_ref(value);
         self
     }
 
-    pub fn get_target_operation_ref(&self) -> Option<&str> {
+    pub fn get_target_operation_ref(&self) -> Option<RefTypeId> {
         self.base().get_target_operation_ref()
     }
 
-    pub fn set_target_operation_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_target_operation_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_target_operation_ref(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_atp_target_ref(value);
         self
     }
@@ -975,8 +976,8 @@ impl ROperationInAtomicSwcInstanceRef {
 #[derive(Debug, Default)]
 pub struct RVariableInAtomicSwcInstanceRef {
     base: VariableInAtomicSwcInstanceRef,
-    context_r_port_ref: Option<String>,
-    target_data_element_ref: Option<String>,
+    context_r_port_ref: Option<RefTypeId>,
+    target_data_element_ref: Option<RefTypeId>,
 }
 
 impl RVariableInAtomicSwcInstanceRef {
@@ -992,75 +993,75 @@ impl RVariableInAtomicSwcInstanceRef {
         &mut self.base
     }
 
-    pub fn get_context_r_port_ref(&self) -> Option<&str> {
-        self.context_r_port_ref.as_deref()
+    pub fn get_context_r_port_ref(&self) -> Option<RefTypeId> {
+        self.context_r_port_ref
     }
 
-    pub fn set_context_r_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.context_r_port_ref = Some(value.into());
+    pub fn set_context_r_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_r_port_ref = Some(value);
         self
     }
 
-    pub fn get_target_data_element_ref(&self) -> Option<&str> {
-        self.target_data_element_ref.as_deref()
+    pub fn get_target_data_element_ref(&self) -> Option<RefTypeId> {
+        self.target_data_element_ref
     }
 
-    pub fn set_target_data_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_data_element_ref = Some(value.into());
+    pub fn set_target_data_element_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_data_element_ref = Some(value);
         self
     }
 
-    pub fn get_abstract_target_data_element_ref(&self) -> Option<&str> {
+    pub fn get_abstract_target_data_element_ref(&self) -> Option<RefTypeId> {
         self.base().get_abstract_target_data_element_ref()
     }
 
-    pub fn set_abstract_target_data_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_abstract_target_data_element_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_abstract_target_data_element_ref(value);
         self
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_base_ref()
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_base_ref(value);
         self
     }
 
-    pub fn get_context_port_ref(&self) -> Option<&str> {
+    pub fn get_context_port_ref(&self) -> Option<RefTypeId> {
         self.base().get_context_port_ref()
     }
 
-    pub fn set_context_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_context_port_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_context_port_ref(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut()
             .base_mut()
             .push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_atp_target_ref(value);
         self
     }
@@ -1088,9 +1089,9 @@ impl RVariableInAtomicSwcInstanceRef {
 #[derive(Debug, Default)]
 pub struct TriggerInAtomicSwcInstanceRef {
     base: AtpInstanceRef,
-    base_ref: Option<String>,
-    context_port_ref: Option<String>,
-    target_ref: Option<String>,
+    base_ref: Option<RefTypeId>,
+    context_port_ref: Option<RefTypeId>,
+    target_ref: Option<RefTypeId>,
 }
 
 impl TriggerInAtomicSwcInstanceRef {
@@ -1106,55 +1107,55 @@ impl TriggerInAtomicSwcInstanceRef {
         &mut self.base
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
-        self.base_ref.as_deref()
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
+        self.base_ref
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_ref = Some(value.into());
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_ref = Some(value);
         self
     }
 
-    pub fn get_context_port_ref(&self) -> Option<&str> {
-        self.context_port_ref.as_deref()
+    pub fn get_context_port_ref(&self) -> Option<RefTypeId> {
+        self.context_port_ref
     }
 
-    pub fn set_context_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.context_port_ref = Some(value.into());
+    pub fn set_context_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_port_ref = Some(value);
         self
     }
 
-    pub fn get_target_ref(&self) -> Option<&str> {
-        self.target_ref.as_deref()
+    pub fn get_target_ref(&self) -> Option<RefTypeId> {
+        self.target_ref
     }
 
-    pub fn set_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_ref = Some(value.into());
+    pub fn set_target_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_ref = Some(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_target_ref(value);
         self
     }
@@ -1182,9 +1183,9 @@ impl TriggerInAtomicSwcInstanceRef {
 #[derive(Debug, Default)]
 pub struct VariableInAtomicSwcInstanceRef {
     base: AtpInstanceRef,
-    abstract_target_data_element_ref: Option<String>,
-    base_ref: Option<String>,
-    context_port_ref: Option<String>,
+    abstract_target_data_element_ref: Option<RefTypeId>,
+    base_ref: Option<RefTypeId>,
+    context_port_ref: Option<RefTypeId>,
 }
 
 impl VariableInAtomicSwcInstanceRef {
@@ -1200,55 +1201,55 @@ impl VariableInAtomicSwcInstanceRef {
         &mut self.base
     }
 
-    pub fn get_abstract_target_data_element_ref(&self) -> Option<&str> {
-        self.abstract_target_data_element_ref.as_deref()
+    pub fn get_abstract_target_data_element_ref(&self) -> Option<RefTypeId> {
+        self.abstract_target_data_element_ref
     }
 
-    pub fn set_abstract_target_data_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.abstract_target_data_element_ref = Some(value.into());
+    pub fn set_abstract_target_data_element_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.abstract_target_data_element_ref = Some(value);
         self
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
-        self.base_ref.as_deref()
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
+        self.base_ref
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_ref = Some(value.into());
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_ref = Some(value);
         self
     }
 
-    pub fn get_context_port_ref(&self) -> Option<&str> {
-        self.context_port_ref.as_deref()
+    pub fn get_context_port_ref(&self) -> Option<RefTypeId> {
+        self.context_port_ref
     }
 
-    pub fn set_context_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.context_port_ref = Some(value.into());
+    pub fn set_context_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_port_ref = Some(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_target_ref(value);
         self
     }
@@ -1290,9 +1291,13 @@ impl Document {
             return Err(format!("{path}: CONTEXT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.CONTEXT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.CONTEXT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.CONTEXT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.CONTEXT_REFS[{index}]"))?;
         }
         if a.get_target_ref() != b.get_target_ref() {
             return Err(format!("{path}: TARGET_REF mismatch"));

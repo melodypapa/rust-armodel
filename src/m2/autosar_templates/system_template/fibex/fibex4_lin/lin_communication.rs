@@ -27,6 +27,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::system_template::fibex::fibex_core::core_communication::Frame;
@@ -101,7 +102,7 @@ impl TryFrom<&str> for RunMode {
 #[derive(Debug, Default)]
 pub struct ApplicationEntry {
     base: ScheduleTableEntry,
-    frame_triggering_ref: Option<String>,
+    frame_triggering_ref: Option<RefTypeId>,
 }
 
 impl ApplicationEntry {
@@ -117,12 +118,12 @@ impl ApplicationEntry {
         &mut self.base
     }
 
-    pub fn get_frame_triggering_ref(&self) -> Option<&str> {
-        self.frame_triggering_ref.as_deref()
+    pub fn get_frame_triggering_ref(&self) -> Option<RefTypeId> {
+        self.frame_triggering_ref
     }
 
-    pub fn set_frame_triggering_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.frame_triggering_ref = Some(value.into());
+    pub fn set_frame_triggering_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.frame_triggering_ref = Some(value);
         self
     }
 
@@ -177,7 +178,7 @@ impl ApplicationEntry {
 #[derive(Debug, Default)]
 pub struct AssignFrameId {
     base: LinConfigurationEntry,
-    assigned_frame_triggering_ref: Option<String>,
+    assigned_frame_triggering_ref: Option<RefTypeId>,
 }
 
 impl AssignFrameId {
@@ -193,29 +194,29 @@ impl AssignFrameId {
         &mut self.base
     }
 
-    pub fn get_assigned_frame_triggering_ref(&self) -> Option<&str> {
-        self.assigned_frame_triggering_ref.as_deref()
+    pub fn get_assigned_frame_triggering_ref(&self) -> Option<RefTypeId> {
+        self.assigned_frame_triggering_ref
     }
 
-    pub fn set_assigned_frame_triggering_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.assigned_frame_triggering_ref = Some(value.into());
+    pub fn set_assigned_frame_triggering_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.assigned_frame_triggering_ref = Some(value);
         self
     }
 
-    pub fn get_assigned_controller_ref(&self) -> Option<&str> {
+    pub fn get_assigned_controller_ref(&self) -> Option<RefTypeId> {
         self.base().get_assigned_controller_ref()
     }
 
-    pub fn set_assigned_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_assigned_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_assigned_controller_ref(value);
         self
     }
 
-    pub fn get_assigned_lin_slave_config_ref(&self) -> Option<&str> {
+    pub fn get_assigned_lin_slave_config_ref(&self) -> Option<RefTypeId> {
         self.base().get_assigned_lin_slave_config_ref()
     }
 
-    pub fn set_assigned_lin_slave_config_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_assigned_lin_slave_config_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_assigned_lin_slave_config_ref(value);
         self
     }
@@ -305,20 +306,20 @@ impl AssignFrameIdRange {
         self
     }
 
-    pub fn get_assigned_controller_ref(&self) -> Option<&str> {
+    pub fn get_assigned_controller_ref(&self) -> Option<RefTypeId> {
         self.base().get_assigned_controller_ref()
     }
 
-    pub fn set_assigned_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_assigned_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_assigned_controller_ref(value);
         self
     }
 
-    pub fn get_assigned_lin_slave_config_ref(&self) -> Option<&str> {
+    pub fn get_assigned_lin_slave_config_ref(&self) -> Option<RefTypeId> {
         self.base().get_assigned_lin_slave_config_ref()
     }
 
-    pub fn set_assigned_lin_slave_config_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_assigned_lin_slave_config_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_assigned_lin_slave_config_ref(value);
         self
     }
@@ -399,20 +400,20 @@ impl AssignNad {
         self
     }
 
-    pub fn get_assigned_controller_ref(&self) -> Option<&str> {
+    pub fn get_assigned_controller_ref(&self) -> Option<RefTypeId> {
         self.base().get_assigned_controller_ref()
     }
 
-    pub fn set_assigned_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_assigned_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_assigned_controller_ref(value);
         self
     }
 
-    pub fn get_assigned_lin_slave_config_ref(&self) -> Option<&str> {
+    pub fn get_assigned_lin_slave_config_ref(&self) -> Option<RefTypeId> {
         self.base().get_assigned_lin_slave_config_ref()
     }
 
-    pub fn set_assigned_lin_slave_config_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_assigned_lin_slave_config_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_assigned_lin_slave_config_ref(value);
         self
     }
@@ -533,20 +534,20 @@ impl ConditionalChangeNad {
         self
     }
 
-    pub fn get_assigned_controller_ref(&self) -> Option<&str> {
+    pub fn get_assigned_controller_ref(&self) -> Option<RefTypeId> {
         self.base().get_assigned_controller_ref()
     }
 
-    pub fn set_assigned_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_assigned_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_assigned_controller_ref(value);
         self
     }
 
-    pub fn get_assigned_lin_slave_config_ref(&self) -> Option<&str> {
+    pub fn get_assigned_lin_slave_config_ref(&self) -> Option<RefTypeId> {
         self.base().get_assigned_lin_slave_config_ref()
     }
 
-    pub fn set_assigned_lin_slave_config_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_assigned_lin_slave_config_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_assigned_lin_slave_config_ref(value);
         self
     }
@@ -626,20 +627,20 @@ impl DataDumpEntry {
         self.byte_values.push(value);
     }
 
-    pub fn get_assigned_controller_ref(&self) -> Option<&str> {
+    pub fn get_assigned_controller_ref(&self) -> Option<RefTypeId> {
         self.base().get_assigned_controller_ref()
     }
 
-    pub fn set_assigned_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_assigned_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_assigned_controller_ref(value);
         self
     }
 
-    pub fn get_assigned_lin_slave_config_ref(&self) -> Option<&str> {
+    pub fn get_assigned_lin_slave_config_ref(&self) -> Option<RefTypeId> {
         self.base().get_assigned_lin_slave_config_ref()
     }
 
-    pub fn set_assigned_lin_slave_config_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_assigned_lin_slave_config_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_assigned_lin_slave_config_ref(value);
         self
     }
@@ -895,8 +896,8 @@ impl FreeFormatEntry {
 #[derive(Debug, Default)]
 pub struct LinConfigurationEntry {
     base: ScheduleTableEntry,
-    assigned_controller_ref: Option<String>,
-    assigned_lin_slave_config_ref: Option<String>,
+    assigned_controller_ref: Option<RefTypeId>,
+    assigned_lin_slave_config_ref: Option<RefTypeId>,
 }
 
 impl LinConfigurationEntry {
@@ -912,21 +913,21 @@ impl LinConfigurationEntry {
         &mut self.base
     }
 
-    pub fn get_assigned_controller_ref(&self) -> Option<&str> {
-        self.assigned_controller_ref.as_deref()
+    pub fn get_assigned_controller_ref(&self) -> Option<RefTypeId> {
+        self.assigned_controller_ref
     }
 
-    pub fn set_assigned_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.assigned_controller_ref = Some(value.into());
+    pub fn set_assigned_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.assigned_controller_ref = Some(value);
         self
     }
 
-    pub fn get_assigned_lin_slave_config_ref(&self) -> Option<&str> {
-        self.assigned_lin_slave_config_ref.as_deref()
+    pub fn get_assigned_lin_slave_config_ref(&self) -> Option<RefTypeId> {
+        self.assigned_lin_slave_config_ref
     }
 
-    pub fn set_assigned_lin_slave_config_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.assigned_lin_slave_config_ref = Some(value.into());
+    pub fn set_assigned_lin_slave_config_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.assigned_lin_slave_config_ref = Some(value);
         self
     }
 
@@ -981,7 +982,7 @@ impl LinConfigurationEntry {
 #[derive(Debug, Default)]
 pub struct LinErrorResponse {
     base: ARObject,
-    response_error_ref: Option<String>,
+    response_error_ref: Option<RefTypeId>,
 }
 
 impl LinErrorResponse {
@@ -997,12 +998,12 @@ impl LinErrorResponse {
         &mut self.base
     }
 
-    pub fn get_response_error_ref(&self) -> Option<&str> {
-        self.response_error_ref.as_deref()
+    pub fn get_response_error_ref(&self) -> Option<RefTypeId> {
+        self.response_error_ref
     }
 
-    pub fn set_response_error_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.response_error_ref = Some(value.into());
+    pub fn set_response_error_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.response_error_ref = Some(value);
         self
     }
 
@@ -1647,6 +1648,8 @@ impl LinFrame {
 #[derive(Debug, Default)]
 pub struct LinFrameTriggering {
     base: FrameTriggering,
+    identifier: Option<String>,
+    lin_checksum: Option<String>,
 }
 
 impl LinFrameTriggering {
@@ -1662,28 +1665,46 @@ impl LinFrameTriggering {
         &mut self.base
     }
 
-    pub fn get_frame_ref(&self) -> Option<&str> {
+    pub fn get_identifier(&self) -> Option<&str> {
+        self.identifier.as_deref()
+    }
+
+    pub fn set_identifier(&mut self, value: impl Into<String>) -> &mut Self {
+        self.identifier = Some(value.into());
+        self
+    }
+
+    pub fn get_lin_checksum(&self) -> Option<&str> {
+        self.lin_checksum.as_deref()
+    }
+
+    pub fn set_lin_checksum(&mut self, value: impl Into<String>) -> &mut Self {
+        self.lin_checksum = Some(value.into());
+        self
+    }
+
+    pub fn get_frame_ref(&self) -> Option<RefTypeId> {
         self.base().get_frame_ref()
     }
 
-    pub fn set_frame_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_frame_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_frame_ref(value);
         self
     }
 
-    pub fn get_frame_port_refs(&self) -> &[String] {
+    pub fn get_frame_port_refs(&self) -> &[RefTypeId] {
         self.base().get_frame_port_refs()
     }
 
-    pub fn push_frame_port_ref(&mut self, value: String) {
+    pub fn push_frame_port_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_frame_port_ref(value)
     }
 
-    pub fn get_pdu_triggering_refs(&self) -> &[String] {
+    pub fn get_pdu_triggering_refs(&self) -> &[RefTypeId] {
         self.base().get_pdu_triggering_refs()
     }
 
-    pub fn push_pdu_triggering_ref(&mut self, value: String) {
+    pub fn push_pdu_triggering_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_pdu_triggering_ref(value)
     }
 
@@ -2713,20 +2734,20 @@ impl SaveConfigurationEntry {
         &mut self.base
     }
 
-    pub fn get_assigned_controller_ref(&self) -> Option<&str> {
+    pub fn get_assigned_controller_ref(&self) -> Option<RefTypeId> {
         self.base().get_assigned_controller_ref()
     }
 
-    pub fn set_assigned_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_assigned_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_assigned_controller_ref(value);
         self
     }
 
-    pub fn get_assigned_lin_slave_config_ref(&self) -> Option<&str> {
+    pub fn get_assigned_lin_slave_config_ref(&self) -> Option<RefTypeId> {
         self.base().get_assigned_lin_slave_config_ref()
     }
 
-    pub fn set_assigned_lin_slave_config_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_assigned_lin_slave_config_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_assigned_lin_slave_config_ref(value);
         self
     }
@@ -2851,7 +2872,7 @@ impl ScheduleTableEntry {
 #[derive(Debug, Default)]
 pub struct UnassignFrameId {
     base: LinConfigurationEntry,
-    unassigned_frame_triggering_ref: Option<String>,
+    unassigned_frame_triggering_ref: Option<RefTypeId>,
 }
 
 impl UnassignFrameId {
@@ -2867,29 +2888,29 @@ impl UnassignFrameId {
         &mut self.base
     }
 
-    pub fn get_unassigned_frame_triggering_ref(&self) -> Option<&str> {
-        self.unassigned_frame_triggering_ref.as_deref()
+    pub fn get_unassigned_frame_triggering_ref(&self) -> Option<RefTypeId> {
+        self.unassigned_frame_triggering_ref
     }
 
-    pub fn set_unassigned_frame_triggering_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.unassigned_frame_triggering_ref = Some(value.into());
+    pub fn set_unassigned_frame_triggering_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.unassigned_frame_triggering_ref = Some(value);
         self
     }
 
-    pub fn get_assigned_controller_ref(&self) -> Option<&str> {
+    pub fn get_assigned_controller_ref(&self) -> Option<RefTypeId> {
         self.base().get_assigned_controller_ref()
     }
 
-    pub fn set_assigned_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_assigned_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_assigned_controller_ref(value);
         self
     }
 
-    pub fn get_assigned_lin_slave_config_ref(&self) -> Option<&str> {
+    pub fn get_assigned_lin_slave_config_ref(&self) -> Option<RefTypeId> {
         self.base().get_assigned_lin_slave_config_ref()
     }
 
-    pub fn set_assigned_lin_slave_config_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_assigned_lin_slave_config_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_assigned_lin_slave_config_ref(value);
         self
     }
@@ -3169,6 +3190,12 @@ impl Document {
         path: &str,
     ) -> Result<(), String> {
         self.compare_frame_triggering(other, a.base(), b.base(), path)?;
+        if a.get_identifier() != b.get_identifier() {
+            return Err(format!("{path}: IDENTIFIER mismatch"));
+        }
+        if a.get_lin_checksum() != b.get_lin_checksum() {
+            return Err(format!("{path}: LIN_CHECKSUM mismatch"));
+        }
         Ok(())
     }
 

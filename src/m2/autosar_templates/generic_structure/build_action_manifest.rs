@@ -19,6 +19,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::e
 use crate::m2::autosar_templates::generic_structure::general_template_classes::engineering_object::EngineeringObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::asam_hdo::special_data::SdgId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
@@ -33,11 +34,11 @@ use crate::Document;
 pub struct BuildAction {
     base: BuildActionEntity,
     created_datas: Vec<BuildActionIoElementId>,
-    follow_up_action_refs: Vec<String>,
+    follow_up_action_refs: Vec<RefTypeId>,
     input_datas: Vec<BuildActionIoElementId>,
     modified_datas: Vec<BuildActionIoElementId>,
-    predecessor_action_refs: Vec<String>,
-    required_environment_ref: Option<String>,
+    predecessor_action_refs: Vec<RefTypeId>,
+    required_environment_ref: Option<RefTypeId>,
 }
 
 impl BuildAction {
@@ -61,11 +62,11 @@ impl BuildAction {
         self.created_datas.push(value);
     }
 
-    pub fn get_follow_up_action_refs(&self) -> &[String] {
+    pub fn get_follow_up_action_refs(&self) -> &[RefTypeId] {
         &self.follow_up_action_refs
     }
 
-    pub fn push_follow_up_action_ref(&mut self, value: String) {
+    pub fn push_follow_up_action_ref(&mut self, value: RefTypeId) {
         self.follow_up_action_refs.push(value);
     }
 
@@ -85,20 +86,20 @@ impl BuildAction {
         self.modified_datas.push(value);
     }
 
-    pub fn get_predecessor_action_refs(&self) -> &[String] {
+    pub fn get_predecessor_action_refs(&self) -> &[RefTypeId] {
         &self.predecessor_action_refs
     }
 
-    pub fn push_predecessor_action_ref(&mut self, value: String) {
+    pub fn push_predecessor_action_ref(&mut self, value: RefTypeId) {
         self.predecessor_action_refs.push(value);
     }
 
-    pub fn get_required_environment_ref(&self) -> Option<&str> {
-        self.required_environment_ref.as_deref()
+    pub fn get_required_environment_ref(&self) -> Option<RefTypeId> {
+        self.required_environment_ref
     }
 
-    pub fn set_required_environment_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.required_environment_ref = Some(value.into());
+    pub fn set_required_environment_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.required_environment_ref = Some(value);
         self
     }
 
@@ -655,7 +656,7 @@ impl BuildActionInvocator {
 pub struct BuildActionIoElement {
     base: ARObject,
     category: Option<String>,
-    ecuc_definition_ref: Option<String>,
+    ecuc_definition_ref: Option<RefTypeId>,
     engineering_object: Option<BuildEngineeringObjectId>,
     role: Option<String>,
     sdgs: Vec<SdgId>,
@@ -683,12 +684,12 @@ impl BuildActionIoElement {
         self
     }
 
-    pub fn get_ecuc_definition_ref(&self) -> Option<&str> {
-        self.ecuc_definition_ref.as_deref()
+    pub fn get_ecuc_definition_ref(&self) -> Option<RefTypeId> {
+        self.ecuc_definition_ref
     }
 
-    pub fn set_ecuc_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ecuc_definition_ref = Some(value.into());
+    pub fn set_ecuc_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ecuc_definition_ref = Some(value);
         self
     }
 
@@ -744,9 +745,9 @@ pub struct BuildActionManifest {
     base: Identifiable,
     build_actions: Vec<BuildActionId>,
     build_action_environments: Vec<BuildActionEnvironmentId>,
-    dynamic_action_refs: Vec<String>,
-    start_action_refs: Vec<String>,
-    tear_down_action_refs: Vec<String>,
+    dynamic_action_refs: Vec<RefTypeId>,
+    start_action_refs: Vec<RefTypeId>,
+    tear_down_action_refs: Vec<RefTypeId>,
 }
 
 impl BuildActionManifest {
@@ -778,27 +779,27 @@ impl BuildActionManifest {
         self.build_action_environments.push(value);
     }
 
-    pub fn get_dynamic_action_refs(&self) -> &[String] {
+    pub fn get_dynamic_action_refs(&self) -> &[RefTypeId] {
         &self.dynamic_action_refs
     }
 
-    pub fn push_dynamic_action_ref(&mut self, value: String) {
+    pub fn push_dynamic_action_ref(&mut self, value: RefTypeId) {
         self.dynamic_action_refs.push(value);
     }
 
-    pub fn get_start_action_refs(&self) -> &[String] {
+    pub fn get_start_action_refs(&self) -> &[RefTypeId] {
         &self.start_action_refs
     }
 
-    pub fn push_start_action_ref(&mut self, value: String) {
+    pub fn push_start_action_ref(&mut self, value: RefTypeId) {
         self.start_action_refs.push(value);
     }
 
-    pub fn get_tear_down_action_refs(&self) -> &[String] {
+    pub fn get_tear_down_action_refs(&self) -> &[RefTypeId] {
         &self.tear_down_action_refs
     }
 
-    pub fn push_tear_down_action_ref(&mut self, value: String) {
+    pub fn push_tear_down_action_ref(&mut self, value: RefTypeId) {
         self.tear_down_action_refs.push(value);
     }
 
@@ -1101,9 +1102,18 @@ impl Document {
             return Err(format!("{path}: FOLLOW_UP_ACTION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.FOLLOW_UP_ACTION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.FOLLOW_UP_ACTION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.FOLLOW_UP_ACTION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.FOLLOW_UP_ACTION_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_input_datas();
         let list_b = b.get_input_datas();
@@ -1150,9 +1160,18 @@ impl Document {
             return Err(format!("{path}: PREDECESSOR_ACTION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.PREDECESSOR_ACTION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.PREDECESSOR_ACTION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.PREDECESSOR_ACTION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.PREDECESSOR_ACTION_REFS[{index}]"),
+            )?;
         }
         if a.get_required_environment_ref() != b.get_required_environment_ref() {
             return Err(format!("{path}: REQUIRED_ENVIRONMENT_REF mismatch"));
@@ -1336,9 +1355,13 @@ impl Document {
             return Err(format!("{path}: DYNAMIC_ACTION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.DYNAMIC_ACTION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.DYNAMIC_ACTION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.DYNAMIC_ACTION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.DYNAMIC_ACTION_REFS[{index}]"))?;
         }
         let list_a = a.get_start_action_refs();
         let list_b = b.get_start_action_refs();
@@ -1346,9 +1369,13 @@ impl Document {
             return Err(format!("{path}: START_ACTION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.START_ACTION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.START_ACTION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.START_ACTION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.START_ACTION_REFS[{index}]"))?;
         }
         let list_a = a.get_tear_down_action_refs();
         let list_b = b.get_tear_down_action_refs();
@@ -1356,9 +1383,18 @@ impl Document {
             return Err(format!("{path}: TEAR_DOWN_ACTION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.TEAR_DOWN_ACTION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.TEAR_DOWN_ACTION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.TEAR_DOWN_ACTION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.TEAR_DOWN_ACTION_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }

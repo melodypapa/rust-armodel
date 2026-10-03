@@ -20,6 +20,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::LimitId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::system_template::dlt::DltConfigId;
@@ -1354,7 +1355,7 @@ impl CommunicationCluster {
 pub struct CommunicationConnector {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    comm_controller_ref: Option<String>,
+    comm_controller_ref: Option<RefTypeId>,
     create_ecu_wakeup_source: Option<String>,
     dynamic_pnc_to_channel_mapping_enabled: Option<String>,
     ecu_comm_port_instances: Vec<ElementRef>,
@@ -1383,12 +1384,12 @@ impl CommunicationConnector {
         &mut self.variation_point_capable
     }
 
-    pub fn get_comm_controller_ref(&self) -> Option<&str> {
-        self.comm_controller_ref.as_deref()
+    pub fn get_comm_controller_ref(&self) -> Option<RefTypeId> {
+        self.comm_controller_ref
     }
 
-    pub fn set_comm_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.comm_controller_ref = Some(value.into());
+    pub fn set_comm_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.comm_controller_ref = Some(value);
         self
     }
 
@@ -1913,9 +1914,9 @@ impl CycleRepetition {
 #[derive(Debug, Default)]
 pub struct EcuInstance {
     base: FibexElement,
-    associated_com_i_pdu_group_refs: Vec<String>,
-    associated_consumed_provided_service_instance_group_refs: Vec<String>,
-    associated_pdur_i_pdu_group_refs: Vec<String>,
+    associated_com_i_pdu_group_refs: Vec<RefTypeId>,
+    associated_consumed_provided_service_instance_group_refs: Vec<RefTypeId>,
+    associated_pdur_i_pdu_group_refs: Vec<RefTypeId>,
     channel_synchronous_wakeup: Option<String>,
     client_id_range: Option<ClientIdRangeId>,
     com_configuration_gw_time_base: Option<String>,
@@ -1926,17 +1927,17 @@ pub struct EcuInstance {
     connectors: Vec<ElementRef>,
     dlt_config: Option<DltConfigId>,
     do_ip_config: Option<DoIpConfigId>,
-    ecu_task_proxy_refs: Vec<String>,
+    ecu_task_proxy_refs: Vec<RefTypeId>,
     eth_switch_port_group_derivation: Option<String>,
-    firewall_rule_refs: Vec<String>,
+    firewall_rule_refs: Vec<RefTypeId>,
     partitions: Vec<EcuPartitionId>,
     pnc_nm_request: Option<String>,
     pnc_prepare_sleep_timer: Option<String>,
     pnc_synchronous_wakeup: Option<String>,
     pn_reset_time: Option<String>,
     sleep_mode_supported: Option<String>,
-    tcp_ip_icmp_props_ref: Option<String>,
-    tcp_ip_props_ref: Option<String>,
+    tcp_ip_icmp_props_ref: Option<RefTypeId>,
+    tcp_ip_props_ref: Option<RefTypeId>,
     v2x_supported: Option<String>,
     wake_up_over_bus_supported: Option<String>,
 }
@@ -1954,28 +1955,31 @@ impl EcuInstance {
         &mut self.base
     }
 
-    pub fn get_associated_com_i_pdu_group_refs(&self) -> &[String] {
+    pub fn get_associated_com_i_pdu_group_refs(&self) -> &[RefTypeId] {
         &self.associated_com_i_pdu_group_refs
     }
 
-    pub fn push_associated_com_i_pdu_group_ref(&mut self, value: String) {
+    pub fn push_associated_com_i_pdu_group_ref(&mut self, value: RefTypeId) {
         self.associated_com_i_pdu_group_refs.push(value);
     }
 
-    pub fn get_associated_consumed_provided_service_instance_group_refs(&self) -> &[String] {
+    pub fn get_associated_consumed_provided_service_instance_group_refs(&self) -> &[RefTypeId] {
         &self.associated_consumed_provided_service_instance_group_refs
     }
 
-    pub fn push_associated_consumed_provided_service_instance_group_ref(&mut self, value: String) {
+    pub fn push_associated_consumed_provided_service_instance_group_ref(
+        &mut self,
+        value: RefTypeId,
+    ) {
         self.associated_consumed_provided_service_instance_group_refs
             .push(value);
     }
 
-    pub fn get_associated_pdur_i_pdu_group_refs(&self) -> &[String] {
+    pub fn get_associated_pdur_i_pdu_group_refs(&self) -> &[RefTypeId] {
         &self.associated_pdur_i_pdu_group_refs
     }
 
-    pub fn push_associated_pdur_i_pdu_group_ref(&mut self, value: String) {
+    pub fn push_associated_pdur_i_pdu_group_ref(&mut self, value: RefTypeId) {
         self.associated_pdur_i_pdu_group_refs.push(value);
     }
 
@@ -2070,11 +2074,11 @@ impl EcuInstance {
         self
     }
 
-    pub fn get_ecu_task_proxy_refs(&self) -> &[String] {
+    pub fn get_ecu_task_proxy_refs(&self) -> &[RefTypeId] {
         &self.ecu_task_proxy_refs
     }
 
-    pub fn push_ecu_task_proxy_ref(&mut self, value: String) {
+    pub fn push_ecu_task_proxy_ref(&mut self, value: RefTypeId) {
         self.ecu_task_proxy_refs.push(value);
     }
 
@@ -2087,11 +2091,11 @@ impl EcuInstance {
         self
     }
 
-    pub fn get_firewall_rule_refs(&self) -> &[String] {
+    pub fn get_firewall_rule_refs(&self) -> &[RefTypeId] {
         &self.firewall_rule_refs
     }
 
-    pub fn push_firewall_rule_ref(&mut self, value: String) {
+    pub fn push_firewall_rule_ref(&mut self, value: RefTypeId) {
         self.firewall_rule_refs.push(value);
     }
 
@@ -2148,21 +2152,21 @@ impl EcuInstance {
         self
     }
 
-    pub fn get_tcp_ip_icmp_props_ref(&self) -> Option<&str> {
-        self.tcp_ip_icmp_props_ref.as_deref()
+    pub fn get_tcp_ip_icmp_props_ref(&self) -> Option<RefTypeId> {
+        self.tcp_ip_icmp_props_ref
     }
 
-    pub fn set_tcp_ip_icmp_props_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.tcp_ip_icmp_props_ref = Some(value.into());
+    pub fn set_tcp_ip_icmp_props_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.tcp_ip_icmp_props_ref = Some(value);
         self
     }
 
-    pub fn get_tcp_ip_props_ref(&self) -> Option<&str> {
-        self.tcp_ip_props_ref.as_deref()
+    pub fn get_tcp_ip_props_ref(&self) -> Option<RefTypeId> {
+        self.tcp_ip_props_ref
     }
 
-    pub fn set_tcp_ip_props_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.tcp_ip_props_ref = Some(value.into());
+    pub fn set_tcp_ip_props_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.tcp_ip_props_ref = Some(value);
         self
     }
 
@@ -2405,10 +2409,10 @@ impl EcuInstance {
 pub struct PhysicalChannel {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    comm_connector_refs: Vec<String>,
+    comm_connector_refs: Vec<RefTypeId>,
     frame_triggerings: Vec<ElementRef>,
     i_signal_triggerings: Vec<ISignalTriggeringId>,
-    managed_physical_channel_refs: Vec<String>,
+    managed_physical_channel_refs: Vec<RefTypeId>,
     pdu_triggerings: Vec<PduTriggeringId>,
 }
 
@@ -2433,11 +2437,11 @@ impl PhysicalChannel {
         &mut self.variation_point_capable
     }
 
-    pub fn get_comm_connector_refs(&self) -> &[String] {
+    pub fn get_comm_connector_refs(&self) -> &[RefTypeId] {
         &self.comm_connector_refs
     }
 
-    pub fn push_comm_connector_ref(&mut self, value: String) {
+    pub fn push_comm_connector_ref(&mut self, value: RefTypeId) {
         self.comm_connector_refs.push(value);
     }
 
@@ -2457,11 +2461,11 @@ impl PhysicalChannel {
         self.i_signal_triggerings.push(value);
     }
 
-    pub fn get_managed_physical_channel_refs(&self) -> &[String] {
+    pub fn get_managed_physical_channel_refs(&self) -> &[RefTypeId] {
         &self.managed_physical_channel_refs
     }
 
-    pub fn push_managed_physical_channel_ref(&mut self, value: String) {
+    pub fn push_managed_physical_channel_ref(&mut self, value: RefTypeId) {
         self.managed_physical_channel_refs.push(value);
     }
 
@@ -3691,11 +3695,22 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.ASSOCIATED_COM_I_PDU_GROUP_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!(
+                    "{path}.ASSOCIATED_COM_I_PDU_GROUP_REFS[{index}]: id not found in own arena"
+                )
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!(
+                    "{path}.ASSOCIATED_COM_I_PDU_GROUP_REFS[{index}]: id not found in other arena"
+                )
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.ASSOCIATED_COM_I_PDU_GROUP_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_associated_consumed_provided_service_instance_group_refs();
         let list_b = b.get_associated_consumed_provided_service_instance_group_refs();
@@ -3705,9 +3720,16 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.ASSOCIATED_CONSUMED_PROVIDED_SERVICE_INSTANCE_GROUP_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| format!("{path}.ASSOCIATED_CONSUMED_PROVIDED_SERVICE_INSTANCE_GROUP_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| format!("{path}.ASSOCIATED_CONSUMED_PROVIDED_SERVICE_INSTANCE_GROUP_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!(
+                    "{path}.ASSOCIATED_CONSUMED_PROVIDED_SERVICE_INSTANCE_GROUP_REFS[{index}]"
+                ),
+            )?;
         }
         let list_a = a.get_associated_pdur_i_pdu_group_refs();
         let list_b = b.get_associated_pdur_i_pdu_group_refs();
@@ -3717,11 +3739,22 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.ASSOCIATED_PDUR_I_PDU_GROUP_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!(
+                    "{path}.ASSOCIATED_PDUR_I_PDU_GROUP_REFS[{index}]: id not found in own arena"
+                )
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!(
+                    "{path}.ASSOCIATED_PDUR_I_PDU_GROUP_REFS[{index}]: id not found in other arena"
+                )
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.ASSOCIATED_PDUR_I_PDU_GROUP_REFS[{index}]"),
+            )?;
         }
         if a.get_channel_synchronous_wakeup() != b.get_channel_synchronous_wakeup() {
             return Err(format!("{path}: CHANNEL_SYNCHRONOUS_WAKEUP mismatch"));
@@ -3777,9 +3810,13 @@ impl Document {
             return Err(format!("{path}: ECU_TASK_PROXY_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.ECU_TASK_PROXY_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.ECU_TASK_PROXY_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.ECU_TASK_PROXY_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.ECU_TASK_PROXY_REFS[{index}]"))?;
         }
         if a.get_eth_switch_port_group_derivation() != b.get_eth_switch_port_group_derivation() {
             return Err(format!("{path}: ETH_SWITCH_PORT_GROUP_DERIVATION mismatch"));
@@ -3790,9 +3827,13 @@ impl Document {
             return Err(format!("{path}: FIREWALL_RULE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.FIREWALL_RULE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.FIREWALL_RULE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.FIREWALL_RULE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.FIREWALL_RULE_REFS[{index}]"))?;
         }
         let list_a = a.get_partitions();
         let list_b = b.get_partitions();
@@ -3859,9 +3900,13 @@ impl Document {
             return Err(format!("{path}: COMM_CONNECTOR_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.COMM_CONNECTOR_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.COMM_CONNECTOR_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.COMM_CONNECTOR_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.COMM_CONNECTOR_REFS[{index}]"))?;
         }
         let list_a = a.get_frame_triggerings();
         let list_b = b.get_frame_triggerings();
@@ -3900,11 +3945,20 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.MANAGED_PHYSICAL_CHANNEL_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.MANAGED_PHYSICAL_CHANNEL_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!(
+                    "{path}.MANAGED_PHYSICAL_CHANNEL_REFS[{index}]: id not found in other arena"
+                )
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.MANAGED_PHYSICAL_CHANNEL_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_pdu_triggerings();
         let list_b = b.get_pdu_triggerings();

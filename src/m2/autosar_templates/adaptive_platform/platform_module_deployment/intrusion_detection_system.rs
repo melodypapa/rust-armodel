@@ -11,6 +11,7 @@ new_key_type! {
 use crate::m2::autosar_templates::generic_structure::abstract_structure::AtpStructureElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -23,8 +24,8 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct IdsPlatformInstantiation {
     base: AtpStructureElement,
-    network_interface_refs: Vec<String>,
-    time_base_ref: Option<String>,
+    network_interface_refs: Vec<RefTypeId>,
+    time_base_ref: Option<RefTypeId>,
 }
 
 impl IdsPlatformInstantiation {
@@ -40,20 +41,20 @@ impl IdsPlatformInstantiation {
         &mut self.base
     }
 
-    pub fn get_network_interface_refs(&self) -> &[String] {
+    pub fn get_network_interface_refs(&self) -> &[RefTypeId] {
         &self.network_interface_refs
     }
 
-    pub fn push_network_interface_ref(&mut self, value: String) {
+    pub fn push_network_interface_ref(&mut self, value: RefTypeId) {
         self.network_interface_refs.push(value);
     }
 
-    pub fn get_time_base_ref(&self) -> Option<&str> {
-        self.time_base_ref.as_deref()
+    pub fn get_time_base_ref(&self) -> Option<RefTypeId> {
+        self.time_base_ref
     }
 
-    pub fn set_time_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.time_base_ref = Some(value.into());
+    pub fn set_time_base_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.time_base_ref = Some(value);
         self
     }
 
@@ -256,19 +257,19 @@ impl IdsmModuleInstantiation {
         &mut self.base
     }
 
-    pub fn get_network_interface_refs(&self) -> &[String] {
+    pub fn get_network_interface_refs(&self) -> &[RefTypeId] {
         self.base().get_network_interface_refs()
     }
 
-    pub fn push_network_interface_ref(&mut self, value: String) {
+    pub fn push_network_interface_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_network_interface_ref(value)
     }
 
-    pub fn get_time_base_ref(&self) -> Option<&str> {
+    pub fn get_time_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_time_base_ref()
     }
 
-    pub fn set_time_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_time_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_time_base_ref(value);
         self
     }
@@ -514,9 +515,18 @@ impl Document {
             return Err(format!("{path}: NETWORK_INTERFACE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.NETWORK_INTERFACE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.NETWORK_INTERFACE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.NETWORK_INTERFACE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.NETWORK_INTERFACE_REFS[{index}]"),
+            )?;
         }
         if a.get_time_base_ref() != b.get_time_base_ref() {
             return Err(format!("{path}: TIME_BASE_REF mismatch"));

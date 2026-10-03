@@ -24,6 +24,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::i
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Referrable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -39,8 +40,8 @@ use crate::Document;
 pub struct HwDescriptionEntity {
     base: Referrable,
     hw_attribute_values: Vec<HwAttributeValueId>,
-    hw_category_refs: Vec<String>,
-    hw_type_ref: Option<String>,
+    hw_category_refs: Vec<RefTypeId>,
+    hw_type_ref: Option<RefTypeId>,
 }
 
 impl HwDescriptionEntity {
@@ -64,20 +65,20 @@ impl HwDescriptionEntity {
         self.hw_attribute_values.push(value);
     }
 
-    pub fn get_hw_category_refs(&self) -> &[String] {
+    pub fn get_hw_category_refs(&self) -> &[RefTypeId] {
         &self.hw_category_refs
     }
 
-    pub fn push_hw_category_ref(&mut self, value: String) {
+    pub fn push_hw_category_ref(&mut self, value: RefTypeId) {
         self.hw_category_refs.push(value);
     }
 
-    pub fn get_hw_type_ref(&self) -> Option<&str> {
-        self.hw_type_ref.as_deref()
+    pub fn get_hw_type_ref(&self) -> Option<RefTypeId> {
+        self.hw_type_ref
     }
 
-    pub fn set_hw_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.hw_type_ref = Some(value.into());
+    pub fn set_hw_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.hw_type_ref = Some(value);
         self
     }
 
@@ -134,7 +135,7 @@ pub struct HwElement {
     hw_description_entity: HwDescriptionEntity,
     hw_element_connections: Vec<HwElementConnectorId>,
     hw_pin_groups: Vec<HwPinGroupId>,
-    nested_element_refs: Vec<String>,
+    nested_element_refs: Vec<RefTypeId>,
 }
 
 impl HwElement {
@@ -174,11 +175,11 @@ impl HwElement {
         self.hw_pin_groups.push(value);
     }
 
-    pub fn get_nested_element_refs(&self) -> &[String] {
+    pub fn get_nested_element_refs(&self) -> &[RefTypeId] {
         &self.nested_element_refs
     }
 
-    pub fn push_nested_element_ref(&mut self, value: String) {
+    pub fn push_nested_element_ref(&mut self, value: RefTypeId) {
         self.nested_element_refs.push(value);
     }
 
@@ -390,19 +391,19 @@ impl HwElement {
             .push_hw_attribute_value(value)
     }
 
-    pub fn get_hw_category_refs(&self) -> &[String] {
+    pub fn get_hw_category_refs(&self) -> &[RefTypeId] {
         self.hw_description_entity().get_hw_category_refs()
     }
 
-    pub fn push_hw_category_ref(&mut self, value: String) {
+    pub fn push_hw_category_ref(&mut self, value: RefTypeId) {
         self.hw_description_entity_mut().push_hw_category_ref(value)
     }
 
-    pub fn get_hw_type_ref(&self) -> Option<&str> {
+    pub fn get_hw_type_ref(&self) -> Option<RefTypeId> {
         self.hw_description_entity().get_hw_type_ref()
     }
 
-    pub fn set_hw_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_hw_type_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.hw_description_entity_mut().set_hw_type_ref(value);
         self
     }
@@ -430,7 +431,7 @@ impl HwElement {
 pub struct HwElementConnector {
     base: Describable,
     variation_point_capable: VariationPointCapable,
-    hw_element_refs: Vec<String>,
+    hw_element_refs: Vec<RefTypeId>,
     hw_pin_connections: Vec<HwPinConnectorId>,
     hw_pin_group_connections: Vec<HwPinGroupConnectorId>,
 }
@@ -456,11 +457,11 @@ impl HwElementConnector {
         &mut self.variation_point_capable
     }
 
-    pub fn get_hw_element_refs(&self) -> &[String] {
+    pub fn get_hw_element_refs(&self) -> &[RefTypeId] {
         &self.hw_element_refs
     }
 
-    pub fn push_hw_element_ref(&mut self, value: String) {
+    pub fn push_hw_element_ref(&mut self, value: RefTypeId) {
         self.hw_element_refs.push(value);
     }
 
@@ -747,19 +748,19 @@ impl HwPin {
             .push_hw_attribute_value(value)
     }
 
-    pub fn get_hw_category_refs(&self) -> &[String] {
+    pub fn get_hw_category_refs(&self) -> &[RefTypeId] {
         self.hw_description_entity().get_hw_category_refs()
     }
 
-    pub fn push_hw_category_ref(&mut self, value: String) {
+    pub fn push_hw_category_ref(&mut self, value: RefTypeId) {
         self.hw_description_entity_mut().push_hw_category_ref(value)
     }
 
-    pub fn get_hw_type_ref(&self) -> Option<&str> {
+    pub fn get_hw_type_ref(&self) -> Option<RefTypeId> {
         self.hw_description_entity().get_hw_type_ref()
     }
 
-    pub fn set_hw_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_hw_type_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.hw_description_entity_mut().set_hw_type_ref(value);
         self
     }
@@ -791,7 +792,7 @@ impl HwPin {
 pub struct HwPinConnector {
     base: Describable,
     variation_point_capable: VariationPointCapable,
-    hw_pin_refs: Vec<String>,
+    hw_pin_refs: Vec<RefTypeId>,
 }
 
 impl HwPinConnector {
@@ -815,11 +816,11 @@ impl HwPinConnector {
         &mut self.variation_point_capable
     }
 
-    pub fn get_hw_pin_refs(&self) -> &[String] {
+    pub fn get_hw_pin_refs(&self) -> &[RefTypeId] {
         &self.hw_pin_refs
     }
 
-    pub fn push_hw_pin_ref(&mut self, value: String) {
+    pub fn push_hw_pin_ref(&mut self, value: RefTypeId) {
         self.hw_pin_refs.push(value);
     }
 
@@ -1071,19 +1072,19 @@ impl HwPinGroup {
             .push_hw_attribute_value(value)
     }
 
-    pub fn get_hw_category_refs(&self) -> &[String] {
+    pub fn get_hw_category_refs(&self) -> &[RefTypeId] {
         self.hw_description_entity().get_hw_category_refs()
     }
 
-    pub fn push_hw_category_ref(&mut self, value: String) {
+    pub fn push_hw_category_ref(&mut self, value: RefTypeId) {
         self.hw_description_entity_mut().push_hw_category_ref(value)
     }
 
-    pub fn get_hw_type_ref(&self) -> Option<&str> {
+    pub fn get_hw_type_ref(&self) -> Option<RefTypeId> {
         self.hw_description_entity().get_hw_type_ref()
     }
 
-    pub fn set_hw_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_hw_type_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.hw_description_entity_mut().set_hw_type_ref(value);
         self
     }
@@ -1116,7 +1117,7 @@ pub struct HwPinGroupConnector {
     base: Describable,
     variation_point_capable: VariationPointCapable,
     hw_pin_connections: Vec<HwPinConnectorId>,
-    hw_pin_group_refs: Vec<String>,
+    hw_pin_group_refs: Vec<RefTypeId>,
 }
 
 impl HwPinGroupConnector {
@@ -1148,11 +1149,11 @@ impl HwPinGroupConnector {
         self.hw_pin_connections.push(value);
     }
 
-    pub fn get_hw_pin_group_refs(&self) -> &[String] {
+    pub fn get_hw_pin_group_refs(&self) -> &[RefTypeId] {
         &self.hw_pin_group_refs
     }
 
-    pub fn push_hw_pin_group_ref(&mut self, value: String) {
+    pub fn push_hw_pin_group_ref(&mut self, value: RefTypeId) {
         self.hw_pin_group_refs.push(value);
     }
 
@@ -1320,9 +1321,13 @@ impl Document {
             return Err(format!("{path}: HW_CATEGORY_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.HW_CATEGORY_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.HW_CATEGORY_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.HW_CATEGORY_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.HW_CATEGORY_REFS[{index}]"))?;
         }
         if a.get_hw_type_ref() != b.get_hw_type_ref() {
             return Err(format!("{path}: HW_TYPE_REF mismatch"));
@@ -1383,9 +1388,13 @@ impl Document {
             return Err(format!("{path}: NESTED_ELEMENT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.NESTED_ELEMENT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.NESTED_ELEMENT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.NESTED_ELEMENT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.NESTED_ELEMENT_REFS[{index}]"))?;
         }
         Ok(())
     }
@@ -1410,9 +1419,13 @@ impl Document {
             return Err(format!("{path}: HW_ELEMENT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.HW_ELEMENT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.HW_ELEMENT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.HW_ELEMENT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.HW_ELEMENT_REFS[{index}]"))?;
         }
         let list_a = a.get_hw_pin_connections();
         let list_b = b.get_hw_pin_connections();
@@ -1514,9 +1527,14 @@ impl Document {
             return Err(format!("{path}: HW_PIN_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.HW_PIN_REFS[{index}] mismatch"));
-            }
+            let x = self
+                .ref_types
+                .get(*x)
+                .ok_or_else(|| format!("{path}.HW_PIN_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.HW_PIN_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.HW_PIN_REFS[{index}]"))?;
         }
         Ok(())
     }
@@ -1586,9 +1604,13 @@ impl Document {
             return Err(format!("{path}: HW_PIN_GROUP_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.HW_PIN_GROUP_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.HW_PIN_GROUP_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.HW_PIN_GROUP_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.HW_PIN_GROUP_REFS[{index}]"))?;
         }
         Ok(())
     }

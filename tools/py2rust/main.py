@@ -63,6 +63,8 @@ TEMPLATE_EXTRA_IMPORTS = {
         (f"{_C}::ar_object", "ElementRef"),
         (f"{_C}::element_collection", "CollectableElement"),
         ("crate::m2::msr::asam_hdo::admin_data", "AdminDataId"),
+        # the pinned ReferenceBase stores RefTypes by arena key
+        (f"{_C}::primitive_types", "RefTypeId"),
         # the template's new_key_type! block needs it when the leaf has no
         # generated group body that already imports it
         ("slotmap", "new_key_type"),

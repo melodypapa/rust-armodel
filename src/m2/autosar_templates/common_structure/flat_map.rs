@@ -18,6 +18,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -35,8 +36,8 @@ use crate::Document;
 pub struct AliasNameAssignment {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
-    flat_instance_ref: Option<String>,
-    identifiable_ref: Option<String>,
+    flat_instance_ref: Option<RefTypeId>,
+    identifiable_ref: Option<RefTypeId>,
     label: Option<MultilanguageLongNameId>,
     short_label: Option<String>,
 }
@@ -62,21 +63,21 @@ impl AliasNameAssignment {
         &mut self.variation_point_capable
     }
 
-    pub fn get_flat_instance_ref(&self) -> Option<&str> {
-        self.flat_instance_ref.as_deref()
+    pub fn get_flat_instance_ref(&self) -> Option<RefTypeId> {
+        self.flat_instance_ref
     }
 
-    pub fn set_flat_instance_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.flat_instance_ref = Some(value.into());
+    pub fn set_flat_instance_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.flat_instance_ref = Some(value);
         self
     }
 
-    pub fn get_identifiable_ref(&self) -> Option<&str> {
-        self.identifiable_ref.as_deref()
+    pub fn get_identifiable_ref(&self) -> Option<RefTypeId> {
+        self.identifiable_ref
     }
 
-    pub fn set_identifiable_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.identifiable_ref = Some(value.into());
+    pub fn set_identifiable_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.identifiable_ref = Some(value);
         self
     }
 
@@ -841,8 +842,8 @@ impl FlatMap {
 #[derive(Debug, Default)]
 pub struct RtePluginProps {
     base: ARObject,
-    associated_cross_sw_cluster_com_rte_plugin_ref: Option<String>,
-    associated_rte_plugin_ref: Option<String>,
+    associated_cross_sw_cluster_com_rte_plugin_ref: Option<RefTypeId>,
+    associated_rte_plugin_ref: Option<RefTypeId>,
 }
 
 impl RtePluginProps {
@@ -858,25 +859,24 @@ impl RtePluginProps {
         &mut self.base
     }
 
-    pub fn get_associated_cross_sw_cluster_com_rte_plugin_ref(&self) -> Option<&str> {
+    pub fn get_associated_cross_sw_cluster_com_rte_plugin_ref(&self) -> Option<RefTypeId> {
         self.associated_cross_sw_cluster_com_rte_plugin_ref
-            .as_deref()
     }
 
     pub fn set_associated_cross_sw_cluster_com_rte_plugin_ref(
         &mut self,
-        value: impl Into<String>,
+        value: RefTypeId,
     ) -> &mut Self {
-        self.associated_cross_sw_cluster_com_rte_plugin_ref = Some(value.into());
+        self.associated_cross_sw_cluster_com_rte_plugin_ref = Some(value);
         self
     }
 
-    pub fn get_associated_rte_plugin_ref(&self) -> Option<&str> {
-        self.associated_rte_plugin_ref.as_deref()
+    pub fn get_associated_rte_plugin_ref(&self) -> Option<RefTypeId> {
+        self.associated_rte_plugin_ref
     }
 
-    pub fn set_associated_rte_plugin_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.associated_rte_plugin_ref = Some(value.into());
+    pub fn set_associated_rte_plugin_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.associated_rte_plugin_ref = Some(value);
         self
     }
 

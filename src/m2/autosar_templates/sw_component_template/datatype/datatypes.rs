@@ -24,6 +24,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::common_structure::mode_declaration::ModeRequestTypeMapId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::msr::data_dictionary::data_def_properties::SwDataDefPropsId;
 use crate::Document;
@@ -2002,8 +2003,8 @@ impl AutosarDataType {
 #[derive(Debug, Default)]
 pub struct DataTypeMap {
     base: ARObject,
-    application_data_type_ref: Option<String>,
-    implementation_data_type_ref: Option<String>,
+    application_data_type_ref: Option<RefTypeId>,
+    implementation_data_type_ref: Option<RefTypeId>,
 }
 
 impl DataTypeMap {
@@ -2019,21 +2020,21 @@ impl DataTypeMap {
         &mut self.base
     }
 
-    pub fn get_application_data_type_ref(&self) -> Option<&str> {
-        self.application_data_type_ref.as_deref()
+    pub fn get_application_data_type_ref(&self) -> Option<RefTypeId> {
+        self.application_data_type_ref
     }
 
-    pub fn set_application_data_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.application_data_type_ref = Some(value.into());
+    pub fn set_application_data_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.application_data_type_ref = Some(value);
         self
     }
 
-    pub fn get_implementation_data_type_ref(&self) -> Option<&str> {
-        self.implementation_data_type_ref.as_deref()
+    pub fn get_implementation_data_type_ref(&self) -> Option<RefTypeId> {
+        self.implementation_data_type_ref
     }
 
-    pub fn set_implementation_data_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.implementation_data_type_ref = Some(value.into());
+    pub fn set_implementation_data_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.implementation_data_type_ref = Some(value);
         self
     }
 

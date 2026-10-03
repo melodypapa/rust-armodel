@@ -20,6 +20,7 @@ use crate::m2::autosar_templates::common_structure::implementation_data_types::A
 use crate::m2::msr::asam_hdo::computation_method::CompuGenericMathId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::multidimensional_time::MultidimensionalTimeId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::data_dictionary::calibration_parameter::SwCalprmAxisSetId;
 use crate::m2::msr::data_dictionary::datadictionary_proxies::SwCalprmRefProxyId;
 use crate::m2::msr::data_dictionary::datadictionary_proxies::SwVariableRefProxyId;
@@ -186,20 +187,20 @@ pub struct SwDataDefProps {
     step_size: Option<String>,
     sw_value_block_size_mults: Vec<String>,
     annotations: Vec<AnnotationId>,
-    sw_addr_method_ref: Option<String>,
+    sw_addr_method_ref: Option<RefTypeId>,
     sw_alignment: Option<String>,
-    base_type_ref: Option<String>,
+    base_type_ref: Option<RefTypeId>,
     sw_bit_representation: Option<SwBitRepresentationId>,
     sw_calibration_access: Option<SwCalibrationAccessEnum>,
     sw_value_block_size: Option<String>,
     sw_calprm_axis_set: Option<SwCalprmAxisSetId>,
     sw_text_props: Option<SwTextPropsId>,
     sw_comparison_variables: Vec<SwVariableRefProxyId>,
-    compu_method_ref: Option<String>,
-    data_constr_ref: Option<String>,
+    compu_method_ref: Option<RefTypeId>,
+    data_constr_ref: Option<RefTypeId>,
     sw_data_dependency: Option<SwDataDependencyId>,
     display_format: Option<String>,
-    implementation_data_type_ref: Option<String>,
+    implementation_data_type_ref: Option<RefTypeId>,
     sw_host_variable: Option<SwVariableRefProxyId>,
     sw_impl_policy: Option<SwImplPolicyEnum>,
     additional_native_type_qualifier: Option<String>,
@@ -208,10 +209,10 @@ pub struct SwDataDefProps {
     invalid_value: Option<ElementRef>,
     sw_is_virtual: Option<String>,
     sw_pointer_target_props: Option<SwPointerTargetPropsId>,
-    sw_record_layout_ref: Option<String>,
+    sw_record_layout_ref: Option<RefTypeId>,
     sw_refresh_timing: Option<MultidimensionalTimeId>,
-    unit_ref: Option<String>,
-    value_axis_data_type_ref: Option<String>,
+    unit_ref: Option<RefTypeId>,
+    value_axis_data_type_ref: Option<RefTypeId>,
 }
 
 impl SwDataDefProps {
@@ -261,12 +262,12 @@ impl SwDataDefProps {
         self.annotations.push(value);
     }
 
-    pub fn get_sw_addr_method_ref(&self) -> Option<&str> {
-        self.sw_addr_method_ref.as_deref()
+    pub fn get_sw_addr_method_ref(&self) -> Option<RefTypeId> {
+        self.sw_addr_method_ref
     }
 
-    pub fn set_sw_addr_method_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.sw_addr_method_ref = Some(value.into());
+    pub fn set_sw_addr_method_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sw_addr_method_ref = Some(value);
         self
     }
 
@@ -279,12 +280,12 @@ impl SwDataDefProps {
         self
     }
 
-    pub fn get_base_type_ref(&self) -> Option<&str> {
-        self.base_type_ref.as_deref()
+    pub fn get_base_type_ref(&self) -> Option<RefTypeId> {
+        self.base_type_ref
     }
 
-    pub fn set_base_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_type_ref = Some(value.into());
+    pub fn set_base_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_type_ref = Some(value);
         self
     }
 
@@ -341,21 +342,21 @@ impl SwDataDefProps {
         self.sw_comparison_variables.push(value);
     }
 
-    pub fn get_compu_method_ref(&self) -> Option<&str> {
-        self.compu_method_ref.as_deref()
+    pub fn get_compu_method_ref(&self) -> Option<RefTypeId> {
+        self.compu_method_ref
     }
 
-    pub fn set_compu_method_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.compu_method_ref = Some(value.into());
+    pub fn set_compu_method_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.compu_method_ref = Some(value);
         self
     }
 
-    pub fn get_data_constr_ref(&self) -> Option<&str> {
-        self.data_constr_ref.as_deref()
+    pub fn get_data_constr_ref(&self) -> Option<RefTypeId> {
+        self.data_constr_ref
     }
 
-    pub fn set_data_constr_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.data_constr_ref = Some(value.into());
+    pub fn set_data_constr_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.data_constr_ref = Some(value);
         self
     }
 
@@ -377,12 +378,12 @@ impl SwDataDefProps {
         self
     }
 
-    pub fn get_implementation_data_type_ref(&self) -> Option<&str> {
-        self.implementation_data_type_ref.as_deref()
+    pub fn get_implementation_data_type_ref(&self) -> Option<RefTypeId> {
+        self.implementation_data_type_ref
     }
 
-    pub fn set_implementation_data_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.implementation_data_type_ref = Some(value.into());
+    pub fn set_implementation_data_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.implementation_data_type_ref = Some(value);
         self
     }
 
@@ -458,12 +459,12 @@ impl SwDataDefProps {
         self
     }
 
-    pub fn get_sw_record_layout_ref(&self) -> Option<&str> {
-        self.sw_record_layout_ref.as_deref()
+    pub fn get_sw_record_layout_ref(&self) -> Option<RefTypeId> {
+        self.sw_record_layout_ref
     }
 
-    pub fn set_sw_record_layout_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.sw_record_layout_ref = Some(value.into());
+    pub fn set_sw_record_layout_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sw_record_layout_ref = Some(value);
         self
     }
 
@@ -476,21 +477,21 @@ impl SwDataDefProps {
         self
     }
 
-    pub fn get_unit_ref(&self) -> Option<&str> {
-        self.unit_ref.as_deref()
+    pub fn get_unit_ref(&self) -> Option<RefTypeId> {
+        self.unit_ref
     }
 
-    pub fn set_unit_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.unit_ref = Some(value.into());
+    pub fn set_unit_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.unit_ref = Some(value);
         self
     }
 
-    pub fn get_value_axis_data_type_ref(&self) -> Option<&str> {
-        self.value_axis_data_type_ref.as_deref()
+    pub fn get_value_axis_data_type_ref(&self) -> Option<RefTypeId> {
+        self.value_axis_data_type_ref
     }
 
-    pub fn set_value_axis_data_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.value_axis_data_type_ref = Some(value.into());
+    pub fn set_value_axis_data_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.value_axis_data_type_ref = Some(value);
         self
     }
 
@@ -636,7 +637,7 @@ impl SwDataDependencyArgs {
 #[derive(Debug, Default)]
 pub struct SwPointerTargetProps {
     base: ARObject,
-    function_pointer_signature_ref: Option<String>,
+    function_pointer_signature_ref: Option<RefTypeId>,
     sw_data_def_props: Option<SwDataDefPropsId>,
     target_category: Option<String>,
 }
@@ -654,12 +655,12 @@ impl SwPointerTargetProps {
         &mut self.base
     }
 
-    pub fn get_function_pointer_signature_ref(&self) -> Option<&str> {
-        self.function_pointer_signature_ref.as_deref()
+    pub fn get_function_pointer_signature_ref(&self) -> Option<RefTypeId> {
+        self.function_pointer_signature_ref
     }
 
-    pub fn set_function_pointer_signature_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.function_pointer_signature_ref = Some(value.into());
+    pub fn set_function_pointer_signature_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.function_pointer_signature_ref = Some(value);
         self
     }
 
@@ -706,7 +707,7 @@ impl SwPointerTargetProps {
 pub struct SwTextProps {
     base: ARObject,
     array_size_semantics: Option<ArraySizeSemanticsEnum>,
-    base_type_ref: Option<String>,
+    base_type_ref: Option<RefTypeId>,
     sw_fill_character: Option<String>,
     sw_max_text_size: Option<String>,
 }
@@ -733,12 +734,12 @@ impl SwTextProps {
         self
     }
 
-    pub fn get_base_type_ref(&self) -> Option<&str> {
-        self.base_type_ref.as_deref()
+    pub fn get_base_type_ref(&self) -> Option<RefTypeId> {
+        self.base_type_ref
     }
 
-    pub fn set_base_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_type_ref = Some(value.into());
+    pub fn set_base_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_type_ref = Some(value);
         self
     }
 

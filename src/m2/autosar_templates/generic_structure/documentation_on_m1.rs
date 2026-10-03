@@ -14,6 +14,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::MultilanguageReferrable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::chapters::PredefinedChapterId;
@@ -318,7 +319,7 @@ impl Documentation {
 pub struct DocumentationContext {
     base: MultilanguageReferrable,
     feature_i_ref: Option<AnyInstanceRefId>,
-    identifiable_ref: Option<String>,
+    identifiable_ref: Option<RefTypeId>,
 }
 
 impl DocumentationContext {
@@ -343,12 +344,12 @@ impl DocumentationContext {
         self
     }
 
-    pub fn get_identifiable_ref(&self) -> Option<&str> {
-        self.identifiable_ref.as_deref()
+    pub fn get_identifiable_ref(&self) -> Option<RefTypeId> {
+        self.identifiable_ref
     }
 
-    pub fn set_identifiable_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.identifiable_ref = Some(value.into());
+    pub fn set_identifiable_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.identifiable_ref = Some(value);
         self
     }
 

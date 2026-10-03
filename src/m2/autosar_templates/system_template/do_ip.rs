@@ -16,6 +16,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::system_template::transport_protocols::DoIpLogicAddressId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
@@ -239,15 +240,15 @@ impl DoIpConfig {
 pub struct DoIpInterface {
     base: Identifiable,
     alive_check_response_timeout: Option<String>,
-    doip_channel_collection_ref: Option<String>,
-    doip_connection_refs: Vec<String>,
+    doip_channel_collection_ref: Option<RefTypeId>,
+    doip_connection_refs: Vec<RefTypeId>,
     do_ip_routing_activations: Vec<DoIpRoutingActivationId>,
     general_inactivity_time: Option<String>,
     initial_inactivity_time: Option<String>,
     initial_vehicle_announcement_time: Option<String>,
     is_activation_line_dependent: Option<String>,
     max_tester_connections: Option<String>,
-    socket_connection_refs: Vec<String>,
+    socket_connection_refs: Vec<RefTypeId>,
     use_mac_address_for_identification: Option<String>,
     use_vehicle_identification_sync_status: Option<String>,
     vehicle_announcement_count: Option<String>,
@@ -276,20 +277,20 @@ impl DoIpInterface {
         self
     }
 
-    pub fn get_doip_channel_collection_ref(&self) -> Option<&str> {
-        self.doip_channel_collection_ref.as_deref()
+    pub fn get_doip_channel_collection_ref(&self) -> Option<RefTypeId> {
+        self.doip_channel_collection_ref
     }
 
-    pub fn set_doip_channel_collection_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.doip_channel_collection_ref = Some(value.into());
+    pub fn set_doip_channel_collection_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.doip_channel_collection_ref = Some(value);
         self
     }
 
-    pub fn get_doip_connection_refs(&self) -> &[String] {
+    pub fn get_doip_connection_refs(&self) -> &[RefTypeId] {
         &self.doip_connection_refs
     }
 
-    pub fn push_doip_connection_ref(&mut self, value: String) {
+    pub fn push_doip_connection_ref(&mut self, value: RefTypeId) {
         self.doip_connection_refs.push(value);
     }
 
@@ -346,11 +347,11 @@ impl DoIpInterface {
         self
     }
 
-    pub fn get_socket_connection_refs(&self) -> &[String] {
+    pub fn get_socket_connection_refs(&self) -> &[RefTypeId] {
         &self.socket_connection_refs
     }
 
-    pub fn push_socket_connection_ref(&mut self, value: String) {
+    pub fn push_socket_connection_ref(&mut self, value: RefTypeId) {
         self.socket_connection_refs.push(value);
     }
 
@@ -694,7 +695,7 @@ impl DoIpLogicTargetAddressProps {
 #[derive(Debug, Default)]
 pub struct DoIpLogicTesterAddressProps {
     base: AbstractDoIpLogicAddressProps,
-    do_ip_tester_routing_activation_refs: Vec<String>,
+    do_ip_tester_routing_activation_refs: Vec<RefTypeId>,
 }
 
 impl DoIpLogicTesterAddressProps {
@@ -710,11 +711,11 @@ impl DoIpLogicTesterAddressProps {
         &mut self.base
     }
 
-    pub fn get_do_ip_tester_routing_activation_refs(&self) -> &[String] {
+    pub fn get_do_ip_tester_routing_activation_refs(&self) -> &[RefTypeId] {
         &self.do_ip_tester_routing_activation_refs
     }
 
-    pub fn push_do_ip_tester_routing_activation_ref(&mut self, value: String) {
+    pub fn push_do_ip_tester_routing_activation_ref(&mut self, value: RefTypeId) {
         self.do_ip_tester_routing_activation_refs.push(value);
     }
 
@@ -865,7 +866,7 @@ impl DoIpLogicTesterAddressProps {
 #[derive(Debug, Default)]
 pub struct DoIpRoutingActivation {
     base: Identifiable,
-    do_ip_target_address_refs: Vec<String>,
+    do_ip_target_address_refs: Vec<RefTypeId>,
 }
 
 impl DoIpRoutingActivation {
@@ -881,11 +882,11 @@ impl DoIpRoutingActivation {
         &mut self.base
     }
 
-    pub fn get_do_ip_target_address_refs(&self) -> &[String] {
+    pub fn get_do_ip_target_address_refs(&self) -> &[RefTypeId] {
         &self.do_ip_target_address_refs
     }
 
-    pub fn push_do_ip_target_address_ref(&mut self, value: String) {
+    pub fn push_do_ip_target_address_ref(&mut self, value: RefTypeId) {
         self.do_ip_target_address_refs.push(value);
     }
 
@@ -1080,9 +1081,18 @@ impl Document {
             return Err(format!("{path}: DOIP_CONNECTION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.DOIP_CONNECTION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.DOIP_CONNECTION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.DOIP_CONNECTION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.DOIP_CONNECTION_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_do_ip_routing_activations();
         let list_b = b.get_do_ip_routing_activations();
@@ -1126,9 +1136,18 @@ impl Document {
             return Err(format!("{path}: SOCKET_CONNECTION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SOCKET_CONNECTION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SOCKET_CONNECTION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SOCKET_CONNECTION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.SOCKET_CONNECTION_REFS[{index}]"),
+            )?;
         }
         if a.get_use_mac_address_for_identification() != b.get_use_mac_address_for_identification()
         {
@@ -1179,11 +1198,14 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.DO_IP_TESTER_ROUTING_ACTIVATION_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| format!("{path}.DO_IP_TESTER_ROUTING_ACTIVATION_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| format!("{path}.DO_IP_TESTER_ROUTING_ACTIVATION_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.DO_IP_TESTER_ROUTING_ACTIVATION_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }
@@ -1202,11 +1224,18 @@ impl Document {
             return Err(format!("{path}: DO_IP_TARGET_ADDRESS_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.DO_IP_TARGET_ADDRESS_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.DO_IP_TARGET_ADDRESS_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.DO_IP_TARGET_ADDRESS_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.DO_IP_TARGET_ADDRESS_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }

@@ -19,6 +19,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::MonotonyEnum;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::data_dictionary::calibration_parameter::SwCalprmAxisTypeProps;
 use crate::m2::msr::data_dictionary::datadictionary_proxies::SwCalprmRefProxyId;
@@ -34,7 +35,7 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct SwAxisGeneric {
     base: ARObject,
-    sw_axis_type_ref: Option<String>,
+    sw_axis_type_ref: Option<RefTypeId>,
     sw_generic_axis_params: Vec<SwGenericAxisParamId>,
 }
 
@@ -51,12 +52,12 @@ impl SwAxisGeneric {
         &mut self.base
     }
 
-    pub fn get_sw_axis_type_ref(&self) -> Option<&str> {
-        self.sw_axis_type_ref.as_deref()
+    pub fn get_sw_axis_type_ref(&self) -> Option<RefTypeId> {
+        self.sw_axis_type_ref
     }
 
-    pub fn set_sw_axis_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.sw_axis_type_ref = Some(value.into());
+    pub fn set_sw_axis_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sw_axis_type_ref = Some(value);
         self
     }
 
@@ -92,7 +93,7 @@ impl SwAxisGeneric {
 #[derive(Debug, Default)]
 pub struct SwAxisGrouped {
     base: SwCalprmAxisTypeProps,
-    shared_axis_type_ref: Option<String>,
+    shared_axis_type_ref: Option<RefTypeId>,
     sw_axis_index: Option<String>,
     sw_calprm_ref: Option<SwCalprmRefProxyId>,
 }
@@ -110,12 +111,12 @@ impl SwAxisGrouped {
         &mut self.base
     }
 
-    pub fn get_shared_axis_type_ref(&self) -> Option<&str> {
-        self.shared_axis_type_ref.as_deref()
+    pub fn get_shared_axis_type_ref(&self) -> Option<RefTypeId> {
+        self.shared_axis_type_ref
     }
 
-    pub fn set_shared_axis_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.shared_axis_type_ref = Some(value.into());
+    pub fn set_shared_axis_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.shared_axis_type_ref = Some(value);
         self
     }
 
@@ -179,14 +180,14 @@ impl SwAxisGrouped {
 #[derive(Debug, Default)]
 pub struct SwAxisIndividual {
     base: SwCalprmAxisTypeProps,
-    compu_method_ref: Option<String>,
-    data_constr_ref: Option<String>,
-    input_variable_type_ref: Option<String>,
+    compu_method_ref: Option<RefTypeId>,
+    data_constr_ref: Option<RefTypeId>,
+    input_variable_type_ref: Option<RefTypeId>,
     sw_axis_generic: Option<SwAxisGenericId>,
     sw_max_axis_points: Option<String>,
     sw_min_axis_points: Option<String>,
     sw_variable_refs: Vec<SwVariableRefProxyId>,
-    unit_ref: Option<String>,
+    unit_ref: Option<RefTypeId>,
 }
 
 impl SwAxisIndividual {
@@ -202,30 +203,30 @@ impl SwAxisIndividual {
         &mut self.base
     }
 
-    pub fn get_compu_method_ref(&self) -> Option<&str> {
-        self.compu_method_ref.as_deref()
+    pub fn get_compu_method_ref(&self) -> Option<RefTypeId> {
+        self.compu_method_ref
     }
 
-    pub fn set_compu_method_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.compu_method_ref = Some(value.into());
+    pub fn set_compu_method_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.compu_method_ref = Some(value);
         self
     }
 
-    pub fn get_data_constr_ref(&self) -> Option<&str> {
-        self.data_constr_ref.as_deref()
+    pub fn get_data_constr_ref(&self) -> Option<RefTypeId> {
+        self.data_constr_ref
     }
 
-    pub fn set_data_constr_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.data_constr_ref = Some(value.into());
+    pub fn set_data_constr_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.data_constr_ref = Some(value);
         self
     }
 
-    pub fn get_input_variable_type_ref(&self) -> Option<&str> {
-        self.input_variable_type_ref.as_deref()
+    pub fn get_input_variable_type_ref(&self) -> Option<RefTypeId> {
+        self.input_variable_type_ref
     }
 
-    pub fn set_input_variable_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.input_variable_type_ref = Some(value.into());
+    pub fn set_input_variable_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.input_variable_type_ref = Some(value);
         self
     }
 
@@ -264,12 +265,12 @@ impl SwAxisIndividual {
         self.sw_variable_refs.push(value);
     }
 
-    pub fn get_unit_ref(&self) -> Option<&str> {
-        self.unit_ref.as_deref()
+    pub fn get_unit_ref(&self) -> Option<RefTypeId> {
+        self.unit_ref
     }
 
-    pub fn set_unit_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.unit_ref = Some(value.into());
+    pub fn set_unit_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.unit_ref = Some(value);
         self
     }
 
@@ -549,7 +550,7 @@ impl SwAxisType {
 #[derive(Debug, Default)]
 pub struct SwGenericAxisParam {
     base: ARObject,
-    sw_generic_axis_param_type_ref: Option<String>,
+    sw_generic_axis_param_type_ref: Option<RefTypeId>,
     vfs: Vec<String>,
 }
 
@@ -566,12 +567,12 @@ impl SwGenericAxisParam {
         &mut self.base
     }
 
-    pub fn get_sw_generic_axis_param_type_ref(&self) -> Option<&str> {
-        self.sw_generic_axis_param_type_ref.as_deref()
+    pub fn get_sw_generic_axis_param_type_ref(&self) -> Option<RefTypeId> {
+        self.sw_generic_axis_param_type_ref
     }
 
-    pub fn set_sw_generic_axis_param_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.sw_generic_axis_param_type_ref = Some(value.into());
+    pub fn set_sw_generic_axis_param_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sw_generic_axis_param_type_ref = Some(value);
         self
     }
 
@@ -607,7 +608,7 @@ impl SwGenericAxisParam {
 #[derive(Debug, Default)]
 pub struct SwGenericAxisParamType {
     base: Identifiable,
-    data_constr_ref: Option<String>,
+    data_constr_ref: Option<RefTypeId>,
 }
 
 impl SwGenericAxisParamType {
@@ -623,12 +624,12 @@ impl SwGenericAxisParamType {
         &mut self.base
     }
 
-    pub fn get_data_constr_ref(&self) -> Option<&str> {
-        self.data_constr_ref.as_deref()
+    pub fn get_data_constr_ref(&self) -> Option<RefTypeId> {
+        self.data_constr_ref
     }
 
-    pub fn set_data_constr_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.data_constr_ref = Some(value.into());
+    pub fn set_data_constr_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.data_constr_ref = Some(value);
         self
     }
 

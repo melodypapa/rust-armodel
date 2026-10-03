@@ -12,6 +12,7 @@ new_key_type! {
 use crate::m2::autosar_templates::common_structure::timing::timing_description::TimingDescriptionEvent;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -93,7 +94,7 @@ impl TryFrom<&str> for TDEventBswModuleTypeEnum {
 #[derive(Debug, Default)]
 pub struct TDEventBsw {
     base: TimingDescriptionEvent,
-    bsw_module_description_ref: Option<String>,
+    bsw_module_description_ref: Option<RefTypeId>,
 }
 
 impl TDEventBsw {
@@ -109,20 +110,20 @@ impl TDEventBsw {
         &mut self.base
     }
 
-    pub fn get_bsw_module_description_ref(&self) -> Option<&str> {
-        self.bsw_module_description_ref.as_deref()
+    pub fn get_bsw_module_description_ref(&self) -> Option<RefTypeId> {
+        self.bsw_module_description_ref
     }
 
-    pub fn set_bsw_module_description_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.bsw_module_description_ref = Some(value.into());
+    pub fn set_bsw_module_description_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.bsw_module_description_ref = Some(value);
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_clock_reference_ref(value);
         self
     }
@@ -303,9 +304,9 @@ impl TDEventBsw {
 #[derive(Debug, Default)]
 pub struct TDEventBswModeDeclaration {
     base: TDEventBsw,
-    entry_mode_declaration_ref: Option<String>,
-    exit_mode_declaration_ref: Option<String>,
-    mode_declaration_ref: Option<String>,
+    entry_mode_declaration_ref: Option<RefTypeId>,
+    exit_mode_declaration_ref: Option<RefTypeId>,
+    mode_declaration_ref: Option<RefTypeId>,
     td_event_bsw_mode_declaration_type: Option<TDEventBswModeDeclarationTypeEnum>,
 }
 
@@ -322,30 +323,30 @@ impl TDEventBswModeDeclaration {
         &mut self.base
     }
 
-    pub fn get_entry_mode_declaration_ref(&self) -> Option<&str> {
-        self.entry_mode_declaration_ref.as_deref()
+    pub fn get_entry_mode_declaration_ref(&self) -> Option<RefTypeId> {
+        self.entry_mode_declaration_ref
     }
 
-    pub fn set_entry_mode_declaration_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.entry_mode_declaration_ref = Some(value.into());
+    pub fn set_entry_mode_declaration_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.entry_mode_declaration_ref = Some(value);
         self
     }
 
-    pub fn get_exit_mode_declaration_ref(&self) -> Option<&str> {
-        self.exit_mode_declaration_ref.as_deref()
+    pub fn get_exit_mode_declaration_ref(&self) -> Option<RefTypeId> {
+        self.exit_mode_declaration_ref
     }
 
-    pub fn set_exit_mode_declaration_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.exit_mode_declaration_ref = Some(value.into());
+    pub fn set_exit_mode_declaration_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.exit_mode_declaration_ref = Some(value);
         self
     }
 
-    pub fn get_mode_declaration_ref(&self) -> Option<&str> {
-        self.mode_declaration_ref.as_deref()
+    pub fn get_mode_declaration_ref(&self) -> Option<RefTypeId> {
+        self.mode_declaration_ref
     }
 
-    pub fn set_mode_declaration_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.mode_declaration_ref = Some(value.into());
+    pub fn set_mode_declaration_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.mode_declaration_ref = Some(value);
         self
     }
 
@@ -363,20 +364,20 @@ impl TDEventBswModeDeclaration {
         self
     }
 
-    pub fn get_bsw_module_description_ref(&self) -> Option<&str> {
+    pub fn get_bsw_module_description_ref(&self) -> Option<RefTypeId> {
         self.base().get_bsw_module_description_ref()
     }
 
-    pub fn set_bsw_module_description_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_bsw_module_description_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_bsw_module_description_ref(value);
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_clock_reference_ref(value);
         self
     }
@@ -601,7 +602,7 @@ impl TDEventBswModeDeclaration {
 #[derive(Debug, Default)]
 pub struct TDEventBswModule {
     base: TDEventBsw,
-    bsw_module_entry_ref: Option<String>,
+    bsw_module_entry_ref: Option<RefTypeId>,
     td_event_bsw_module_type: Option<TDEventBswModuleTypeEnum>,
 }
 
@@ -618,12 +619,12 @@ impl TDEventBswModule {
         &mut self.base
     }
 
-    pub fn get_bsw_module_entry_ref(&self) -> Option<&str> {
-        self.bsw_module_entry_ref.as_deref()
+    pub fn get_bsw_module_entry_ref(&self) -> Option<RefTypeId> {
+        self.bsw_module_entry_ref
     }
 
-    pub fn set_bsw_module_entry_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.bsw_module_entry_ref = Some(value.into());
+    pub fn set_bsw_module_entry_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.bsw_module_entry_ref = Some(value);
         self
     }
 
@@ -636,20 +637,20 @@ impl TDEventBswModule {
         self
     }
 
-    pub fn get_bsw_module_description_ref(&self) -> Option<&str> {
+    pub fn get_bsw_module_description_ref(&self) -> Option<RefTypeId> {
         self.base().get_bsw_module_description_ref()
     }
 
-    pub fn set_bsw_module_description_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_bsw_module_description_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_bsw_module_description_ref(value);
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_clock_reference_ref(value);
         self
     }

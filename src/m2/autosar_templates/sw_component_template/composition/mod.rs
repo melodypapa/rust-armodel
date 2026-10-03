@@ -20,6 +20,7 @@ use crate::m2::autosar_templates::generic_structure::abstract_structure::AtpStru
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::sw_component_template::components::PortGroupId;
@@ -76,11 +77,11 @@ impl AssemblySwConnector {
         self
     }
 
-    pub fn get_mapping_ref(&self) -> Option<&str> {
+    pub fn get_mapping_ref(&self) -> Option<RefTypeId> {
         self.base().get_mapping_ref()
     }
 
-    pub fn set_mapping_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_mapping_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_mapping_ref(value);
         self
     }
@@ -318,10 +319,10 @@ pub struct CompositionSwComponentType {
     base: SwComponentType,
     components: Vec<SwComponentPrototypeId>,
     connectors: Vec<ElementRef>,
-    constant_value_mapping_refs: Vec<String>,
-    data_type_mapping_refs: Vec<String>,
+    constant_value_mapping_refs: Vec<RefTypeId>,
+    data_type_mapping_refs: Vec<RefTypeId>,
     instantiation_rte_event_props: Vec<ElementRef>,
-    physical_dimension_mapping_ref: Option<String>,
+    physical_dimension_mapping_ref: Option<RefTypeId>,
 }
 
 impl CompositionSwComponentType {
@@ -353,19 +354,19 @@ impl CompositionSwComponentType {
         self.connectors.push(value);
     }
 
-    pub fn get_constant_value_mapping_refs(&self) -> &[String] {
+    pub fn get_constant_value_mapping_refs(&self) -> &[RefTypeId] {
         &self.constant_value_mapping_refs
     }
 
-    pub fn push_constant_value_mapping_ref(&mut self, value: String) {
+    pub fn push_constant_value_mapping_ref(&mut self, value: RefTypeId) {
         self.constant_value_mapping_refs.push(value);
     }
 
-    pub fn get_data_type_mapping_refs(&self) -> &[String] {
+    pub fn get_data_type_mapping_refs(&self) -> &[RefTypeId] {
         &self.data_type_mapping_refs
     }
 
-    pub fn push_data_type_mapping_ref(&mut self, value: String) {
+    pub fn push_data_type_mapping_ref(&mut self, value: RefTypeId) {
         self.data_type_mapping_refs.push(value);
     }
 
@@ -377,12 +378,12 @@ impl CompositionSwComponentType {
         self.instantiation_rte_event_props.push(value);
     }
 
-    pub fn get_physical_dimension_mapping_ref(&self) -> Option<&str> {
-        self.physical_dimension_mapping_ref.as_deref()
+    pub fn get_physical_dimension_mapping_ref(&self) -> Option<RefTypeId> {
+        self.physical_dimension_mapping_ref
     }
 
-    pub fn set_physical_dimension_mapping_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.physical_dimension_mapping_ref = Some(value.into());
+    pub fn set_physical_dimension_mapping_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.physical_dimension_mapping_ref = Some(value);
         self
     }
 
@@ -410,11 +411,11 @@ impl CompositionSwComponentType {
         self.base_mut().push_port_group(value)
     }
 
-    pub fn get_swc_mapping_constraints_refs(&self) -> &[String] {
+    pub fn get_swc_mapping_constraints_refs(&self) -> &[RefTypeId] {
         self.base().get_swc_mapping_constraints_refs()
     }
 
-    pub fn push_swc_mapping_constraints_ref(&mut self, value: String) {
+    pub fn push_swc_mapping_constraints_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_swc_mapping_constraints_ref(value)
     }
 
@@ -430,11 +431,11 @@ impl CompositionSwComponentType {
         self
     }
 
-    pub fn get_unit_group_refs(&self) -> &[String] {
+    pub fn get_unit_group_refs(&self) -> &[RefTypeId] {
         self.base().get_unit_group_refs()
     }
 
-    pub fn push_unit_group_ref(&mut self, value: String) {
+    pub fn push_unit_group_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_unit_group_ref(value)
     }
 
@@ -670,7 +671,7 @@ impl CompositionSwComponentType {
 pub struct DelegationSwConnector {
     base: SwConnector,
     inner_port_i_ref: Option<ElementRef>,
-    outer_port_ref: Option<String>,
+    outer_port_ref: Option<RefTypeId>,
 }
 
 impl DelegationSwConnector {
@@ -695,20 +696,20 @@ impl DelegationSwConnector {
         self
     }
 
-    pub fn get_outer_port_ref(&self) -> Option<&str> {
-        self.outer_port_ref.as_deref()
+    pub fn get_outer_port_ref(&self) -> Option<RefTypeId> {
+        self.outer_port_ref
     }
 
-    pub fn set_outer_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.outer_port_ref = Some(value.into());
+    pub fn set_outer_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.outer_port_ref = Some(value);
         self
     }
 
-    pub fn get_mapping_ref(&self) -> Option<&str> {
+    pub fn get_mapping_ref(&self) -> Option<RefTypeId> {
         self.base().get_mapping_ref()
     }
 
-    pub fn set_mapping_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_mapping_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_mapping_ref(value);
         self
     }
@@ -1095,8 +1096,8 @@ impl InstantiationTimingEventProps {
 #[derive(Debug, Default)]
 pub struct PassThroughSwConnector {
     base: SwConnector,
-    provided_outer_port_ref: Option<String>,
-    required_outer_port_ref: Option<String>,
+    provided_outer_port_ref: Option<RefTypeId>,
+    required_outer_port_ref: Option<RefTypeId>,
 }
 
 impl PassThroughSwConnector {
@@ -1112,29 +1113,29 @@ impl PassThroughSwConnector {
         &mut self.base
     }
 
-    pub fn get_provided_outer_port_ref(&self) -> Option<&str> {
-        self.provided_outer_port_ref.as_deref()
+    pub fn get_provided_outer_port_ref(&self) -> Option<RefTypeId> {
+        self.provided_outer_port_ref
     }
 
-    pub fn set_provided_outer_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.provided_outer_port_ref = Some(value.into());
+    pub fn set_provided_outer_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.provided_outer_port_ref = Some(value);
         self
     }
 
-    pub fn get_required_outer_port_ref(&self) -> Option<&str> {
-        self.required_outer_port_ref.as_deref()
+    pub fn get_required_outer_port_ref(&self) -> Option<RefTypeId> {
+        self.required_outer_port_ref
     }
 
-    pub fn set_required_outer_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.required_outer_port_ref = Some(value.into());
+    pub fn set_required_outer_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.required_outer_port_ref = Some(value);
         self
     }
 
-    pub fn get_mapping_ref(&self) -> Option<&str> {
+    pub fn get_mapping_ref(&self) -> Option<RefTypeId> {
         self.base().get_mapping_ref()
     }
 
-    pub fn set_mapping_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_mapping_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_mapping_ref(value);
         self
     }
@@ -1371,7 +1372,7 @@ impl PassThroughSwConnector {
 pub struct SwComponentPrototype {
     base: AtpPrototype,
     variation_point_capable: VariationPointCapable,
-    type_t_ref: Option<String>,
+    type_t_ref: Option<RefTypeId>,
 }
 
 impl SwComponentPrototype {
@@ -1395,20 +1396,20 @@ impl SwComponentPrototype {
         &mut self.variation_point_capable
     }
 
-    pub fn get_type_t_ref(&self) -> Option<&str> {
-        self.type_t_ref.as_deref()
+    pub fn get_type_t_ref(&self) -> Option<RefTypeId> {
+        self.type_t_ref
     }
 
-    pub fn set_type_t_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.type_t_ref = Some(value.into());
+    pub fn set_type_t_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.type_t_ref = Some(value);
         self
     }
 
-    pub fn get_atp_type_ref(&self) -> Option<&str> {
+    pub fn get_atp_type_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_type_ref()
     }
 
-    pub fn set_atp_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_type_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_type_ref(value);
         self
     }
@@ -1600,7 +1601,7 @@ impl SwComponentPrototype {
 pub struct SwConnector {
     base: AtpStructureElement,
     variation_point_capable: VariationPointCapable,
-    mapping_ref: Option<String>,
+    mapping_ref: Option<RefTypeId>,
 }
 
 impl SwConnector {
@@ -1624,12 +1625,12 @@ impl SwConnector {
         &mut self.variation_point_capable
     }
 
-    pub fn get_mapping_ref(&self) -> Option<&str> {
-        self.mapping_ref.as_deref()
+    pub fn get_mapping_ref(&self) -> Option<RefTypeId> {
+        self.mapping_ref
     }
 
-    pub fn set_mapping_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.mapping_ref = Some(value.into());
+    pub fn set_mapping_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.mapping_ref = Some(value);
         self
     }
 
@@ -1886,11 +1887,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.CONSTANT_VALUE_MAPPING_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.CONSTANT_VALUE_MAPPING_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.CONSTANT_VALUE_MAPPING_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONSTANT_VALUE_MAPPING_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_data_type_mapping_refs();
         let list_b = b.get_data_type_mapping_refs();
@@ -1898,9 +1906,18 @@ impl Document {
             return Err(format!("{path}: DATA_TYPE_MAPPING_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.DATA_TYPE_MAPPING_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.DATA_TYPE_MAPPING_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.DATA_TYPE_MAPPING_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.DATA_TYPE_MAPPING_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_instantiation_rte_event_props();
         let list_b = b.get_instantiation_rte_event_props();

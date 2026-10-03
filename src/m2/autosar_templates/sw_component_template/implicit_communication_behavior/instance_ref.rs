@@ -12,6 +12,7 @@ new_key_type! {
 }
 
 use crate::m2::autosar_templates::generic_structure::abstract_structure::AtpInstanceRef;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::Document;
@@ -23,9 +24,9 @@ use crate::Document;
 pub struct InnerDataPrototypeGroupInCompositionInstanceRef {
     base: AtpInstanceRef,
     variation_point_capable: VariationPointCapable,
-    base_ref: Option<String>,
-    context_sw_component_prototype_refs: Vec<String>,
-    target_data_prototype_group_ref: Option<String>,
+    base_ref: Option<RefTypeId>,
+    context_sw_component_prototype_refs: Vec<RefTypeId>,
+    target_data_prototype_group_ref: Option<RefTypeId>,
 }
 
 impl InnerDataPrototypeGroupInCompositionInstanceRef {
@@ -49,54 +50,54 @@ impl InnerDataPrototypeGroupInCompositionInstanceRef {
         &mut self.variation_point_capable
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
-        self.base_ref.as_deref()
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
+        self.base_ref
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_ref = Some(value.into());
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_ref = Some(value);
         self
     }
 
-    pub fn get_context_sw_component_prototype_refs(&self) -> &[String] {
+    pub fn get_context_sw_component_prototype_refs(&self) -> &[RefTypeId] {
         &self.context_sw_component_prototype_refs
     }
 
-    pub fn push_context_sw_component_prototype_ref(&mut self, value: String) {
+    pub fn push_context_sw_component_prototype_ref(&mut self, value: RefTypeId) {
         self.context_sw_component_prototype_refs.push(value);
     }
 
-    pub fn get_target_data_prototype_group_ref(&self) -> Option<&str> {
-        self.target_data_prototype_group_ref.as_deref()
+    pub fn get_target_data_prototype_group_ref(&self) -> Option<RefTypeId> {
+        self.target_data_prototype_group_ref
     }
 
-    pub fn set_target_data_prototype_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_data_prototype_group_ref = Some(value.into());
+    pub fn set_target_data_prototype_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_data_prototype_group_ref = Some(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_target_ref(value);
         self
     }
@@ -137,9 +138,9 @@ impl InnerDataPrototypeGroupInCompositionInstanceRef {
 pub struct InnerRunnableEntityGroupInCompositionInstanceRef {
     base: AtpInstanceRef,
     variation_point_capable: VariationPointCapable,
-    base_ref: Option<String>,
-    context_sw_component_prototype_refs: Vec<String>,
-    target_runnable_entity_group_ref: Option<String>,
+    base_ref: Option<RefTypeId>,
+    context_sw_component_prototype_refs: Vec<RefTypeId>,
+    target_runnable_entity_group_ref: Option<RefTypeId>,
 }
 
 impl InnerRunnableEntityGroupInCompositionInstanceRef {
@@ -163,54 +164,54 @@ impl InnerRunnableEntityGroupInCompositionInstanceRef {
         &mut self.variation_point_capable
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
-        self.base_ref.as_deref()
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
+        self.base_ref
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_ref = Some(value.into());
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_ref = Some(value);
         self
     }
 
-    pub fn get_context_sw_component_prototype_refs(&self) -> &[String] {
+    pub fn get_context_sw_component_prototype_refs(&self) -> &[RefTypeId] {
         &self.context_sw_component_prototype_refs
     }
 
-    pub fn push_context_sw_component_prototype_ref(&mut self, value: String) {
+    pub fn push_context_sw_component_prototype_ref(&mut self, value: RefTypeId) {
         self.context_sw_component_prototype_refs.push(value);
     }
 
-    pub fn get_target_runnable_entity_group_ref(&self) -> Option<&str> {
-        self.target_runnable_entity_group_ref.as_deref()
+    pub fn get_target_runnable_entity_group_ref(&self) -> Option<RefTypeId> {
+        self.target_runnable_entity_group_ref
     }
 
-    pub fn set_target_runnable_entity_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_runnable_entity_group_ref = Some(value.into());
+    pub fn set_target_runnable_entity_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_runnable_entity_group_ref = Some(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_target_ref(value);
         self
     }
@@ -251,9 +252,9 @@ impl InnerRunnableEntityGroupInCompositionInstanceRef {
 pub struct RunnableEntityInCompositionInstanceRef {
     base: AtpInstanceRef,
     variation_point_capable: VariationPointCapable,
-    base_ref: Option<String>,
-    context_sw_component_prototype_refs: Vec<String>,
-    target_runnable_entity_ref: Option<String>,
+    base_ref: Option<RefTypeId>,
+    context_sw_component_prototype_refs: Vec<RefTypeId>,
+    target_runnable_entity_ref: Option<RefTypeId>,
 }
 
 impl RunnableEntityInCompositionInstanceRef {
@@ -277,54 +278,54 @@ impl RunnableEntityInCompositionInstanceRef {
         &mut self.variation_point_capable
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
-        self.base_ref.as_deref()
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
+        self.base_ref
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_ref = Some(value.into());
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_ref = Some(value);
         self
     }
 
-    pub fn get_context_sw_component_prototype_refs(&self) -> &[String] {
+    pub fn get_context_sw_component_prototype_refs(&self) -> &[RefTypeId] {
         &self.context_sw_component_prototype_refs
     }
 
-    pub fn push_context_sw_component_prototype_ref(&mut self, value: String) {
+    pub fn push_context_sw_component_prototype_ref(&mut self, value: RefTypeId) {
         self.context_sw_component_prototype_refs.push(value);
     }
 
-    pub fn get_target_runnable_entity_ref(&self) -> Option<&str> {
-        self.target_runnable_entity_ref.as_deref()
+    pub fn get_target_runnable_entity_ref(&self) -> Option<RefTypeId> {
+        self.target_runnable_entity_ref
     }
 
-    pub fn set_target_runnable_entity_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_runnable_entity_ref = Some(value.into());
+    pub fn set_target_runnable_entity_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_runnable_entity_ref = Some(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_target_ref(value);
         self
     }
@@ -365,10 +366,10 @@ impl RunnableEntityInCompositionInstanceRef {
 pub struct VariableDataPrototypeInCompositionInstanceRef {
     base: AtpInstanceRef,
     variation_point_capable: VariationPointCapable,
-    base_ref: Option<String>,
-    context_port_prototype_ref: Option<String>,
-    context_sw_component_prototype_refs: Vec<String>,
-    target_variable_data_prototype_ref: Option<String>,
+    base_ref: Option<RefTypeId>,
+    context_port_prototype_ref: Option<RefTypeId>,
+    context_sw_component_prototype_refs: Vec<RefTypeId>,
+    target_variable_data_prototype_ref: Option<RefTypeId>,
 }
 
 impl VariableDataPrototypeInCompositionInstanceRef {
@@ -392,66 +393,63 @@ impl VariableDataPrototypeInCompositionInstanceRef {
         &mut self.variation_point_capable
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
-        self.base_ref.as_deref()
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
+        self.base_ref
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_ref = Some(value.into());
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_ref = Some(value);
         self
     }
 
-    pub fn get_context_port_prototype_ref(&self) -> Option<&str> {
-        self.context_port_prototype_ref.as_deref()
+    pub fn get_context_port_prototype_ref(&self) -> Option<RefTypeId> {
+        self.context_port_prototype_ref
     }
 
-    pub fn set_context_port_prototype_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.context_port_prototype_ref = Some(value.into());
+    pub fn set_context_port_prototype_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_port_prototype_ref = Some(value);
         self
     }
 
-    pub fn get_context_sw_component_prototype_refs(&self) -> &[String] {
+    pub fn get_context_sw_component_prototype_refs(&self) -> &[RefTypeId] {
         &self.context_sw_component_prototype_refs
     }
 
-    pub fn push_context_sw_component_prototype_ref(&mut self, value: String) {
+    pub fn push_context_sw_component_prototype_ref(&mut self, value: RefTypeId) {
         self.context_sw_component_prototype_refs.push(value);
     }
 
-    pub fn get_target_variable_data_prototype_ref(&self) -> Option<&str> {
-        self.target_variable_data_prototype_ref.as_deref()
+    pub fn get_target_variable_data_prototype_ref(&self) -> Option<RefTypeId> {
+        self.target_variable_data_prototype_ref
     }
 
-    pub fn set_target_variable_data_prototype_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
-        self.target_variable_data_prototype_ref = Some(value.into());
+    pub fn set_target_variable_data_prototype_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_variable_data_prototype_ref = Some(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_target_ref(value);
         self
     }
@@ -511,11 +509,14 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.CONTEXT_SW_COMPONENT_PROTOTYPE_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| format!("{path}.CONTEXT_SW_COMPONENT_PROTOTYPE_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| format!("{path}.CONTEXT_SW_COMPONENT_PROTOTYPE_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONTEXT_SW_COMPONENT_PROTOTYPE_REFS[{index}]"),
+            )?;
         }
         if a.get_target_data_prototype_group_ref() != b.get_target_data_prototype_group_ref() {
             return Err(format!("{path}: TARGET_DATA_PROTOTYPE_GROUP_REF mismatch"));
@@ -548,11 +549,14 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.CONTEXT_SW_COMPONENT_PROTOTYPE_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| format!("{path}.CONTEXT_SW_COMPONENT_PROTOTYPE_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| format!("{path}.CONTEXT_SW_COMPONENT_PROTOTYPE_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONTEXT_SW_COMPONENT_PROTOTYPE_REFS[{index}]"),
+            )?;
         }
         if a.get_target_runnable_entity_group_ref() != b.get_target_runnable_entity_group_ref() {
             return Err(format!("{path}: TARGET_RUNNABLE_ENTITY_GROUP_REF mismatch"));
@@ -585,11 +589,14 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.CONTEXT_SW_COMPONENT_PROTOTYPE_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| format!("{path}.CONTEXT_SW_COMPONENT_PROTOTYPE_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| format!("{path}.CONTEXT_SW_COMPONENT_PROTOTYPE_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONTEXT_SW_COMPONENT_PROTOTYPE_REFS[{index}]"),
+            )?;
         }
         if a.get_target_runnable_entity_ref() != b.get_target_runnable_entity_ref() {
             return Err(format!("{path}: TARGET_RUNNABLE_ENTITY_REF mismatch"));
@@ -625,11 +632,14 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.CONTEXT_SW_COMPONENT_PROTOTYPE_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| format!("{path}.CONTEXT_SW_COMPONENT_PROTOTYPE_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| format!("{path}.CONTEXT_SW_COMPONENT_PROTOTYPE_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONTEXT_SW_COMPONENT_PROTOTYPE_REFS[{index}]"),
+            )?;
         }
         if a.get_target_variable_data_prototype_ref() != b.get_target_variable_data_prototype_ref()
         {

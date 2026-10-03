@@ -16,6 +16,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -28,7 +29,7 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct DiagnosticComControl {
     base: ARElement,
-    com_control_class: Option<String>,
+    com_control_class: Option<RefTypeId>,
     custom_sub_function_number: Option<String>,
 }
 
@@ -45,12 +46,12 @@ impl DiagnosticComControl {
         &mut self.base
     }
 
-    pub fn get_com_control_class(&self) -> Option<&str> {
-        self.com_control_class.as_deref()
+    pub fn get_com_control_class(&self) -> Option<RefTypeId> {
+        self.com_control_class
     }
 
-    pub fn set_com_control_class(&mut self, value: impl Into<String>) -> &mut Self {
-        self.com_control_class = Some(value.into());
+    pub fn set_com_control_class(&mut self, value: RefTypeId) -> &mut Self {
+        self.com_control_class = Some(value);
         self
     }
 
@@ -598,8 +599,8 @@ impl DiagnosticComControlClass {
 #[derive(Debug, Default)]
 pub struct DiagnosticComControlSpecificChannel {
     base: ARObject,
-    specific_channel: Option<String>,
-    specific_physical_channel: Option<String>,
+    specific_channel: Option<RefTypeId>,
+    specific_physical_channel: Option<RefTypeId>,
     subnet_number: Option<String>,
 }
 
@@ -616,21 +617,21 @@ impl DiagnosticComControlSpecificChannel {
         &mut self.base
     }
 
-    pub fn get_specific_channel(&self) -> Option<&str> {
-        self.specific_channel.as_deref()
+    pub fn get_specific_channel(&self) -> Option<RefTypeId> {
+        self.specific_channel
     }
 
-    pub fn set_specific_channel(&mut self, value: impl Into<String>) -> &mut Self {
-        self.specific_channel = Some(value.into());
+    pub fn set_specific_channel(&mut self, value: RefTypeId) -> &mut Self {
+        self.specific_channel = Some(value);
         self
     }
 
-    pub fn get_specific_physical_channel(&self) -> Option<&str> {
-        self.specific_physical_channel.as_deref()
+    pub fn get_specific_physical_channel(&self) -> Option<RefTypeId> {
+        self.specific_physical_channel
     }
 
-    pub fn set_specific_physical_channel(&mut self, value: impl Into<String>) -> &mut Self {
-        self.specific_physical_channel = Some(value.into());
+    pub fn set_specific_physical_channel(&mut self, value: RefTypeId) -> &mut Self {
+        self.specific_physical_channel = Some(value);
         self
     }
 

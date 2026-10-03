@@ -18,6 +18,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -36,7 +37,7 @@ pub struct RoleBasedDataTypeAssignment {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
     role: Option<String>,
-    used_implementation_data_type_ref: Option<String>,
+    used_implementation_data_type_ref: Option<RefTypeId>,
 }
 
 impl RoleBasedDataTypeAssignment {
@@ -69,12 +70,12 @@ impl RoleBasedDataTypeAssignment {
         self
     }
 
-    pub fn get_used_implementation_data_type_ref(&self) -> Option<&str> {
-        self.used_implementation_data_type_ref.as_deref()
+    pub fn get_used_implementation_data_type_ref(&self) -> Option<RefTypeId> {
+        self.used_implementation_data_type_ref
     }
 
-    pub fn set_used_implementation_data_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.used_implementation_data_type_ref = Some(value.into());
+    pub fn set_used_implementation_data_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.used_implementation_data_type_ref = Some(value);
         self
     }
 
@@ -113,7 +114,7 @@ impl RoleBasedDataTypeAssignment {
 pub struct RoleBasedPortAssignment {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
-    port_prototype_ref: Option<String>,
+    port_prototype_ref: Option<RefTypeId>,
     role: Option<String>,
 }
 
@@ -138,12 +139,12 @@ impl RoleBasedPortAssignment {
         &mut self.variation_point_capable
     }
 
-    pub fn get_port_prototype_ref(&self) -> Option<&str> {
-        self.port_prototype_ref.as_deref()
+    pub fn get_port_prototype_ref(&self) -> Option<RefTypeId> {
+        self.port_prototype_ref
     }
 
-    pub fn set_port_prototype_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.port_prototype_ref = Some(value.into());
+    pub fn set_port_prototype_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.port_prototype_ref = Some(value);
         self
     }
 
@@ -194,7 +195,7 @@ pub struct SwcServiceDependency {
     variation_point_capable: VariationPointCapable,
     assigned_data: Vec<RoleBasedDataAssignmentId>,
     assigned_port: Vec<RoleBasedPortAssignmentId>,
-    represented_port_group_ref: Option<String>,
+    represented_port_group_ref: Option<RefTypeId>,
     service_needs: Option<ElementRef>,
 }
 
@@ -243,12 +244,12 @@ impl SwcServiceDependency {
         self.assigned_port.push(value);
     }
 
-    pub fn get_represented_port_group_ref(&self) -> Option<&str> {
-        self.represented_port_group_ref.as_deref()
+    pub fn get_represented_port_group_ref(&self) -> Option<RefTypeId> {
+        self.represented_port_group_ref
     }
 
-    pub fn set_represented_port_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.represented_port_group_ref = Some(value.into());
+    pub fn set_represented_port_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.represented_port_group_ref = Some(value);
         self
     }
 

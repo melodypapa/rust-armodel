@@ -12,6 +12,7 @@ new_key_type! {
 
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::Document;
@@ -173,7 +174,7 @@ pub struct PortAPIOption {
     enable_take_address: Option<String>,
     error_handling: Option<DataTransformationErrorHandlingEnum>,
     indirect_api: Option<String>,
-    port_ref: Option<String>,
+    port_ref: Option<RefTypeId>,
     port_arg_values: Vec<PortDefinedArgumentValueId>,
     supported_features: Vec<ElementRef>,
     transformer_status_forwarding: Option<DataTransformationStatusForwardingEnum>,
@@ -227,12 +228,12 @@ impl PortAPIOption {
         self
     }
 
-    pub fn get_port_ref(&self) -> Option<&str> {
-        self.port_ref.as_deref()
+    pub fn get_port_ref(&self) -> Option<RefTypeId> {
+        self.port_ref
     }
 
-    pub fn set_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.port_ref = Some(value.into());
+    pub fn set_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.port_ref = Some(value);
         self
     }
 

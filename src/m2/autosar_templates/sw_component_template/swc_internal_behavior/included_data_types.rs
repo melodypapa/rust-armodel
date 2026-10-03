@@ -9,6 +9,7 @@ new_key_type! {
 }
 
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::Document;
 
 /// spec class `IncludedDataTypeSet`
@@ -16,7 +17,7 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct IncludedDataTypeSet {
     base: ARObject,
-    data_type_refs: Vec<String>,
+    data_type_refs: Vec<RefTypeId>,
     literal_prefix: Option<String>,
 }
 
@@ -33,11 +34,11 @@ impl IncludedDataTypeSet {
         &mut self.base
     }
 
-    pub fn get_data_type_refs(&self) -> &[String] {
+    pub fn get_data_type_refs(&self) -> &[RefTypeId] {
         &self.data_type_refs
     }
 
-    pub fn push_data_type_ref(&mut self, value: String) {
+    pub fn push_data_type_ref(&mut self, value: RefTypeId) {
         self.data_type_refs.push(value);
     }
 
@@ -72,7 +73,7 @@ impl IncludedDataTypeSet {
 impl Document {
     pub(crate) fn compare_included_data_type_set(
         &self,
-        _other: &Document,
+        other: &Document,
         a: &IncludedDataTypeSet,
         b: &IncludedDataTypeSet,
         path: &str,
@@ -84,9 +85,13 @@ impl Document {
             return Err(format!("{path}: DATA_TYPE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.DATA_TYPE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.DATA_TYPE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.DATA_TYPE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.DATA_TYPE_REFS[{index}]"))?;
         }
         if a.get_literal_prefix() != b.get_literal_prefix() {
             return Err(format!("{path}: LITERAL_PREFIX mismatch"));

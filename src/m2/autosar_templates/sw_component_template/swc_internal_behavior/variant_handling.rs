@@ -11,6 +11,7 @@ new_key_type! {
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::variant_handling::ConditionByFormulaId;
 use crate::m2::autosar_templates::generic_structure::variant_handling::PostBuildVariantConditionId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -26,8 +27,8 @@ use crate::Document;
 pub struct VariationPointProxy {
     base: Identifiable,
     condition_access: Option<ConditionByFormulaId>,
-    implementation_data_type_ref: Option<String>,
-    post_build_value_access_ref: Option<String>,
+    implementation_data_type_ref: Option<RefTypeId>,
+    post_build_value_access_ref: Option<RefTypeId>,
     post_build_variant_conditions: Vec<PostBuildVariantConditionId>,
     value_access: Option<ElementRef>,
 }
@@ -54,21 +55,21 @@ impl VariationPointProxy {
         self
     }
 
-    pub fn get_implementation_data_type_ref(&self) -> Option<&str> {
-        self.implementation_data_type_ref.as_deref()
+    pub fn get_implementation_data_type_ref(&self) -> Option<RefTypeId> {
+        self.implementation_data_type_ref
     }
 
-    pub fn set_implementation_data_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.implementation_data_type_ref = Some(value.into());
+    pub fn set_implementation_data_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.implementation_data_type_ref = Some(value);
         self
     }
 
-    pub fn get_post_build_value_access_ref(&self) -> Option<&str> {
-        self.post_build_value_access_ref.as_deref()
+    pub fn get_post_build_value_access_ref(&self) -> Option<RefTypeId> {
+        self.post_build_value_access_ref
     }
 
-    pub fn set_post_build_value_access_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.post_build_value_access_ref = Some(value.into());
+    pub fn set_post_build_value_access_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.post_build_value_access_ref = Some(value);
         self
     }
 

@@ -30,6 +30,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::system_template::fibex::fibex_core::FibexElement;
@@ -335,11 +336,11 @@ impl CanNmCluster {
         self
     }
 
-    pub fn get_communication_cluster_ref(&self) -> Option<&str> {
+    pub fn get_communication_cluster_ref(&self) -> Option<RefTypeId> {
         self.base().get_communication_cluster_ref()
     }
 
-    pub fn set_communication_cluster_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_communication_cluster_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_communication_cluster_ref(value);
         self
     }
@@ -571,7 +572,7 @@ impl CanNmCluster {
 #[derive(Debug, Default)]
 pub struct CanNmClusterCoupling {
     base: NmClusterCoupling,
-    coupled_cluster_refs: Vec<String>,
+    coupled_cluster_refs: Vec<RefTypeId>,
     nm_busload_reduction_enabled: Option<String>,
     nm_immediate_restart_enabled: Option<String>,
 }
@@ -589,11 +590,11 @@ impl CanNmClusterCoupling {
         &mut self.base
     }
 
-    pub fn get_coupled_cluster_refs(&self) -> &[String] {
+    pub fn get_coupled_cluster_refs(&self) -> &[RefTypeId] {
         &self.coupled_cluster_refs
     }
 
-    pub fn push_coupled_cluster_ref(&mut self, value: String) {
+    pub fn push_coupled_cluster_ref(&mut self, value: RefTypeId) {
         self.coupled_cluster_refs.push(value);
     }
 
@@ -743,11 +744,11 @@ impl CanNmNode {
         self
     }
 
-    pub fn get_controller_ref(&self) -> Option<&str> {
+    pub fn get_controller_ref(&self) -> Option<RefTypeId> {
         self.base().get_controller_ref()
     }
 
-    pub fn set_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_controller_ref(value);
         self
     }
@@ -770,11 +771,11 @@ impl CanNmNode {
         self
     }
 
-    pub fn get_nm_if_ecu_ref(&self) -> Option<&str> {
+    pub fn get_nm_if_ecu_ref(&self) -> Option<RefTypeId> {
         self.base().get_nm_if_ecu_ref()
     }
 
-    pub fn set_nm_if_ecu_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_nm_if_ecu_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_nm_if_ecu_ref(value);
         self
     }
@@ -797,19 +798,19 @@ impl CanNmNode {
         self
     }
 
-    pub fn get_rx_nm_pdu_refs(&self) -> &[String] {
+    pub fn get_rx_nm_pdu_refs(&self) -> &[RefTypeId] {
         self.base().get_rx_nm_pdu_refs()
     }
 
-    pub fn push_rx_nm_pdu_ref(&mut self, value: String) {
+    pub fn push_rx_nm_pdu_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_rx_nm_pdu_ref(value)
     }
 
-    pub fn get_tx_nm_pdu_refs(&self) -> &[String] {
+    pub fn get_tx_nm_pdu_refs(&self) -> &[RefTypeId] {
         self.base().get_tx_nm_pdu_refs()
     }
 
-    pub fn push_tx_nm_pdu_ref(&mut self, value: String) {
+    pub fn push_tx_nm_pdu_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_tx_nm_pdu_ref(value)
     }
 
@@ -1075,11 +1076,11 @@ impl FlexrayNmCluster {
         self
     }
 
-    pub fn get_communication_cluster_ref(&self) -> Option<&str> {
+    pub fn get_communication_cluster_ref(&self) -> Option<RefTypeId> {
         self.base().get_communication_cluster_ref()
     }
 
-    pub fn set_communication_cluster_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_communication_cluster_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_communication_cluster_ref(value);
         self
     }
@@ -1311,7 +1312,7 @@ impl FlexrayNmCluster {
 #[derive(Debug, Default)]
 pub struct FlexrayNmClusterCoupling {
     base: NmClusterCoupling,
-    coupled_cluster_refs: Vec<String>,
+    coupled_cluster_refs: Vec<RefTypeId>,
     nm_schedule_variant: Option<FlexrayNmScheduleVariant>,
 }
 
@@ -1328,11 +1329,11 @@ impl FlexrayNmClusterCoupling {
         &mut self.base
     }
 
-    pub fn get_coupled_cluster_refs(&self) -> &[String] {
+    pub fn get_coupled_cluster_refs(&self) -> &[RefTypeId] {
         &self.coupled_cluster_refs
     }
 
-    pub fn push_coupled_cluster_ref(&mut self, value: String) {
+    pub fn push_coupled_cluster_ref(&mut self, value: RefTypeId) {
         self.coupled_cluster_refs.push(value);
     }
 
@@ -1443,11 +1444,11 @@ impl FlexrayNmNode {
         &mut self.base
     }
 
-    pub fn get_controller_ref(&self) -> Option<&str> {
+    pub fn get_controller_ref(&self) -> Option<RefTypeId> {
         self.base().get_controller_ref()
     }
 
-    pub fn set_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_controller_ref(value);
         self
     }
@@ -1470,11 +1471,11 @@ impl FlexrayNmNode {
         self
     }
 
-    pub fn get_nm_if_ecu_ref(&self) -> Option<&str> {
+    pub fn get_nm_if_ecu_ref(&self) -> Option<RefTypeId> {
         self.base().get_nm_if_ecu_ref()
     }
 
-    pub fn set_nm_if_ecu_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_nm_if_ecu_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_nm_if_ecu_ref(value);
         self
     }
@@ -1497,19 +1498,19 @@ impl FlexrayNmNode {
         self
     }
 
-    pub fn get_rx_nm_pdu_refs(&self) -> &[String] {
+    pub fn get_rx_nm_pdu_refs(&self) -> &[RefTypeId] {
         self.base().get_rx_nm_pdu_refs()
     }
 
-    pub fn push_rx_nm_pdu_ref(&mut self, value: String) {
+    pub fn push_rx_nm_pdu_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_rx_nm_pdu_ref(value)
     }
 
-    pub fn get_tx_nm_pdu_refs(&self) -> &[String] {
+    pub fn get_tx_nm_pdu_refs(&self) -> &[RefTypeId] {
         self.base().get_tx_nm_pdu_refs()
     }
 
-    pub fn push_tx_nm_pdu_ref(&mut self, value: String) {
+    pub fn push_tx_nm_pdu_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_tx_nm_pdu_ref(value)
     }
 
@@ -1695,11 +1696,11 @@ impl J1939NmCluster {
         self
     }
 
-    pub fn get_communication_cluster_ref(&self) -> Option<&str> {
+    pub fn get_communication_cluster_ref(&self) -> Option<RefTypeId> {
         self.base().get_communication_cluster_ref()
     }
 
-    pub fn set_communication_cluster_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_communication_cluster_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_communication_cluster_ref(value);
         self
     }
@@ -2010,11 +2011,11 @@ impl J1939NmNode {
         self
     }
 
-    pub fn get_controller_ref(&self) -> Option<&str> {
+    pub fn get_controller_ref(&self) -> Option<RefTypeId> {
         self.base().get_controller_ref()
     }
 
-    pub fn set_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_controller_ref(value);
         self
     }
@@ -2037,11 +2038,11 @@ impl J1939NmNode {
         self
     }
 
-    pub fn get_nm_if_ecu_ref(&self) -> Option<&str> {
+    pub fn get_nm_if_ecu_ref(&self) -> Option<RefTypeId> {
         self.base().get_nm_if_ecu_ref()
     }
 
-    pub fn set_nm_if_ecu_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_nm_if_ecu_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_nm_if_ecu_ref(value);
         self
     }
@@ -2064,19 +2065,19 @@ impl J1939NmNode {
         self
     }
 
-    pub fn get_rx_nm_pdu_refs(&self) -> &[String] {
+    pub fn get_rx_nm_pdu_refs(&self) -> &[RefTypeId] {
         self.base().get_rx_nm_pdu_refs()
     }
 
-    pub fn push_rx_nm_pdu_ref(&mut self, value: String) {
+    pub fn push_rx_nm_pdu_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_rx_nm_pdu_ref(value)
     }
 
-    pub fn get_tx_nm_pdu_refs(&self) -> &[String] {
+    pub fn get_tx_nm_pdu_refs(&self) -> &[RefTypeId] {
         self.base().get_tx_nm_pdu_refs()
     }
 
-    pub fn push_tx_nm_pdu_ref(&mut self, value: String) {
+    pub fn push_tx_nm_pdu_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_tx_nm_pdu_ref(value)
     }
 
@@ -2357,7 +2358,7 @@ impl J1939NodeName {
 pub struct NmCluster {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    communication_cluster_ref: Option<String>,
+    communication_cluster_ref: Option<RefTypeId>,
     nm_channel_sleep_master: Option<String>,
     nm_nodes: Vec<ElementRef>,
     nm_node_detection_enabled: Option<String>,
@@ -2390,12 +2391,12 @@ impl NmCluster {
         &mut self.variation_point_capable
     }
 
-    pub fn get_communication_cluster_ref(&self) -> Option<&str> {
-        self.communication_cluster_ref.as_deref()
+    pub fn get_communication_cluster_ref(&self) -> Option<RefTypeId> {
+        self.communication_cluster_ref
     }
 
-    pub fn set_communication_cluster_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.communication_cluster_ref = Some(value.into());
+    pub fn set_communication_cluster_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.communication_cluster_ref = Some(value);
         self
     }
 
@@ -2985,7 +2986,7 @@ pub struct NmEcu {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
     bus_dependent_nm_ecus: Vec<ElementRef>,
-    ecu_instance_ref: Option<String>,
+    ecu_instance_ref: Option<RefTypeId>,
     nm_bus_synchronization_enabled: Option<String>,
     nm_com_control_enabled: Option<String>,
     nm_coordinator: Option<ElementRef>,
@@ -3025,12 +3026,12 @@ impl NmEcu {
         self.bus_dependent_nm_ecus.push(value);
     }
 
-    pub fn get_ecu_instance_ref(&self) -> Option<&str> {
-        self.ecu_instance_ref.as_deref()
+    pub fn get_ecu_instance_ref(&self) -> Option<RefTypeId> {
+        self.ecu_instance_ref
     }
 
-    pub fn set_ecu_instance_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ecu_instance_ref = Some(value.into());
+    pub fn set_ecu_instance_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ecu_instance_ref = Some(value);
         self
     }
 
@@ -3253,14 +3254,14 @@ impl NmEcu {
 pub struct NmNode {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    controller_ref: Option<String>,
+    controller_ref: Option<RefTypeId>,
     nm_coord_cluster: Option<String>,
     nm_coordinator_role: Option<NmCoordinatorRoleEnum>,
-    nm_if_ecu_ref: Option<String>,
+    nm_if_ecu_ref: Option<RefTypeId>,
     nm_node_id: Option<String>,
     nm_passive_mode_enabled: Option<String>,
-    rx_nm_pdu_refs: Vec<String>,
-    tx_nm_pdu_refs: Vec<String>,
+    rx_nm_pdu_refs: Vec<RefTypeId>,
+    tx_nm_pdu_refs: Vec<RefTypeId>,
 }
 
 impl NmNode {
@@ -3284,12 +3285,12 @@ impl NmNode {
         &mut self.variation_point_capable
     }
 
-    pub fn get_controller_ref(&self) -> Option<&str> {
-        self.controller_ref.as_deref()
+    pub fn get_controller_ref(&self) -> Option<RefTypeId> {
+        self.controller_ref
     }
 
-    pub fn set_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.controller_ref = Some(value.into());
+    pub fn set_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.controller_ref = Some(value);
         self
     }
 
@@ -3311,12 +3312,12 @@ impl NmNode {
         self
     }
 
-    pub fn get_nm_if_ecu_ref(&self) -> Option<&str> {
-        self.nm_if_ecu_ref.as_deref()
+    pub fn get_nm_if_ecu_ref(&self) -> Option<RefTypeId> {
+        self.nm_if_ecu_ref
     }
 
-    pub fn set_nm_if_ecu_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.nm_if_ecu_ref = Some(value.into());
+    pub fn set_nm_if_ecu_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.nm_if_ecu_ref = Some(value);
         self
     }
 
@@ -3338,19 +3339,19 @@ impl NmNode {
         self
     }
 
-    pub fn get_rx_nm_pdu_refs(&self) -> &[String] {
+    pub fn get_rx_nm_pdu_refs(&self) -> &[RefTypeId] {
         &self.rx_nm_pdu_refs
     }
 
-    pub fn push_rx_nm_pdu_ref(&mut self, value: String) {
+    pub fn push_rx_nm_pdu_ref(&mut self, value: RefTypeId) {
         self.rx_nm_pdu_refs.push(value);
     }
 
-    pub fn get_tx_nm_pdu_refs(&self) -> &[String] {
+    pub fn get_tx_nm_pdu_refs(&self) -> &[RefTypeId] {
         &self.tx_nm_pdu_refs
     }
 
-    pub fn push_tx_nm_pdu_ref(&mut self, value: String) {
+    pub fn push_tx_nm_pdu_ref(&mut self, value: RefTypeId) {
         self.tx_nm_pdu_refs.push(value);
     }
 
@@ -3511,7 +3512,7 @@ pub struct UdpNmCluster {
     nm_remote_sleep_indication_time: Option<String>,
     nm_repeat_message_time: Option<String>,
     nm_wait_bus_sleep_time: Option<String>,
-    vlan_ref: Option<String>,
+    vlan_ref: Option<RefTypeId>,
 }
 
 impl UdpNmCluster {
@@ -3617,20 +3618,20 @@ impl UdpNmCluster {
         self
     }
 
-    pub fn get_vlan_ref(&self) -> Option<&str> {
-        self.vlan_ref.as_deref()
+    pub fn get_vlan_ref(&self) -> Option<RefTypeId> {
+        self.vlan_ref
     }
 
-    pub fn set_vlan_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.vlan_ref = Some(value.into());
+    pub fn set_vlan_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.vlan_ref = Some(value);
         self
     }
 
-    pub fn get_communication_cluster_ref(&self) -> Option<&str> {
+    pub fn get_communication_cluster_ref(&self) -> Option<RefTypeId> {
         self.base().get_communication_cluster_ref()
     }
 
-    pub fn set_communication_cluster_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_communication_cluster_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_communication_cluster_ref(value);
         self
     }
@@ -3862,7 +3863,7 @@ impl UdpNmCluster {
 #[derive(Debug, Default)]
 pub struct UdpNmClusterCoupling {
     base: NmClusterCoupling,
-    coupled_cluster_refs: Vec<String>,
+    coupled_cluster_refs: Vec<RefTypeId>,
     nm_immediate_restart_enabled: Option<String>,
 }
 
@@ -3879,11 +3880,11 @@ impl UdpNmClusterCoupling {
         &mut self.base
     }
 
-    pub fn get_coupled_cluster_refs(&self) -> &[String] {
+    pub fn get_coupled_cluster_refs(&self) -> &[RefTypeId] {
         &self.coupled_cluster_refs
     }
 
-    pub fn push_coupled_cluster_ref(&mut self, value: String) {
+    pub fn push_coupled_cluster_ref(&mut self, value: RefTypeId) {
         self.coupled_cluster_refs.push(value);
     }
 
@@ -4005,11 +4006,11 @@ impl UdpNmNode {
         self
     }
 
-    pub fn get_controller_ref(&self) -> Option<&str> {
+    pub fn get_controller_ref(&self) -> Option<RefTypeId> {
         self.base().get_controller_ref()
     }
 
-    pub fn set_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_controller_ref(value);
         self
     }
@@ -4032,11 +4033,11 @@ impl UdpNmNode {
         self
     }
 
-    pub fn get_nm_if_ecu_ref(&self) -> Option<&str> {
+    pub fn get_nm_if_ecu_ref(&self) -> Option<RefTypeId> {
         self.base().get_nm_if_ecu_ref()
     }
 
-    pub fn set_nm_if_ecu_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_nm_if_ecu_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_nm_if_ecu_ref(value);
         self
     }
@@ -4059,19 +4060,19 @@ impl UdpNmNode {
         self
     }
 
-    pub fn get_rx_nm_pdu_refs(&self) -> &[String] {
+    pub fn get_rx_nm_pdu_refs(&self) -> &[RefTypeId] {
         self.base().get_rx_nm_pdu_refs()
     }
 
-    pub fn push_rx_nm_pdu_ref(&mut self, value: String) {
+    pub fn push_rx_nm_pdu_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_rx_nm_pdu_ref(value)
     }
 
-    pub fn get_tx_nm_pdu_refs(&self) -> &[String] {
+    pub fn get_tx_nm_pdu_refs(&self) -> &[RefTypeId] {
         self.base().get_tx_nm_pdu_refs()
     }
 
-    pub fn push_tx_nm_pdu_ref(&mut self, value: String) {
+    pub fn push_tx_nm_pdu_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_tx_nm_pdu_ref(value)
     }
 
@@ -4293,9 +4294,18 @@ impl Document {
             return Err(format!("{path}: COUPLED_CLUSTER_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.COUPLED_CLUSTER_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.COUPLED_CLUSTER_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.COUPLED_CLUSTER_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.COUPLED_CLUSTER_REFS[{index}]"),
+            )?;
         }
         if a.get_nm_busload_reduction_enabled() != b.get_nm_busload_reduction_enabled() {
             return Err(format!("{path}: NM_BUSLOAD_REDUCTION_ENABLED mismatch"));
@@ -4398,9 +4408,18 @@ impl Document {
             return Err(format!("{path}: COUPLED_CLUSTER_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.COUPLED_CLUSTER_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.COUPLED_CLUSTER_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.COUPLED_CLUSTER_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.COUPLED_CLUSTER_REFS[{index}]"),
+            )?;
         }
         if a.get_nm_schedule_variant() != b.get_nm_schedule_variant() {
             return Err(format!("{path}: NM_SCHEDULE_VARIANT mismatch"));
@@ -4739,9 +4758,13 @@ impl Document {
             return Err(format!("{path}: RX_NM_PDU_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.RX_NM_PDU_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.RX_NM_PDU_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.RX_NM_PDU_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.RX_NM_PDU_REFS[{index}]"))?;
         }
         let list_a = a.get_tx_nm_pdu_refs();
         let list_b = b.get_tx_nm_pdu_refs();
@@ -4749,9 +4772,13 @@ impl Document {
             return Err(format!("{path}: TX_NM_PDU_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.TX_NM_PDU_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.TX_NM_PDU_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.TX_NM_PDU_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.TX_NM_PDU_REFS[{index}]"))?;
         }
         Ok(())
     }
@@ -4814,9 +4841,18 @@ impl Document {
             return Err(format!("{path}: COUPLED_CLUSTER_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.COUPLED_CLUSTER_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.COUPLED_CLUSTER_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.COUPLED_CLUSTER_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.COUPLED_CLUSTER_REFS[{index}]"),
+            )?;
         }
         if a.get_nm_immediate_restart_enabled() != b.get_nm_immediate_restart_enabled() {
             return Err(format!("{path}: NM_IMMEDIATE_RESTART_ENABLED mismatch"));

@@ -13,6 +13,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -95,7 +96,7 @@ impl TryFrom<&str> for LogTraceDefaultLogLevelEnum {
 #[derive(Debug, Default)]
 pub struct DltConfig {
     base: ARObject,
-    dlt_ecu_ref: Option<String>,
+    dlt_ecu_ref: Option<RefTypeId>,
     dlt_log_channels: Vec<DltLogChannelId>,
     session_id_support: Option<String>,
     timestamp_support: Option<String>,
@@ -114,12 +115,12 @@ impl DltConfig {
         &mut self.base
     }
 
-    pub fn get_dlt_ecu_ref(&self) -> Option<&str> {
-        self.dlt_ecu_ref.as_deref()
+    pub fn get_dlt_ecu_ref(&self) -> Option<RefTypeId> {
+        self.dlt_ecu_ref
     }
 
-    pub fn set_dlt_ecu_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.dlt_ecu_ref = Some(value.into());
+    pub fn set_dlt_ecu_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.dlt_ecu_ref = Some(value);
         self
     }
 
@@ -174,15 +175,15 @@ impl DltConfig {
 #[derive(Debug, Default)]
 pub struct DltLogChannel {
     base: Identifiable,
-    application_context_refs: Vec<String>,
+    application_context_refs: Vec<RefTypeId>,
     default_trace_state: Option<DltDefaultTraceStateEnum>,
-    dlt_message_refs: Vec<String>,
+    dlt_message_refs: Vec<RefTypeId>,
     log_channel_id: Option<String>,
     log_trace_default_log_threshold: Option<LogTraceDefaultLogLevelEnum>,
     non_verbose_mode: Option<String>,
-    rx_pdu_triggering_ref: Option<String>,
+    rx_pdu_triggering_ref: Option<RefTypeId>,
     segmentation_supported: Option<String>,
-    tx_pdu_triggering_ref: Option<String>,
+    tx_pdu_triggering_ref: Option<RefTypeId>,
 }
 
 impl DltLogChannel {
@@ -198,11 +199,11 @@ impl DltLogChannel {
         &mut self.base
     }
 
-    pub fn get_application_context_refs(&self) -> &[String] {
+    pub fn get_application_context_refs(&self) -> &[RefTypeId] {
         &self.application_context_refs
     }
 
-    pub fn push_application_context_ref(&mut self, value: String) {
+    pub fn push_application_context_ref(&mut self, value: RefTypeId) {
         self.application_context_refs.push(value);
     }
 
@@ -215,11 +216,11 @@ impl DltLogChannel {
         self
     }
 
-    pub fn get_dlt_message_refs(&self) -> &[String] {
+    pub fn get_dlt_message_refs(&self) -> &[RefTypeId] {
         &self.dlt_message_refs
     }
 
-    pub fn push_dlt_message_ref(&mut self, value: String) {
+    pub fn push_dlt_message_ref(&mut self, value: RefTypeId) {
         self.dlt_message_refs.push(value);
     }
 
@@ -253,12 +254,12 @@ impl DltLogChannel {
         self
     }
 
-    pub fn get_rx_pdu_triggering_ref(&self) -> Option<&str> {
-        self.rx_pdu_triggering_ref.as_deref()
+    pub fn get_rx_pdu_triggering_ref(&self) -> Option<RefTypeId> {
+        self.rx_pdu_triggering_ref
     }
 
-    pub fn set_rx_pdu_triggering_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.rx_pdu_triggering_ref = Some(value.into());
+    pub fn set_rx_pdu_triggering_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.rx_pdu_triggering_ref = Some(value);
         self
     }
 
@@ -271,12 +272,12 @@ impl DltLogChannel {
         self
     }
 
-    pub fn get_tx_pdu_triggering_ref(&self) -> Option<&str> {
-        self.tx_pdu_triggering_ref.as_deref()
+    pub fn get_tx_pdu_triggering_ref(&self) -> Option<RefTypeId> {
+        self.tx_pdu_triggering_ref
     }
 
-    pub fn set_tx_pdu_triggering_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.tx_pdu_triggering_ref = Some(value.into());
+    pub fn set_tx_pdu_triggering_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.tx_pdu_triggering_ref = Some(value);
         self
     }
 
@@ -465,9 +466,18 @@ impl Document {
             return Err(format!("{path}: APPLICATION_CONTEXT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.APPLICATION_CONTEXT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.APPLICATION_CONTEXT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.APPLICATION_CONTEXT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.APPLICATION_CONTEXT_REFS[{index}]"),
+            )?;
         }
         if a.get_default_trace_state() != b.get_default_trace_state() {
             return Err(format!("{path}: DEFAULT_TRACE_STATE mismatch"));
@@ -478,9 +488,13 @@ impl Document {
             return Err(format!("{path}: DLT_MESSAGE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.DLT_MESSAGE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.DLT_MESSAGE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.DLT_MESSAGE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.DLT_MESSAGE_REFS[{index}]"))?;
         }
         if a.get_log_channel_id() != b.get_log_channel_id() {
             return Err(format!("{path}: LOG_CHANNEL_ID mismatch"));

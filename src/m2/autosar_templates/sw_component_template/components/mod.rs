@@ -48,6 +48,7 @@ use crate::m2::autosar_templates::sw_component_template::application_attributes:
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::autosar_templates::sw_component_template::software_component_documentation::SwComponentDocumentationId;
 use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::SwcInternalBehaviorId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::TRefTypeId;
 use crate::m2::autosar_templates::sw_component_template::application_attributes::TriggerPortAnnotationId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
@@ -2465,7 +2466,7 @@ impl NvBlockSwComponentType {
 #[derive(Debug, Default)]
 pub struct PPortPrototype {
     base: AbstractProvidedPortPrototype,
-    provided_interface_t_ref: Option<String>,
+    provided_interface_t_ref: Option<TRefTypeId>,
 }
 
 impl PPortPrototype {
@@ -2481,12 +2482,12 @@ impl PPortPrototype {
         &mut self.base
     }
 
-    pub fn get_provided_interface_t_ref(&self) -> Option<&str> {
-        self.provided_interface_t_ref.as_deref()
+    pub fn get_provided_interface_t_ref(&self) -> Option<TRefTypeId> {
+        self.provided_interface_t_ref
     }
 
-    pub fn set_provided_interface_t_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.provided_interface_t_ref = Some(value.into());
+    pub fn set_provided_interface_t_ref(&mut self, value: TRefTypeId) -> &mut Self {
+        self.provided_interface_t_ref = Some(value);
         self
     }
 
@@ -2846,7 +2847,7 @@ impl PPortPrototype {
 pub struct PRPortPrototype {
     base: AbstractProvidedPortPrototype,
     abstract_required_port_prototype: AbstractRequiredPortPrototype,
-    provided_required_interface_t_ref: Option<String>,
+    provided_required_interface_t_ref: Option<TRefTypeId>,
 }
 
 impl PRPortPrototype {
@@ -2870,12 +2871,12 @@ impl PRPortPrototype {
         &mut self.abstract_required_port_prototype
     }
 
-    pub fn get_provided_required_interface_t_ref(&self) -> Option<&str> {
-        self.provided_required_interface_t_ref.as_deref()
+    pub fn get_provided_required_interface_t_ref(&self) -> Option<TRefTypeId> {
+        self.provided_required_interface_t_ref
     }
 
-    pub fn set_provided_required_interface_t_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.provided_required_interface_t_ref = Some(value.into());
+    pub fn set_provided_required_interface_t_ref(&mut self, value: TRefTypeId) -> &mut Self {
+        self.provided_required_interface_t_ref = Some(value);
         self
     }
 
@@ -4082,7 +4083,7 @@ impl PortPrototype {
 pub struct RPortPrototype {
     base: AbstractRequiredPortPrototype,
     may_be_unconnected: Option<String>,
-    required_interface_t_ref: Option<String>,
+    required_interface_t_ref: Option<TRefTypeId>,
 }
 
 impl RPortPrototype {
@@ -4107,12 +4108,12 @@ impl RPortPrototype {
         self
     }
 
-    pub fn get_required_interface_t_ref(&self) -> Option<&str> {
-        self.required_interface_t_ref.as_deref()
+    pub fn get_required_interface_t_ref(&self) -> Option<TRefTypeId> {
+        self.required_interface_t_ref
     }
 
-    pub fn set_required_interface_t_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.required_interface_t_ref = Some(value.into());
+    pub fn set_required_interface_t_ref(&mut self, value: TRefTypeId) -> &mut Self {
+        self.required_interface_t_ref = Some(value);
         self
     }
 

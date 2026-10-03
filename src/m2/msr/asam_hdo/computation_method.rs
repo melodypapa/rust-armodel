@@ -2,6 +2,27 @@
 
 //! generated from spec package: m2::msr::asam_hdo::computation_method
 
+/// Heterogeneous handles for the abstract compu content classes (code_guide
+/// §3: abstract-marker py classes become Rust enums at the usage site).
+/// Variants carry the concrete subclass's arena key.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum CompuContentRef {
+    CompuScales(CompuScalesId),
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum CompuScaleContentsRef {
+    CompuScaleConstantContents(CompuScaleConstantContentsId),
+    CompuScaleRationalFormula(CompuScaleRationalFormulaId),
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum CompuConstContentRef {
+    CompuConstTextContent(CompuConstTextContentId),
+    CompuConstNumericContent(CompuConstNumericContentId),
+    CompuConstFormulaContent(CompuConstFormulaContentId),
+}
+
 use slotmap::new_key_type;
 
 new_key_type! {
@@ -41,7 +62,7 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct Compu {
     base: ARObject,
-    compu_content: Option<ElementRef>,
+    compu_content: Option<CompuContentRef>,
     compu_default_value: Option<CompuConstId>,
 }
 
@@ -58,11 +79,11 @@ impl Compu {
         &mut self.base
     }
 
-    pub fn get_compu_content(&self) -> Option<ElementRef> {
+    pub fn get_compu_content(&self) -> Option<CompuContentRef> {
         self.compu_content
     }
 
-    pub fn set_compu_content(&mut self, value: ElementRef) -> &mut Self {
+    pub fn set_compu_content(&mut self, value: CompuContentRef) -> &mut Self {
         self.compu_content = Some(value);
         self
     }
@@ -100,7 +121,7 @@ impl Compu {
 #[derive(Debug, Default)]
 pub struct CompuConst {
     base: ARObject,
-    compu_const_content_type: Option<ElementRef>,
+    compu_const_content_type: Option<CompuConstContentRef>,
 }
 
 impl CompuConst {
@@ -116,11 +137,11 @@ impl CompuConst {
         &mut self.base
     }
 
-    pub fn get_compu_const_content_type(&self) -> Option<ElementRef> {
+    pub fn get_compu_const_content_type(&self) -> Option<CompuConstContentRef> {
         self.compu_const_content_type
     }
 
-    pub fn set_compu_const_content_type(&mut self, value: ElementRef) -> &mut Self {
+    pub fn set_compu_const_content_type(&mut self, value: CompuConstContentRef) -> &mut Self {
         self.compu_const_content_type = Some(value);
         self
     }
@@ -751,7 +772,7 @@ pub struct CompuScale {
     variation_point_capable: VariationPointCapable,
     a2l_display_text: Option<String>,
     compu_inverse_value: Option<CompuConstId>,
-    compu_scale_contents: Option<ElementRef>,
+    compu_scale_contents: Option<CompuScaleContentsRef>,
     desc: Option<MultiLanguageOverviewParagraphId>,
     lower_limit: Option<LimitId>,
     mask: Option<String>,
@@ -799,11 +820,11 @@ impl CompuScale {
         self
     }
 
-    pub fn get_compu_scale_contents(&self) -> Option<ElementRef> {
+    pub fn get_compu_scale_contents(&self) -> Option<CompuScaleContentsRef> {
         self.compu_scale_contents
     }
 
-    pub fn set_compu_scale_contents(&mut self, value: ElementRef) -> &mut Self {
+    pub fn set_compu_scale_contents(&mut self, value: CompuScaleContentsRef) -> &mut Self {
         self.compu_scale_contents = Some(value);
         self
     }
@@ -1075,7 +1096,6 @@ impl CompuScales {
         self
     }
 }
-
 impl Document {
     pub(crate) fn compare_compu(
         &self,

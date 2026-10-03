@@ -11,14 +11,13 @@ new_key_type! {
     pub struct VariableDataPrototypeId;
 }
 
-use crate::m2::autosar_templates::common_structure::implementation_data_types::ArraySizeSemanticsEnum;
 use crate::m2::autosar_templates::generic_structure::abstract_structure::AtpPrototype;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::TRefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
-use crate::m2::autosar_templates::sw_component_template::datatype::datatypes::ArraySizeHandlingEnum;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::data_dictionary::data_def_properties::SwDataDefPropsId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
@@ -32,8 +31,8 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct ApplicationArrayElement {
     base: ApplicationCompositeElementDataPrototype,
-    array_size_handling: Option<ArraySizeHandlingEnum>,
-    array_size_semantics: Option<ArraySizeSemanticsEnum>,
+    array_size_handling: Option<String>,
+    array_size_semantics: Option<String>,
     index_data_type_ref: Option<RefTypeId>,
     max_number_of_elements: Option<String>,
 }
@@ -51,21 +50,21 @@ impl ApplicationArrayElement {
         &mut self.base
     }
 
-    pub fn get_array_size_handling(&self) -> Option<ArraySizeHandlingEnum> {
-        self.array_size_handling
+    pub fn get_array_size_handling(&self) -> Option<&str> {
+        self.array_size_handling.as_deref()
     }
 
-    pub fn set_array_size_handling(&mut self, value: ArraySizeHandlingEnum) -> &mut Self {
-        self.array_size_handling = Some(value);
+    pub fn set_array_size_handling(&mut self, value: impl Into<String>) -> &mut Self {
+        self.array_size_handling = Some(value.into());
         self
     }
 
-    pub fn get_array_size_semantics(&self) -> Option<ArraySizeSemanticsEnum> {
-        self.array_size_semantics
+    pub fn get_array_size_semantics(&self) -> Option<&str> {
+        self.array_size_semantics.as_deref()
     }
 
-    pub fn set_array_size_semantics(&mut self, value: ArraySizeSemanticsEnum) -> &mut Self {
-        self.array_size_semantics = Some(value);
+    pub fn set_array_size_semantics(&mut self, value: impl Into<String>) -> &mut Self {
+        self.array_size_semantics = Some(value.into());
         self
     }
 
@@ -87,11 +86,11 @@ impl ApplicationArrayElement {
         self
     }
 
-    pub fn get_type_t_ref(&self) -> Option<&str> {
+    pub fn get_type_t_ref(&self) -> Option<TRefTypeId> {
         self.base().get_type_t_ref()
     }
 
-    pub fn set_type_t_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_type_t_ref(&mut self, value: TRefTypeId) -> &mut Self {
         self.base_mut().set_type_t_ref(value);
         self
     }
@@ -368,7 +367,7 @@ impl ApplicationArrayElement {
 #[derive(Debug, Default)]
 pub struct ApplicationCompositeElementDataPrototype {
     base: DataPrototype,
-    type_t_ref: Option<String>,
+    type_t_ref: Option<TRefTypeId>,
 }
 
 impl ApplicationCompositeElementDataPrototype {
@@ -384,12 +383,12 @@ impl ApplicationCompositeElementDataPrototype {
         &mut self.base
     }
 
-    pub fn get_type_t_ref(&self) -> Option<&str> {
-        self.type_t_ref.as_deref()
+    pub fn get_type_t_ref(&self) -> Option<TRefTypeId> {
+        self.type_t_ref
     }
 
-    pub fn set_type_t_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.type_t_ref = Some(value.into());
+    pub fn set_type_t_ref(&mut self, value: TRefTypeId) -> &mut Self {
+        self.type_t_ref = Some(value);
         self
     }
 
@@ -665,11 +664,11 @@ impl ApplicationRecordElement {
         self
     }
 
-    pub fn get_type_t_ref(&self) -> Option<&str> {
+    pub fn get_type_t_ref(&self) -> Option<TRefTypeId> {
         self.base().get_type_t_ref()
     }
 
-    pub fn set_type_t_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_type_t_ref(&mut self, value: TRefTypeId) -> &mut Self {
         self.base_mut().set_type_t_ref(value);
         self
     }
@@ -956,7 +955,7 @@ impl ApplicationRecordElement {
 #[derive(Debug, Default)]
 pub struct AutosarDataPrototype {
     base: DataPrototype,
-    type_t_ref: Option<String>,
+    type_t_ref: Option<TRefTypeId>,
 }
 
 impl AutosarDataPrototype {
@@ -972,12 +971,12 @@ impl AutosarDataPrototype {
         &mut self.base
     }
 
-    pub fn get_type_t_ref(&self) -> Option<&str> {
-        self.type_t_ref.as_deref()
+    pub fn get_type_t_ref(&self) -> Option<TRefTypeId> {
+        self.type_t_ref
     }
 
-    pub fn set_type_t_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.type_t_ref = Some(value.into());
+    pub fn set_type_t_ref(&mut self, value: TRefTypeId) -> &mut Self {
+        self.type_t_ref = Some(value);
         self
     }
 
@@ -1463,11 +1462,11 @@ impl ParameterDataPrototype {
         self
     }
 
-    pub fn get_type_t_ref(&self) -> Option<&str> {
+    pub fn get_type_t_ref(&self) -> Option<TRefTypeId> {
         self.base().get_type_t_ref()
     }
 
-    pub fn set_type_t_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_type_t_ref(&mut self, value: TRefTypeId) -> &mut Self {
         self.base_mut().set_type_t_ref(value);
         self
     }
@@ -1788,11 +1787,11 @@ impl VariableDataPrototype {
         self
     }
 
-    pub fn get_type_t_ref(&self) -> Option<&str> {
+    pub fn get_type_t_ref(&self) -> Option<TRefTypeId> {
         self.base().get_type_t_ref()
     }
 
-    pub fn set_type_t_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_type_t_ref(&mut self, value: TRefTypeId) -> &mut Self {
         self.base_mut().set_type_t_ref(value);
         self
     }

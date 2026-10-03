@@ -16,7 +16,6 @@ new_key_type! {
 
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::msr::documentation::annotation::AnnotationId;
-use crate::m2::autosar_templates::common_structure::implementation_data_types::ArraySizeSemanticsEnum;
 use crate::m2::msr::asam_hdo::computation_method::CompuGenericMathId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::multidimensional_time::MultidimensionalTimeId;
@@ -191,7 +190,7 @@ pub struct SwDataDefProps {
     sw_alignment: Option<String>,
     base_type_ref: Option<RefTypeId>,
     sw_bit_representation: Option<SwBitRepresentationId>,
-    sw_calibration_access: Option<SwCalibrationAccessEnum>,
+    sw_calibration_access: Option<String>,
     sw_value_block_size: Option<String>,
     sw_calprm_axis_set: Option<SwCalprmAxisSetId>,
     sw_text_props: Option<SwTextPropsId>,
@@ -298,12 +297,12 @@ impl SwDataDefProps {
         self
     }
 
-    pub fn get_sw_calibration_access(&self) -> Option<SwCalibrationAccessEnum> {
-        self.sw_calibration_access
+    pub fn get_sw_calibration_access(&self) -> Option<&str> {
+        self.sw_calibration_access.as_deref()
     }
 
-    pub fn set_sw_calibration_access(&mut self, value: SwCalibrationAccessEnum) -> &mut Self {
-        self.sw_calibration_access = Some(value);
+    pub fn set_sw_calibration_access(&mut self, value: impl Into<String>) -> &mut Self {
+        self.sw_calibration_access = Some(value.into());
         self
     }
 
@@ -706,7 +705,7 @@ impl SwPointerTargetProps {
 #[derive(Debug, Default)]
 pub struct SwTextProps {
     base: ARObject,
-    array_size_semantics: Option<ArraySizeSemanticsEnum>,
+    array_size_semantics: Option<String>,
     base_type_ref: Option<RefTypeId>,
     sw_fill_character: Option<String>,
     sw_max_text_size: Option<String>,
@@ -725,12 +724,12 @@ impl SwTextProps {
         &mut self.base
     }
 
-    pub fn get_array_size_semantics(&self) -> Option<ArraySizeSemanticsEnum> {
-        self.array_size_semantics
+    pub fn get_array_size_semantics(&self) -> Option<&str> {
+        self.array_size_semantics.as_deref()
     }
 
-    pub fn set_array_size_semantics(&mut self, value: ArraySizeSemanticsEnum) -> &mut Self {
-        self.array_size_semantics = Some(value);
+    pub fn set_array_size_semantics(&mut self, value: impl Into<String>) -> &mut Self {
+        self.array_size_semantics = Some(value.into());
         self
     }
 

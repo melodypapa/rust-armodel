@@ -9,7 +9,7 @@ use thiserror::Error;
 
 use crate::m2::autosar_templates::autosar_top_level_structure::Document;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::{
-    RefType, RefTypeId,
+    Limit, RefType, RefTypeId, TRefType,
 };
 
 /// Error model for the writer (mirrors `ParseError`).
@@ -21,16 +21,23 @@ pub enum WriteError {
     Io(#[from] io::Error),
 }
 
-/// Emits `<name attrs>text</name>` on one line; when `text` is `None` the
-/// element is still expanded (`<name></name>`, not self-closing) to match
-/// py's `short_empty_elements=False`. The empty inline `Text` event is what
-/// keeps the end tag on the same line under `new_with_indent`.
+/// Emits `<name attrs>text</name>` on one line. Empty text (`None` or `""`)
+/// follows py's net serialization rule (minidom self-closes, then `patch_xml`
+/// expands only attribute-less empties): an empty element **with attributes**
+/// is self-closing (`<L-2 L="EN"/>`), one **without attributes** is expanded
+/// (`<TAG></TAG>`). The empty inline `Text` event is what keeps the end tag
+/// on the same line under `new_with_indent`.
 pub(crate) fn write_text_element<W: Write>(
     writer: &mut Writer<W>,
     name: &str,
     element: BytesStart<'_>,
     text: Option<&str>,
 ) -> Result<(), WriteError> {
+    let empty = text.is_none_or(str::is_empty);
+    if empty && element.attributes().count() > 0 {
+        writer.write_event(Event::Empty(element))?;
+        return Ok(());
+    }
     writer.write_event(Event::Start(element))?;
     match text {
         Some(value) => {
@@ -106,6 +113,48 @@ pub(crate) fn write_optional_ref_type<W: Write>(
     Ok(())
 }
 
+/// py `setChildLimitElement` — S/T attrs, INTERVAL-TYPE attr, text.
+/// `allow(dead_code)` until Task 3 wires the Compu arms.
+#[allow(dead_code)]
+pub(crate) fn write_limit_element<W: Write>(
+    writer: &mut Writer<W>,
+    key: &str,
+    limit: &Limit,
+) -> Result<(), WriteError> {
+    let mut element = BytesStart::new(key);
+    if let Some(checksum) = limit.get_checksum() {
+        element.push_attribute(("S", checksum));
+    }
+    if let Some(timestamp) = limit.get_timestamp() {
+        element.push_attribute(("T", timestamp));
+    }
+    if let Some(interval) = limit.get_interval_type() {
+        element.push_attribute(("INTERVAL-TYPE", interval));
+    }
+    write_text_element(writer, key, element, limit.get_value())?;
+    Ok(())
+}
+
+/// py `setChildElementOptionalRefType` for TRefType-typed elements —
+/// identical wire form (BASE, DEST, text).
+pub(crate) fn write_optional_t_ref_type<W: Write>(
+    writer: &mut Writer<W>,
+    tag: &str,
+    r#ref: Option<&TRefType>,
+) -> Result<(), WriteError> {
+    if let Some(r#ref) = r#ref {
+        let mut element = BytesStart::new(tag);
+        if let Some(base) = r#ref.get_base() {
+            element.push_attribute(("BASE", base));
+        }
+        if let Some(dest) = r#ref.get_dest() {
+            element.push_attribute(("DEST", dest));
+        }
+        write_text_element(writer, tag, element, r#ref.get_value())?;
+    }
+    Ok(())
+}
+
 /// py's `ET.SubElement(wrapper)` + per-item `setChildElementOptionalRefType`
 /// — the wrapper is emitted only when the list is non-empty.
 pub(crate) fn write_ref_type_list<W: Write>(
@@ -140,6 +189,19 @@ mod tests {
         write_text_element(&mut writer, "LANGUAGE", element, None).unwrap();
         writer.write_event(Event::Eof).unwrap();
         assert_eq!(String::from_utf8(buffer).unwrap(), "<LANGUAGE></LANGUAGE>");
+    }
+
+    /// py `patch_xml` expands only attribute-less empty elements — one with
+    /// attributes stays self-closing (`<L-2 L="EN"/>`).
+    #[test]
+    fn empty_element_with_attributes_self_closes() {
+        let mut buffer: Vec<u8> = Vec::new();
+        let mut writer = Writer::new_with_indent(&mut buffer, b' ', 2);
+        let mut element = BytesStart::new("L-2");
+        element.push_attribute(("L", "EN"));
+        write_text_element(&mut writer, "L-2", element, Some("")).unwrap();
+        writer.write_event(Event::Eof).unwrap();
+        assert_eq!(String::from_utf8(buffer).unwrap(), "<L-2 L=\"EN\"/>");
     }
 
     #[test]

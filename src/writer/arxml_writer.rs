@@ -9,6 +9,16 @@ use quick_xml::events::{BytesDecl, BytesEnd, BytesStart, Event};
 use quick_xml::writer::Writer;
 
 use crate::m2::autosar_templates::autosar_top_level_structure::Document;
+use crate::m2::autosar_templates::common_structure::standardization_template::keyword::{
+    Keyword, KeywordSetId,
+};
+use crate::m2::autosar_templates::sw_component_template::datatype::datatypes::{
+    ApplicationArrayDataTypeId, ApplicationPrimitiveDataTypeId, ApplicationRecordDataTypeId,
+};
+use crate::m2::autosar_templates::common_structure::implementation_data_types::{
+    ImplementationDataTypeId,
+};
+use crate::m2::msr::data_dictionary::data_def_properties::{SwDataDefProps, SwDataDefPropsId};
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::{
@@ -22,6 +32,12 @@ use crate::m2::autosar_templates::generic_structure::life_cycles::{
 };
 use crate::m2::element_registry;
 use crate::m2::msr::asam_hdo::admin_data::{AdminData, AdminDataId};
+use crate::m2::msr::asam_hdo::constraints::global_constraints::{
+    DataConstrId, DataConstrRule, InternalConstrs, PhysConstrs,
+};
+use crate::m2::msr::asam_hdo::computation_method::{
+    Compu, CompuConst, CompuConstContentRef, CompuMethodId, CompuScaleContentsRef,
+};
 use crate::m2::msr::asam_hdo::base_types::SwBaseTypeId;
 use crate::m2::msr::asam_hdo::special_data::{Sd, Sdg};
 use crate::m2::msr::asam_hdo::units::{PhysicalDimensionId, UnitId};
@@ -33,8 +49,14 @@ use crate::m2::msr::documentation::text_model::multilanguage_data::{
     MultilanguageLongNameId,
 };
 use crate::writer::abstract_arxml_writer::{
-    write_optional_boolean_element, write_optional_ref_type, write_optional_text_element,
-    write_ref_type_list, write_text_element, WriteError,
+    WriteError,
+    write_limit_element,
+    write_optional_boolean_element,
+    write_optional_ref_type,
+    write_optional_t_ref_type,
+    write_optional_text_element,
+    write_ref_type_list,
+    write_text_element,
 };
 
 /// The per-class `Identifiable` payload pieces a family emitter hands to
@@ -45,6 +67,9 @@ struct IdentifiableParts<'a> {
     category: Option<&'a str>,
     introduction: Option<DocumentationBlockId>,
     admin_data: Option<AdminDataId>,
+    /// The `AutosarDataType` tail (py `writeAutosarDataType`): emitted after
+    /// the Identifiable chain. `None` for non-datatype elements.
+    sw_data_def_props: Option<SwDataDefPropsId>,
 }
 
 const DEFAULT_NAMESPACE: &str = "http://autosar.org/schema/r4.0";
@@ -331,6 +356,7 @@ impl ARXMLWriter {
                 category: package.get_category(),
                 introduction: package.base().base().get_introduction(),
                 admin_data: package.get_admin_data(),
+                sw_data_def_props: None,
             },
             document,
         )?;
@@ -472,6 +498,10 @@ impl ARXMLWriter {
     ) -> Result<(), WriteError> {
         let mut element = BytesStart::new("LONG-NAME");
         self.write_ar_object_attributes(&mut element, long_name.base());
+        if long_name.get_l4().is_empty() {
+            write_text_element(writer, "LONG-NAME", element, None)?;
+            return Ok(());
+        }
         writer.write_event(Event::Start(element))?;
         for l4_id in long_name.get_l4() {
             if let Some(l4) = document.l_long_names.get(*l4_id) {
@@ -503,6 +533,13 @@ impl ARXMLWriter {
     ) -> Result<(), WriteError> {
         let mut element = BytesStart::new("DESC");
         self.write_ar_object_attributes(&mut element, paragraph.base());
+        // py/minidom renders a childless wrapper expanded-inline
+        // (`<DESC></DESC>`) — which is exactly write_text_element's
+        // empty-without-attributes form.
+        if paragraph.get_l2().is_empty() {
+            write_text_element(writer, "DESC", element, None)?;
+            return Ok(());
+        }
         writer.write_event(Event::Start(element))?;
         for l2_id in paragraph.get_l2() {
             if let Some(l2) = document.l_overview_paragraphs.get(*l2_id) {
@@ -612,6 +649,972 @@ impl ARXMLWriter {
         }
     }
 
+    /// py `writeCompuMethod`.
+    fn write_compu_method<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        id: CompuMethodId,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let Some(compu_method) = document.compu_methods.get(id) else {
+            return Ok(());
+        };
+        let mut element = BytesStart::new("COMPU-METHOD");
+        self.write_identifiable_attributes(
+            &mut element,
+            compu_method.get_checksum(),
+            compu_method.get_timestamp(),
+            compu_method.get_uuid(),
+        );
+        writer.write_event(Event::Start(element))?;
+        if let Some(short_name) = compu_method.get_short_name() {
+            write_text_element(
+                writer,
+                "SHORT-NAME",
+                BytesStart::new("SHORT-NAME"),
+                Some(short_name),
+            )?;
+        }
+        self.write_identifiable_parts(
+            writer,
+            IdentifiableParts {
+                long_name: compu_method.get_long_name(),
+                desc: compu_method.get_desc(),
+                category: compu_method.get_category(),
+                introduction: compu_method.get_introduction(),
+                admin_data: compu_method.get_admin_data(),
+                sw_data_def_props: None,
+            },
+            document,
+        )?;
+        write_optional_text_element(writer, "DISPLAY-FORMAT", compu_method.get_display_format())?;
+        write_optional_ref_type(
+            writer,
+            "UNIT-REF",
+            compu_method
+                .get_unit_ref()
+                .and_then(|r| document.ref_types.get(r)),
+        )?;
+        if let Some(internal) = compu_method
+            .get_compu_internal_to_phys()
+            .and_then(|c| document.compus.get(c))
+        {
+            self.set_compu(writer, "COMPU-INTERNAL-TO-PHYS", internal, document)?;
+        }
+        if let Some(phys) = compu_method
+            .get_compu_phys_to_internal()
+            .and_then(|c| document.compus.get(c))
+        {
+            self.set_compu(writer, "COMPU-PHYS-TO-INTERNAL", phys, document)?;
+        }
+        writer.write_event(Event::End(BytesEnd::new("COMPU-METHOD")))?;
+        Ok(())
+    }
+
+    /// py `setCompu` — S/T attrs, COMPU-SCALES, COMPU-DEFAULT-VALUE.
+    fn set_compu<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        key: &str,
+        compu: &Compu,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let mut element = BytesStart::new(key);
+        self.write_ar_object_attributes(&mut element, compu.base());
+        writer.write_event(Event::Start(element))?;
+        if let Some(crate::m2::msr::asam_hdo::computation_method::CompuContentRef::CompuScales(
+            scales_id,
+        )) = compu.get_compu_content()
+        {
+            if let Some(scales) = document.compu_scales_arena.get(scales_id) {
+                self.set_compu_scales(writer, scales, document)?;
+            }
+        }
+        if let Some(default) = compu
+            .get_compu_default_value()
+            .and_then(|c| document.compu_consts.get(c))
+        {
+            self.set_compu_const(writer, "COMPU-DEFAULT-VALUE", default, document)?;
+        }
+        writer.write_event(Event::End(BytesEnd::new(key)))?;
+        Ok(())
+    }
+
+    /// py `setCompuScales` — wrapper (no attrs) + per-scale bodies.
+    fn set_compu_scales<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        scales: &crate::m2::msr::asam_hdo::computation_method::CompuScales,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        writer.write_event(Event::Start(BytesStart::new("COMPU-SCALES")))?;
+        for scale_id in scales.get_compu_scales() {
+            if let Some(scale) = document.compu_scales.get(*scale_id) {
+                self.write_compu_scale(writer, "COMPU-SCALE", scale, document)?;
+            }
+        }
+        writer.write_event(Event::End(BytesEnd::new("COMPU-SCALES")))?;
+        Ok(())
+    }
+
+    /// py `writeCompuScale` — fixed child order per the py body.
+    fn write_compu_scale<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        key: &str,
+        scale: &crate::m2::msr::asam_hdo::computation_method::CompuScale,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let mut element = BytesStart::new(key);
+        self.write_ar_object_attributes(&mut element, scale.base());
+        writer.write_event(Event::Start(element))?;
+        write_optional_text_element(writer, "A2L-DISPLAY-TEXT", scale.get_a2l_display_text())?;
+        if let Some(inverse) = scale
+            .get_compu_inverse_value()
+            .and_then(|c| document.compu_consts.get(c))
+        {
+            self.set_compu_const(writer, "COMPU-INVERSE-VALUE", inverse, document)?;
+        }
+        write_optional_text_element(writer, "SHORT-LABEL", scale.get_short_label())?;
+        write_optional_text_element(writer, "SYMBOL", scale.get_symbol())?;
+        if let Some(desc) = scale
+            .get_desc()
+            .and_then(|id| document.multi_language_overview_paragraphs.get(id))
+        {
+            self.set_multi_language_overview_paragraph(writer, desc, document)?;
+        }
+        write_optional_text_element(writer, "MASK", scale.get_mask())?;
+        if let Some(limit) = scale.get_lower_limit().and_then(|l| document.limits.get(l)) {
+            write_limit_element(writer, "LOWER-LIMIT", limit)?;
+        }
+        if let Some(limit) = scale.get_upper_limit().and_then(|l| document.limits.get(l)) {
+            write_limit_element(writer, "UPPER-LIMIT", limit)?;
+        }
+        match scale.get_compu_scale_contents() {
+            Some(CompuScaleContentsRef::CompuScaleConstantContents(id)) => {
+                if let Some(constant) = document.compu_scale_constant_contents.get(id) {
+                    // py writeCompuScaleConstantContents: bare COMPU-CONST +
+                    // VT literal child (no ARObject attrs on either).
+                    writer.write_event(Event::Start(BytesStart::new("COMPU-CONST")))?;
+                    if let Some(const_id) = constant.get_compu_const() {
+                        if let Some(const_) = document.compu_consts.get(const_id) {
+                            if let Some(CompuConstContentRef::CompuConstTextContent(text_id)) =
+                                const_.get_compu_const_content_type()
+                            {
+                                if let Some(text) = document.compu_const_text_contents.get(text_id)
+                                {
+                                    write_optional_text_element(writer, "VT", text.get_vt())?;
+                                }
+                            }
+                        }
+                    }
+                    writer.write_event(Event::End(BytesEnd::new("COMPU-CONST")))?;
+                }
+            }
+            Some(CompuScaleContentsRef::CompuScaleRationalFormula(id)) => {
+                if let Some(formula) = document.compu_scale_rational_formulas.get(id) {
+                    writer.write_event(Event::Start(BytesStart::new("COMPU-RATIONAL-COEFFS")))?;
+                    if let Some(coeffs) = formula
+                        .get_compu_rational_coeffs()
+                        .and_then(|c| document.compu_rational_coeffs.get(c))
+                    {
+                        if let Some(numerator) = coeffs
+                            .get_compu_numerator()
+                            .and_then(|n| document.compu_nominator_denominators.get(n))
+                        {
+                            self.write_nominator_denominator(writer, "COMPU-NUMERATOR", numerator)?;
+                        }
+                        if let Some(denominator) = coeffs
+                            .get_compu_denominator()
+                            .and_then(|d| document.compu_nominator_denominators.get(d))
+                        {
+                            self.write_nominator_denominator(
+                                writer,
+                                "COMPU-DENOMINATOR",
+                                denominator,
+                            )?;
+                        }
+                    }
+                    writer.write_event(Event::End(BytesEnd::new("COMPU-RATIONAL-COEFFS")))?;
+                }
+            }
+            None => {}
+        }
+        writer.write_event(Event::End(BytesEnd::new(key)))?;
+        Ok(())
+    }
+
+    /// py `writeCompuNominatorDenominator` — V children in list order.
+    fn write_nominator_denominator<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        key: &str,
+        nom_denom: &crate::m2::msr::asam_hdo::computation_method::CompuNominatorDenominator,
+    ) -> Result<(), WriteError> {
+        writer.write_event(Event::Start(BytesStart::new(key)))?;
+        for v in nom_denom.get_v() {
+            write_text_element(writer, "V", BytesStart::new("V"), Some(v))?;
+        }
+        writer.write_event(Event::End(BytesEnd::new(key)))?;
+        Ok(())
+    }
+
+    /// py `setCompuConst` — S/T attrs + content child (VT/V/VF).
+    fn set_compu_const<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        key: &str,
+        compu_const: &CompuConst,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let mut element = BytesStart::new(key);
+        self.write_ar_object_attributes(&mut element, compu_const.base());
+        writer.write_event(Event::Start(element))?;
+        match compu_const.get_compu_const_content_type() {
+            Some(CompuConstContentRef::CompuConstTextContent(id)) => {
+                if let Some(text) = document.compu_const_text_contents.get(id) {
+                    write_optional_text_element(writer, "VT", text.get_vt())?;
+                }
+            }
+            Some(CompuConstContentRef::CompuConstNumericContent(id)) => {
+                if let Some(numeric) = document.compu_const_numeric_contents.get(id) {
+                    write_optional_text_element(writer, "V", numeric.get_v())?;
+                }
+            }
+            Some(CompuConstContentRef::CompuConstFormulaContent(id)) => {
+                if let Some(formula) = document.compu_const_formula_contents.get(id) {
+                    write_optional_text_element(writer, "VF", formula.get_vf())?;
+                }
+            }
+            None => {}
+        }
+        writer.write_event(Event::End(BytesEnd::new(key)))?;
+        Ok(())
+    }
+
+    /// py `writeDataConstr`.
+    fn write_data_constr<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        id: DataConstrId,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let Some(data_constr) = document.data_constrs.get(id) else {
+            return Ok(());
+        };
+        let mut element = BytesStart::new("DATA-CONSTR");
+        self.write_identifiable_attributes(
+            &mut element,
+            data_constr.get_checksum(),
+            data_constr.get_timestamp(),
+            data_constr.get_uuid(),
+        );
+        writer.write_event(Event::Start(element))?;
+        if let Some(short_name) = data_constr.get_short_name() {
+            write_text_element(
+                writer,
+                "SHORT-NAME",
+                BytesStart::new("SHORT-NAME"),
+                Some(short_name),
+            )?;
+        }
+        self.write_identifiable_parts(
+            writer,
+            IdentifiableParts {
+                long_name: data_constr.get_long_name(),
+                desc: data_constr.get_desc(),
+                category: data_constr.get_category(),
+                introduction: data_constr.get_introduction(),
+                admin_data: data_constr.get_admin_data(),
+                sw_data_def_props: None,
+            },
+            document,
+        )?;
+        // py writeDataConstrRules — wrapper only when non-empty
+        let rules = data_constr.get_data_constr_rule();
+        if !rules.is_empty() {
+            writer.write_event(Event::Start(BytesStart::new("DATA-CONSTR-RULES")))?;
+            for rule_id in rules {
+                if let Some(rule) = document.data_constr_rules.get(*rule_id) {
+                    self.write_data_constr_rule(writer, rule, document)?;
+                }
+            }
+            writer.write_event(Event::End(BytesEnd::new("DATA-CONSTR-RULES")))?;
+        }
+        writer.write_event(Event::End(BytesEnd::new("DATA-CONSTR")))?;
+        Ok(())
+    }
+
+    /// py `writeDataConstrRules` per-rule body — CONSTR-LEVEL, then
+    /// PHYS-CONSTRS, then INTERNAL-CONSTRS (writer order differs from the
+    /// reader's).
+    fn write_data_constr_rule<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        rule: &DataConstrRule,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let mut element = BytesStart::new("DATA-CONSTR-RULE");
+        self.write_ar_object_attributes(&mut element, rule.base());
+        writer.write_event(Event::Start(element))?;
+        write_optional_text_element(writer, "CONSTR-LEVEL", rule.get_constr_level())?;
+        if let Some(constrs) = rule
+            .get_phys_constrs()
+            .and_then(|c| document.phys_constrs.get(c))
+        {
+            self.write_phys_constrs(writer, constrs, document)?;
+        }
+        if let Some(constrs) = rule
+            .get_internal_constrs()
+            .and_then(|c| document.internal_constrs.get(c))
+        {
+            self.write_internal_constrs(writer, constrs, document)?;
+        }
+        writer.write_event(Event::End(BytesEnd::new("DATA-CONSTR-RULE")))?;
+        Ok(())
+    }
+
+    /// py `setInternalConstrs`.
+    fn write_internal_constrs<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        constrs: &InternalConstrs,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let mut element = BytesStart::new("INTERNAL-CONSTRS");
+        self.write_ar_object_attributes(&mut element, constrs.base());
+        writer.write_event(Event::Start(element))?;
+        if let Some(limit) = constrs
+            .get_lower_limit()
+            .and_then(|l| document.limits.get(l))
+        {
+            write_limit_element(writer, "LOWER-LIMIT", limit)?;
+        }
+        if let Some(limit) = constrs
+            .get_upper_limit()
+            .and_then(|l| document.limits.get(l))
+        {
+            write_limit_element(writer, "UPPER-LIMIT", limit)?;
+        }
+        self.write_scale_constrs(
+            writer,
+            "SCALE-CONSTRS",
+            constrs.get_scale_constrs(),
+            document,
+        )?;
+        write_optional_text_element(writer, "MAX-GRADIENT", constrs.get_max_gradient())?;
+        write_optional_text_element(writer, "MAX-DIFF", constrs.get_max_diff())?;
+        if let Some(monotony) = constrs.get_monotony() {
+            write_text_element(
+                writer,
+                "MONOTONY",
+                BytesStart::new("MONOTONY"),
+                Some(monotony.as_str()),
+            )?;
+        }
+        writer.write_event(Event::End(BytesEnd::new("INTERNAL-CONSTRS")))?;
+        Ok(())
+    }
+
+    /// py `setPhysConstrs`.
+    fn write_phys_constrs<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        constrs: &PhysConstrs,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let mut element = BytesStart::new("PHYS-CONSTRS");
+        self.write_ar_object_attributes(&mut element, constrs.base());
+        writer.write_event(Event::Start(element))?;
+        if let Some(limit) = constrs
+            .get_lower_limit()
+            .and_then(|l| document.limits.get(l))
+        {
+            write_limit_element(writer, "LOWER-LIMIT", limit)?;
+        }
+        if let Some(limit) = constrs
+            .get_upper_limit()
+            .and_then(|l| document.limits.get(l))
+        {
+            write_limit_element(writer, "UPPER-LIMIT", limit)?;
+        }
+        self.write_scale_constrs(
+            writer,
+            "SCALE-CONSTRS",
+            constrs.get_scale_constrs(),
+            document,
+        )?;
+        write_optional_text_element(writer, "MAX-GRADIENT", constrs.get_max_gradient())?;
+        write_optional_text_element(writer, "MAX-DIFF", constrs.get_max_diff())?;
+        if let Some(monotony) = constrs.get_monotony() {
+            write_text_element(
+                writer,
+                "MONOTONY",
+                BytesStart::new("MONOTONY"),
+                Some(monotony.as_str()),
+            )?;
+        }
+        write_optional_ref_type(
+            writer,
+            "UNIT-REF",
+            constrs
+                .get_unit_ref()
+                .and_then(|r| document.ref_types.get(r)),
+        )?;
+        writer.write_event(Event::End(BytesEnd::new("PHYS-CONSTRS")))?;
+        Ok(())
+    }
+
+    /// py's SCALE-CONSTRS wrapper + `setScaleConstr` per item.
+    fn write_scale_constrs<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        wrapper: &str,
+        scale_constrs: &[crate::m2::msr::asam_hdo::constraints::global_constraints::ScaleConstrId],
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        if scale_constrs.is_empty() {
+            return Ok(());
+        }
+        writer.write_event(Event::Start(BytesStart::new(wrapper)))?;
+        for sc_id in scale_constrs {
+            if let Some(scale_constr) = document.scale_constrs.get(*sc_id) {
+                let mut element = BytesStart::new("SCALE-CONSTR");
+                self.write_ar_object_attributes(&mut element, scale_constr.base());
+                if let Some(validity) = scale_constr.get_validity() {
+                    element.push_attribute(("VALIDITY", validity.as_str()));
+                }
+                writer.write_event(Event::Start(element))?;
+                write_optional_text_element(writer, "SHORT-LABEL", scale_constr.get_short_label())?;
+                if let Some(desc) = scale_constr
+                    .get_desc()
+                    .and_then(|id| document.multi_language_overview_paragraphs.get(id))
+                {
+                    self.set_multi_language_overview_paragraph(writer, desc, document)?;
+                }
+                if let Some(limit) = scale_constr
+                    .get_lower_limit()
+                    .and_then(|l| document.limits.get(l))
+                {
+                    write_limit_element(writer, "LOWER-LIMIT", limit)?;
+                }
+                if let Some(limit) = scale_constr
+                    .get_upper_limit()
+                    .and_then(|l| document.limits.get(l))
+                {
+                    write_limit_element(writer, "UPPER-LIMIT", limit)?;
+                }
+                writer.write_event(Event::End(BytesEnd::new("SCALE-CONSTR")))?;
+            }
+        }
+        writer.write_event(Event::End(BytesEnd::new(wrapper)))?;
+        Ok(())
+    }
+
+    /// py `writeKeyword` — chain, ABBR-NAME, CLASSIFICATIONS.
+    fn write_keyword<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        keyword: &Keyword,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let mut element = BytesStart::new("KEYWORD");
+        self.write_identifiable_attributes(
+            &mut element,
+            keyword.get_checksum(),
+            keyword.get_timestamp(),
+            keyword.get_uuid(),
+        );
+        writer.write_event(Event::Start(element))?;
+        if let Some(short_name) = keyword.get_short_name() {
+            write_text_element(
+                writer,
+                "SHORT-NAME",
+                BytesStart::new("SHORT-NAME"),
+                Some(short_name),
+            )?;
+        }
+        self.write_identifiable_parts(
+            writer,
+            IdentifiableParts {
+                long_name: keyword.get_long_name(),
+                desc: keyword.get_desc(),
+                category: keyword.get_category(),
+                introduction: keyword.get_introduction(),
+                admin_data: keyword.get_admin_data(),
+                sw_data_def_props: None,
+            },
+            document,
+        )?;
+        write_optional_text_element(writer, "ABBR-NAME", keyword.get_abbr_name())?;
+        let classifications = keyword.get_classifications();
+        if !classifications.is_empty() {
+            writer.write_event(Event::Start(BytesStart::new("CLASSIFICATIONS")))?;
+            for classification in classifications {
+                write_text_element(
+                    writer,
+                    "CLASSIFICATION",
+                    BytesStart::new("CLASSIFICATION"),
+                    Some(classification),
+                )?;
+            }
+            writer.write_event(Event::End(BytesEnd::new("CLASSIFICATIONS")))?;
+        }
+        writer.write_event(Event::End(BytesEnd::new("KEYWORD")))?;
+        Ok(())
+    }
+
+    /// py `writeKeywordSet`.
+    fn write_keyword_set<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        id: KeywordSetId,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let Some(keyword_set) = document.keyword_sets.get(id) else {
+            return Ok(());
+        };
+        let mut element = BytesStart::new("KEYWORD-SET");
+        self.write_identifiable_attributes(
+            &mut element,
+            keyword_set.get_checksum(),
+            keyword_set.get_timestamp(),
+            keyword_set.get_uuid(),
+        );
+        writer.write_event(Event::Start(element))?;
+        if let Some(short_name) = keyword_set.get_short_name() {
+            write_text_element(
+                writer,
+                "SHORT-NAME",
+                BytesStart::new("SHORT-NAME"),
+                Some(short_name),
+            )?;
+        }
+        self.write_identifiable_parts(
+            writer,
+            IdentifiableParts {
+                long_name: keyword_set.get_long_name(),
+                desc: keyword_set.get_desc(),
+                category: keyword_set.get_category(),
+                introduction: keyword_set.get_introduction(),
+                admin_data: keyword_set.get_admin_data(),
+                sw_data_def_props: None,
+            },
+            document,
+        )?;
+        let keywords = keyword_set.get_keywords();
+        if !keywords.is_empty() {
+            writer.write_event(Event::Start(BytesStart::new("KEYWORDS")))?;
+            for keyword_id in keywords {
+                if let Some(keyword) = document.keywords.get(*keyword_id) {
+                    self.write_keyword(writer, keyword, document)?;
+                }
+            }
+            writer.write_event(Event::End(BytesEnd::new("KEYWORDS")))?;
+        }
+        writer.write_event(Event::End(BytesEnd::new("KEYWORD-SET")))?;
+        Ok(())
+    }
+
+    /// py `setSwDataDefProps` — wrapper + VARIANTS + CONDITIONAL; the
+    /// model-backed fields in py's exact emission order.
+    fn set_sw_data_def_props<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        props: &SwDataDefProps,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let mut wrapper = BytesStart::new("SW-DATA-DEF-PROPS");
+        self.write_ar_object_attributes(&mut wrapper, props.base());
+        writer.write_event(Event::Start(wrapper))?;
+        writer.write_event(Event::Start(BytesStart::new("SW-DATA-DEF-PROPS-VARIANTS")))?;
+        let mut conditional = BytesStart::new("SW-DATA-DEF-PROPS-CONDITIONAL");
+        self.write_ar_object_attributes(&mut conditional, props.base());
+        writer.write_event(Event::Start(conditional))?;
+        if let Some(display) = props.get_display_presentation() {
+            write_text_element(
+                writer,
+                "DISPLAY-PRESENTATION",
+                BytesStart::new("DISPLAY-PRESENTATION"),
+                Some(display.as_str()),
+            )?;
+        }
+        write_optional_ref_type(
+            writer,
+            "BASE-TYPE-REF",
+            props
+                .get_base_type_ref()
+                .and_then(|r| document.ref_types.get(r)),
+        )?;
+        write_optional_ref_type(
+            writer,
+            "SW-ADDR-METHOD-REF",
+            props
+                .get_sw_addr_method_ref()
+                .and_then(|r| document.ref_types.get(r)),
+        )?;
+        write_optional_text_element(writer, "SW-ALIGNMENT", props.get_sw_alignment())?;
+        write_optional_text_element(
+            writer,
+            "SW-CALIBRATION-ACCESS",
+            props.get_sw_calibration_access(),
+        )?;
+        write_optional_ref_type(
+            writer,
+            "COMPU-METHOD-REF",
+            props
+                .get_compu_method_ref()
+                .and_then(|r| document.ref_types.get(r)),
+        )?;
+        write_optional_text_element(writer, "STEP-SIZE", props.get_step_size())?;
+        write_optional_ref_type(
+            writer,
+            "DATA-CONSTR-REF",
+            props
+                .get_data_constr_ref()
+                .and_then(|r| document.ref_types.get(r)),
+        )?;
+        write_optional_ref_type(
+            writer,
+            "IMPLEMENTATION-DATA-TYPE-REF",
+            props
+                .get_implementation_data_type_ref()
+                .and_then(|r| document.ref_types.get(r)),
+        )?;
+        write_optional_text_element(
+            writer,
+            "SW-INTENDED-RESOLUTION",
+            props.get_sw_intended_resolution(),
+        )?;
+        write_optional_ref_type(
+            writer,
+            "UNIT-REF",
+            props.get_unit_ref().and_then(|r| document.ref_types.get(r)),
+        )?;
+        write_optional_text_element(writer, "DISPLAY-FORMAT", props.get_display_format())?;
+        writer.write_event(Event::End(BytesEnd::new("SW-DATA-DEF-PROPS-CONDITIONAL")))?;
+        writer.write_event(Event::End(BytesEnd::new("SW-DATA-DEF-PROPS-VARIANTS")))?;
+        writer.write_event(Event::End(BytesEnd::new("SW-DATA-DEF-PROPS")))?;
+        Ok(())
+    }
+
+    /// py `writeAutosarDataType` — the Identifiable chain followed by
+    /// SW-DATA-DEF-PROPS.
+    fn write_autosar_data_type_parts<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        parts: IdentifiableParts<'_>,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let sw_data_def_props = parts.sw_data_def_props;
+        self.write_identifiable_parts(writer, parts, document)?;
+        if let Some(props) = sw_data_def_props.and_then(|id| document.sw_data_def_props.get(id)) {
+            self.set_sw_data_def_props(writer, props, document)?;
+        }
+        Ok(())
+    }
+
+    /// py `writeApplicationPrimitiveDataType`.
+    fn write_application_primitive_data_type<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        id: ApplicationPrimitiveDataTypeId,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let Some(data_type) = document.application_primitive_data_types.get(id) else {
+            return Ok(());
+        };
+        let mut element = BytesStart::new("APPLICATION-PRIMITIVE-DATA-TYPE");
+        self.write_identifiable_attributes(
+            &mut element,
+            data_type.get_checksum(),
+            data_type.get_timestamp(),
+            data_type.get_uuid(),
+        );
+        writer.write_event(Event::Start(element))?;
+        if let Some(short_name) = data_type.get_short_name() {
+            write_text_element(
+                writer,
+                "SHORT-NAME",
+                BytesStart::new("SHORT-NAME"),
+                Some(short_name),
+            )?;
+        }
+        self.write_autosar_data_type_parts(
+            writer,
+            IdentifiableParts {
+                long_name: data_type.get_long_name(),
+                desc: data_type.get_desc(),
+                category: data_type.get_category(),
+                introduction: data_type.get_introduction(),
+                admin_data: data_type.get_admin_data(),
+                sw_data_def_props: data_type.get_sw_data_def_props(),
+            },
+            document,
+        )?;
+        writer.write_event(Event::End(BytesEnd::new("APPLICATION-PRIMITIVE-DATA-TYPE")))?;
+        Ok(())
+    }
+
+    /// py `writeApplicationCompositeElementDataPrototype` — the shared
+    /// prototype body: chain + props + TYPE-TREF.
+    fn write_composite_element_prototype_body<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        short_name: Option<&str>,
+        parts: IdentifiableParts<'_>,
+        type_t_ref: Option<crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::TRefTypeId>,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        if let Some(short_name) = short_name {
+            write_text_element(
+                writer,
+                "SHORT-NAME",
+                BytesStart::new("SHORT-NAME"),
+                Some(short_name),
+            )?;
+        }
+        self.write_autosar_data_type_parts(writer, parts, document)?;
+        write_optional_t_ref_type(
+            writer,
+            "TYPE-TREF",
+            type_t_ref.and_then(|r| document.t_ref_types.get(r)),
+        )?;
+        Ok(())
+    }
+
+    /// py `writeApplicationArrayDataType` (+ setApplicationArrayElement).
+    fn write_application_array_data_type<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        id: ApplicationArrayDataTypeId,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let Some(data_type) = document.application_array_data_types.get(id) else {
+            return Ok(());
+        };
+        let mut element = BytesStart::new("APPLICATION-ARRAY-DATA-TYPE");
+        self.write_identifiable_attributes(
+            &mut element,
+            data_type.get_checksum(),
+            data_type.get_timestamp(),
+            data_type.get_uuid(),
+        );
+        writer.write_event(Event::Start(element))?;
+        if let Some(short_name) = data_type.get_short_name() {
+            write_text_element(
+                writer,
+                "SHORT-NAME",
+                BytesStart::new("SHORT-NAME"),
+                Some(short_name),
+            )?;
+        }
+        self.write_autosar_data_type_parts(
+            writer,
+            IdentifiableParts {
+                long_name: data_type.get_long_name(),
+                desc: data_type.get_desc(),
+                category: data_type.get_category(),
+                introduction: data_type.get_introduction(),
+                admin_data: data_type.get_admin_data(),
+                sw_data_def_props: data_type.get_sw_data_def_props(),
+            },
+            document,
+        )?;
+        write_optional_text_element(
+            writer,
+            "DYNAMIC-ARRAY-SIZE-PROFILE",
+            data_type.get_dynamic_array_size_profile(),
+        )?;
+        if let Some(array_element) = data_type
+            .get_element()
+            .and_then(|e| document.application_array_elements.get(e))
+        {
+            // py setApplicationArrayElement — ELEMENT wrapper.
+            let mut element_wrapper = BytesStart::new("ELEMENT");
+            self.write_identifiable_attributes(
+                &mut element_wrapper,
+                array_element.get_checksum(),
+                array_element.get_timestamp(),
+                array_element.get_uuid(),
+            );
+            writer.write_event(Event::Start(element_wrapper))?;
+            self.write_composite_element_prototype_body(
+                writer,
+                array_element.get_short_name(),
+                IdentifiableParts {
+                    long_name: array_element.get_long_name(),
+                    desc: array_element.get_desc(),
+                    category: array_element.get_category(),
+                    introduction: array_element.get_introduction(),
+                    admin_data: array_element.get_admin_data(),
+                    sw_data_def_props: array_element.get_sw_data_def_props(),
+                },
+                array_element.get_type_t_ref(),
+                document,
+            )?;
+            write_optional_text_element(
+                writer,
+                "ARRAY-SIZE-HANDLING",
+                array_element.get_array_size_handling(),
+            )?;
+            write_optional_text_element(
+                writer,
+                "ARRAY-SIZE-SEMANTICS",
+                array_element.get_array_size_semantics(),
+            )?;
+            write_optional_ref_type(
+                writer,
+                "INDEX-DATA-TYPE-REF",
+                array_element
+                    .get_index_data_type_ref()
+                    .and_then(|r| document.ref_types.get(r)),
+            )?;
+            write_optional_text_element(
+                writer,
+                "MAX-NUMBER-OF-ELEMENTS",
+                array_element.get_max_number_of_elements(),
+            )?;
+            writer.write_event(Event::End(BytesEnd::new("ELEMENT")))?;
+        }
+        writer.write_event(Event::End(BytesEnd::new("APPLICATION-ARRAY-DATA-TYPE")))?;
+        Ok(())
+    }
+
+    /// py `writeApplicationRecordDataType` (+ record ELEMENTS children).
+    fn write_application_record_data_type<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        id: ApplicationRecordDataTypeId,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let Some(data_type) = document.application_record_data_types.get(id) else {
+            return Ok(());
+        };
+        let mut element = BytesStart::new("APPLICATION-RECORD-DATA-TYPE");
+        self.write_identifiable_attributes(
+            &mut element,
+            data_type.get_checksum(),
+            data_type.get_timestamp(),
+            data_type.get_uuid(),
+        );
+        writer.write_event(Event::Start(element))?;
+        if let Some(short_name) = data_type.get_short_name() {
+            write_text_element(
+                writer,
+                "SHORT-NAME",
+                BytesStart::new("SHORT-NAME"),
+                Some(short_name),
+            )?;
+        }
+        self.write_autosar_data_type_parts(
+            writer,
+            IdentifiableParts {
+                long_name: data_type.get_long_name(),
+                desc: data_type.get_desc(),
+                category: data_type.get_category(),
+                introduction: data_type.get_introduction(),
+                admin_data: data_type.get_admin_data(),
+                sw_data_def_props: data_type.get_sw_data_def_props(),
+            },
+            document,
+        )?;
+        let record_elements = data_type.get_record_elements();
+        if !record_elements.is_empty() {
+            writer.write_event(Event::Start(BytesStart::new("ELEMENTS")))?;
+            for record_id in record_elements {
+                if let Some(record_element) = document.application_record_elements.get(*record_id) {
+                    // py writeApplicationRecordElement
+                    let mut record_wrapper = BytesStart::new("APPLICATION-RECORD-ELEMENT");
+                    self.write_identifiable_attributes(
+                        &mut record_wrapper,
+                        record_element.get_checksum(),
+                        record_element.get_timestamp(),
+                        record_element.get_uuid(),
+                    );
+                    writer.write_event(Event::Start(record_wrapper))?;
+                    self.write_composite_element_prototype_body(
+                        writer,
+                        record_element.get_short_name(),
+                        IdentifiableParts {
+                            long_name: record_element.get_long_name(),
+                            desc: record_element.get_desc(),
+                            category: record_element.get_category(),
+                            introduction: record_element.get_introduction(),
+                            admin_data: record_element.get_admin_data(),
+                            sw_data_def_props: record_element.get_sw_data_def_props(),
+                        },
+                        record_element.get_type_t_ref(),
+                        document,
+                    )?;
+                    write_optional_text_element(
+                        writer,
+                        "IS-OPTIONAL",
+                        record_element.get_is_optional(),
+                    )?;
+                    writer.write_event(Event::End(BytesEnd::new("APPLICATION-RECORD-ELEMENT")))?;
+                }
+            }
+            writer.write_event(Event::End(BytesEnd::new("ELEMENTS")))?;
+        }
+        writer.write_event(Event::End(BytesEnd::new("APPLICATION-RECORD-DATA-TYPE")))?;
+        Ok(())
+    }
+
+    /// py `writeImplementationDataType` — chain, array-profile/struct flags,
+    /// TYPE-EMITTER (sub-elements/symbol props deferred: no fixture).
+    fn write_implementation_data_type<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        id: ImplementationDataTypeId,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let Some(data_type) = document.implementation_data_types.get(id) else {
+            return Ok(());
+        };
+        let mut element = BytesStart::new("IMPLEMENTATION-DATA-TYPE");
+        self.write_identifiable_attributes(
+            &mut element,
+            data_type.get_checksum(),
+            data_type.get_timestamp(),
+            data_type.get_uuid(),
+        );
+        writer.write_event(Event::Start(element))?;
+        if let Some(short_name) = data_type.get_short_name() {
+            write_text_element(
+                writer,
+                "SHORT-NAME",
+                BytesStart::new("SHORT-NAME"),
+                Some(short_name),
+            )?;
+        }
+        self.write_autosar_data_type_parts(
+            writer,
+            IdentifiableParts {
+                long_name: data_type.get_long_name(),
+                desc: data_type.get_desc(),
+                category: data_type.get_category(),
+                introduction: data_type.get_introduction(),
+                admin_data: data_type.get_admin_data(),
+                sw_data_def_props: data_type.get_sw_data_def_props(),
+            },
+            document,
+        )?;
+        write_optional_text_element(
+            writer,
+            "DYNAMIC-ARRAY-SIZE-PROFILE",
+            data_type.get_dynamic_array_size_profile(),
+        )?;
+        write_optional_text_element(
+            writer,
+            "IS-STRUCT-WITH-OPTIONAL-ELEMENT",
+            data_type.get_is_struct_with_optional_element(),
+        )?;
+        write_optional_text_element(writer, "TYPE-EMITTER", data_type.get_type_emitter())?;
+        writer.write_event(Event::End(BytesEnd::new("IMPLEMENTATION-DATA-TYPE")))?;
+        Ok(())
+    }
+
     /// py `writeARPackageElement`'s isinstance chain. Grows one arm per
     /// ported family; the wildcard keeps unported families on the P0 shape
     /// (common Identifiable parts only).
@@ -622,6 +1625,27 @@ impl ARXMLWriter {
         document: &Document,
     ) -> Result<(), WriteError> {
         match element_ref {
+            ElementRef::CompuMethod(id) => {
+                return self.write_compu_method(writer, id, document);
+            }
+            ElementRef::DataConstr(id) => {
+                return self.write_data_constr(writer, id, document);
+            }
+            ElementRef::KeywordSet(id) => {
+                return self.write_keyword_set(writer, id, document);
+            }
+            ElementRef::ApplicationPrimitiveDataType(id) => {
+                return self.write_application_primitive_data_type(writer, id, document);
+            }
+            ElementRef::ApplicationArrayDataType(id) => {
+                return self.write_application_array_data_type(writer, id, document);
+            }
+            ElementRef::ApplicationRecordDataType(id) => {
+                return self.write_application_record_data_type(writer, id, document);
+            }
+            ElementRef::ImplementationDataType(id) => {
+                return self.write_implementation_data_type(writer, id, document);
+            }
             ElementRef::SwBaseType(id) => return self.write_sw_base_type(writer, id, document),
             ElementRef::Collection(id) => return self.write_collection(writer, id, document),
             ElementRef::LifeCycleInfoSet(id) => {
@@ -690,6 +1714,7 @@ impl ARXMLWriter {
                 category: sw_base_type.get_category(),
                 introduction: sw_base_type.get_introduction(),
                 admin_data: sw_base_type.get_admin_data(),
+                sw_data_def_props: None,
             },
             document,
         )?;
@@ -755,6 +1780,7 @@ impl ARXMLWriter {
                 category: collection.get_category(),
                 introduction: collection.get_introduction(),
                 admin_data: collection.get_admin_data(),
+                sw_data_def_props: None,
             },
             document,
         )?;
@@ -904,6 +1930,7 @@ impl ARXMLWriter {
                 category: info_set.get_category(),
                 introduction: info_set.get_introduction(),
                 admin_data: info_set.get_admin_data(),
+                sw_data_def_props: None,
             },
             document,
         )?;
@@ -982,6 +2009,7 @@ impl ARXMLWriter {
                 category: dimension.get_category(),
                 introduction: dimension.get_introduction(),
                 admin_data: dimension.get_admin_data(),
+                sw_data_def_props: None,
             },
             document,
         )?;
@@ -1038,6 +2066,7 @@ impl ARXMLWriter {
                 category: unit.get_category(),
                 introduction: unit.get_introduction(),
                 admin_data: unit.get_admin_data(),
+                sw_data_def_props: None,
             },
             document,
         )?;

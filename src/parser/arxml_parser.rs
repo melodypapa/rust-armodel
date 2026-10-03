@@ -8,6 +8,9 @@ use std::path::Path;
 use quick_xml::reader::Reader;
 
 use crate::m2::autosar_templates::autosar_top_level_structure::Document;
+use crate::m2::autosar_templates::common_structure::standardization_template::keyword::{
+    Keyword, KeywordId, KeywordSetId,
+};
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::{
     ARObject, ElementRef,
 };
@@ -18,7 +21,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::e
     AutoCollectEnum, CollectionId,
 };
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::{
-    ByteOrderEnum, RefTypeId,
+    ByteOrderEnum, Limit, LimitId, MonotonyEnum, RefTypeId,
 };
 use crate::m2::autosar_templates::generic_structure::life_cycles::{
     LifeCycleInfo, LifeCycleInfoId, LifeCycleInfoSetId, LifeCyclePeriod, LifeCyclePeriodId,
@@ -28,7 +31,27 @@ use crate::m2::element_registry::{
     element_set_uuid,
 };
 use crate::m2::msr::asam_hdo::admin_data::{AdminData, AdminDataId};
+use crate::m2::autosar_templates::sw_component_template::datatype::data_prototypes::{
+    ApplicationArrayElement, ApplicationRecordElement,
+};
+use crate::m2::autosar_templates::sw_component_template::datatype::datatypes::{
+    ApplicationArrayDataTypeId, ApplicationPrimitiveDataTypeId, ApplicationRecordDataTypeId,
+};
+use crate::m2::autosar_templates::common_structure::implementation_data_types::ImplementationDataTypeId;
 use crate::m2::msr::asam_hdo::base_types::{BaseTypeDirectDefinition, SwBaseTypeId};
+use crate::m2::msr::data_dictionary::data_def_properties::{
+    DisplayPresentationEnum, SwDataDefProps, SwDataDefPropsId,
+};
+use crate::m2::msr::asam_hdo::constraints::global_constraints::{
+    DataConstrId, InternalConstrs, PhysConstrs, ScaleConstr,
+    ScaleConstrValidityEnum,
+};
+use crate::m2::msr::asam_hdo::computation_method::{
+    Compu, CompuConst, CompuConstContentRef, CompuConstFormulaContent, CompuConstId,
+    CompuConstNumericContent, CompuConstTextContent, CompuContentRef, CompuId, CompuMethodId,
+    CompuNominatorDenominator, CompuRationalCoeffs, CompuScale, CompuScales,
+    CompuScaleConstantContents, CompuScaleContentsRef, CompuScaleId, CompuScaleRationalFormula,
+};
 use crate::m2::msr::asam_hdo::special_data::{Sd, Sdf, Sdg, SdgCaption, SdgContents, SdgId};
 use crate::m2::msr::asam_hdo::units::{PhysicalDimensionId, SingleLanguageUnitNames, UnitId};
 use crate::m2::msr::documentation::block_elements::list_elements::{ARList, Item, ListEnum};
@@ -46,9 +69,17 @@ use crate::m2::msr::documentation::text_model::multilanguage_data::{
     MultiLanguagePlainText, MultilanguageLongName, MultilanguageLongNameId,
 };
 use crate::parser::abstract_arxml_parser::{
-    build_dom_from_reader, find, find_all, get_child_element_optional_boolean,
-    get_child_element_optional_ref_type, get_child_element_ref_type_list, get_child_element_string,
-    get_short_name, Node, ParseError,
+    Node,
+    ParseError,
+    build_dom_from_reader,
+    find,
+    find_all,
+    get_child_element_optional_boolean,
+    get_child_element_optional_ref_type,
+    get_child_element_optional_t_ref_type,
+    get_child_element_ref_type_list,
+    get_child_element_string,
+    get_short_name,
 };
 
 /// The `Identifiable`-owned XML payload read by `read_identifiable_payload`
@@ -646,7 +677,8 @@ impl ARXMLParser {
             let mut list = ARList::new();
             self.read_paginateable(list_node, list.base_mut())?;
             if let Some(type_attr) = list_node.attrs.get("TYPE") {
-                match ListEnum::try_from(type_attr.as_str()) {
+                // py: ListEnum().setValue(value.lower()); the writer uppercases
+                match ListEnum::try_from(type_attr.to_lowercase().as_str()) {
                     Ok(value) => {
                         list.set_type(value);
                     }
@@ -731,6 +763,21 @@ impl ARXMLParser {
         document: &mut Document,
     ) -> Result<(), ParseError> {
         match element_ref {
+            ElementRef::CompuMethod(id) => self.read_compu_method(element, id, document),
+            ElementRef::DataConstr(id) => self.read_data_constr(element, id, document),
+            ElementRef::KeywordSet(id) => self.read_keyword_set(element, id, document),
+            ElementRef::ApplicationPrimitiveDataType(id) => {
+                self.read_application_primitive_data_type(element, id, document)
+            }
+            ElementRef::ApplicationArrayDataType(id) => {
+                self.read_application_array_data_type(element, id, document)
+            }
+            ElementRef::ApplicationRecordDataType(id) => {
+                self.read_application_record_data_type(element, id, document)
+            }
+            ElementRef::ImplementationDataType(id) => {
+                self.read_implementation_data_type(element, id, document)
+            }
             ElementRef::SwBaseType(id) => self.read_sw_base_type(element, id, document),
             ElementRef::Collection(id) => self.read_collection(element, id, document),
             ElementRef::LifeCycleInfoSet(id) => {
@@ -743,6 +790,814 @@ impl ARXMLParser {
             // Remaining families land in later P2 batches.
             _ => Ok(()),
         }
+    }
+
+    /// py `getCompuConstContent` — the first child element dispatches
+    /// VT/V/VF into the concrete content class.
+    fn get_compu_const_content(
+        &mut self,
+        element: &Node,
+        document: &mut Document,
+    ) -> Result<Option<CompuConstContentRef>, ParseError> {
+        let Some(child) = find(element, "*") else {
+            return Ok(None);
+        };
+        match child.name.as_str() {
+            "VT" => {
+                let mut content = CompuConstTextContent::new();
+                if let Some(vt) = get_child_element_string(element, "VT") {
+                    content.set_vt(vt);
+                }
+                let id = document.compu_const_text_contents.insert(content);
+                Ok(Some(CompuConstContentRef::CompuConstTextContent(id)))
+            }
+            "V" => {
+                let mut content = CompuConstNumericContent::new();
+                if let Some(v) = get_child_element_string(element, "V") {
+                    content.set_v(v);
+                }
+                let id = document.compu_const_numeric_contents.insert(content);
+                Ok(Some(CompuConstContentRef::CompuConstNumericContent(id)))
+            }
+            "VF" => {
+                let mut content = CompuConstFormulaContent::new();
+                if let Some(vf) = get_child_element_string(element, "VF") {
+                    content.set_vf(vf);
+                }
+                let id = document.compu_const_formula_contents.insert(content);
+                Ok(Some(CompuConstContentRef::CompuConstFormulaContent(id)))
+            }
+            other => {
+                let message = format!("Unsupported CompuConstContent <{other}>");
+                self.not_implemented(message)?;
+                Ok(None)
+            }
+        }
+    }
+
+    /// py `getCompuConst` — a keyed `<COMPU-…>` wrapper carrying content.
+    fn get_compu_const(
+        &mut self,
+        element: &Node,
+        key: &str,
+        document: &mut Document,
+    ) -> Result<Option<CompuConstId>, ParseError> {
+        let Some(child) = find(element, key) else {
+            return Ok(None);
+        };
+        let mut compu_const = CompuConst::new();
+        self.read_ar_object(child, compu_const.base_mut());
+        if let Some(content) = self.get_compu_const_content(child, document)? {
+            compu_const.set_compu_const_content_type(content);
+        }
+        Ok(Some(document.compu_consts.insert(compu_const)))
+    }
+
+    /// py `readCompuScale`.
+    fn read_compu_scale(
+        &mut self,
+        element: &Node,
+        document: &mut Document,
+    ) -> Result<CompuScaleId, ParseError> {
+        let mut scale = CompuScale::new();
+        self.read_ar_object(element, scale.base_mut());
+        if let Some(text) = get_child_element_string(element, "A2L-DISPLAY-TEXT") {
+            scale.set_a2l_display_text(text);
+        }
+        if let Some(inverse) = self.get_compu_const(element, "COMPU-INVERSE-VALUE", document)? {
+            scale.set_compu_inverse_value(inverse);
+        }
+        if let Some(text) = get_child_element_string(element, "SHORT-LABEL") {
+            scale.set_short_label(text);
+        }
+        if let Some(text) = get_child_element_string(element, "SYMBOL") {
+            scale.set_symbol(text);
+        }
+        if let Some(desc) = self.get_multi_language_overview_paragraph(element, document)? {
+            scale.set_desc(desc);
+        }
+        if let Some(mask) = get_child_element_string(element, "MASK") {
+            scale.set_mask(mask);
+        }
+        if let Some(limit) = self.get_child_limit_element(element, "LOWER-LIMIT", document)? {
+            scale.set_lower_limit(limit);
+        }
+        if let Some(limit) = self.get_child_limit_element(element, "UPPER-LIMIT", document)? {
+            scale.set_upper_limit(limit);
+        }
+        // py readCompuScaleContents — constant (COMPU-CONST/VT) or rational
+        // (COMPU-RATIONAL-COEFFS) contents.
+        if find(element, "COMPU-CONST/VT").is_some() {
+            let vt = get_child_element_string(element, "COMPU-CONST/VT").unwrap_or("");
+            let mut text_content = CompuConstTextContent::new();
+            text_content.set_vt(vt);
+            let vt_id = document.compu_const_text_contents.insert(text_content);
+            let mut const_ = CompuConst::new();
+            const_.set_compu_const_content_type(CompuConstContentRef::CompuConstTextContent(vt_id));
+            let const_id = document.compu_consts.insert(const_);
+            let mut constant = CompuScaleConstantContents::new();
+            constant.set_compu_const(const_id);
+            let content_id = document.compu_scale_constant_contents.insert(constant);
+            scale.set_compu_scale_contents(CompuScaleContentsRef::CompuScaleConstantContents(
+                content_id,
+            ));
+        } else if find(element, "COMPU-RATIONAL-COEFFS").is_some() {
+            // py readCompuNominatorDenominator — V children in document order.
+            let coeffs_node = find(element, "COMPU-RATIONAL-COEFFS").expect("checked above");
+            let numerator = {
+                let mut nom_denom = CompuNominatorDenominator::new();
+                for v_node in find_all(coeffs_node, "COMPU-NUMERATOR/V") {
+                    if let Some(text) = &v_node.text {
+                        nom_denom.push_v(text.as_str().to_string());
+                    }
+                }
+                document.compu_nominator_denominators.insert(nom_denom)
+            };
+            let denominator = {
+                let mut nom_denom = CompuNominatorDenominator::new();
+                for v_node in find_all(coeffs_node, "COMPU-DENOMINATOR/V") {
+                    if let Some(text) = &v_node.text {
+                        nom_denom.push_v(text.as_str().to_string());
+                    }
+                }
+                document.compu_nominator_denominators.insert(nom_denom)
+            };
+            let mut coeffs = CompuRationalCoeffs::new();
+            coeffs.set_compu_numerator(numerator);
+            coeffs.set_compu_denominator(denominator);
+            let coeffs_id = document.compu_rational_coeffs.insert(coeffs);
+            let mut formula = CompuScaleRationalFormula::new();
+            formula.set_compu_rational_coeffs(coeffs_id);
+            let content_id = document.compu_scale_rational_formulas.insert(formula);
+            scale.set_compu_scale_contents(CompuScaleContentsRef::CompuScaleRationalFormula(
+                content_id,
+            ));
+        }
+        Ok(document.compu_scales.insert(scale))
+    }
+
+    /// py `getCompuScales` — the COMPU-SCALES wrapper and its scales.
+    fn get_compu_scales(
+        &mut self,
+        element: &Node,
+        document: &mut Document,
+    ) -> Result<Option<CompuContentRef>, ParseError> {
+        let Some(scales_node) = find(element, "COMPU-SCALES") else {
+            return Ok(None);
+        };
+        let mut scales = CompuScales::new();
+        if let Some(checksum) = scales_node.attrs.get("S") {
+            scales.set_checksum(checksum.as_str());
+        }
+        if let Some(timestamp) = scales_node.attrs.get("T") {
+            scales.set_timestamp(timestamp.as_str());
+        }
+        for scale_node in find_all(scales_node, "COMPU-SCALE") {
+            let scale_id = self.read_compu_scale(scale_node, document)?;
+            scales.push_compu_scale(scale_id);
+        }
+        let id = document.compu_scales_arena.insert(scales);
+        Ok(Some(CompuContentRef::CompuScales(id)))
+    }
+
+    /// py `getCompu` — a keyed `<COMPU-…>` wrapper: scales + default value.
+    fn get_compu(
+        &mut self,
+        element: &Node,
+        key: &str,
+        document: &mut Document,
+    ) -> Result<Option<CompuId>, ParseError> {
+        let Some(child) = find(element, key) else {
+            return Ok(None);
+        };
+        let mut compu = Compu::new();
+        self.read_ar_object(child, compu.base_mut());
+        if let Some(content) = self.get_compu_scales(child, document)? {
+            compu.set_compu_content(content);
+        }
+        if let Some(default) = self.get_compu_const(child, "COMPU-DEFAULT-VALUE", document)? {
+            compu.set_compu_default_value(default);
+        }
+        Ok(Some(document.compus.insert(compu)))
+    }
+
+    /// py `readCompuMethod` — Identifiable chain + the compu payload.
+    fn read_compu_method(
+        &mut self,
+        element: &Node,
+        id: CompuMethodId,
+        document: &mut Document,
+    ) -> Result<(), ParseError> {
+        let payload = self.read_identifiable_payload(element, document)?;
+        let display_format =
+            get_child_element_string(element, "DISPLAY-FORMAT").map(str::to_string);
+        let unit_ref = get_child_element_optional_ref_type(element, "UNIT-REF");
+        let internal = self.get_compu(element, "COMPU-INTERNAL-TO-PHYS", document)?;
+        let phys = self.get_compu(element, "COMPU-PHYS-TO-INTERNAL", document)?;
+        if let Some(compu_method) = document.compu_methods.get_mut(id) {
+            if let Some(long_name) = payload.long_name {
+                compu_method.set_long_name(long_name);
+            }
+            if let Some(desc) = payload.desc {
+                compu_method.set_desc(desc);
+            }
+            if let Some(introduction) = payload.introduction {
+                compu_method.set_introduction(introduction);
+            }
+            if let Some(admin_data) = payload.admin_data {
+                compu_method.set_admin_data(admin_data);
+            }
+            if let Some(display_format) = display_format {
+                compu_method.set_display_format(display_format);
+            }
+            if let Some(unit_ref) = unit_ref {
+                let unit_ref_id = document.ref_types.insert(unit_ref);
+                compu_method.set_unit_ref(unit_ref_id);
+            }
+            if let Some(internal) = internal {
+                compu_method.set_compu_internal_to_phys(internal);
+            }
+            if let Some(phys) = phys {
+                compu_method.set_compu_phys_to_internal(phys);
+            }
+        }
+        Ok(())
+    }
+
+    /// py `readScaleConstr`.
+    fn read_scale_constr(
+        &mut self,
+        element: &Node,
+        document: &mut Document,
+    ) -> Result<crate::m2::msr::asam_hdo::constraints::global_constraints::ScaleConstrId, ParseError>
+    {
+        let mut scale_constr = ScaleConstr::new();
+        self.read_ar_object(element, scale_constr.base_mut());
+        if let Some(desc) = self.get_multi_language_overview_paragraph(element, document)? {
+            scale_constr.set_desc(desc);
+        }
+        if let Some(limit) = self.get_child_limit_element(element, "LOWER-LIMIT", document)? {
+            scale_constr.set_lower_limit(limit);
+        }
+        if let Some(label) = get_child_element_string(element, "SHORT-LABEL") {
+            scale_constr.set_short_label(label);
+        }
+        if let Some(limit) = self.get_child_limit_element(element, "UPPER-LIMIT", document)? {
+            scale_constr.set_upper_limit(limit);
+        }
+        if let Some(validity) = element.attrs.get("VALIDITY") {
+            match ScaleConstrValidityEnum::try_from(validity.as_str()) {
+                Ok(value) => {
+                    scale_constr.set_validity(value);
+                }
+                Err(_) => {
+                    let message = format!("Unsupported VALIDITY <{validity}>");
+                    self.not_implemented(message)?;
+                }
+            }
+        }
+        Ok(document.scale_constrs.insert(scale_constr))
+    }
+
+    /// py `readDataConstr` — Identifiable chain + DATA-CONSTR-RULES.
+    fn read_data_constr(
+        &mut self,
+        element: &Node,
+        id: DataConstrId,
+        document: &mut Document,
+    ) -> Result<(), ParseError> {
+        let payload = self.read_identifiable_payload(element, document)?;
+        // py readDataConstrRule
+        let mut rules = Vec::new();
+        for rule_node in find_all(element, "DATA-CONSTR-RULES/DATA-CONSTR-RULE") {
+            let mut rule =
+                crate::m2::msr::asam_hdo::constraints::global_constraints::DataConstrRule::new();
+            self.read_ar_object(rule_node, rule.base_mut());
+            if let Some(level) = get_child_element_string(rule_node, "CONSTR-LEVEL") {
+                rule.set_constr_level(level);
+            }
+            // py readInternalConstrs
+            if let Some(constrs_node) = find(rule_node, "INTERNAL-CONSTRS") {
+                let mut constrs = InternalConstrs::new();
+                self.read_ar_object(constrs_node, constrs.base_mut());
+                if let Some(limit) =
+                    self.get_child_limit_element(constrs_node, "LOWER-LIMIT", document)?
+                {
+                    constrs.set_lower_limit(limit);
+                }
+                if let Some(limit) =
+                    self.get_child_limit_element(constrs_node, "UPPER-LIMIT", document)?
+                {
+                    constrs.set_upper_limit(limit);
+                }
+                for sc in find_all(constrs_node, "SCALE-CONSTRS/SCALE-CONSTR") {
+                    let sc_id = self.read_scale_constr(sc, document)?;
+                    constrs.push_scale_constr(sc_id);
+                }
+                if let Some(text) = get_child_element_string(constrs_node, "MAX-GRADIENT") {
+                    constrs.set_max_gradient(text);
+                }
+                if let Some(text) = get_child_element_string(constrs_node, "MAX-DIFF") {
+                    constrs.set_max_diff(text);
+                }
+                if let Some(text) = get_child_element_string(constrs_node, "MONOTONY") {
+                    match MonotonyEnum::try_from(text) {
+                        Ok(value) => {
+                            constrs.set_monotony(value);
+                        }
+                        Err(_) => {
+                            let message = format!("Unsupported MONOTONY <{text}>");
+                            self.not_implemented(message)?;
+                        }
+                    }
+                }
+                let constrs_id = document.internal_constrs.insert(constrs);
+                rule.set_internal_constrs(constrs_id);
+            }
+            // py readPhysConstrs
+            if let Some(constrs_node) = find(rule_node, "PHYS-CONSTRS") {
+                let mut constrs = PhysConstrs::new();
+                self.read_ar_object(constrs_node, constrs.base_mut());
+                if let Some(limit) =
+                    self.get_child_limit_element(constrs_node, "LOWER-LIMIT", document)?
+                {
+                    constrs.set_lower_limit(limit);
+                }
+                if let Some(limit) =
+                    self.get_child_limit_element(constrs_node, "UPPER-LIMIT", document)?
+                {
+                    constrs.set_upper_limit(limit);
+                }
+                if let Some(text) = get_child_element_string(constrs_node, "MAX-DIFF") {
+                    constrs.set_max_diff(text);
+                }
+                if let Some(text) = get_child_element_string(constrs_node, "MAX-GRADIENT") {
+                    constrs.set_max_gradient(text);
+                }
+                if let Some(text) = get_child_element_string(constrs_node, "MONOTONY") {
+                    match MonotonyEnum::try_from(text) {
+                        Ok(value) => {
+                            constrs.set_monotony(value);
+                        }
+                        Err(_) => {
+                            let message = format!("Unsupported MONOTONY <{text}>");
+                            self.not_implemented(message)?;
+                        }
+                    }
+                }
+                for sc in find_all(constrs_node, "SCALE-CONSTRS/SCALE-CONSTR") {
+                    let sc_id = self.read_scale_constr(sc, document)?;
+                    constrs.push_scale_constr(sc_id);
+                }
+                if let Some(unit_ref) =
+                    get_child_element_optional_ref_type(constrs_node, "UNIT-REF")
+                {
+                    let unit_ref_id = document.ref_types.insert(unit_ref);
+                    constrs.set_unit_ref(unit_ref_id);
+                }
+                let constrs_id = document.phys_constrs.insert(constrs);
+                rule.set_phys_constrs(constrs_id);
+            }
+            rules.push(rule);
+        }
+        if let Some(data_constr) = document.data_constrs.get_mut(id) {
+            if let Some(long_name) = payload.long_name {
+                data_constr.set_long_name(long_name);
+            }
+            if let Some(desc) = payload.desc {
+                data_constr.set_desc(desc);
+            }
+            if let Some(introduction) = payload.introduction {
+                data_constr.set_introduction(introduction);
+            }
+            if let Some(admin_data) = payload.admin_data {
+                data_constr.set_admin_data(admin_data);
+            }
+            for rule in rules {
+                let rule_id = document.data_constr_rules.insert(rule);
+                data_constr.push_data_constr_rule(rule_id);
+            }
+        }
+        Ok(())
+    }
+
+    /// py `readKeyword` — payload + ABBR-NAME + CLASSIFICATIONS texts.
+    fn read_keyword(
+        &mut self,
+        element: &Node,
+        document: &mut Document,
+    ) -> Result<KeywordId, ParseError> {
+        let payload = self.read_identifiable_payload(element, document)?;
+        let abbr_name = get_child_element_string(element, "ABBR-NAME").map(str::to_string);
+        // py readKeywordClassifications
+        let mut classifications = Vec::new();
+        for class_node in find_all(element, "CLASSIFICATIONS/CLASSIFICATION") {
+            if let Some(text) = &class_node.text {
+                classifications.push(text.as_str().to_string());
+            }
+        }
+        let short_name = get_short_name(element)?;
+        let mut keyword = Keyword::new();
+        keyword.set_short_name(short_name);
+        if let Some(checksum) = element.attrs.get("S") {
+            keyword.set_checksum(checksum.as_str());
+        }
+        if let Some(timestamp) = element.attrs.get("T") {
+            keyword.set_timestamp(timestamp.as_str());
+        }
+        if let Some(uuid) = element.attrs.get("UUID") {
+            keyword.set_uuid(uuid);
+        }
+        if let Some(category) = get_child_element_string(element, "CATEGORY") {
+            keyword.set_category(category);
+        }
+        if let Some(long_name) = payload.long_name {
+            keyword.set_long_name(long_name);
+        }
+        if let Some(desc) = payload.desc {
+            keyword.set_desc(desc);
+        }
+        if let Some(introduction) = payload.introduction {
+            keyword.set_introduction(introduction);
+        }
+        if let Some(admin_data) = payload.admin_data {
+            keyword.set_admin_data(admin_data);
+        }
+        if let Some(abbr_name) = abbr_name {
+            keyword.set_abbr_name(abbr_name);
+        }
+        for classification in classifications {
+            keyword.push_classification(classification);
+        }
+        Ok(document.keywords.insert(keyword))
+    }
+
+    /// py `readKeywordSet` — Identifiable chain + KEYWORDS children.
+    fn read_keyword_set(
+        &mut self,
+        element: &Node,
+        id: KeywordSetId,
+        document: &mut Document,
+    ) -> Result<(), ParseError> {
+        let payload = self.read_identifiable_payload(element, document)?;
+        let mut keywords = Vec::new();
+        for keyword_node in find_all(element, "KEYWORDS/KEYWORD") {
+            keywords.push(self.read_keyword(keyword_node, document)?);
+        }
+        if let Some(keyword_set) = document.keyword_sets.get_mut(id) {
+            if let Some(long_name) = payload.long_name {
+                keyword_set.set_long_name(long_name);
+            }
+            if let Some(desc) = payload.desc {
+                keyword_set.set_desc(desc);
+            }
+            if let Some(introduction) = payload.introduction {
+                keyword_set.set_introduction(introduction);
+            }
+            if let Some(admin_data) = payload.admin_data {
+                keyword_set.set_admin_data(admin_data);
+            }
+            for keyword in keywords {
+                keyword_set.push_keyword(keyword);
+            }
+        }
+        Ok(())
+    }
+
+    /// py `getSwDataDefProps` — the VARIANTS/CONDITIONAL walk. py's model
+    /// stores the conditional inline (no wrapper class); the Rust side does
+    /// the same. Only the model-backed fields py reads unconditionally are
+    /// ported; absent fixtures never trigger the rest.
+    fn get_sw_data_def_props(
+        &mut self,
+        element: &Node,
+        key: &str,
+        document: &mut Document,
+    ) -> Result<Option<SwDataDefPropsId>, ParseError> {
+        let Some(child) = find(element, key) else {
+            return Ok(None);
+        };
+        let conditional = find(
+            child,
+            "SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL",
+        );
+        let mut read_props = |document: &mut Document,
+                              source: &Node|
+         -> Result<SwDataDefPropsId, ParseError> {
+            let mut props = SwDataDefProps::new();
+            if let Some(checksum) = source.attrs.get("S") {
+                props.set_checksum(checksum.as_str());
+            }
+            if let Some(timestamp) = source.attrs.get("T") {
+                props.set_timestamp(timestamp.as_str());
+            }
+            if let Some(text) = get_child_element_string(source, "DISPLAY-PRESENTATION") {
+                match DisplayPresentationEnum::try_from(text) {
+                    Ok(value) => {
+                        props.set_display_presentation(value);
+                    }
+                    Err(_) => {
+                        let message = format!("Unsupported DISPLAY-PRESENTATION <{text}>");
+                        self.not_implemented(message)?;
+                    }
+                }
+            }
+            if let Some(r#ref) = get_child_element_optional_ref_type(source, "BASE-TYPE-REF") {
+                let id = document.ref_types.insert(r#ref);
+                props.set_base_type_ref(id);
+            }
+            if let Some(r#ref) = get_child_element_optional_ref_type(source, "SW-ADDR-METHOD-REF") {
+                let id = document.ref_types.insert(r#ref);
+                props.set_sw_addr_method_ref(id);
+            }
+            if let Some(text) = get_child_element_string(source, "SW-ALIGNMENT") {
+                props.set_sw_alignment(text);
+            }
+            if let Some(text) = get_child_element_string(source, "SW-CALIBRATION-ACCESS") {
+                props.set_sw_calibration_access(text);
+            }
+            if let Some(r#ref) = get_child_element_optional_ref_type(source, "COMPU-METHOD-REF") {
+                let id = document.ref_types.insert(r#ref);
+                props.set_compu_method_ref(id);
+            }
+            if let Some(text) = get_child_element_string(source, "STEP-SIZE") {
+                props.set_step_size(text);
+            }
+            if let Some(r#ref) = get_child_element_optional_ref_type(source, "DATA-CONSTR-REF") {
+                let id = document.ref_types.insert(r#ref);
+                props.set_data_constr_ref(id);
+            }
+            if let Some(r#ref) =
+                get_child_element_optional_ref_type(source, "IMPLEMENTATION-DATA-TYPE-REF")
+            {
+                let id = document.ref_types.insert(r#ref);
+                props.set_implementation_data_type_ref(id);
+            }
+            if let Some(text) = get_child_element_string(source, "SW-INTENDED-RESOLUTION") {
+                props.set_sw_intended_resolution(text);
+            }
+            if let Some(r#ref) = get_child_element_optional_ref_type(source, "UNIT-REF") {
+                let id = document.ref_types.insert(r#ref);
+                props.set_unit_ref(id);
+            }
+            if let Some(text) = get_child_element_string(source, "DISPLAY-FORMAT") {
+                props.set_display_format(text);
+            }
+            Ok(document.sw_data_def_props.insert(props))
+        };
+        match conditional {
+            Some(conditional_node) => {
+                let id = read_props(document, conditional_node)?;
+                Ok(Some(id))
+            }
+            None => {
+                // py keeps the props even without the conditional wrapper
+                let id = read_props(document, child)?;
+                Ok(Some(id))
+            }
+        }
+    }
+
+    /// py `readApplicationPrimitiveDataType`.
+    fn read_application_primitive_data_type(
+        &mut self,
+        element: &Node,
+        id: ApplicationPrimitiveDataTypeId,
+        document: &mut Document,
+    ) -> Result<(), ParseError> {
+        let payload = self.read_identifiable_payload(element, document)?;
+        let props = self.get_sw_data_def_props(element, "SW-DATA-DEF-PROPS", document)?;
+        if let Some(data_type) = document.application_primitive_data_types.get_mut(id) {
+            if let Some(long_name) = payload.long_name {
+                data_type.set_long_name(long_name);
+            }
+            if let Some(desc) = payload.desc {
+                data_type.set_desc(desc);
+            }
+            if let Some(introduction) = payload.introduction {
+                data_type.set_introduction(introduction);
+            }
+            if let Some(admin_data) = payload.admin_data {
+                data_type.set_admin_data(admin_data);
+            }
+            if let Some(props) = props {
+                data_type.set_sw_data_def_props(props);
+            }
+        }
+        Ok(())
+    }
+
+    /// py `readApplicationArrayDataType` (+ readApplicationArrayElement).
+    fn read_application_array_data_type(
+        &mut self,
+        element: &Node,
+        id: ApplicationArrayDataTypeId,
+        document: &mut Document,
+    ) -> Result<(), ParseError> {
+        let payload = self.read_identifiable_payload(element, document)?;
+        let props = self.get_sw_data_def_props(element, "SW-DATA-DEF-PROPS", document)?;
+        let dynamic_profile =
+            get_child_element_string(element, "DYNAMIC-ARRAY-SIZE-PROFILE").map(str::to_string);
+        // py readApplicationArrayElement — the ELEMENT child.
+        let array_element = match find(element, "ELEMENT") {
+            Some(element_node) => {
+                let short_name = get_short_name(element_node)?;
+                let element_id = document
+                    .application_array_elements
+                    .insert(ApplicationArrayElement::new());
+                let element_payload = self.read_identifiable_payload(element_node, document)?;
+                let props =
+                    self.get_sw_data_def_props(element_node, "SW-DATA-DEF-PROPS", document)?;
+                let type_t_ref = get_child_element_optional_t_ref_type(element_node, "TYPE-TREF");
+                let handling = get_child_element_string(element_node, "ARRAY-SIZE-HANDLING")
+                    .map(str::to_string);
+                let semantics = get_child_element_string(element_node, "ARRAY-SIZE-SEMANTICS")
+                    .map(str::to_string);
+                let index_ref =
+                    get_child_element_optional_ref_type(element_node, "INDEX-DATA-TYPE-REF");
+                let max_elements = get_child_element_string(element_node, "MAX-NUMBER-OF-ELEMENTS")
+                    .map(str::to_string);
+                if let Some(array_element) = document.application_array_elements.get_mut(element_id)
+                {
+                    array_element.set_short_name(short_name);
+                    if let Some(long_name) = element_payload.long_name {
+                        array_element.set_long_name(long_name);
+                    }
+                    if let Some(desc) = element_payload.desc {
+                        array_element.set_desc(desc);
+                    }
+                    if let Some(introduction) = element_payload.introduction {
+                        array_element.set_introduction(introduction);
+                    }
+                    if let Some(admin_data) = element_payload.admin_data {
+                        array_element.set_admin_data(admin_data);
+                    }
+                    if let Some(props) = props {
+                        array_element.set_sw_data_def_props(props);
+                    }
+                    if let Some(type_t_ref) = type_t_ref {
+                        let type_t_ref_id = document.t_ref_types.insert(type_t_ref);
+                        array_element.set_type_t_ref(type_t_ref_id);
+                    }
+                    if let Some(handling) = handling {
+                        array_element.set_array_size_handling(handling);
+                    }
+                    if let Some(semantics) = semantics {
+                        array_element.set_array_size_semantics(semantics);
+                    }
+                    if let Some(index_ref) = index_ref {
+                        let id = document.ref_types.insert(index_ref);
+                        array_element.set_index_data_type_ref(id);
+                    }
+                    if let Some(max_elements) = max_elements {
+                        array_element.set_max_number_of_elements(max_elements);
+                    }
+                }
+                Some(element_id)
+            }
+            None => None,
+        };
+        if let Some(data_type) = document.application_array_data_types.get_mut(id) {
+            if let Some(long_name) = payload.long_name {
+                data_type.set_long_name(long_name);
+            }
+            if let Some(desc) = payload.desc {
+                data_type.set_desc(desc);
+            }
+            if let Some(introduction) = payload.introduction {
+                data_type.set_introduction(introduction);
+            }
+            if let Some(admin_data) = payload.admin_data {
+                data_type.set_admin_data(admin_data);
+            }
+            if let Some(props) = props {
+                data_type.set_sw_data_def_props(props);
+            }
+            if let Some(profile) = dynamic_profile {
+                data_type.set_dynamic_array_size_profile(profile);
+            }
+            if let Some(array_element) = array_element {
+                data_type.set_element(array_element);
+            }
+        }
+        Ok(())
+    }
+
+    /// py `readApplicationRecordDataType` (+ record ELEMENTS children).
+    fn read_application_record_data_type(
+        &mut self,
+        element: &Node,
+        id: ApplicationRecordDataTypeId,
+        document: &mut Document,
+    ) -> Result<(), ParseError> {
+        let payload = self.read_identifiable_payload(element, document)?;
+        let props = self.get_sw_data_def_props(element, "SW-DATA-DEF-PROPS", document)?;
+        let mut record_elements = Vec::new();
+        for record_node in find_all(element, "ELEMENTS/APPLICATION-RECORD-ELEMENT") {
+            let short_name = get_short_name(record_node)?;
+            let record_id = document
+                .application_record_elements
+                .insert(ApplicationRecordElement::new());
+            let element_payload = self.read_identifiable_payload(record_node, document)?;
+            let element_props =
+                self.get_sw_data_def_props(record_node, "SW-DATA-DEF-PROPS", document)?;
+            let type_t_ref = get_child_element_optional_t_ref_type(record_node, "TYPE-TREF");
+            let is_optional =
+                get_child_element_string(record_node, "IS-OPTIONAL").map(str::to_string);
+            if let Some(record_element) = document.application_record_elements.get_mut(record_id) {
+                record_element.set_short_name(short_name);
+                if let Some(long_name) = element_payload.long_name {
+                    record_element.set_long_name(long_name);
+                }
+                if let Some(desc) = element_payload.desc {
+                    record_element.set_desc(desc);
+                }
+                if let Some(introduction) = element_payload.introduction {
+                    record_element.set_introduction(introduction);
+                }
+                if let Some(admin_data) = element_payload.admin_data {
+                    record_element.set_admin_data(admin_data);
+                }
+                if let Some(props) = element_props {
+                    record_element.set_sw_data_def_props(props);
+                }
+                if let Some(type_t_ref) = type_t_ref {
+                    let type_t_ref_id = document.t_ref_types.insert(type_t_ref);
+                    record_element.set_type_t_ref(type_t_ref_id);
+                }
+                if let Some(is_optional) = is_optional {
+                    record_element.set_is_optional(is_optional);
+                }
+            }
+            record_elements.push(record_id);
+        }
+        if let Some(data_type) = document.application_record_data_types.get_mut(id) {
+            if let Some(long_name) = payload.long_name {
+                data_type.set_long_name(long_name);
+            }
+            if let Some(desc) = payload.desc {
+                data_type.set_desc(desc);
+            }
+            if let Some(introduction) = payload.introduction {
+                data_type.set_introduction(introduction);
+            }
+            if let Some(admin_data) = payload.admin_data {
+                data_type.set_admin_data(admin_data);
+            }
+            if let Some(props) = props {
+                data_type.set_sw_data_def_props(props);
+            }
+            for record_element in record_elements {
+                data_type.push_record_element(record_element);
+            }
+        }
+        Ok(())
+    }
+
+    /// py `readImplementationDataType` — the Identifiable chain, the array
+    /// profile / struct flags and `TYPE-EMITTER`. The sub-element and symbol
+    /// prop branches are deferred (no pinned fixture carries them; tracked on
+    /// the port checklist).
+    fn read_implementation_data_type(
+        &mut self,
+        element: &Node,
+        id: ImplementationDataTypeId,
+        document: &mut Document,
+    ) -> Result<(), ParseError> {
+        let payload = self.read_identifiable_payload(element, document)?;
+        let props = self.get_sw_data_def_props(element, "SW-DATA-DEF-PROPS", document)?;
+        let dynamic_profile =
+            get_child_element_string(element, "DYNAMIC-ARRAY-SIZE-PROFILE").map(str::to_string);
+        let is_struct = get_child_element_string(element, "IS-STRUCT-WITH-OPTIONAL-ELEMENT")
+            .map(str::to_string);
+        let type_emitter = get_child_element_string(element, "TYPE-EMITTER").map(str::to_string);
+        if let Some(data_type) = document.implementation_data_types.get_mut(id) {
+            if let Some(long_name) = payload.long_name {
+                data_type.set_long_name(long_name);
+            }
+            if let Some(desc) = payload.desc {
+                data_type.set_desc(desc);
+            }
+            if let Some(introduction) = payload.introduction {
+                data_type.set_introduction(introduction);
+            }
+            if let Some(admin_data) = payload.admin_data {
+                data_type.set_admin_data(admin_data);
+            }
+            if let Some(props) = props {
+                data_type.set_sw_data_def_props(props);
+            }
+            if let Some(profile) = dynamic_profile {
+                data_type.set_dynamic_array_size_profile(profile);
+            }
+            if let Some(is_struct) = is_struct {
+                data_type.set_is_struct_with_optional_element(is_struct);
+            }
+            if let Some(type_emitter) = type_emitter {
+                data_type.set_type_emitter(type_emitter);
+            }
+        }
+        Ok(())
     }
 
     /// py `readSwBaseType`.
@@ -1020,6 +1875,37 @@ impl ARXMLParser {
             }
         }
         Ok(())
+    }
+
+    /// py `getChildLimitElement` — a `<LOWER-LIMIT INTERVAL-TYPE="…">value
+    /// </LOWER-LIMIT>` child as an arena-stored `Limit`.
+    /// `allow(dead_code)` until Task 3 wires the Compu arms.
+    #[allow(dead_code)]
+    fn get_child_limit_element(
+        &mut self,
+        element: &Node,
+        key: &str,
+        document: &mut Document,
+    ) -> Result<Option<LimitId>, ParseError> {
+        let Some(limit_node) = find(element, key) else {
+            return Ok(None);
+        };
+        let mut limit = Limit::new();
+        if let Some(checksum) = limit_node.attrs.get("S") {
+            limit.set_checksum(checksum.as_str());
+        }
+        if let Some(timestamp) = limit_node.attrs.get("T") {
+            limit.set_timestamp(timestamp.as_str());
+        }
+        // py stores the attribute text verbatim (AREnum.setValue); fixtures
+        // carry uppercase CLOSED against the enum's lowercase literal.
+        if let Some(interval) = limit_node.attrs.get("INTERVAL-TYPE") {
+            limit.set_interval_type(interval.as_str());
+        }
+        if let Some(text) = &limit_node.text {
+            limit.set_value(text.as_str());
+        }
+        Ok(Some(document.limits.insert(limit)))
     }
 
     /// py `readBaseTypeDirectDefinition`.

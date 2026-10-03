@@ -13,6 +13,7 @@ new_key_type! {
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::TRefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::Document;
@@ -302,7 +303,7 @@ impl PortAPIOption {
 pub struct PortDefinedArgumentValue {
     base: ARObject,
     value: Option<ElementRef>,
-    value_type_t_ref: Option<String>,
+    value_type_t_ref: Option<TRefTypeId>,
 }
 
 impl PortDefinedArgumentValue {
@@ -327,12 +328,12 @@ impl PortDefinedArgumentValue {
         self
     }
 
-    pub fn get_value_type_t_ref(&self) -> Option<&str> {
-        self.value_type_t_ref.as_deref()
+    pub fn get_value_type_t_ref(&self) -> Option<TRefTypeId> {
+        self.value_type_t_ref
     }
 
-    pub fn set_value_type_t_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.value_type_t_ref = Some(value.into());
+    pub fn set_value_type_t_ref(&mut self, value: TRefTypeId) -> &mut Self {
+        self.value_type_t_ref = Some(value);
         self
     }
 

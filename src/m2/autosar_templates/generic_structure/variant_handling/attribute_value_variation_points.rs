@@ -16,7 +16,6 @@ new_key_type! {
 }
 
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
-use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::IntervalTypeEnum;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::variant_handling::BindingTimeEnum;
 use crate::m2::autosar_templates::generic_structure::variant_handling::SwSystemconstDependentFormula;
@@ -781,7 +780,7 @@ impl IntegerValueVariationPoint {
 #[derive(Debug, Default)]
 pub struct LimitValueVariationPoint {
     base: AbstractNumericalVariationPoint,
-    interval_type: Option<IntervalTypeEnum>,
+    interval_type: Option<String>,
 }
 
 impl LimitValueVariationPoint {
@@ -797,12 +796,12 @@ impl LimitValueVariationPoint {
         &mut self.base
     }
 
-    pub fn get_interval_type(&self) -> Option<IntervalTypeEnum> {
-        self.interval_type
+    pub fn get_interval_type(&self) -> Option<&str> {
+        self.interval_type.as_deref()
     }
 
-    pub fn set_interval_type(&mut self, value: IntervalTypeEnum) -> &mut Self {
-        self.interval_type = Some(value);
+    pub fn set_interval_type(&mut self, value: impl Into<String>) -> &mut Self {
+        self.interval_type = Some(value.into());
         self
     }
 

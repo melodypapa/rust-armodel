@@ -11,6 +11,7 @@ new_key_type! {
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::TRefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::sw_component_template::datatype::data_prototypes::AutosarDataPrototype;
@@ -81,11 +82,11 @@ impl Field {
         self
     }
 
-    pub fn get_type_t_ref(&self) -> Option<&str> {
+    pub fn get_type_t_ref(&self) -> Option<TRefTypeId> {
         self.base().get_type_t_ref()
     }
 
-    pub fn set_type_t_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_type_t_ref(&mut self, value: TRefTypeId) -> &mut Self {
         self.base_mut().set_type_t_ref(value);
         self
     }

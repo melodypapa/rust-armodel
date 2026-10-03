@@ -157,7 +157,7 @@ impl TryFrom<&str> for MonotonyEnum {
 #[derive(Debug, Default)]
 pub struct Limit {
     base: ARObject,
-    interval_type: Option<IntervalTypeEnum>,
+    interval_type: Option<String>,
     value: Option<String>,
 }
 
@@ -174,12 +174,12 @@ impl Limit {
         &mut self.base
     }
 
-    pub fn get_interval_type(&self) -> Option<IntervalTypeEnum> {
-        self.interval_type
+    pub fn get_interval_type(&self) -> Option<&str> {
+        self.interval_type.as_deref()
     }
 
-    pub fn set_interval_type(&mut self, value: IntervalTypeEnum) -> &mut Self {
-        self.interval_type = Some(value);
+    pub fn set_interval_type(&mut self, value: impl Into<String>) -> &mut Self {
+        self.interval_type = Some(value.into());
         self
     }
 

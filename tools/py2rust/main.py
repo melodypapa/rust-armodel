@@ -25,7 +25,7 @@ from ir import ClassIr
 from overrides import Overrides
 from placement import parse_repo, py_module_segments
 from templates import (AR_OBJECT_RS, AR_PACKAGE_RS, DOCUMENT_RS, ELEMENT_COLLECTION_RS,
-                       IDENTIFIABLE_RS, XML_SPACE_BLOCK)
+                       IDENTIFIABLE_RS, COMPU_REFS_BLOCK, XML_SPACE_BLOCK)
 
 GTC = "m2/autosar_templates/generic_structure/general_template_classes"
 
@@ -163,13 +163,15 @@ def render(ir, overrides: Overrides, placement) -> dict[str, str]:
     arena_names = build_arena_names(concrete_classes(ir, overrides))
     for segments, classes in sorted(grouped.items()):
         body = emit_module(ir, overrides, placement, classes, list(segments))
-        if segments[-1] == "language_data_model":
+        if segments[-1] in ("language_data_model", "computation_method"):
             # inner doc comments must precede every item (E0753): insert the
-            # XmlSpace block after the //! header, before the first use line
+            # pinned block after the //! header, before the first use line
+            block = (XML_SPACE_BLOCK
+                     if segments[-1] == "language_data_model" else COMPU_REFS_BLOCK)
             lines = body.splitlines()
             for i, line in enumerate(lines):
                 if line.startswith("use "):
-                    lines.insert(i, XML_SPACE_BLOCK)
+                    lines.insert(i, block)
                     break
             body = "\n".join(lines)
         compare_blocks = []

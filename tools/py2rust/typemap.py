@@ -16,7 +16,7 @@ PRIMITIVES = {
     "DisplayFormatString", "NativeDeclarationString", "BaseTypeEncodingString",
     "PrimitiveIdentifier", "PositiveInteger", "Boolean", "NameToken",
     "PositiveUnlimitedInteger", "Integer", "UnlimitedInteger", "Identifier", "CIdentifier",
-    "RevisionLabelString", "Ref", "TRefType", "DiagRequirementIdString",
+    "RevisionLabelString", "Ref", "DiagRequirementIdString",
     "Ip4AddressString", "Ip6AddressString", "MacAddressString", "CategoryString",
     "AnyServiceInstanceId", "AnyVersionString", "DateTime", "VerbatimString",
     "VerbatimStringPlain", "RegularExpression", "SymbolString", "McdIdentifier",
@@ -24,11 +24,18 @@ PRIMITIVES = {
     # P0-parity quirk: language codes (AdminData.language, LanguageSpecific.l)
     # are stored as plain String in the P0 model, not as the generated LEnum.
     "LEnum",
+    # P2-parity quirk: py AREnum.setValue stores attribute text verbatim and
+    # the writer emits getValue() — fixtures carry casing that disagrees with
+    # the generated enum literals (INTERVAL-TYPE="CLOSED", READ-ONLY,
+    # FIXED-SIZE), so these fields must be verbatim Strings.
+    "IntervalTypeEnum", "SwCalibrationAccessEnum", "ArraySizeSemanticsEnum",
+    "ArraySizeHandlingEnum",
 }
-# RefType is deliberately NOT a primitive (P2 Task 0): collapsing it to String
-# drops the BASE/DEST attributes the byte round-trip compares. It is a real
-# generated class with a RefTypeId arena (Document.ref_types), so ref-typed
-# fields are arena links per code_guide §6.
+# RefType/TRefType are deliberately NOT primitives (P2 Task 0 / batch-2
+# Task 0): collapsing them to String drops the BASE/DEST attributes the byte
+# round-trip compares. They are real generated classes with typed arenas
+# (Document.ref_types / t_ref_types), so ref-typed fields are arena links
+# per code_guide §6.
 
 
 @dataclass

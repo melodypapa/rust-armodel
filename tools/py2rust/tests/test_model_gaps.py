@@ -53,3 +53,15 @@ def test_reference_base_has_its_seven_fields():
         "package_ref",
     ):
         assert field in ar_package, f"ReferenceBase is missing {field}"
+
+
+def test_tref_typed_fields_use_the_tref_arena():
+    # TYPE-TREF carries BASE/DEST in the fixtures (batch 2 recon), so the
+    # field must be the arena-linked TRefType, not a bare String.
+    prototypes = read(
+        "autosar_templates/sw_component_template/datatype/data_prototypes.rs"
+    )
+    assert "type_t_ref: Option<TRefTypeId>" in prototypes, (
+        "type_t_ref must be Option<TRefTypeId>; a String drops the "
+        "BASE/DEST attributes and breaks byte round-trip"
+    )

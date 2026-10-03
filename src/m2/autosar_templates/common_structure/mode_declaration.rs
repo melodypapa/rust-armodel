@@ -27,7 +27,7 @@ use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguage
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
-use crate::m2::msr::data_dictionary::data_def_properties::SwCalibrationAccessEnum;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::TRefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::Document;
@@ -589,8 +589,8 @@ impl ModeDeclarationGroup {
 pub struct ModeDeclarationGroupPrototype {
     base: AtpPrototype,
     variation_point_capable: VariationPointCapable,
-    sw_calibration_access: Option<SwCalibrationAccessEnum>,
-    type_t_ref: Option<String>,
+    sw_calibration_access: Option<String>,
+    type_t_ref: Option<TRefTypeId>,
 }
 
 impl ModeDeclarationGroupPrototype {
@@ -614,21 +614,21 @@ impl ModeDeclarationGroupPrototype {
         &mut self.variation_point_capable
     }
 
-    pub fn get_sw_calibration_access(&self) -> Option<SwCalibrationAccessEnum> {
-        self.sw_calibration_access
+    pub fn get_sw_calibration_access(&self) -> Option<&str> {
+        self.sw_calibration_access.as_deref()
     }
 
-    pub fn set_sw_calibration_access(&mut self, value: SwCalibrationAccessEnum) -> &mut Self {
-        self.sw_calibration_access = Some(value);
+    pub fn set_sw_calibration_access(&mut self, value: impl Into<String>) -> &mut Self {
+        self.sw_calibration_access = Some(value.into());
         self
     }
 
-    pub fn get_type_t_ref(&self) -> Option<&str> {
-        self.type_t_ref.as_deref()
+    pub fn get_type_t_ref(&self) -> Option<TRefTypeId> {
+        self.type_t_ref
     }
 
-    pub fn set_type_t_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.type_t_ref = Some(value.into());
+    pub fn set_type_t_ref(&mut self, value: TRefTypeId) -> &mut Self {
+        self.type_t_ref = Some(value);
         self
     }
 

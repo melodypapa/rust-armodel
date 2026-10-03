@@ -17,7 +17,19 @@ const FIXTURE_DIR: &str = "tests/integration/test_files";
 const OUTPUT_DIR: &str = "data";
 
 /// Files that must survive `arxml-format` byte-identically.
-const FORMAT_SOURCES: &[&str] = &["AdminDataWhitespace.arxml"];
+const FORMAT_SOURCES: &[&str] = &[
+    "AdminDataWhitespace.arxml",
+    "AUTOSAR_MOD_AISpecification_BaseTypes_Standard.arxml",
+    "AUTOSAR_MOD_AISpecification_Collection_Body_Blueprint.arxml",
+    "AUTOSAR_MOD_AISpecification_Collection_Chassis_Blueprint.arxml",
+    "AUTOSAR_MOD_AISpecification_Collection_MmedTelmHmi_Blueprint.arxml",
+    "AUTOSAR_MOD_AISpecification_Collection_OccptPedSfty_Blueprint.arxml",
+    "AUTOSAR_MOD_AISpecification_Collection_Pt_Blueprint.arxml",
+    "AUTOSAR_MOD_AISpecification_ApplicationDataType_LifeCycle_Standard.arxml",
+    "AUTOSAR_MOD_AISpecification_Keyword_LifeCycle_Standard.arxml",
+    "AUTOSAR_MOD_AISpecification_PhysicalDimension_Standard.arxml",
+    "AUTOSAR_MOD_AISpecification_Unit_Standard.arxml",
+];
 
 fn first_difference(expected: &[u8], actual: &[u8]) -> Option<String> {
     let offset = expected

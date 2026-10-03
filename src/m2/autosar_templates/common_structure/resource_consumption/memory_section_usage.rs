@@ -13,6 +13,7 @@ use crate::m2::autosar_templates::common_structure::implementation::Implementati
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -29,12 +30,12 @@ pub struct MemorySection {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
     alignment: Option<String>,
-    executable_entity_refs: Vec<String>,
+    executable_entity_refs: Vec<RefTypeId>,
     mem_class_symbol: Option<String>,
     options: Vec<String>,
-    prefix_ref: Option<String>,
+    prefix_ref: Option<RefTypeId>,
     size: Option<String>,
-    sw_addr_method_ref: Option<String>,
+    sw_addr_method_ref: Option<RefTypeId>,
     symbol: Option<String>,
 }
 
@@ -68,11 +69,11 @@ impl MemorySection {
         self
     }
 
-    pub fn get_executable_entity_refs(&self) -> &[String] {
+    pub fn get_executable_entity_refs(&self) -> &[RefTypeId] {
         &self.executable_entity_refs
     }
 
-    pub fn push_executable_entity_ref(&mut self, value: String) {
+    pub fn push_executable_entity_ref(&mut self, value: RefTypeId) {
         self.executable_entity_refs.push(value);
     }
 
@@ -93,12 +94,12 @@ impl MemorySection {
         self.options.push(value);
     }
 
-    pub fn get_prefix_ref(&self) -> Option<&str> {
-        self.prefix_ref.as_deref()
+    pub fn get_prefix_ref(&self) -> Option<RefTypeId> {
+        self.prefix_ref
     }
 
-    pub fn set_prefix_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.prefix_ref = Some(value.into());
+    pub fn set_prefix_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.prefix_ref = Some(value);
         self
     }
 
@@ -111,12 +112,12 @@ impl MemorySection {
         self
     }
 
-    pub fn get_sw_addr_method_ref(&self) -> Option<&str> {
-        self.sw_addr_method_ref.as_deref()
+    pub fn get_sw_addr_method_ref(&self) -> Option<RefTypeId> {
+        self.sw_addr_method_ref
     }
 
-    pub fn set_sw_addr_method_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.sw_addr_method_ref = Some(value.into());
+    pub fn set_sw_addr_method_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sw_addr_method_ref = Some(value);
         self
     }
 
@@ -276,7 +277,7 @@ impl MemorySection {
 pub struct SectionNamePrefix {
     base: ImplementationProps,
     variation_point_capable: VariationPointCapable,
-    implemented_in_ref: Option<String>,
+    implemented_in_ref: Option<RefTypeId>,
 }
 
 impl SectionNamePrefix {
@@ -300,12 +301,12 @@ impl SectionNamePrefix {
         &mut self.variation_point_capable
     }
 
-    pub fn get_implemented_in_ref(&self) -> Option<&str> {
-        self.implemented_in_ref.as_deref()
+    pub fn get_implemented_in_ref(&self) -> Option<RefTypeId> {
+        self.implemented_in_ref
     }
 
-    pub fn set_implemented_in_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.implemented_in_ref = Some(value.into());
+    pub fn set_implemented_in_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.implemented_in_ref = Some(value);
         self
     }
 
@@ -397,9 +398,18 @@ impl Document {
             return Err(format!("{path}: EXECUTABLE_ENTITY_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.EXECUTABLE_ENTITY_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.EXECUTABLE_ENTITY_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.EXECUTABLE_ENTITY_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.EXECUTABLE_ENTITY_REFS[{index}]"),
+            )?;
         }
         if a.get_mem_class_symbol() != b.get_mem_class_symbol() {
             return Err(format!("{path}: MEM_CLASS_SYMBOL mismatch"));

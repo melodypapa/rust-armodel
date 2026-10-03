@@ -21,6 +21,24 @@ const FIXTURE_DIR: &str = "tests/integration/test_files";
 /// (plus `Os_ECUC.yaml`, which is not an ARXML file).
 const FIXTURE_COUNT: usize = 32;
 
+/// Fixtures whose parse must produce zero warnings — i.e. the parser
+/// consumes every element they contain. A fixture joins this list exactly
+/// when its batch lands (roadmap spec §5.3); byte-identity additionally
+/// requires a FORMAT_SOURCES entry in format_byte_roundtrip.rs.
+const WARNING_FREE_SOURCES: &[&str] = &[
+    "AdminDataWhitespace.arxml",
+    "AUTOSAR_MOD_AISpecification_BaseTypes_Standard.arxml",
+    "AUTOSAR_MOD_AISpecification_Collection_Body_Blueprint.arxml",
+    "AUTOSAR_MOD_AISpecification_Collection_Chassis_Blueprint.arxml",
+    "AUTOSAR_MOD_AISpecification_Collection_MmedTelmHmi_Blueprint.arxml",
+    "AUTOSAR_MOD_AISpecification_Collection_OccptPedSfty_Blueprint.arxml",
+    "AUTOSAR_MOD_AISpecification_Collection_Pt_Blueprint.arxml",
+    "AUTOSAR_MOD_AISpecification_ApplicationDataType_LifeCycle_Standard.arxml",
+    "AUTOSAR_MOD_AISpecification_Keyword_LifeCycle_Standard.arxml",
+    "AUTOSAR_MOD_AISpecification_PhysicalDimension_Standard.arxml",
+    "AUTOSAR_MOD_AISpecification_Unit_Standard.arxml",
+];
+
 fn fixture_files() -> Vec<PathBuf> {
     let mut files: Vec<PathBuf> = std::fs::read_dir(FIXTURE_DIR)
         .expect("fixture dir exists")
@@ -118,28 +136,18 @@ fn elements_are_ingested_through_the_registry() {
 const P2_P4_PENDING: &[&str] = &[
     "AUTOSAR_Datatypes.arxml",
     "AUTOSAR_MOD_AISpecification_ApplicationDataType_Blueprint.arxml",
-    "AUTOSAR_MOD_AISpecification_ApplicationDataType_LifeCycle_Standard.arxml",
-    "AUTOSAR_MOD_AISpecification_BaseTypes_Standard.arxml",
-    "AUTOSAR_MOD_AISpecification_Collection_Body_Blueprint.arxml",
-    "AUTOSAR_MOD_AISpecification_Collection_Chassis_Blueprint.arxml",
-    "AUTOSAR_MOD_AISpecification_Collection_MmedTelmHmi_Blueprint.arxml",
-    "AUTOSAR_MOD_AISpecification_Collection_OccptPedSfty_Blueprint.arxml",
-    "AUTOSAR_MOD_AISpecification_Collection_Pt_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_CompuMethod_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_CompuMethod_LifeCycle_Standard.arxml",
     "AUTOSAR_MOD_AISpecification_DataConstr_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_DataConstr_LifeCycle_Standard.arxml",
     "AUTOSAR_MOD_AISpecification_KeywordSet_Blueprint.arxml",
-    "AUTOSAR_MOD_AISpecification_Keyword_LifeCycle_Standard.arxml",
     "AUTOSAR_MOD_AISpecification_PhysicalDimension_LifeCycle_Standard.arxml",
-    "AUTOSAR_MOD_AISpecification_PhysicalDimension_Standard.arxml",
     "AUTOSAR_MOD_AISpecification_PortInterface_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_PortInterface_LifeCycle_Standard.arxml",
     "AUTOSAR_MOD_AISpecification_PortPrototypeBlueprint_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_PortPrototypeBlueprint_LifeCycle_Standard.arxml",
     "AUTOSAR_MOD_AISpecification_SwComponentTypes_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_Unit_LifeCycle_Standard.arxml",
-    "AUTOSAR_MOD_AISpecification_Unit_Standard.arxml",
     "BswMMode.arxml",
     "BswM_Bswmd.arxml",
     "CanSystem.arxml",
@@ -296,4 +304,33 @@ fn every_py_armodel_fixture_parses_and_round_trips() {
         files.len(),
         failures.join("\n")
     );
+}
+
+/// Fixtures listed in WARNING_FREE_SOURCES must parse without a single
+/// "unsupported element"-class warning — the parser-coverage gate (roadmap
+/// spec §5.3). Everything else still round-trips at model level via the
+/// warnings-and-skip path.
+#[test]
+fn warning_free_sources_parse_without_warnings() {
+    let names: Vec<String> = fixture_files()
+        .iter()
+        .map(|file| file.file_name().unwrap().to_string_lossy().into_owned())
+        .collect();
+    for source in WARNING_FREE_SOURCES {
+        assert!(
+            names.contains(&source.to_string()),
+            "stale WARNING_FREE_SOURCES entry (no such fixture): {source}"
+        );
+        let path = Path::new(FIXTURE_DIR).join(source);
+        let mut document = Document::new();
+        let mut parser = ARXMLParser::new(default_options());
+        parser
+            .load(&path, &mut document)
+            .unwrap_or_else(|error| panic!("{source}: parse failed: {error}"));
+        assert!(
+            parser.get_warnings().is_empty(),
+            "{source}: expected zero warnings, got: {:?}",
+            parser.get_warnings()
+        );
+    }
 }

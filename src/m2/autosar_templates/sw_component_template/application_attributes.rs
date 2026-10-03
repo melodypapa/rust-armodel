@@ -18,6 +18,7 @@ new_key_type! {
 }
 
 use crate::m2::autosar_templates::generic_structure::general_template_classes::general_annotation::GeneralAnnotation;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
 use crate::Document;
@@ -171,7 +172,7 @@ impl TryFrom<&str> for SignalFanEnum {
 #[derive(Debug, Default)]
 pub struct ClientServerAnnotation {
     base: GeneralAnnotation,
-    operation_ref: Option<String>,
+    operation_ref: Option<RefTypeId>,
 }
 
 impl ClientServerAnnotation {
@@ -187,12 +188,12 @@ impl ClientServerAnnotation {
         &mut self.base
     }
 
-    pub fn get_operation_ref(&self) -> Option<&str> {
-        self.operation_ref.as_deref()
+    pub fn get_operation_ref(&self) -> Option<RefTypeId> {
+        self.operation_ref
     }
 
-    pub fn set_operation_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.operation_ref = Some(value.into());
+    pub fn set_operation_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.operation_ref = Some(value);
         self
     }
 
@@ -325,7 +326,7 @@ pub struct IoHwAbstractionServerAnnotation {
     base: GeneralAnnotation,
     filtering_debouncing: Option<FilterDebouncingEnum>,
     pulse_test: Option<PulseTestEnum>,
-    trigger_ref: Option<String>,
+    trigger_ref: Option<RefTypeId>,
 }
 
 impl IoHwAbstractionServerAnnotation {
@@ -359,12 +360,12 @@ impl IoHwAbstractionServerAnnotation {
         self
     }
 
-    pub fn get_trigger_ref(&self) -> Option<&str> {
-        self.trigger_ref.as_deref()
+    pub fn get_trigger_ref(&self) -> Option<RefTypeId> {
+        self.trigger_ref
     }
 
-    pub fn set_trigger_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.trigger_ref = Some(value.into());
+    pub fn set_trigger_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.trigger_ref = Some(value);
         self
     }
 
@@ -419,7 +420,7 @@ impl IoHwAbstractionServerAnnotation {
 #[derive(Debug, Default)]
 pub struct ModePortAnnotation {
     base: GeneralAnnotation,
-    mode_group_ref: Option<String>,
+    mode_group_ref: Option<RefTypeId>,
 }
 
 impl ModePortAnnotation {
@@ -435,12 +436,12 @@ impl ModePortAnnotation {
         &mut self.base
     }
 
-    pub fn get_mode_group_ref(&self) -> Option<&str> {
-        self.mode_group_ref.as_deref()
+    pub fn get_mode_group_ref(&self) -> Option<RefTypeId> {
+        self.mode_group_ref
     }
 
-    pub fn set_mode_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.mode_group_ref = Some(value.into());
+    pub fn set_mode_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.mode_group_ref = Some(value);
         self
     }
 
@@ -495,7 +496,7 @@ impl ModePortAnnotation {
 #[derive(Debug, Default)]
 pub struct NvDataPortAnnotation {
     base: GeneralAnnotation,
-    variable_ref: Option<String>,
+    variable_ref: Option<RefTypeId>,
 }
 
 impl NvDataPortAnnotation {
@@ -511,12 +512,12 @@ impl NvDataPortAnnotation {
         &mut self.base
     }
 
-    pub fn get_variable_ref(&self) -> Option<&str> {
-        self.variable_ref.as_deref()
+    pub fn get_variable_ref(&self) -> Option<RefTypeId> {
+        self.variable_ref
     }
 
-    pub fn set_variable_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.variable_ref = Some(value.into());
+    pub fn set_variable_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.variable_ref = Some(value);
         self
     }
 
@@ -571,7 +572,7 @@ impl NvDataPortAnnotation {
 #[derive(Debug, Default)]
 pub struct ParameterPortAnnotation {
     base: GeneralAnnotation,
-    parameter_ref: Option<String>,
+    parameter_ref: Option<RefTypeId>,
 }
 
 impl ParameterPortAnnotation {
@@ -587,12 +588,12 @@ impl ParameterPortAnnotation {
         &mut self.base
     }
 
-    pub fn get_parameter_ref(&self) -> Option<&str> {
-        self.parameter_ref.as_deref()
+    pub fn get_parameter_ref(&self) -> Option<RefTypeId> {
+        self.parameter_ref
     }
 
-    pub fn set_parameter_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.parameter_ref = Some(value.into());
+    pub fn set_parameter_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.parameter_ref = Some(value);
         self
     }
 
@@ -670,11 +671,11 @@ impl ReceiverAnnotation {
         self
     }
 
-    pub fn get_data_element_ref(&self) -> Option<&str> {
+    pub fn get_data_element_ref(&self) -> Option<RefTypeId> {
         self.base().get_data_element_ref()
     }
 
-    pub fn set_data_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_data_element_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_data_element_ref(value);
         self
     }
@@ -771,11 +772,11 @@ impl SenderAnnotation {
         self
     }
 
-    pub fn get_data_element_ref(&self) -> Option<&str> {
+    pub fn get_data_element_ref(&self) -> Option<RefTypeId> {
         self.base().get_data_element_ref()
     }
 
-    pub fn set_data_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_data_element_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_data_element_ref(value);
         self
     }
@@ -850,7 +851,7 @@ impl SenderAnnotation {
 pub struct SenderReceiverAnnotation {
     base: GeneralAnnotation,
     computed: Option<String>,
-    data_element_ref: Option<String>,
+    data_element_ref: Option<RefTypeId>,
     limit_kind: Option<DataLimitKindEnum>,
     processing_kind: Option<ProcessingKindEnum>,
 }
@@ -877,12 +878,12 @@ impl SenderReceiverAnnotation {
         self
     }
 
-    pub fn get_data_element_ref(&self) -> Option<&str> {
-        self.data_element_ref.as_deref()
+    pub fn get_data_element_ref(&self) -> Option<RefTypeId> {
+        self.data_element_ref
     }
 
-    pub fn set_data_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.data_element_ref = Some(value.into());
+    pub fn set_data_element_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.data_element_ref = Some(value);
         self
     }
 
@@ -955,7 +956,7 @@ impl SenderReceiverAnnotation {
 #[derive(Debug, Default)]
 pub struct TriggerPortAnnotation {
     base: GeneralAnnotation,
-    trigger_ref: Option<String>,
+    trigger_ref: Option<RefTypeId>,
 }
 
 impl TriggerPortAnnotation {
@@ -971,12 +972,12 @@ impl TriggerPortAnnotation {
         &mut self.base
     }
 
-    pub fn get_trigger_ref(&self) -> Option<&str> {
-        self.trigger_ref.as_deref()
+    pub fn get_trigger_ref(&self) -> Option<RefTypeId> {
+        self.trigger_ref
     }
 
-    pub fn set_trigger_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.trigger_ref = Some(value.into());
+    pub fn set_trigger_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.trigger_ref = Some(value);
         self
     }
 

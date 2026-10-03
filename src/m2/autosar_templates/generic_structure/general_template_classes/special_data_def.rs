@@ -29,6 +29,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::i
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::LimitId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::Document;
 
@@ -218,7 +219,7 @@ pub struct SdgAggregationWithVariation {
     sdg_attribute: SdgAttribute,
     abstract_variation_restriction: AbstractVariationRestriction,
     valid_binding_times: Vec<FullBindingTimeEnum>,
-    sub_sdg_ref: Option<String>,
+    sub_sdg_ref: Option<RefTypeId>,
 }
 
 impl SdgAggregationWithVariation {
@@ -258,12 +259,12 @@ impl SdgAggregationWithVariation {
         self.valid_binding_times.push(value);
     }
 
-    pub fn get_sub_sdg_ref(&self) -> Option<&str> {
-        self.sub_sdg_ref.as_deref()
+    pub fn get_sub_sdg_ref(&self) -> Option<RefTypeId> {
+        self.sub_sdg_ref
     }
 
-    pub fn set_sub_sdg_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.sub_sdg_ref = Some(value.into());
+    pub fn set_sub_sdg_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.sub_sdg_ref = Some(value);
         self
     }
 
@@ -476,7 +477,7 @@ pub struct SdgClass {
     extends_meta_class: Option<String>,
     caption: Option<String>,
     attributes: Vec<ElementRef>,
-    sdg_constraint_refs: Vec<String>,
+    sdg_constraint_refs: Vec<RefTypeId>,
 }
 
 impl SdgClass {
@@ -526,11 +527,11 @@ impl SdgClass {
         self.attributes.push(value);
     }
 
-    pub fn get_sdg_constraint_refs(&self) -> &[String] {
+    pub fn get_sdg_constraint_refs(&self) -> &[RefTypeId] {
         &self.sdg_constraint_refs
     }
 
-    pub fn push_sdg_constraint_ref(&mut self, value: String) {
+    pub fn push_sdg_constraint_ref(&mut self, value: RefTypeId) {
         self.sdg_constraint_refs.push(value);
     }
 
@@ -1192,7 +1193,7 @@ impl SdgPrimitiveAttributeWithVariation {
 #[derive(Debug, Default)]
 pub struct SdgReference {
     base: SdgAttribute,
-    dest_sdg_ref: Option<String>,
+    dest_sdg_ref: Option<RefTypeId>,
 }
 
 impl SdgReference {
@@ -1208,12 +1209,12 @@ impl SdgReference {
         &mut self.base
     }
 
-    pub fn get_dest_sdg_ref(&self) -> Option<&str> {
-        self.dest_sdg_ref.as_deref()
+    pub fn get_dest_sdg_ref(&self) -> Option<RefTypeId> {
+        self.dest_sdg_ref
     }
 
-    pub fn set_dest_sdg_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.dest_sdg_ref = Some(value.into());
+    pub fn set_dest_sdg_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.dest_sdg_ref = Some(value);
         self
     }
 
@@ -1472,9 +1473,13 @@ impl Document {
             return Err(format!("{path}: SDG_CONSTRAINT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SDG_CONSTRAINT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SDG_CONSTRAINT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SDG_CONSTRAINT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SDG_CONSTRAINT_REFS[{index}]"))?;
         }
         Ok(())
     }

@@ -79,6 +79,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::sw_component_template::nv_block_component::RamBlockStatusControlEnum;
@@ -4119,10 +4120,10 @@ impl DiagnosticEventManagerNeeds {
 #[derive(Debug, Default)]
 pub struct DiagnosticEventNeeds {
     base: DiagnosticCapabilityElement,
-    deferring_fid_refs: Vec<String>,
+    deferring_fid_refs: Vec<RefTypeId>,
     diag_event_debounce_algorithm: Option<ElementRef>,
-    inhibiting_fid_ref: Option<String>,
-    inhibiting_secondary_fid_refs: Vec<String>,
+    inhibiting_fid_ref: Option<RefTypeId>,
+    inhibiting_secondary_fid_refs: Vec<RefTypeId>,
     prestored_freezeframe_stored_in_nvm: Option<String>,
     uses_monitor_data: Option<String>,
 }
@@ -4140,11 +4141,11 @@ impl DiagnosticEventNeeds {
         &mut self.base
     }
 
-    pub fn get_deferring_fid_refs(&self) -> &[String] {
+    pub fn get_deferring_fid_refs(&self) -> &[RefTypeId] {
         &self.deferring_fid_refs
     }
 
-    pub fn push_deferring_fid_ref(&mut self, value: String) {
+    pub fn push_deferring_fid_ref(&mut self, value: RefTypeId) {
         self.deferring_fid_refs.push(value);
     }
 
@@ -4157,20 +4158,20 @@ impl DiagnosticEventNeeds {
         self
     }
 
-    pub fn get_inhibiting_fid_ref(&self) -> Option<&str> {
-        self.inhibiting_fid_ref.as_deref()
+    pub fn get_inhibiting_fid_ref(&self) -> Option<RefTypeId> {
+        self.inhibiting_fid_ref
     }
 
-    pub fn set_inhibiting_fid_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.inhibiting_fid_ref = Some(value.into());
+    pub fn set_inhibiting_fid_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.inhibiting_fid_ref = Some(value);
         self
     }
 
-    pub fn get_inhibiting_secondary_fid_refs(&self) -> &[String] {
+    pub fn get_inhibiting_secondary_fid_refs(&self) -> &[RefTypeId] {
         &self.inhibiting_secondary_fid_refs
     }
 
-    pub fn push_inhibiting_secondary_fid_ref(&mut self, value: String) {
+    pub fn push_inhibiting_secondary_fid_ref(&mut self, value: RefTypeId) {
         self.inhibiting_secondary_fid_refs.push(value);
     }
 
@@ -4397,7 +4398,7 @@ impl DiagnosticEventNeeds {
 #[derive(Debug, Default)]
 pub struct DiagnosticIoControlNeeds {
     base: DiagnosticCapabilityElement,
-    current_value_ref: Option<String>,
+    current_value_ref: Option<RefTypeId>,
     freeze_current_state_supported: Option<String>,
     reset_to_default_supported: Option<String>,
     short_term_adjustment_supported: Option<String>,
@@ -4416,12 +4417,12 @@ impl DiagnosticIoControlNeeds {
         &mut self.base
     }
 
-    pub fn get_current_value_ref(&self) -> Option<&str> {
-        self.current_value_ref.as_deref()
+    pub fn get_current_value_ref(&self) -> Option<RefTypeId> {
+        self.current_value_ref
     }
 
-    pub fn set_current_value_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.current_value_ref = Some(value.into());
+    pub fn set_current_value_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.current_value_ref = Some(value);
         self
     }
 
@@ -8366,7 +8367,7 @@ impl ErrorTracerNeeds {
 #[derive(Debug, Default)]
 pub struct FunctionInhibitionAvailabilityNeeds {
     base: ServiceNeeds,
-    controlled_fid_ref: Option<String>,
+    controlled_fid_ref: Option<RefTypeId>,
 }
 
 impl FunctionInhibitionAvailabilityNeeds {
@@ -8382,12 +8383,12 @@ impl FunctionInhibitionAvailabilityNeeds {
         &mut self.base
     }
 
-    pub fn get_controlled_fid_ref(&self) -> Option<&str> {
-        self.controlled_fid_ref.as_deref()
+    pub fn get_controlled_fid_ref(&self) -> Option<RefTypeId> {
+        self.controlled_fid_ref
     }
 
-    pub fn set_controlled_fid_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.controlled_fid_ref = Some(value.into());
+    pub fn set_controlled_fid_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.controlled_fid_ref = Some(value);
         self
     }
 
@@ -11024,8 +11025,8 @@ impl ObdInfoServiceNeeds {
 #[derive(Debug, Default)]
 pub struct ObdMonitorServiceNeeds {
     base: DiagnosticCapabilityElement,
-    application_data_type_ref: Option<String>,
-    event_needs_ref: Option<String>,
+    application_data_type_ref: Option<RefTypeId>,
+    event_needs_ref: Option<RefTypeId>,
     unit_and_scaling_id: Option<String>,
     update_kind: Option<DiagnosticMonitorUpdateKindEnum>,
 }
@@ -11043,21 +11044,21 @@ impl ObdMonitorServiceNeeds {
         &mut self.base
     }
 
-    pub fn get_application_data_type_ref(&self) -> Option<&str> {
-        self.application_data_type_ref.as_deref()
+    pub fn get_application_data_type_ref(&self) -> Option<RefTypeId> {
+        self.application_data_type_ref
     }
 
-    pub fn set_application_data_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.application_data_type_ref = Some(value.into());
+    pub fn set_application_data_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.application_data_type_ref = Some(value);
         self
     }
 
-    pub fn get_event_needs_ref(&self) -> Option<&str> {
-        self.event_needs_ref.as_deref()
+    pub fn get_event_needs_ref(&self) -> Option<RefTypeId> {
+        self.event_needs_ref
     }
 
-    pub fn set_event_needs_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.event_needs_ref = Some(value.into());
+    pub fn set_event_needs_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.event_needs_ref = Some(value);
         self
     }
 
@@ -11674,8 +11675,8 @@ impl ObdRatioDenominatorNeeds {
 pub struct ObdRatioServiceNeeds {
     base: DiagnosticCapabilityElement,
     connection_type: Option<ObdRatioConnectionKindEnum>,
-    rate_based_monitored_event_ref: Option<String>,
-    used_fid_ref: Option<String>,
+    rate_based_monitored_event_ref: Option<RefTypeId>,
+    used_fid_ref: Option<RefTypeId>,
 }
 
 impl ObdRatioServiceNeeds {
@@ -11700,21 +11701,21 @@ impl ObdRatioServiceNeeds {
         self
     }
 
-    pub fn get_rate_based_monitored_event_ref(&self) -> Option<&str> {
-        self.rate_based_monitored_event_ref.as_deref()
+    pub fn get_rate_based_monitored_event_ref(&self) -> Option<RefTypeId> {
+        self.rate_based_monitored_event_ref
     }
 
-    pub fn set_rate_based_monitored_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.rate_based_monitored_event_ref = Some(value.into());
+    pub fn set_rate_based_monitored_event_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.rate_based_monitored_event_ref = Some(value);
         self
     }
 
-    pub fn get_used_fid_ref(&self) -> Option<&str> {
-        self.used_fid_ref.as_deref()
+    pub fn get_used_fid_ref(&self) -> Option<RefTypeId> {
+        self.used_fid_ref
     }
 
-    pub fn set_used_fid_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.used_fid_ref = Some(value.into());
+    pub fn set_used_fid_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.used_fid_ref = Some(value);
         self
     }
 
@@ -12085,7 +12086,7 @@ pub struct RoleBasedDataAssignment {
     role: Option<String>,
     used_data_element: Option<AutosarVariableRefId>,
     used_parameter_element: Option<AutosarParameterRefId>,
-    used_pim_ref: Option<String>,
+    used_pim_ref: Option<RefTypeId>,
 }
 
 impl RoleBasedDataAssignment {
@@ -12136,12 +12137,12 @@ impl RoleBasedDataAssignment {
         self
     }
 
-    pub fn get_used_pim_ref(&self) -> Option<&str> {
-        self.used_pim_ref.as_deref()
+    pub fn get_used_pim_ref(&self) -> Option<RefTypeId> {
+        self.used_pim_ref
     }
 
-    pub fn set_used_pim_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.used_pim_ref = Some(value.into());
+    pub fn set_used_pim_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.used_pim_ref = Some(value);
         self
     }
 
@@ -12912,7 +12913,7 @@ impl SupervisedEntityCheckpointNeeds {
 pub struct SupervisedEntityNeeds {
     base: ServiceNeeds,
     activate_at_start: Option<String>,
-    checkpoints_refs: Vec<String>,
+    checkpoints_refs: Vec<RefTypeId>,
     enable_deactivation: Option<String>,
     expected_alive_cycle: Option<String>,
     max_alive_cycle: Option<String>,
@@ -12942,11 +12943,11 @@ impl SupervisedEntityNeeds {
         self
     }
 
-    pub fn get_checkpoints_refs(&self) -> &[String] {
+    pub fn get_checkpoints_refs(&self) -> &[RefTypeId] {
         &self.checkpoints_refs
     }
 
-    pub fn push_checkpoints_ref(&mut self, value: String) {
+    pub fn push_checkpoints_ref(&mut self, value: RefTypeId) {
         self.checkpoints_refs.push(value);
     }
 
@@ -14837,9 +14838,13 @@ impl Document {
             return Err(format!("{path}: DEFERRING_FID_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.DEFERRING_FID_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.DEFERRING_FID_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.DEFERRING_FID_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.DEFERRING_FID_REFS[{index}]"))?;
         }
         if a.get_diag_event_debounce_algorithm() != b.get_diag_event_debounce_algorithm() {
             return Err(format!("{path}: DIAG_EVENT_DEBOUNCE_ALGORITHM mismatch"));
@@ -14855,11 +14860,20 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.INHIBITING_SECONDARY_FID_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.INHIBITING_SECONDARY_FID_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!(
+                    "{path}.INHIBITING_SECONDARY_FID_REFS[{index}]: id not found in other arena"
+                )
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.INHIBITING_SECONDARY_FID_REFS[{index}]"),
+            )?;
         }
         if a.get_prestored_freezeframe_stored_in_nvm()
             != b.get_prestored_freezeframe_stored_in_nvm()
@@ -15584,9 +15598,13 @@ impl Document {
             return Err(format!("{path}: CHECKPOINTS_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.CHECKPOINTS_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.CHECKPOINTS_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.CHECKPOINTS_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.CHECKPOINTS_REFS[{index}]"))?;
         }
         if a.get_enable_deactivation() != b.get_enable_deactivation() {
             return Err(format!("{path}: ENABLE_DEACTIVATION mismatch"));

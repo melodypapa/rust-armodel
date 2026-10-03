@@ -10,6 +10,7 @@ new_key_type! {
 }
 
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::data_elements::AutosarParameterRefId;
 use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::data_elements::AutosarVariableRefId;
 use crate::Document;
@@ -20,7 +21,7 @@ use crate::Document;
 pub struct SwCalprmRefProxy {
     base: ARObject,
     ar_parameter: Option<AutosarParameterRefId>,
-    mc_data_instance_ref: Option<String>,
+    mc_data_instance_ref: Option<RefTypeId>,
 }
 
 impl SwCalprmRefProxy {
@@ -45,12 +46,12 @@ impl SwCalprmRefProxy {
         self
     }
 
-    pub fn get_mc_data_instance_ref(&self) -> Option<&str> {
-        self.mc_data_instance_ref.as_deref()
+    pub fn get_mc_data_instance_ref(&self) -> Option<RefTypeId> {
+        self.mc_data_instance_ref
     }
 
-    pub fn set_mc_data_instance_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.mc_data_instance_ref = Some(value.into());
+    pub fn set_mc_data_instance_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.mc_data_instance_ref = Some(value);
         self
     }
 
@@ -79,7 +80,7 @@ impl SwCalprmRefProxy {
 pub struct SwVariableRefProxy {
     base: ARObject,
     autosar_variable: Option<AutosarVariableRefId>,
-    mc_data_instance_var_ref: Option<String>,
+    mc_data_instance_var_ref: Option<RefTypeId>,
 }
 
 impl SwVariableRefProxy {
@@ -104,12 +105,12 @@ impl SwVariableRefProxy {
         self
     }
 
-    pub fn get_mc_data_instance_var_ref(&self) -> Option<&str> {
-        self.mc_data_instance_var_ref.as_deref()
+    pub fn get_mc_data_instance_var_ref(&self) -> Option<RefTypeId> {
+        self.mc_data_instance_var_ref
     }
 
-    pub fn set_mc_data_instance_var_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.mc_data_instance_var_ref = Some(value.into());
+    pub fn set_mc_data_instance_var_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.mc_data_instance_var_ref = Some(value);
         self
     }
 

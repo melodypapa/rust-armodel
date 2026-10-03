@@ -21,6 +21,7 @@ use crate::m2::msr::documentation::text_model::block_elements::DocumentationBloc
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::Document;
 
@@ -29,12 +30,12 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct LifeCycleInfo {
     base: ARObject,
-    lc_object_ref: Option<String>,
-    lc_state_ref: Option<String>,
+    lc_object_ref: Option<RefTypeId>,
+    lc_state_ref: Option<RefTypeId>,
     period_begin: Option<LifeCyclePeriodId>,
     period_end: Option<LifeCyclePeriodId>,
     remark: Option<DocumentationBlockId>,
-    use_instead_refs: Vec<String>,
+    use_instead_refs: Vec<RefTypeId>,
 }
 
 impl LifeCycleInfo {
@@ -50,21 +51,21 @@ impl LifeCycleInfo {
         &mut self.base
     }
 
-    pub fn get_lc_object_ref(&self) -> Option<&str> {
-        self.lc_object_ref.as_deref()
+    pub fn get_lc_object_ref(&self) -> Option<RefTypeId> {
+        self.lc_object_ref
     }
 
-    pub fn set_lc_object_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.lc_object_ref = Some(value.into());
+    pub fn set_lc_object_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.lc_object_ref = Some(value);
         self
     }
 
-    pub fn get_lc_state_ref(&self) -> Option<&str> {
-        self.lc_state_ref.as_deref()
+    pub fn get_lc_state_ref(&self) -> Option<RefTypeId> {
+        self.lc_state_ref
     }
 
-    pub fn set_lc_state_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.lc_state_ref = Some(value.into());
+    pub fn set_lc_state_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.lc_state_ref = Some(value);
         self
     }
 
@@ -95,11 +96,11 @@ impl LifeCycleInfo {
         self
     }
 
-    pub fn get_use_instead_refs(&self) -> &[String] {
+    pub fn get_use_instead_refs(&self) -> &[RefTypeId] {
         &self.use_instead_refs
     }
 
-    pub fn push_use_instead_ref(&mut self, value: String) {
+    pub fn push_use_instead_ref(&mut self, value: RefTypeId) {
         self.use_instead_refs.push(value);
     }
 
@@ -127,11 +128,11 @@ impl LifeCycleInfo {
 #[derive(Debug, Default)]
 pub struct LifeCycleInfoSet {
     base: ARElement,
-    default_lc_state_ref: Option<String>,
+    default_lc_state_ref: Option<RefTypeId>,
     default_period_begin: Option<LifeCyclePeriodId>,
     default_period_end: Option<LifeCyclePeriodId>,
     life_cycle_infos: Vec<LifeCycleInfoId>,
-    used_life_cycle_state_definition_group_ref: Option<String>,
+    used_life_cycle_state_definition_group_ref: Option<RefTypeId>,
 }
 
 impl LifeCycleInfoSet {
@@ -147,12 +148,12 @@ impl LifeCycleInfoSet {
         &mut self.base
     }
 
-    pub fn get_default_lc_state_ref(&self) -> Option<&str> {
-        self.default_lc_state_ref.as_deref()
+    pub fn get_default_lc_state_ref(&self) -> Option<RefTypeId> {
+        self.default_lc_state_ref
     }
 
-    pub fn set_default_lc_state_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.default_lc_state_ref = Some(value.into());
+    pub fn set_default_lc_state_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.default_lc_state_ref = Some(value);
         self
     }
 
@@ -182,15 +183,15 @@ impl LifeCycleInfoSet {
         self.life_cycle_infos.push(value);
     }
 
-    pub fn get_used_life_cycle_state_definition_group_ref(&self) -> Option<&str> {
-        self.used_life_cycle_state_definition_group_ref.as_deref()
+    pub fn get_used_life_cycle_state_definition_group_ref(&self) -> Option<RefTypeId> {
+        self.used_life_cycle_state_definition_group_ref
     }
 
     pub fn set_used_life_cycle_state_definition_group_ref(
         &mut self,
-        value: impl Into<String>,
+        value: RefTypeId,
     ) -> &mut Self {
-        self.used_life_cycle_state_definition_group_ref = Some(value.into());
+        self.used_life_cycle_state_definition_group_ref = Some(value);
         self
     }
 
@@ -895,7 +896,7 @@ impl LifeCycleStateDefinitionGroup {
 impl Document {
     pub(crate) fn compare_life_cycle_info(
         &self,
-        _other: &Document,
+        other: &Document,
         a: &LifeCycleInfo,
         b: &LifeCycleInfo,
         path: &str,
@@ -922,9 +923,13 @@ impl Document {
             return Err(format!("{path}: USE_INSTEAD_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.USE_INSTEAD_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.USE_INSTEAD_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.USE_INSTEAD_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.USE_INSTEAD_REFS[{index}]"))?;
         }
         Ok(())
     }

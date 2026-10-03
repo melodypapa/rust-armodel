@@ -17,6 +17,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::i
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::multidimensional_time::MultidimensionalTimeId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
@@ -62,11 +63,11 @@ impl TDLETZoneClock {
         self
     }
 
-    pub fn get_platform_time_base_ref(&self) -> Option<&str> {
+    pub fn get_platform_time_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_platform_time_base_ref()
     }
 
-    pub fn set_platform_time_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_platform_time_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_platform_time_base_ref(value);
         self
     }
@@ -219,7 +220,7 @@ impl TDLETZoneClock {
 pub struct TimingClock {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    platform_time_base_ref: Option<String>,
+    platform_time_base_ref: Option<RefTypeId>,
 }
 
 impl TimingClock {
@@ -243,12 +244,12 @@ impl TimingClock {
         &mut self.variation_point_capable
     }
 
-    pub fn get_platform_time_base_ref(&self) -> Option<&str> {
-        self.platform_time_base_ref.as_deref()
+    pub fn get_platform_time_base_ref(&self) -> Option<RefTypeId> {
+        self.platform_time_base_ref
     }
 
-    pub fn set_platform_time_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.platform_time_base_ref = Some(value.into());
+    pub fn set_platform_time_base_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.platform_time_base_ref = Some(value);
         self
     }
 
@@ -400,8 +401,8 @@ pub struct TimingClockSyncAccuracy {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
     accuracy: Option<MultidimensionalTimeId>,
-    lower_ref: Option<String>,
-    upper_ref: Option<String>,
+    lower_ref: Option<RefTypeId>,
+    upper_ref: Option<RefTypeId>,
 }
 
 impl TimingClockSyncAccuracy {
@@ -434,21 +435,21 @@ impl TimingClockSyncAccuracy {
         self
     }
 
-    pub fn get_lower_ref(&self) -> Option<&str> {
-        self.lower_ref.as_deref()
+    pub fn get_lower_ref(&self) -> Option<RefTypeId> {
+        self.lower_ref
     }
 
-    pub fn set_lower_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.lower_ref = Some(value.into());
+    pub fn set_lower_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.lower_ref = Some(value);
         self
     }
 
-    pub fn get_upper_ref(&self) -> Option<&str> {
-        self.upper_ref.as_deref()
+    pub fn get_upper_ref(&self) -> Option<RefTypeId> {
+        self.upper_ref
     }
 
-    pub fn set_upper_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.upper_ref = Some(value.into());
+    pub fn set_upper_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.upper_ref = Some(value);
         self
     }
 

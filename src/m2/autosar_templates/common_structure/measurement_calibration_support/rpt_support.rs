@@ -20,6 +20,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::sw_component_template::rpt_scenario::RptExecutableEntityPropertiesId;
@@ -159,8 +160,8 @@ impl TryFrom<&str> for RptPreparationEnum {
 #[derive(Debug, Default)]
 pub struct McFunctionDataRefSet {
     base: ARObject,
-    flat_map_entry_refs: Vec<String>,
-    mc_data_instance_refs: Vec<String>,
+    flat_map_entry_refs: Vec<RefTypeId>,
+    mc_data_instance_refs: Vec<RefTypeId>,
 }
 
 impl McFunctionDataRefSet {
@@ -176,19 +177,19 @@ impl McFunctionDataRefSet {
         &mut self.base
     }
 
-    pub fn get_flat_map_entry_refs(&self) -> &[String] {
+    pub fn get_flat_map_entry_refs(&self) -> &[RefTypeId] {
         &self.flat_map_entry_refs
     }
 
-    pub fn push_flat_map_entry_ref(&mut self, value: String) {
+    pub fn push_flat_map_entry_ref(&mut self, value: RefTypeId) {
         self.flat_map_entry_refs.push(value);
     }
 
-    pub fn get_mc_data_instance_refs(&self) -> &[String] {
+    pub fn get_mc_data_instance_refs(&self) -> &[RefTypeId] {
         &self.mc_data_instance_refs
     }
 
-    pub fn push_mc_data_instance_ref(&mut self, value: String) {
+    pub fn push_mc_data_instance_ref(&mut self, value: RefTypeId) {
         self.mc_data_instance_refs.push(value);
     }
 
@@ -622,13 +623,13 @@ impl RptExecutableEntity {
 pub struct RptExecutableEntityEvent {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    execution_context_refs: Vec<String>,
+    execution_context_refs: Vec<RefTypeId>,
     mc_data_assignments: Vec<RoleBasedMcDataAssignmentId>,
     rpt_event_id: Option<String>,
     rpt_executable_entity_properties: Option<RptExecutableEntityPropertiesId>,
     rpt_impl_policy: Option<RptImplPolicyId>,
-    rpt_service_point_post_refs: Vec<String>,
-    rpt_service_point_pre_refs: Vec<String>,
+    rpt_service_point_post_refs: Vec<RefTypeId>,
+    rpt_service_point_pre_refs: Vec<RefTypeId>,
 }
 
 impl RptExecutableEntityEvent {
@@ -652,11 +653,11 @@ impl RptExecutableEntityEvent {
         &mut self.variation_point_capable
     }
 
-    pub fn get_execution_context_refs(&self) -> &[String] {
+    pub fn get_execution_context_refs(&self) -> &[RefTypeId] {
         &self.execution_context_refs
     }
 
-    pub fn push_execution_context_ref(&mut self, value: String) {
+    pub fn push_execution_context_ref(&mut self, value: RefTypeId) {
         self.execution_context_refs.push(value);
     }
 
@@ -698,19 +699,19 @@ impl RptExecutableEntityEvent {
         self
     }
 
-    pub fn get_rpt_service_point_post_refs(&self) -> &[String] {
+    pub fn get_rpt_service_point_post_refs(&self) -> &[RefTypeId] {
         &self.rpt_service_point_post_refs
     }
 
-    pub fn push_rpt_service_point_post_ref(&mut self, value: String) {
+    pub fn push_rpt_service_point_post_ref(&mut self, value: RefTypeId) {
         self.rpt_service_point_post_refs.push(value);
     }
 
-    pub fn get_rpt_service_point_pre_refs(&self) -> &[String] {
+    pub fn get_rpt_service_point_pre_refs(&self) -> &[RefTypeId] {
         &self.rpt_service_point_pre_refs
     }
 
-    pub fn push_rpt_service_point_pre_ref(&mut self, value: String) {
+    pub fn push_rpt_service_point_pre_ref(&mut self, value: RefTypeId) {
         self.rpt_service_point_pre_refs.push(value);
     }
 
@@ -1334,7 +1335,7 @@ impl RptSwPrototypingAccess {
 impl Document {
     pub(crate) fn compare_mc_function_data_ref_set(
         &self,
-        _other: &Document,
+        other: &Document,
         a: &McFunctionDataRefSet,
         b: &McFunctionDataRefSet,
         path: &str,
@@ -1346,9 +1347,13 @@ impl Document {
             return Err(format!("{path}: FLAT_MAP_ENTRY_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.FLAT_MAP_ENTRY_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.FLAT_MAP_ENTRY_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.FLAT_MAP_ENTRY_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.FLAT_MAP_ENTRY_REFS[{index}]"))?;
         }
         let list_a = a.get_mc_data_instance_refs();
         let list_b = b.get_mc_data_instance_refs();
@@ -1356,9 +1361,18 @@ impl Document {
             return Err(format!("{path}: MC_DATA_INSTANCE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.MC_DATA_INSTANCE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.MC_DATA_INSTANCE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.MC_DATA_INSTANCE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.MC_DATA_INSTANCE_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }
@@ -1529,9 +1543,18 @@ impl Document {
             return Err(format!("{path}: EXECUTION_CONTEXT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.EXECUTION_CONTEXT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.EXECUTION_CONTEXT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.EXECUTION_CONTEXT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.EXECUTION_CONTEXT_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_mc_data_assignments();
         let list_b = b.get_mc_data_assignments();
@@ -1572,11 +1595,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.RPT_SERVICE_POINT_POST_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.RPT_SERVICE_POINT_POST_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.RPT_SERVICE_POINT_POST_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.RPT_SERVICE_POINT_POST_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_rpt_service_point_pre_refs();
         let list_b = b.get_rpt_service_point_pre_refs();
@@ -1586,11 +1616,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.RPT_SERVICE_POINT_PRE_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.RPT_SERVICE_POINT_PRE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.RPT_SERVICE_POINT_PRE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.RPT_SERVICE_POINT_PRE_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }

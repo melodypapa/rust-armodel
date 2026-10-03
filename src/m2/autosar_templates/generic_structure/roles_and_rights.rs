@@ -16,6 +16,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::e
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Referrable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -60,11 +61,11 @@ pub struct AclObjectSet {
     base: Identifiable,
     acl_object_classes: Vec<String>,
     acl_scope: Option<AclScopeEnum>,
-    collection_ref: Option<String>,
-    derived_from_blueprint_refs: Vec<String>,
+    collection_ref: Option<RefTypeId>,
+    derived_from_blueprint_refs: Vec<RefTypeId>,
     engineering_objects: Vec<AutosarEngineeringObjectId>,
-    object_refs: Vec<String>,
-    object_definition_refs: Vec<String>,
+    object_refs: Vec<RefTypeId>,
+    object_definition_refs: Vec<RefTypeId>,
 }
 
 impl AclObjectSet {
@@ -97,20 +98,20 @@ impl AclObjectSet {
         self
     }
 
-    pub fn get_collection_ref(&self) -> Option<&str> {
-        self.collection_ref.as_deref()
+    pub fn get_collection_ref(&self) -> Option<RefTypeId> {
+        self.collection_ref
     }
 
-    pub fn set_collection_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.collection_ref = Some(value.into());
+    pub fn set_collection_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.collection_ref = Some(value);
         self
     }
 
-    pub fn get_derived_from_blueprint_refs(&self) -> &[String] {
+    pub fn get_derived_from_blueprint_refs(&self) -> &[RefTypeId] {
         &self.derived_from_blueprint_refs
     }
 
-    pub fn push_derived_from_blueprint_ref(&mut self, value: String) {
+    pub fn push_derived_from_blueprint_ref(&mut self, value: RefTypeId) {
         self.derived_from_blueprint_refs.push(value);
     }
 
@@ -122,19 +123,19 @@ impl AclObjectSet {
         self.engineering_objects.push(value);
     }
 
-    pub fn get_object_refs(&self) -> &[String] {
+    pub fn get_object_refs(&self) -> &[RefTypeId] {
         &self.object_refs
     }
 
-    pub fn push_object_ref(&mut self, value: String) {
+    pub fn push_object_ref(&mut self, value: RefTypeId) {
         self.object_refs.push(value);
     }
 
-    pub fn get_object_definition_refs(&self) -> &[String] {
+    pub fn get_object_definition_refs(&self) -> &[RefTypeId] {
         &self.object_definition_refs
     }
 
-    pub fn push_object_definition_ref(&mut self, value: String) {
+    pub fn push_object_definition_ref(&mut self, value: RefTypeId) {
         self.object_definition_refs.push(value);
     }
 
@@ -274,7 +275,7 @@ impl AclObjectSet {
 #[derive(Debug, Default)]
 pub struct AclOperation {
     base: Identifiable,
-    implied_operation_refs: Vec<String>,
+    implied_operation_refs: Vec<RefTypeId>,
 }
 
 impl AclOperation {
@@ -290,11 +291,11 @@ impl AclOperation {
         &mut self.base
     }
 
-    pub fn get_implied_operation_refs(&self) -> &[String] {
+    pub fn get_implied_operation_refs(&self) -> &[RefTypeId] {
         &self.implied_operation_refs
     }
 
-    pub fn push_implied_operation_ref(&mut self, value: String) {
+    pub fn push_implied_operation_ref(&mut self, value: RefTypeId) {
         self.implied_operation_refs.push(value);
     }
 
@@ -435,9 +436,9 @@ impl AclOperation {
 pub struct AclPermission {
     base: Identifiable,
     acl_contexts: Vec<String>,
-    acl_object_refs: Vec<String>,
-    acl_operation_refs: Vec<String>,
-    acl_role_refs: Vec<String>,
+    acl_object_refs: Vec<RefTypeId>,
+    acl_operation_refs: Vec<RefTypeId>,
+    acl_role_refs: Vec<RefTypeId>,
     acl_scope: Option<AclScopeEnum>,
 }
 
@@ -462,27 +463,27 @@ impl AclPermission {
         self.acl_contexts.push(value);
     }
 
-    pub fn get_acl_object_refs(&self) -> &[String] {
+    pub fn get_acl_object_refs(&self) -> &[RefTypeId] {
         &self.acl_object_refs
     }
 
-    pub fn push_acl_object_ref(&mut self, value: String) {
+    pub fn push_acl_object_ref(&mut self, value: RefTypeId) {
         self.acl_object_refs.push(value);
     }
 
-    pub fn get_acl_operation_refs(&self) -> &[String] {
+    pub fn get_acl_operation_refs(&self) -> &[RefTypeId] {
         &self.acl_operation_refs
     }
 
-    pub fn push_acl_operation_ref(&mut self, value: String) {
+    pub fn push_acl_operation_ref(&mut self, value: RefTypeId) {
         self.acl_operation_refs.push(value);
     }
 
-    pub fn get_acl_role_refs(&self) -> &[String] {
+    pub fn get_acl_role_refs(&self) -> &[RefTypeId] {
         &self.acl_role_refs
     }
 
-    pub fn push_acl_role_ref(&mut self, value: String) {
+    pub fn push_acl_role_ref(&mut self, value: RefTypeId) {
         self.acl_role_refs.push(value);
     }
 
@@ -885,11 +886,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.DERIVED_FROM_BLUEPRINT_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.DERIVED_FROM_BLUEPRINT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.DERIVED_FROM_BLUEPRINT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.DERIVED_FROM_BLUEPRINT_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_engineering_objects();
         let list_b = b.get_engineering_objects();
@@ -916,9 +924,14 @@ impl Document {
             return Err(format!("{path}: OBJECT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.OBJECT_REFS[{index}] mismatch"));
-            }
+            let x = self
+                .ref_types
+                .get(*x)
+                .ok_or_else(|| format!("{path}.OBJECT_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.OBJECT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.OBJECT_REFS[{index}]"))?;
         }
         let list_a = a.get_object_definition_refs();
         let list_b = b.get_object_definition_refs();
@@ -926,9 +939,18 @@ impl Document {
             return Err(format!("{path}: OBJECT_DEFINITION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.OBJECT_DEFINITION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.OBJECT_DEFINITION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.OBJECT_DEFINITION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.OBJECT_DEFINITION_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }
@@ -947,9 +969,18 @@ impl Document {
             return Err(format!("{path}: IMPLIED_OPERATION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.IMPLIED_OPERATION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.IMPLIED_OPERATION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.IMPLIED_OPERATION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.IMPLIED_OPERATION_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }
@@ -978,9 +1009,13 @@ impl Document {
             return Err(format!("{path}: ACL_OBJECT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.ACL_OBJECT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.ACL_OBJECT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.ACL_OBJECT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.ACL_OBJECT_REFS[{index}]"))?;
         }
         let list_a = a.get_acl_operation_refs();
         let list_b = b.get_acl_operation_refs();
@@ -988,9 +1023,13 @@ impl Document {
             return Err(format!("{path}: ACL_OPERATION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.ACL_OPERATION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.ACL_OPERATION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.ACL_OPERATION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.ACL_OPERATION_REFS[{index}]"))?;
         }
         let list_a = a.get_acl_role_refs();
         let list_b = b.get_acl_role_refs();
@@ -998,9 +1037,13 @@ impl Document {
             return Err(format!("{path}: ACL_ROLE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.ACL_ROLE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.ACL_ROLE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.ACL_ROLE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.ACL_ROLE_REFS[{index}]"))?;
         }
         if a.get_acl_scope() != b.get_acl_scope() {
             return Err(format!("{path}: ACL_SCOPE mismatch"));

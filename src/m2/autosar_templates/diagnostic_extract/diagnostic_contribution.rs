@@ -16,6 +16,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -32,8 +33,8 @@ pub enum DiagnosticObdSupportEnum {}
 pub struct DiagnosticContributionSet {
     base: ARElement,
     common_properties: Option<DiagnosticCommonPropsId>,
-    element_refs: Vec<String>,
-    service_table_refs: Vec<String>,
+    element_refs: Vec<RefTypeId>,
+    service_table_refs: Vec<RefTypeId>,
 }
 
 impl DiagnosticContributionSet {
@@ -58,19 +59,19 @@ impl DiagnosticContributionSet {
         self
     }
 
-    pub fn get_element_refs(&self) -> &[String] {
+    pub fn get_element_refs(&self) -> &[RefTypeId] {
         &self.element_refs
     }
 
-    pub fn push_element_ref(&mut self, value: String) {
+    pub fn push_element_ref(&mut self, value: RefTypeId) {
         self.element_refs.push(value);
     }
 
-    pub fn get_service_table_refs(&self) -> &[String] {
+    pub fn get_service_table_refs(&self) -> &[RefTypeId] {
         &self.service_table_refs
     }
 
-    pub fn push_service_table_ref(&mut self, value: String) {
+    pub fn push_service_table_ref(&mut self, value: RefTypeId) {
         self.service_table_refs.push(value);
     }
 
@@ -529,11 +530,11 @@ impl DiagnosticEcuInstanceProps {
 #[derive(Debug, Default)]
 pub struct DiagnosticProtocol {
     base: ARElement,
-    diagnostic_connection_refs: Vec<String>,
+    diagnostic_connection_refs: Vec<RefTypeId>,
     priority: Option<String>,
     protocol_kind: Option<String>,
     send_resp_pend_on_trans_to_boot: Option<String>,
-    service_table_ref: Option<String>,
+    service_table_ref: Option<RefTypeId>,
 }
 
 impl DiagnosticProtocol {
@@ -549,11 +550,11 @@ impl DiagnosticProtocol {
         &mut self.base
     }
 
-    pub fn get_diagnostic_connection_refs(&self) -> &[String] {
+    pub fn get_diagnostic_connection_refs(&self) -> &[RefTypeId] {
         &self.diagnostic_connection_refs
     }
 
-    pub fn push_diagnostic_connection_ref(&mut self, value: String) {
+    pub fn push_diagnostic_connection_ref(&mut self, value: RefTypeId) {
         self.diagnostic_connection_refs.push(value);
     }
 
@@ -584,12 +585,12 @@ impl DiagnosticProtocol {
         self
     }
 
-    pub fn get_service_table_ref(&self) -> Option<&str> {
-        self.service_table_ref.as_deref()
+    pub fn get_service_table_ref(&self) -> Option<RefTypeId> {
+        self.service_table_ref
     }
 
-    pub fn set_service_table_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.service_table_ref = Some(value.into());
+    pub fn set_service_table_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.service_table_ref = Some(value);
         self
     }
 
@@ -813,10 +814,10 @@ impl DiagnosticProtocol {
 #[derive(Debug, Default)]
 pub struct DiagnosticServiceTable {
     base: DiagnosticCommonElement,
-    diagnostic_connection_refs: Vec<String>,
-    ecu_instance_ref: Option<String>,
+    diagnostic_connection_refs: Vec<RefTypeId>,
+    ecu_instance_ref: Option<RefTypeId>,
     protocol_kind: Option<String>,
-    service_instance_refs: Vec<String>,
+    service_instance_refs: Vec<RefTypeId>,
 }
 
 impl DiagnosticServiceTable {
@@ -832,20 +833,20 @@ impl DiagnosticServiceTable {
         &mut self.base
     }
 
-    pub fn get_diagnostic_connection_refs(&self) -> &[String] {
+    pub fn get_diagnostic_connection_refs(&self) -> &[RefTypeId] {
         &self.diagnostic_connection_refs
     }
 
-    pub fn push_diagnostic_connection_ref(&mut self, value: String) {
+    pub fn push_diagnostic_connection_ref(&mut self, value: RefTypeId) {
         self.diagnostic_connection_refs.push(value);
     }
 
-    pub fn get_ecu_instance_ref(&self) -> Option<&str> {
-        self.ecu_instance_ref.as_deref()
+    pub fn get_ecu_instance_ref(&self) -> Option<RefTypeId> {
+        self.ecu_instance_ref
     }
 
-    pub fn set_ecu_instance_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ecu_instance_ref = Some(value.into());
+    pub fn set_ecu_instance_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ecu_instance_ref = Some(value);
         self
     }
 
@@ -858,11 +859,11 @@ impl DiagnosticServiceTable {
         self
     }
 
-    pub fn get_service_instance_refs(&self) -> &[String] {
+    pub fn get_service_instance_refs(&self) -> &[RefTypeId] {
         &self.service_instance_refs
     }
 
-    pub fn push_service_instance_ref(&mut self, value: String) {
+    pub fn push_service_instance_ref(&mut self, value: RefTypeId) {
         self.service_instance_refs.push(value);
     }
 
@@ -1130,9 +1131,13 @@ impl Document {
             return Err(format!("{path}: ELEMENT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.ELEMENT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.ELEMENT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.ELEMENT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.ELEMENT_REFS[{index}]"))?;
         }
         let list_a = a.get_service_table_refs();
         let list_b = b.get_service_table_refs();
@@ -1140,9 +1145,13 @@ impl Document {
             return Err(format!("{path}: SERVICE_TABLE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SERVICE_TABLE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SERVICE_TABLE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SERVICE_TABLE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SERVICE_TABLE_REFS[{index}]"))?;
         }
         Ok(())
     }
@@ -1174,11 +1183,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.DIAGNOSTIC_CONNECTION_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.DIAGNOSTIC_CONNECTION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.DIAGNOSTIC_CONNECTION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.DIAGNOSTIC_CONNECTION_REFS[{index}]"),
+            )?;
         }
         if a.get_priority() != b.get_priority() {
             return Err(format!("{path}: PRIORITY mismatch"));
@@ -1211,11 +1227,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.DIAGNOSTIC_CONNECTION_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.DIAGNOSTIC_CONNECTION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.DIAGNOSTIC_CONNECTION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.DIAGNOSTIC_CONNECTION_REFS[{index}]"),
+            )?;
         }
         if a.get_ecu_instance_ref() != b.get_ecu_instance_ref() {
             return Err(format!("{path}: ECU_INSTANCE_REF mismatch"));
@@ -1229,9 +1252,18 @@ impl Document {
             return Err(format!("{path}: SERVICE_INSTANCE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SERVICE_INSTANCE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SERVICE_INSTANCE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SERVICE_INSTANCE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.SERVICE_INSTANCE_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }

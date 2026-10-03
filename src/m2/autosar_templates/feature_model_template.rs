@@ -28,6 +28,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::variant_handling::SwSystemconstDependentFormula;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
@@ -247,20 +248,20 @@ impl FMConditionByFeaturesAndAttributes {
         &mut self.base
     }
 
-    pub fn get_attribute_ref(&self) -> Option<&str> {
+    pub fn get_attribute_ref(&self) -> Option<RefTypeId> {
         self.base().get_attribute_ref()
     }
 
-    pub fn set_attribute_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_attribute_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_attribute_ref(value);
         self
     }
 
-    pub fn get_feature_ref(&self) -> Option<&str> {
+    pub fn get_feature_ref(&self) -> Option<RefTypeId> {
         self.base().get_feature_ref()
     }
 
-    pub fn set_feature_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_feature_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_feature_ref(value);
         self
     }
@@ -321,29 +322,29 @@ impl FMConditionByFeaturesAndSwSystemconsts {
         &mut self.base
     }
 
-    pub fn get_feature_ref(&self) -> Option<&str> {
+    pub fn get_feature_ref(&self) -> Option<RefTypeId> {
         self.base().get_feature_ref()
     }
 
-    pub fn set_feature_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_feature_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_feature_ref(value);
         self
     }
 
-    pub fn get_sysc_ref(&self) -> Option<&str> {
+    pub fn get_sysc_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sysc_ref()
     }
 
-    pub fn set_sysc_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sysc_ref(value);
         self
     }
 
-    pub fn get_sysc_string_ref(&self) -> Option<&str> {
+    pub fn get_sysc_string_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_sysc_string_ref()
     }
 
-    pub fn set_sysc_string_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_string_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_sysc_string_ref(value);
         self
     }
@@ -2276,8 +2277,8 @@ impl FMFeatureSelectionSet {
 #[derive(Debug, Default)]
 pub struct FMFormulaByFeaturesAndAttributes {
     base: FormulaExpression,
-    attribute_ref: Option<String>,
-    feature_ref: Option<String>,
+    attribute_ref: Option<RefTypeId>,
+    feature_ref: Option<RefTypeId>,
 }
 
 impl FMFormulaByFeaturesAndAttributes {
@@ -2293,21 +2294,21 @@ impl FMFormulaByFeaturesAndAttributes {
         &mut self.base
     }
 
-    pub fn get_attribute_ref(&self) -> Option<&str> {
-        self.attribute_ref.as_deref()
+    pub fn get_attribute_ref(&self) -> Option<RefTypeId> {
+        self.attribute_ref
     }
 
-    pub fn set_attribute_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.attribute_ref = Some(value.into());
+    pub fn set_attribute_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.attribute_ref = Some(value);
         self
     }
 
-    pub fn get_feature_ref(&self) -> Option<&str> {
-        self.feature_ref.as_deref()
+    pub fn get_feature_ref(&self) -> Option<RefTypeId> {
+        self.feature_ref
     }
 
-    pub fn set_feature_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.feature_ref = Some(value.into());
+    pub fn set_feature_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.feature_ref = Some(value);
         self
     }
 
@@ -2352,7 +2353,7 @@ impl FMFormulaByFeaturesAndAttributes {
 #[derive(Debug, Default)]
 pub struct FMFormulaByFeaturesAndSwSystemconsts {
     base: SwSystemconstDependentFormula,
-    feature_ref: Option<String>,
+    feature_ref: Option<RefTypeId>,
 }
 
 impl FMFormulaByFeaturesAndSwSystemconsts {
@@ -2368,29 +2369,29 @@ impl FMFormulaByFeaturesAndSwSystemconsts {
         &mut self.base
     }
 
-    pub fn get_feature_ref(&self) -> Option<&str> {
-        self.feature_ref.as_deref()
+    pub fn get_feature_ref(&self) -> Option<RefTypeId> {
+        self.feature_ref
     }
 
-    pub fn set_feature_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.feature_ref = Some(value.into());
+    pub fn set_feature_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.feature_ref = Some(value);
         self
     }
 
-    pub fn get_sysc_ref(&self) -> Option<&str> {
+    pub fn get_sysc_ref(&self) -> Option<RefTypeId> {
         self.base().get_sysc_ref()
     }
 
-    pub fn set_sysc_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_sysc_ref(value);
         self
     }
 
-    pub fn get_sysc_string_ref(&self) -> Option<&str> {
+    pub fn get_sysc_string_ref(&self) -> Option<RefTypeId> {
         self.base().get_sysc_string_ref()
     }
 
-    pub fn set_sysc_string_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sysc_string_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_sysc_string_ref(value);
         self
     }

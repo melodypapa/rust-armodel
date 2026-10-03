@@ -18,6 +18,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -57,8 +58,8 @@ impl TryFrom<&str> for OsTaskPreemptabilityEnum {
 #[derive(Debug, Default)]
 pub struct AppOsTaskProxyToEcuTaskProxyMapping {
     base: Identifiable,
-    app_task_proxy_ref: Option<String>,
-    ecu_task_proxy_ref: Option<String>,
+    app_task_proxy_ref: Option<RefTypeId>,
+    ecu_task_proxy_ref: Option<RefTypeId>,
     offset: Option<String>,
 }
 
@@ -75,21 +76,21 @@ impl AppOsTaskProxyToEcuTaskProxyMapping {
         &mut self.base
     }
 
-    pub fn get_app_task_proxy_ref(&self) -> Option<&str> {
-        self.app_task_proxy_ref.as_deref()
+    pub fn get_app_task_proxy_ref(&self) -> Option<RefTypeId> {
+        self.app_task_proxy_ref
     }
 
-    pub fn set_app_task_proxy_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.app_task_proxy_ref = Some(value.into());
+    pub fn set_app_task_proxy_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.app_task_proxy_ref = Some(value);
         self
     }
 
-    pub fn get_ecu_task_proxy_ref(&self) -> Option<&str> {
-        self.ecu_task_proxy_ref.as_deref()
+    pub fn get_ecu_task_proxy_ref(&self) -> Option<RefTypeId> {
+        self.ecu_task_proxy_ref
     }
 
-    pub fn set_ecu_task_proxy_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ecu_task_proxy_ref = Some(value.into());
+    pub fn set_ecu_task_proxy_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ecu_task_proxy_ref = Some(value);
         self
     }
 

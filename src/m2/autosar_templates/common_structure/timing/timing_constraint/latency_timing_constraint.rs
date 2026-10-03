@@ -15,6 +15,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::multidimensional_time::MultidimensionalTimeId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::autosar_templates::common_structure::timing::timing_constraint::TimingConstraint;
 use crate::Document;
@@ -57,7 +58,7 @@ pub struct LatencyTimingConstraint {
     maximum: Option<MultidimensionalTimeId>,
     minimum: Option<MultidimensionalTimeId>,
     nominal: Option<MultidimensionalTimeId>,
-    scope_ref: Option<String>,
+    scope_ref: Option<RefTypeId>,
 }
 
 impl LatencyTimingConstraint {
@@ -109,29 +110,29 @@ impl LatencyTimingConstraint {
         self
     }
 
-    pub fn get_scope_ref(&self) -> Option<&str> {
-        self.scope_ref.as_deref()
+    pub fn get_scope_ref(&self) -> Option<RefTypeId> {
+        self.scope_ref
     }
 
-    pub fn set_scope_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.scope_ref = Some(value.into());
+    pub fn set_scope_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.scope_ref = Some(value);
         self
     }
 
-    pub fn get_timing_condition_ref(&self) -> Option<&str> {
+    pub fn get_timing_condition_ref(&self) -> Option<RefTypeId> {
         self.base().get_timing_condition_ref()
     }
 
-    pub fn set_timing_condition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_timing_condition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_timing_condition_ref(value);
         self
     }
 
-    pub fn get_trace_refs(&self) -> &[String] {
+    pub fn get_trace_refs(&self) -> &[RefTypeId] {
         self.base().base().get_trace_refs()
     }
 
-    pub fn push_trace_ref(&mut self, value: String) {
+    pub fn push_trace_ref(&mut self, value: RefTypeId) {
         self.base_mut().base_mut().push_trace_ref(value)
     }
 

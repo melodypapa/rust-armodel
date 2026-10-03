@@ -53,6 +53,7 @@ use crate::m2::msr::documentation::block_elements::formula::MlFormulaId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefType;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::Document;
 
@@ -369,11 +370,11 @@ impl EcucAbstractExternalReferenceDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -759,11 +760,11 @@ impl EcucAbstractInternalReferenceDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -1127,11 +1128,11 @@ impl EcucAbstractReferenceDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_related_trace_item_ref(value);
         self
     }
@@ -1513,11 +1514,11 @@ impl EcucAbstractStringParamDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -1910,11 +1911,11 @@ impl EcucAddInfoParamDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -2317,11 +2318,11 @@ impl EcucBooleanParamDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -2606,11 +2607,11 @@ impl EcucChoiceContainerDef {
         self.choices.push(value);
     }
 
-    pub fn get_destination_uri_refs(&self) -> &[String] {
+    pub fn get_destination_uri_refs(&self) -> &[RefTypeId] {
         self.base().get_destination_uri_refs()
     }
 
-    pub fn push_destination_uri_ref(&mut self, value: String) {
+    pub fn push_destination_uri_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_destination_uri_ref(value)
     }
 
@@ -2675,11 +2676,11 @@ impl EcucChoiceContainerDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_related_trace_item_ref(value);
         self
     }
@@ -2890,7 +2891,7 @@ impl EcucChoiceContainerDef {
 #[derive(Debug, Default)]
 pub struct EcucChoiceReferenceDef {
     base: EcucAbstractInternalReferenceDef,
-    destination_refs: Vec<String>,
+    destination_refs: Vec<RefTypeId>,
 }
 
 impl EcucChoiceReferenceDef {
@@ -2906,11 +2907,11 @@ impl EcucChoiceReferenceDef {
         &mut self.base
     }
 
-    pub fn get_destination_refs(&self) -> &[String] {
+    pub fn get_destination_refs(&self) -> &[RefTypeId] {
         &self.destination_refs
     }
 
-    pub fn push_destination_ref(&mut self, value: String) {
+    pub fn push_destination_ref(&mut self, value: RefTypeId) {
         self.destination_refs.push(value);
     }
 
@@ -3040,7 +3041,7 @@ impl EcucChoiceReferenceDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
@@ -3048,7 +3049,7 @@ impl EcucChoiceReferenceDef {
             .get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -3450,11 +3451,11 @@ impl EcucCommonAttributes {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base().get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_related_trace_item_ref(value);
         self
     }
@@ -3633,8 +3634,8 @@ impl EcucCommonAttributes {
 #[derive(Debug, Default)]
 pub struct EcucConditionFormula {
     base: FormulaExpression,
-    ecuc_query_ref: Option<String>,
-    ecuc_query_string_ref: Option<String>,
+    ecuc_query_ref: Option<RefTypeId>,
+    ecuc_query_string_ref: Option<RefTypeId>,
 }
 
 impl EcucConditionFormula {
@@ -3650,21 +3651,21 @@ impl EcucConditionFormula {
         &mut self.base
     }
 
-    pub fn get_ecuc_query_ref(&self) -> Option<&str> {
-        self.ecuc_query_ref.as_deref()
+    pub fn get_ecuc_query_ref(&self) -> Option<RefTypeId> {
+        self.ecuc_query_ref
     }
 
-    pub fn set_ecuc_query_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ecuc_query_ref = Some(value.into());
+    pub fn set_ecuc_query_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ecuc_query_ref = Some(value);
         self
     }
 
-    pub fn get_ecuc_query_string_ref(&self) -> Option<&str> {
-        self.ecuc_query_string_ref.as_deref()
+    pub fn get_ecuc_query_string_ref(&self) -> Option<RefTypeId> {
+        self.ecuc_query_string_ref
     }
 
-    pub fn set_ecuc_query_string_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ecuc_query_string_ref = Some(value.into());
+    pub fn set_ecuc_query_string_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ecuc_query_string_ref = Some(value);
         self
     }
 
@@ -3776,7 +3777,7 @@ impl EcucConditionSpecification {
 #[derive(Debug, Default)]
 pub struct EcucContainerDef {
     base: EcucDefinitionElement,
-    destination_uri_refs: Vec<String>,
+    destination_uri_refs: Vec<RefTypeId>,
     multiplicity_config_classes: Vec<EcucMultiplicityConfigurationClassId>,
     origin: Option<String>,
     post_build_variant_multiplicity: Option<String>,
@@ -3796,11 +3797,11 @@ impl EcucContainerDef {
         &mut self.base
     }
 
-    pub fn get_destination_uri_refs(&self) -> &[String] {
+    pub fn get_destination_uri_refs(&self) -> &[RefTypeId] {
         &self.destination_uri_refs
     }
 
-    pub fn push_destination_uri_ref(&mut self, value: String) {
+    pub fn push_destination_uri_ref(&mut self, value: RefTypeId) {
         self.destination_uri_refs.push(value);
     }
 
@@ -3865,11 +3866,11 @@ impl EcucContainerDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base().get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_related_trace_item_ref(value);
         self
     }
@@ -4048,7 +4049,7 @@ impl EcucContainerDef {
 #[derive(Debug, Default)]
 pub struct EcucDefinitionCollection {
     base: AtpBlueprintable,
-    module_refs: Vec<String>,
+    module_refs: Vec<RefTypeId>,
 }
 
 impl EcucDefinitionCollection {
@@ -4064,11 +4065,11 @@ impl EcucDefinitionCollection {
         &mut self.base
     }
 
-    pub fn get_module_refs(&self) -> &[String] {
+    pub fn get_module_refs(&self) -> &[RefTypeId] {
         &self.module_refs
     }
 
-    pub fn push_module_ref(&mut self, value: String) {
+    pub fn push_module_ref(&mut self, value: RefTypeId) {
         self.module_refs.push(value);
     }
 
@@ -4222,7 +4223,7 @@ pub struct EcucDefinitionElement {
     ecuc_cond: Option<EcucConditionSpecificationId>,
     ecuc_validation_conds: Vec<EcucValidationConditionId>,
     lower_multiplicity: Option<String>,
-    related_trace_item_ref: Option<String>,
+    related_trace_item_ref: Option<RefTypeId>,
     scope: Option<EcucScopeEnum>,
     upper_multiplicity: Option<String>,
     upper_multiplicity_infinite: Option<String>,
@@ -4267,12 +4268,12 @@ impl EcucDefinitionElement {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
-        self.related_trace_item_ref.as_deref()
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
+        self.related_trace_item_ref
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.related_trace_item_ref = Some(value.into());
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.related_trace_item_ref = Some(value);
         self
     }
 
@@ -5314,11 +5315,11 @@ impl EcucEnumerationParamDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -5741,11 +5742,11 @@ impl EcucFloatParamDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -6149,7 +6150,7 @@ impl EcucForeignReferenceDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
@@ -6157,7 +6158,7 @@ impl EcucForeignReferenceDef {
             .get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -6646,7 +6647,7 @@ impl EcucFunctionNameDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
@@ -6654,7 +6655,7 @@ impl EcucFunctionNameDef {
             .get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -7110,7 +7111,7 @@ impl EcucInstanceReferenceDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
@@ -7118,7 +7119,7 @@ impl EcucInstanceReferenceDef {
             .get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -7421,6 +7422,9 @@ impl EcucInstanceReferenceDef {
 #[derive(Debug, Default)]
 pub struct EcucIntegerParamDef {
     base: EcucParameterDef,
+    default_value: Option<String>,
+    max: Option<String>,
+    min: Option<String>,
 }
 
 impl EcucIntegerParamDef {
@@ -7434,6 +7438,33 @@ impl EcucIntegerParamDef {
 
     pub fn base_mut(&mut self) -> &mut EcucParameterDef {
         &mut self.base
+    }
+
+    pub fn get_default_value(&self) -> Option<&str> {
+        self.default_value.as_deref()
+    }
+
+    pub fn set_default_value(&mut self, value: impl Into<String>) -> &mut Self {
+        self.default_value = Some(value.into());
+        self
+    }
+
+    pub fn get_max(&self) -> Option<&str> {
+        self.max.as_deref()
+    }
+
+    pub fn set_max(&mut self, value: impl Into<String>) -> &mut Self {
+        self.max = Some(value.into());
+        self
+    }
+
+    pub fn get_min(&self) -> Option<&str> {
+        self.min.as_deref()
+    }
+
+    pub fn set_min(&mut self, value: impl Into<String>) -> &mut Self {
+        self.min = Some(value.into());
+        self
     }
 
     pub fn get_derivation(&self) -> Option<EcucDerivationSpecificationId> {
@@ -7553,11 +7584,11 @@ impl EcucIntegerParamDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -8005,7 +8036,7 @@ impl EcucLinkerSymbolDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
@@ -8013,7 +8044,7 @@ impl EcucLinkerSymbolDef {
             .get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -8319,7 +8350,7 @@ pub struct EcucModuleDef {
     api_service_prefix: Option<String>,
     containers: Vec<ElementRef>,
     post_build_variant_support: Option<String>,
-    refined_module_def_ref: Option<String>,
+    refined_module_def_ref: Option<RefTypeId>,
     supported_config_variants: Vec<EcucConfigurationVariantEnum>,
 }
 
@@ -8362,12 +8393,12 @@ impl EcucModuleDef {
         self
     }
 
-    pub fn get_refined_module_def_ref(&self) -> Option<&str> {
-        self.refined_module_def_ref.as_deref()
+    pub fn get_refined_module_def_ref(&self) -> Option<RefTypeId> {
+        self.refined_module_def_ref
     }
 
-    pub fn set_refined_module_def_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.refined_module_def_ref = Some(value.into());
+    pub fn set_refined_module_def_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.refined_module_def_ref = Some(value);
         self
     }
 
@@ -8405,11 +8436,11 @@ impl EcucModuleDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base().get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_related_trace_item_ref(value);
         self
     }
@@ -8774,7 +8805,7 @@ impl EcucMultilineStringParamDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
@@ -8782,7 +8813,7 @@ impl EcucMultilineStringParamDef {
             .get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -9184,11 +9215,11 @@ impl EcucParamConfContainerDef {
         self.sub_containers.push(value);
     }
 
-    pub fn get_destination_uri_refs(&self) -> &[String] {
+    pub fn get_destination_uri_refs(&self) -> &[RefTypeId] {
         self.base().get_destination_uri_refs()
     }
 
-    pub fn push_destination_uri_ref(&mut self, value: String) {
+    pub fn push_destination_uri_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_destination_uri_ref(value)
     }
 
@@ -9253,11 +9284,11 @@ impl EcucParamConfContainerDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_related_trace_item_ref(value);
         self
     }
@@ -9590,11 +9621,11 @@ impl EcucParameterDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_related_trace_item_ref(value);
         self
     }
@@ -9805,8 +9836,8 @@ impl EcucParameterDef {
 #[derive(Debug, Default)]
 pub struct EcucParameterDerivationFormula {
     base: FormulaExpression,
-    ecuc_query_ref: Option<String>,
-    ecuc_query_string_ref: Option<String>,
+    ecuc_query_ref: Option<RefTypeId>,
+    ecuc_query_string_ref: Option<RefTypeId>,
 }
 
 impl EcucParameterDerivationFormula {
@@ -9822,21 +9853,21 @@ impl EcucParameterDerivationFormula {
         &mut self.base
     }
 
-    pub fn get_ecuc_query_ref(&self) -> Option<&str> {
-        self.ecuc_query_ref.as_deref()
+    pub fn get_ecuc_query_ref(&self) -> Option<RefTypeId> {
+        self.ecuc_query_ref
     }
 
-    pub fn set_ecuc_query_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ecuc_query_ref = Some(value.into());
+    pub fn set_ecuc_query_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ecuc_query_ref = Some(value);
         self
     }
 
-    pub fn get_ecuc_query_string_ref(&self) -> Option<&str> {
-        self.ecuc_query_string_ref.as_deref()
+    pub fn get_ecuc_query_string_ref(&self) -> Option<RefTypeId> {
+        self.ecuc_query_string_ref
     }
 
-    pub fn set_ecuc_query_string_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ecuc_query_string_ref = Some(value.into());
+    pub fn set_ecuc_query_string_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ecuc_query_string_ref = Some(value);
         self
     }
 
@@ -9880,6 +9911,7 @@ impl EcucParameterDerivationFormula {
 #[derive(Debug, Default)]
 pub struct EcucQuery {
     base: Identifiable,
+    ecuc_query_expression: Option<EcucQueryExpressionId>,
 }
 
 impl EcucQuery {
@@ -9893,6 +9925,15 @@ impl EcucQuery {
 
     pub fn base_mut(&mut self) -> &mut Identifiable {
         &mut self.base
+    }
+
+    pub fn get_ecuc_query_expression(&self) -> Option<EcucQueryExpressionId> {
+        self.ecuc_query_expression
+    }
+
+    pub fn set_ecuc_query_expression(&mut self, value: EcucQueryExpressionId) -> &mut Self {
+        self.ecuc_query_expression = Some(value);
+        self
     }
 
     pub fn get_admin_data(&self) -> Option<AdminDataId> {
@@ -10031,8 +10072,8 @@ impl EcucQuery {
 #[derive(Debug, Default)]
 pub struct EcucQueryExpression {
     base: ARObject,
-    config_element_def_global_ref: Option<String>,
-    config_element_def_local_ref: Option<String>,
+    config_element_def_global_ref: Option<RefTypeId>,
+    config_element_def_local_ref: Option<RefTypeId>,
 }
 
 impl EcucQueryExpression {
@@ -10048,21 +10089,21 @@ impl EcucQueryExpression {
         &mut self.base
     }
 
-    pub fn get_config_element_def_global_ref(&self) -> Option<&str> {
-        self.config_element_def_global_ref.as_deref()
+    pub fn get_config_element_def_global_ref(&self) -> Option<RefTypeId> {
+        self.config_element_def_global_ref
     }
 
-    pub fn set_config_element_def_global_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.config_element_def_global_ref = Some(value.into());
+    pub fn set_config_element_def_global_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.config_element_def_global_ref = Some(value);
         self
     }
 
-    pub fn get_config_element_def_local_ref(&self) -> Option<&str> {
-        self.config_element_def_local_ref.as_deref()
+    pub fn get_config_element_def_local_ref(&self) -> Option<RefTypeId> {
+        self.config_element_def_local_ref
     }
 
-    pub fn set_config_element_def_local_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.config_element_def_local_ref = Some(value.into());
+    pub fn set_config_element_def_local_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.config_element_def_local_ref = Some(value);
         self
     }
 
@@ -10090,7 +10131,7 @@ impl EcucQueryExpression {
 #[derive(Debug, Default)]
 pub struct EcucReferenceDef {
     base: EcucAbstractInternalReferenceDef,
-    destination_ref: Option<String>,
+    destination_ref: Option<RefTypeId>,
 }
 
 impl EcucReferenceDef {
@@ -10106,12 +10147,12 @@ impl EcucReferenceDef {
         &mut self.base
     }
 
-    pub fn get_destination_ref(&self) -> Option<&str> {
-        self.destination_ref.as_deref()
+    pub fn get_destination_ref(&self) -> Option<RefTypeId> {
+        self.destination_ref
     }
 
-    pub fn set_destination_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.destination_ref = Some(value.into());
+    pub fn set_destination_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.destination_ref = Some(value);
         self
     }
 
@@ -10241,7 +10282,7 @@ impl EcucReferenceDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
@@ -10249,7 +10290,7 @@ impl EcucReferenceDef {
             .get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -10738,7 +10779,7 @@ impl EcucStringParamDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
@@ -10746,7 +10787,7 @@ impl EcucStringParamDef {
             .get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -11049,7 +11090,7 @@ impl EcucStringParamDef {
 #[derive(Debug, Default)]
 pub struct EcucSymbolicNameReferenceDef {
     base: EcucAbstractInternalReferenceDef,
-    destination_ref: Option<String>,
+    destination_ref: Option<RefTypeId>,
 }
 
 impl EcucSymbolicNameReferenceDef {
@@ -11065,12 +11106,12 @@ impl EcucSymbolicNameReferenceDef {
         &mut self.base
     }
 
-    pub fn get_destination_ref(&self) -> Option<&str> {
-        self.destination_ref.as_deref()
+    pub fn get_destination_ref(&self) -> Option<RefTypeId> {
+        self.destination_ref
     }
 
-    pub fn set_destination_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.destination_ref = Some(value.into());
+    pub fn set_destination_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.destination_ref = Some(value);
         self
     }
 
@@ -11200,7 +11241,7 @@ impl EcucSymbolicNameReferenceDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
@@ -11208,7 +11249,7 @@ impl EcucSymbolicNameReferenceDef {
             .get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -11511,7 +11552,7 @@ impl EcucSymbolicNameReferenceDef {
 #[derive(Debug, Default)]
 pub struct EcucUriReferenceDef {
     base: EcucAbstractInternalReferenceDef,
-    destination_uri_ref: Option<String>,
+    destination_uri_ref: Option<RefTypeId>,
 }
 
 impl EcucUriReferenceDef {
@@ -11527,12 +11568,12 @@ impl EcucUriReferenceDef {
         &mut self.base
     }
 
-    pub fn get_destination_uri_ref(&self) -> Option<&str> {
-        self.destination_uri_ref.as_deref()
+    pub fn get_destination_uri_ref(&self) -> Option<RefTypeId> {
+        self.destination_uri_ref
     }
 
-    pub fn set_destination_uri_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.destination_uri_ref = Some(value.into());
+    pub fn set_destination_uri_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.destination_uri_ref = Some(value);
         self
     }
 
@@ -11662,7 +11703,7 @@ impl EcucUriReferenceDef {
         self
     }
 
-    pub fn get_related_trace_item_ref(&self) -> Option<&str> {
+    pub fn get_related_trace_item_ref(&self) -> Option<RefTypeId> {
         self.base()
             .base()
             .base()
@@ -11670,7 +11711,7 @@ impl EcucUriReferenceDef {
             .get_related_trace_item_ref()
     }
 
-    pub fn set_related_trace_item_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_related_trace_item_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -12346,9 +12387,13 @@ impl Document {
             return Err(format!("{path}: DESTINATION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.DESTINATION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.DESTINATION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.DESTINATION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.DESTINATION_REFS[{index}]"))?;
         }
         Ok(())
     }
@@ -12491,9 +12536,18 @@ impl Document {
             return Err(format!("{path}: DESTINATION_URI_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.DESTINATION_URI_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.DESTINATION_URI_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.DESTINATION_URI_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.DESTINATION_URI_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_multiplicity_config_classes();
         let list_b = b.get_multiplicity_config_classes();
@@ -12552,9 +12606,14 @@ impl Document {
             return Err(format!("{path}: MODULE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.MODULE_REFS[{index}] mismatch"));
-            }
+            let x = self
+                .ref_types
+                .get(*x)
+                .ok_or_else(|| format!("{path}.MODULE_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.MODULE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.MODULE_REFS[{index}]"))?;
         }
         Ok(())
     }
@@ -12859,6 +12918,15 @@ impl Document {
         path: &str,
     ) -> Result<(), String> {
         self.compare_ecuc_parameter_def(other, a.base(), b.base(), path)?;
+        if a.get_default_value() != b.get_default_value() {
+            return Err(format!("{path}: DEFAULT_VALUE mismatch"));
+        }
+        if a.get_max() != b.get_max() {
+            return Err(format!("{path}: MAX mismatch"));
+        }
+        if a.get_min() != b.get_min() {
+            return Err(format!("{path}: MIN mismatch"));
+        }
         Ok(())
     }
 
@@ -13023,6 +13091,9 @@ impl Document {
         path: &str,
     ) -> Result<(), String> {
         self.compare_identifiable(other, a.base(), b.base(), path)?;
+        if a.get_ecuc_query_expression() != b.get_ecuc_query_expression() {
+            return Err(format!("{path}: ECUC_QUERY_EXPRESSION mismatch"));
+        }
         Ok(())
     }
 

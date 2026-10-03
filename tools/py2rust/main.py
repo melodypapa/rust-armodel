@@ -63,6 +63,8 @@ TEMPLATE_EXTRA_IMPORTS = {
         (f"{_C}::ar_object", "ElementRef"),
         (f"{_C}::element_collection", "CollectableElement"),
         ("crate::m2::msr::asam_hdo::admin_data", "AdminDataId"),
+        # the pinned ReferenceBase stores RefTypes by arena key
+        (f"{_C}::primitive_types", "RefTypeId"),
         # the template's new_key_type! block needs it when the leaf has no
         # generated group body that already imports it
         ("slotmap", "new_key_type"),
@@ -262,6 +264,8 @@ def main() -> int:
     parser.add_argument("--py-armodel", required=True)
     parser.add_argument("--out", default="src")
     parser.add_argument("--check", action="store_true", help="fail (exit 1) if regeneration differs")
+    parser.add_argument("--emit-port-checklist", action="store_true",
+                        help="write docs/port_checklist.md (py read*/write* methods, ported status by scanning src/)")
     args = parser.parse_args()
 
     ir = extract_repo(args.py_armodel)
@@ -312,6 +316,21 @@ def main() -> int:
     if unknown_types():
         print(f"unknown (upstream-placeholder) types mapped to String: {', '.join(unknown_types())}")
     print(f"{'drifted files' if args.check else 'files written'}: {changed}")
+    if args.emit_port_checklist:
+        # flat sibling import, matching main.py's other imports (ir, typemap,
+        # …) — running as a script puts tools/py2rust on sys.path, not tools/
+        import port_checklist as port_checklist_mod
+
+        methods = port_checklist_mod.collect_py_methods(
+            pathlib.Path(args.py_armodel) / "src" / "armodel")
+        doc_root = out_root.parent / "docs"
+        doc_root.mkdir(parents=True, exist_ok=True)
+        (doc_root / "port_checklist.md").write_text(
+            port_checklist_mod.render(methods, out_root))
+        fns = port_checklist_mod.collect_fn_names(out_root)
+        ported = sum(1 for name, _ in methods
+                     if port_checklist_mod.rust_name(name) in fns)
+        print(f"port checklist: {ported}/{len(methods)} reader/writer methods ported")
     return 1 if (args.check and changed) else 0
 
 

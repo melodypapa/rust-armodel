@@ -19,6 +19,7 @@ new_key_type! {
 
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::sw_component_template::port_interface::TextTableMappingId;
@@ -190,8 +191,8 @@ impl DataMapping {
 #[derive(Debug, Default)]
 pub struct IndexedArrayElement {
     base: ARObject,
-    application_array_element_ref: Option<String>,
-    implementation_array_element_ref: Option<String>,
+    application_array_element_ref: Option<RefTypeId>,
+    implementation_array_element_ref: Option<RefTypeId>,
     index: Option<String>,
 }
 
@@ -208,21 +209,21 @@ impl IndexedArrayElement {
         &mut self.base
     }
 
-    pub fn get_application_array_element_ref(&self) -> Option<&str> {
-        self.application_array_element_ref.as_deref()
+    pub fn get_application_array_element_ref(&self) -> Option<RefTypeId> {
+        self.application_array_element_ref
     }
 
-    pub fn set_application_array_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.application_array_element_ref = Some(value.into());
+    pub fn set_application_array_element_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.application_array_element_ref = Some(value);
         self
     }
 
-    pub fn get_implementation_array_element_ref(&self) -> Option<&str> {
-        self.implementation_array_element_ref.as_deref()
+    pub fn get_implementation_array_element_ref(&self) -> Option<RefTypeId> {
+        self.implementation_array_element_ref
     }
 
-    pub fn set_implementation_array_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.implementation_array_element_ref = Some(value.into());
+    pub fn set_implementation_array_element_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.implementation_array_element_ref = Some(value);
         self
     }
 
@@ -261,6 +262,9 @@ impl IndexedArrayElement {
 #[derive(Debug, Default)]
 pub struct SenderRecArrayElementMapping {
     base: ARObject,
+    complex_type_mapping: Option<ElementRef>,
+    indexed_array_element: Option<IndexedArrayElementId>,
+    system_signal_ref: Option<RefTypeId>,
 }
 
 impl SenderRecArrayElementMapping {
@@ -274,6 +278,33 @@ impl SenderRecArrayElementMapping {
 
     pub fn base_mut(&mut self) -> &mut ARObject {
         &mut self.base
+    }
+
+    pub fn get_complex_type_mapping(&self) -> Option<ElementRef> {
+        self.complex_type_mapping
+    }
+
+    pub fn set_complex_type_mapping(&mut self, value: ElementRef) -> &mut Self {
+        self.complex_type_mapping = Some(value);
+        self
+    }
+
+    pub fn get_indexed_array_element(&self) -> Option<IndexedArrayElementId> {
+        self.indexed_array_element
+    }
+
+    pub fn set_indexed_array_element(&mut self, value: IndexedArrayElementId) -> &mut Self {
+        self.indexed_array_element = Some(value);
+        self
+    }
+
+    pub fn get_system_signal_ref(&self) -> Option<RefTypeId> {
+        self.system_signal_ref
+    }
+
+    pub fn set_system_signal_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.system_signal_ref = Some(value);
+        self
     }
 
     pub fn get_checksum(&self) -> Option<&str> {
@@ -413,12 +444,12 @@ impl SenderRecCompositeTypeMapping {
 #[derive(Debug, Default)]
 pub struct SenderRecRecordElementMapping {
     base: ARObject,
-    application_record_element_ref: Option<String>,
+    application_record_element_ref: Option<RefTypeId>,
     complex_type_mapping: Option<ElementRef>,
-    implementation_record_element_ref: Option<String>,
+    implementation_record_element_ref: Option<RefTypeId>,
     sender_to_signal_text_table_mapping: Option<TextTableMappingId>,
     signal_to_receiver_text_table_mapping: Option<TextTableMappingId>,
-    system_signal_ref: Option<String>,
+    system_signal_ref: Option<RefTypeId>,
 }
 
 impl SenderRecRecordElementMapping {
@@ -434,12 +465,12 @@ impl SenderRecRecordElementMapping {
         &mut self.base
     }
 
-    pub fn get_application_record_element_ref(&self) -> Option<&str> {
-        self.application_record_element_ref.as_deref()
+    pub fn get_application_record_element_ref(&self) -> Option<RefTypeId> {
+        self.application_record_element_ref
     }
 
-    pub fn set_application_record_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.application_record_element_ref = Some(value.into());
+    pub fn set_application_record_element_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.application_record_element_ref = Some(value);
         self
     }
 
@@ -452,12 +483,12 @@ impl SenderRecRecordElementMapping {
         self
     }
 
-    pub fn get_implementation_record_element_ref(&self) -> Option<&str> {
-        self.implementation_record_element_ref.as_deref()
+    pub fn get_implementation_record_element_ref(&self) -> Option<RefTypeId> {
+        self.implementation_record_element_ref
     }
 
-    pub fn set_implementation_record_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.implementation_record_element_ref = Some(value.into());
+    pub fn set_implementation_record_element_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.implementation_record_element_ref = Some(value);
         self
     }
 
@@ -485,12 +516,12 @@ impl SenderRecRecordElementMapping {
         self
     }
 
-    pub fn get_system_signal_ref(&self) -> Option<&str> {
-        self.system_signal_ref.as_deref()
+    pub fn get_system_signal_ref(&self) -> Option<RefTypeId> {
+        self.system_signal_ref
     }
 
-    pub fn set_system_signal_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.system_signal_ref = Some(value.into());
+    pub fn set_system_signal_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.system_signal_ref = Some(value);
         self
     }
 
@@ -615,7 +646,7 @@ impl SenderReceiverCompositeElementToSignalMapping {
 pub struct SenderReceiverToSignalGroupMapping {
     base: DataMapping,
     data_element_i_ref: Option<VariableDataPrototypeInSystemInstanceRefId>,
-    signal_group_ref: Option<String>,
+    signal_group_ref: Option<RefTypeId>,
     type_mapping: Option<ElementRef>,
 }
 
@@ -644,12 +675,12 @@ impl SenderReceiverToSignalGroupMapping {
         self
     }
 
-    pub fn get_signal_group_ref(&self) -> Option<&str> {
-        self.signal_group_ref.as_deref()
+    pub fn get_signal_group_ref(&self) -> Option<RefTypeId> {
+        self.signal_group_ref
     }
 
-    pub fn set_signal_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.signal_group_ref = Some(value.into());
+    pub fn set_signal_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.signal_group_ref = Some(value);
         self
     }
 
@@ -699,7 +730,7 @@ pub struct SenderReceiverToSignalMapping {
     data_element_i_ref: Option<VariableDataPrototypeInSystemInstanceRefId>,
     sender_to_signal_text_table_mapping: Option<TextTableMappingId>,
     signal_to_receiver_text_table_mapping: Option<TextTableMappingId>,
-    system_signal_ref: Option<String>,
+    system_signal_ref: Option<RefTypeId>,
 }
 
 impl SenderReceiverToSignalMapping {
@@ -751,12 +782,12 @@ impl SenderReceiverToSignalMapping {
         self
     }
 
-    pub fn get_system_signal_ref(&self) -> Option<&str> {
-        self.system_signal_ref.as_deref()
+    pub fn get_system_signal_ref(&self) -> Option<RefTypeId> {
+        self.system_signal_ref
     }
 
-    pub fn set_system_signal_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.system_signal_ref = Some(value.into());
+    pub fn set_system_signal_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.system_signal_ref = Some(value);
         self
     }
 
@@ -886,6 +917,15 @@ impl Document {
         path: &str,
     ) -> Result<(), String> {
         Self::compare_ar_object(a.base(), b.base(), path)?;
+        if a.get_complex_type_mapping() != b.get_complex_type_mapping() {
+            return Err(format!("{path}: COMPLEX_TYPE_MAPPING mismatch"));
+        }
+        if a.get_indexed_array_element() != b.get_indexed_array_element() {
+            return Err(format!("{path}: INDEXED_ARRAY_ELEMENT mismatch"));
+        }
+        if a.get_system_signal_ref() != b.get_system_signal_ref() {
+            return Err(format!("{path}: SYSTEM_SIGNAL_REF mismatch"));
+        }
         Ok(())
     }
 

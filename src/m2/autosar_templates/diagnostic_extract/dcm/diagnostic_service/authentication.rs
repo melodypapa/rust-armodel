@@ -20,6 +20,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -59,11 +60,11 @@ impl DiagnosticAuthTransmitCertificate {
         self.certificate_evaluations.push(value);
     }
 
-    pub fn get_authentication_class(&self) -> Option<&str> {
+    pub fn get_authentication_class(&self) -> Option<RefTypeId> {
         self.base().get_authentication_class()
     }
 
-    pub fn set_authentication_class(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_authentication_class(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_authentication_class(value);
         self
     }
@@ -490,7 +491,7 @@ impl DiagnosticAuthTransmitCertificateEvaluation {
 #[derive(Debug, Default)]
 pub struct DiagnosticAuthentication {
     base: ARElement,
-    authentication_class: Option<String>,
+    authentication_class: Option<RefTypeId>,
 }
 
 impl DiagnosticAuthentication {
@@ -506,12 +507,12 @@ impl DiagnosticAuthentication {
         &mut self.base
     }
 
-    pub fn get_authentication_class(&self) -> Option<&str> {
-        self.authentication_class.as_deref()
+    pub fn get_authentication_class(&self) -> Option<RefTypeId> {
+        self.authentication_class
     }
 
-    pub fn set_authentication_class(&mut self, value: impl Into<String>) -> &mut Self {
-        self.authentication_class = Some(value.into());
+    pub fn set_authentication_class(&mut self, value: RefTypeId) -> &mut Self {
+        self.authentication_class = Some(value);
         self
     }
 
@@ -1066,11 +1067,11 @@ impl DiagnosticAuthenticationConfiguration {
         &mut self.base
     }
 
-    pub fn get_authentication_class(&self) -> Option<&str> {
+    pub fn get_authentication_class(&self) -> Option<RefTypeId> {
         self.base().get_authentication_class()
     }
 
-    pub fn set_authentication_class(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_authentication_class(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_authentication_class(value);
         self
     }
@@ -1341,11 +1342,11 @@ impl DiagnosticDeAuthentication {
         &mut self.base
     }
 
-    pub fn get_authentication_class(&self) -> Option<&str> {
+    pub fn get_authentication_class(&self) -> Option<RefTypeId> {
         self.base().get_authentication_class()
     }
 
-    pub fn set_authentication_class(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_authentication_class(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_authentication_class(value);
         self
     }
@@ -1616,11 +1617,11 @@ impl DiagnosticProofOfOwnership {
         &mut self.base
     }
 
-    pub fn get_authentication_class(&self) -> Option<&str> {
+    pub fn get_authentication_class(&self) -> Option<RefTypeId> {
         self.base().get_authentication_class()
     }
 
-    pub fn set_authentication_class(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_authentication_class(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_authentication_class(value);
         self
     }
@@ -1891,11 +1892,11 @@ impl DiagnosticVerifyCertificateBidirectional {
         &mut self.base
     }
 
-    pub fn get_authentication_class(&self) -> Option<&str> {
+    pub fn get_authentication_class(&self) -> Option<RefTypeId> {
         self.base().get_authentication_class()
     }
 
-    pub fn set_authentication_class(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_authentication_class(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_authentication_class(value);
         self
     }
@@ -2166,11 +2167,11 @@ impl DiagnosticVerifyCertificateUnidirectional {
         &mut self.base
     }
 
-    pub fn get_authentication_class(&self) -> Option<&str> {
+    pub fn get_authentication_class(&self) -> Option<RefTypeId> {
         self.base().get_authentication_class()
     }
 
-    pub fn set_authentication_class(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_authentication_class(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_authentication_class(value);
         self
     }

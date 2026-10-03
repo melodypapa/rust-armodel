@@ -29,6 +29,7 @@ use crate::m2::autosar_templates::common_structure::filter::DataFilterId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Describable;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::sw_component_template::port_interface::instance_refs::ApplicationCompositeElementInPortInterfaceInstanceRefId;
 use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::data_elements::VariableAccessId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -206,7 +207,7 @@ impl TryFrom<&str> for TransmissionModeDefinitionEnum {
 pub struct ClientComSpec {
     base: RPortComSpec,
     end_to_end_call_response_timeout: Option<String>,
-    operation_ref: Option<String>,
+    operation_ref: Option<RefTypeId>,
     transformation_com_spec_props: Vec<ElementRef>,
 }
 
@@ -232,12 +233,12 @@ impl ClientComSpec {
         self
     }
 
-    pub fn get_operation_ref(&self) -> Option<&str> {
-        self.operation_ref.as_deref()
+    pub fn get_operation_ref(&self) -> Option<RefTypeId> {
+        self.operation_ref
     }
 
-    pub fn set_operation_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.operation_ref = Some(value.into());
+    pub fn set_operation_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.operation_ref = Some(value);
         self
     }
 
@@ -338,7 +339,7 @@ impl CompositeNetworkRepresentation {
 pub struct ModeSwitchReceiverComSpec {
     base: RPortComSpec,
     enhanced_mode_api: Option<String>,
-    mode_group_ref: Option<String>,
+    mode_group_ref: Option<RefTypeId>,
     supports_asynchronous_mode_switch: Option<String>,
 }
 
@@ -364,12 +365,12 @@ impl ModeSwitchReceiverComSpec {
         self
     }
 
-    pub fn get_mode_group_ref(&self) -> Option<&str> {
-        self.mode_group_ref.as_deref()
+    pub fn get_mode_group_ref(&self) -> Option<RefTypeId> {
+        self.mode_group_ref
     }
 
-    pub fn set_mode_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.mode_group_ref = Some(value.into());
+    pub fn set_mode_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.mode_group_ref = Some(value);
         self
     }
 
@@ -407,7 +408,7 @@ impl ModeSwitchReceiverComSpec {
 pub struct ModeSwitchSenderComSpec {
     base: PPortComSpec,
     enhanced_mode_api: Option<String>,
-    mode_group_ref: Option<String>,
+    mode_group_ref: Option<RefTypeId>,
     mode_switched_ack: Option<ModeSwitchedAckRequestId>,
     queue_length: Option<String>,
 }
@@ -434,12 +435,12 @@ impl ModeSwitchSenderComSpec {
         self
     }
 
-    pub fn get_mode_group_ref(&self) -> Option<&str> {
-        self.mode_group_ref.as_deref()
+    pub fn get_mode_group_ref(&self) -> Option<RefTypeId> {
+        self.mode_group_ref
     }
 
-    pub fn set_mode_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.mode_group_ref = Some(value.into());
+    pub fn set_mode_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.mode_group_ref = Some(value);
         self
     }
 
@@ -640,11 +641,11 @@ impl NonqueuedReceiverComSpec {
         self.base_mut().push_composite_network_representation(value)
     }
 
-    pub fn get_data_element_ref(&self) -> Option<&str> {
+    pub fn get_data_element_ref(&self) -> Option<RefTypeId> {
         self.base().get_data_element_ref()
     }
 
-    pub fn set_data_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_data_element_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_data_element_ref(value);
         self
     }
@@ -811,11 +812,11 @@ impl NonqueuedSenderComSpec {
         self.base_mut().push_composite_network_representation(value)
     }
 
-    pub fn get_data_element_ref(&self) -> Option<&str> {
+    pub fn get_data_element_ref(&self) -> Option<RefTypeId> {
         self.base().get_data_element_ref()
     }
 
-    pub fn set_data_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_data_element_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_data_element_ref(value);
         self
     }
@@ -894,7 +895,7 @@ pub struct NvProvideComSpec {
     base: PPortComSpec,
     ram_block_init_value: Option<ElementRef>,
     rom_block_init_value: Option<ElementRef>,
-    variable_ref: Option<String>,
+    variable_ref: Option<RefTypeId>,
 }
 
 impl NvProvideComSpec {
@@ -928,12 +929,12 @@ impl NvProvideComSpec {
         self
     }
 
-    pub fn get_variable_ref(&self) -> Option<&str> {
-        self.variable_ref.as_deref()
+    pub fn get_variable_ref(&self) -> Option<RefTypeId> {
+        self.variable_ref
     }
 
-    pub fn set_variable_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.variable_ref = Some(value.into());
+    pub fn set_variable_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.variable_ref = Some(value);
         self
     }
 
@@ -962,7 +963,7 @@ impl NvProvideComSpec {
 pub struct NvRequireComSpec {
     base: RPortComSpec,
     init_value: Option<ElementRef>,
-    variable_ref: Option<String>,
+    variable_ref: Option<RefTypeId>,
 }
 
 impl NvRequireComSpec {
@@ -987,12 +988,12 @@ impl NvRequireComSpec {
         self
     }
 
-    pub fn get_variable_ref(&self) -> Option<&str> {
-        self.variable_ref.as_deref()
+    pub fn get_variable_ref(&self) -> Option<RefTypeId> {
+        self.variable_ref
     }
 
-    pub fn set_variable_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.variable_ref = Some(value.into());
+    pub fn set_variable_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.variable_ref = Some(value);
         self
     }
 
@@ -1060,7 +1061,7 @@ impl PPortComSpec {
 pub struct ParameterProvideComSpec {
     base: PPortComSpec,
     init_value: Option<ElementRef>,
-    parameter_ref: Option<String>,
+    parameter_ref: Option<RefTypeId>,
 }
 
 impl ParameterProvideComSpec {
@@ -1085,12 +1086,12 @@ impl ParameterProvideComSpec {
         self
     }
 
-    pub fn get_parameter_ref(&self) -> Option<&str> {
-        self.parameter_ref.as_deref()
+    pub fn get_parameter_ref(&self) -> Option<RefTypeId> {
+        self.parameter_ref
     }
 
-    pub fn set_parameter_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.parameter_ref = Some(value.into());
+    pub fn set_parameter_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.parameter_ref = Some(value);
         self
     }
 
@@ -1119,7 +1120,7 @@ impl ParameterProvideComSpec {
 pub struct ParameterRequireComSpec {
     base: RPortComSpec,
     init_value: Option<ElementRef>,
-    parameter_ref: Option<String>,
+    parameter_ref: Option<RefTypeId>,
 }
 
 impl ParameterRequireComSpec {
@@ -1144,12 +1145,12 @@ impl ParameterRequireComSpec {
         self
     }
 
-    pub fn get_parameter_ref(&self) -> Option<&str> {
-        self.parameter_ref.as_deref()
+    pub fn get_parameter_ref(&self) -> Option<RefTypeId> {
+        self.parameter_ref
     }
 
-    pub fn set_parameter_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.parameter_ref = Some(value.into());
+    pub fn set_parameter_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.parameter_ref = Some(value);
         self
     }
 
@@ -1213,11 +1214,11 @@ impl QueuedReceiverComSpec {
         self.base_mut().push_composite_network_representation(value)
     }
 
-    pub fn get_data_element_ref(&self) -> Option<&str> {
+    pub fn get_data_element_ref(&self) -> Option<RefTypeId> {
         self.base().get_data_element_ref()
     }
 
-    pub fn set_data_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_data_element_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_data_element_ref(value);
         self
     }
@@ -1364,11 +1365,11 @@ impl QueuedSenderComSpec {
         self.base_mut().push_composite_network_representation(value)
     }
 
-    pub fn get_data_element_ref(&self) -> Option<&str> {
+    pub fn get_data_element_ref(&self) -> Option<RefTypeId> {
         self.base().get_data_element_ref()
     }
 
-    pub fn set_data_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_data_element_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_data_element_ref(value);
         self
     }
@@ -1485,7 +1486,7 @@ impl RPortComSpec {
 pub struct ReceiverComSpec {
     base: RPortComSpec,
     composite_network_representations: Vec<CompositeNetworkRepresentationId>,
-    data_element_ref: Option<String>,
+    data_element_ref: Option<RefTypeId>,
     handle_out_of_range: Option<HandleOutOfRangeEnum>,
     handle_out_of_range_status: Option<HandleOutOfRangeStatusEnum>,
     max_delta_counter_init: Option<String>,
@@ -1522,12 +1523,12 @@ impl ReceiverComSpec {
         self.composite_network_representations.push(value);
     }
 
-    pub fn get_data_element_ref(&self) -> Option<&str> {
-        self.data_element_ref.as_deref()
+    pub fn get_data_element_ref(&self) -> Option<RefTypeId> {
+        self.data_element_ref
     }
 
-    pub fn set_data_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.data_element_ref = Some(value.into());
+    pub fn set_data_element_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.data_element_ref = Some(value);
         self
     }
 
@@ -1707,7 +1708,7 @@ impl ReceptionComSpecProps {
 pub struct SenderComSpec {
     base: PPortComSpec,
     composite_network_representations: Vec<CompositeNetworkRepresentationId>,
-    data_element_ref: Option<String>,
+    data_element_ref: Option<RefTypeId>,
     handle_out_of_range: Option<HandleOutOfRangeEnum>,
     network_representation: Option<SwDataDefPropsId>,
     transmission_acknowledge: Option<TransmissionAcknowledgementRequestId>,
@@ -1739,12 +1740,12 @@ impl SenderComSpec {
         self.composite_network_representations.push(value);
     }
 
-    pub fn get_data_element_ref(&self) -> Option<&str> {
-        self.data_element_ref.as_deref()
+    pub fn get_data_element_ref(&self) -> Option<RefTypeId> {
+        self.data_element_ref
     }
 
-    pub fn set_data_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.data_element_ref = Some(value.into());
+    pub fn set_data_element_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.data_element_ref = Some(value);
         self
     }
 
@@ -1820,7 +1821,7 @@ impl SenderComSpec {
 #[derive(Debug, Default)]
 pub struct ServerComSpec {
     base: PPortComSpec,
-    operation_ref: Option<String>,
+    operation_ref: Option<RefTypeId>,
     queue_length: Option<String>,
     transformation_com_spec_props: Vec<ElementRef>,
 }
@@ -1838,12 +1839,12 @@ impl ServerComSpec {
         &mut self.base
     }
 
-    pub fn get_operation_ref(&self) -> Option<&str> {
-        self.operation_ref.as_deref()
+    pub fn get_operation_ref(&self) -> Option<RefTypeId> {
+        self.operation_ref
     }
 
-    pub fn set_operation_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.operation_ref = Some(value.into());
+    pub fn set_operation_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.operation_ref = Some(value);
         self
     }
 

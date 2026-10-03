@@ -14,6 +14,7 @@ use crate::m2::autosar_templates::generic_structure::documentation_on_m1::Standa
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -43,7 +44,7 @@ pub struct StructuredReq {
     rationale: Option<DocumentationBlockId>,
     remark: Option<DocumentationBlockId>,
     supporting_material: Option<DocumentationBlockId>,
-    tested_item_refs: Vec<String>,
+    tested_item_refs: Vec<RefTypeId>,
     r#type: Option<String>,
     use_case: Option<DocumentationBlockId>,
 }
@@ -158,11 +159,11 @@ impl StructuredReq {
         self
     }
 
-    pub fn get_tested_item_refs(&self) -> &[String] {
+    pub fn get_tested_item_refs(&self) -> &[RefTypeId] {
         &self.tested_item_refs
     }
 
-    pub fn push_tested_item_ref(&mut self, value: String) {
+    pub fn push_tested_item_ref(&mut self, value: RefTypeId) {
         self.tested_item_refs.push(value);
     }
 
@@ -184,11 +185,11 @@ impl StructuredReq {
         self
     }
 
-    pub fn get_trace_refs(&self) -> &[String] {
+    pub fn get_trace_refs(&self) -> &[RefTypeId] {
         self.base().get_trace_refs()
     }
 
-    pub fn push_trace_ref(&mut self, value: String) {
+    pub fn push_trace_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_trace_ref(value)
     }
 
@@ -349,7 +350,7 @@ impl StructuredReq {
 #[derive(Debug, Default)]
 pub struct Traceable {
     base: Identifiable,
-    trace_refs: Vec<String>,
+    trace_refs: Vec<RefTypeId>,
 }
 
 impl Traceable {
@@ -365,11 +366,11 @@ impl Traceable {
         &mut self.base
     }
 
-    pub fn get_trace_refs(&self) -> &[String] {
+    pub fn get_trace_refs(&self) -> &[RefTypeId] {
         &self.trace_refs
     }
 
-    pub fn push_trace_ref(&mut self, value: String) {
+    pub fn push_trace_ref(&mut self, value: RefTypeId) {
         self.trace_refs.push(value);
     }
 
@@ -543,11 +544,11 @@ impl TraceableTable {
         self
     }
 
-    pub fn get_trace_refs(&self) -> &[String] {
+    pub fn get_trace_refs(&self) -> &[RefTypeId] {
         self.base().get_trace_refs()
     }
 
-    pub fn push_trace_ref(&mut self, value: String) {
+    pub fn push_trace_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_trace_ref(value)
     }
 
@@ -750,11 +751,11 @@ impl TraceableText {
         self
     }
 
-    pub fn get_trace_refs(&self) -> &[String] {
+    pub fn get_trace_refs(&self) -> &[RefTypeId] {
         self.base().get_trace_refs()
     }
 
-    pub fn push_trace_ref(&mut self, value: String) {
+    pub fn push_trace_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_trace_ref(value)
     }
 
@@ -968,9 +969,13 @@ impl Document {
             return Err(format!("{path}: TESTED_ITEM_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.TESTED_ITEM_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.TESTED_ITEM_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.TESTED_ITEM_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.TESTED_ITEM_REFS[{index}]"))?;
         }
         if a.get_type() != b.get_type() {
             return Err(format!("{path}: R#TYPE mismatch"));
@@ -995,9 +1000,14 @@ impl Document {
             return Err(format!("{path}: TRACE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.TRACE_REFS[{index}] mismatch"));
-            }
+            let x = self
+                .ref_types
+                .get(*x)
+                .ok_or_else(|| format!("{path}.TRACE_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.TRACE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.TRACE_REFS[{index}]"))?;
         }
         Ok(())
     }

@@ -11,6 +11,7 @@ new_key_type! {
 use crate::m2::autosar_templates::common_structure::timing::timing_description::TimingDescriptionEvent;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -38,11 +39,11 @@ impl TDEventSLLET {
         &mut self.base
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_clock_reference_ref(value);
         self
     }
@@ -223,7 +224,7 @@ impl TDEventSLLET {
 #[derive(Debug, Default)]
 pub struct TDEventSLLETPort {
     base: TDEventSLLET,
-    port_ref: Option<String>,
+    port_ref: Option<RefTypeId>,
 }
 
 impl TDEventSLLETPort {
@@ -239,20 +240,20 @@ impl TDEventSLLETPort {
         &mut self.base
     }
 
-    pub fn get_port_ref(&self) -> Option<&str> {
-        self.port_ref.as_deref()
+    pub fn get_port_ref(&self) -> Option<RefTypeId> {
+        self.port_ref
     }
 
-    pub fn set_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.port_ref = Some(value.into());
+    pub fn set_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.port_ref = Some(value);
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_clock_reference_ref(value);
         self
     }

@@ -11,6 +11,7 @@ new_key_type! {
 use crate::m2::autosar_templates::common_structure::timing::timing_constraint::TimingConstraint;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -23,10 +24,10 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct SynchronizationPointConstraint {
     base: TimingConstraint,
-    source_eec_refs: Vec<String>,
-    source_event_refs: Vec<String>,
-    target_eec_refs: Vec<String>,
-    target_event_refs: Vec<String>,
+    source_eec_refs: Vec<RefTypeId>,
+    source_event_refs: Vec<RefTypeId>,
+    target_eec_refs: Vec<RefTypeId>,
+    target_event_refs: Vec<RefTypeId>,
 }
 
 impl SynchronizationPointConstraint {
@@ -42,52 +43,52 @@ impl SynchronizationPointConstraint {
         &mut self.base
     }
 
-    pub fn get_source_eec_refs(&self) -> &[String] {
+    pub fn get_source_eec_refs(&self) -> &[RefTypeId] {
         &self.source_eec_refs
     }
 
-    pub fn push_source_eec_ref(&mut self, value: String) {
+    pub fn push_source_eec_ref(&mut self, value: RefTypeId) {
         self.source_eec_refs.push(value);
     }
 
-    pub fn get_source_event_refs(&self) -> &[String] {
+    pub fn get_source_event_refs(&self) -> &[RefTypeId] {
         &self.source_event_refs
     }
 
-    pub fn push_source_event_ref(&mut self, value: String) {
+    pub fn push_source_event_ref(&mut self, value: RefTypeId) {
         self.source_event_refs.push(value);
     }
 
-    pub fn get_target_eec_refs(&self) -> &[String] {
+    pub fn get_target_eec_refs(&self) -> &[RefTypeId] {
         &self.target_eec_refs
     }
 
-    pub fn push_target_eec_ref(&mut self, value: String) {
+    pub fn push_target_eec_ref(&mut self, value: RefTypeId) {
         self.target_eec_refs.push(value);
     }
 
-    pub fn get_target_event_refs(&self) -> &[String] {
+    pub fn get_target_event_refs(&self) -> &[RefTypeId] {
         &self.target_event_refs
     }
 
-    pub fn push_target_event_ref(&mut self, value: String) {
+    pub fn push_target_event_ref(&mut self, value: RefTypeId) {
         self.target_event_refs.push(value);
     }
 
-    pub fn get_timing_condition_ref(&self) -> Option<&str> {
+    pub fn get_timing_condition_ref(&self) -> Option<RefTypeId> {
         self.base().get_timing_condition_ref()
     }
 
-    pub fn set_timing_condition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_timing_condition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_timing_condition_ref(value);
         self
     }
 
-    pub fn get_trace_refs(&self) -> &[String] {
+    pub fn get_trace_refs(&self) -> &[RefTypeId] {
         self.base().base().get_trace_refs()
     }
 
-    pub fn push_trace_ref(&mut self, value: String) {
+    pub fn push_trace_ref(&mut self, value: RefTypeId) {
         self.base_mut().base_mut().push_trace_ref(value)
     }
 
@@ -277,9 +278,13 @@ impl Document {
             return Err(format!("{path}: SOURCE_EEC_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SOURCE_EEC_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SOURCE_EEC_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SOURCE_EEC_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SOURCE_EEC_REFS[{index}]"))?;
         }
         let list_a = a.get_source_event_refs();
         let list_b = b.get_source_event_refs();
@@ -287,9 +292,13 @@ impl Document {
             return Err(format!("{path}: SOURCE_EVENT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SOURCE_EVENT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SOURCE_EVENT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SOURCE_EVENT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SOURCE_EVENT_REFS[{index}]"))?;
         }
         let list_a = a.get_target_eec_refs();
         let list_b = b.get_target_eec_refs();
@@ -297,9 +306,13 @@ impl Document {
             return Err(format!("{path}: TARGET_EEC_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.TARGET_EEC_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.TARGET_EEC_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.TARGET_EEC_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.TARGET_EEC_REFS[{index}]"))?;
         }
         let list_a = a.get_target_event_refs();
         let list_b = b.get_target_event_refs();
@@ -307,9 +320,13 @@ impl Document {
             return Err(format!("{path}: TARGET_EVENT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.TARGET_EVENT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.TARGET_EVENT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.TARGET_EVENT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.TARGET_EVENT_REFS[{index}]"))?;
         }
         Ok(())
     }

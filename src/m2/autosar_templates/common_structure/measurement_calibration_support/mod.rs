@@ -27,6 +27,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::sw_component_template::rpt_scenario::RptImplPolicyId;
@@ -45,8 +46,8 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct ImplementationElementInParameterInstanceRef {
     base: ARObject,
-    context_ref: Option<String>,
-    target_ref: Option<String>,
+    context_ref: Option<RefTypeId>,
+    target_ref: Option<RefTypeId>,
 }
 
 impl ImplementationElementInParameterInstanceRef {
@@ -62,21 +63,21 @@ impl ImplementationElementInParameterInstanceRef {
         &mut self.base
     }
 
-    pub fn get_context_ref(&self) -> Option<&str> {
-        self.context_ref.as_deref()
+    pub fn get_context_ref(&self) -> Option<RefTypeId> {
+        self.context_ref
     }
 
-    pub fn set_context_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.context_ref = Some(value.into());
+    pub fn set_context_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_ref = Some(value);
         self
     }
 
-    pub fn get_target_ref(&self) -> Option<&str> {
-        self.target_ref.as_deref()
+    pub fn get_target_ref(&self) -> Option<RefTypeId> {
+        self.target_ref
     }
 
-    pub fn set_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_ref = Some(value.into());
+    pub fn set_target_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_ref = Some(value);
         self
     }
 
@@ -165,7 +166,7 @@ pub struct McDataInstance {
     variation_point_capable: VariationPointCapable,
     array_size: Option<String>,
     display_identifier: Option<String>,
-    flat_map_entry_ref: Option<String>,
+    flat_map_entry_ref: Option<RefTypeId>,
     instance_in_memory: Option<ImplementationElementInParameterInstanceRefId>,
     mc_data_access_details: Option<McDataAccessDetailsId>,
     mc_data_assignments: Vec<RoleBasedMcDataAssignmentId>,
@@ -216,12 +217,12 @@ impl McDataInstance {
         self
     }
 
-    pub fn get_flat_map_entry_ref(&self) -> Option<&str> {
-        self.flat_map_entry_ref.as_deref()
+    pub fn get_flat_map_entry_ref(&self) -> Option<RefTypeId> {
+        self.flat_map_entry_ref
     }
 
-    pub fn set_flat_map_entry_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.flat_map_entry_ref = Some(value.into());
+    pub fn set_flat_map_entry_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.flat_map_entry_ref = Some(value);
         self
     }
 
@@ -461,7 +462,7 @@ pub struct McFunction {
     loc_measurement_set: Option<McFunctionDataRefSetId>,
     out_measurement_set: Option<McFunctionDataRefSetId>,
     ref_calprm_set: Option<McFunctionDataRefSetId>,
-    sub_function_refs: Vec<String>,
+    sub_function_refs: Vec<RefTypeId>,
 }
 
 impl McFunction {
@@ -522,11 +523,11 @@ impl McFunction {
         self
     }
 
-    pub fn get_sub_function_refs(&self) -> &[String] {
+    pub fn get_sub_function_refs(&self) -> &[RefTypeId] {
         &self.sub_function_refs
     }
 
-    pub fn push_sub_function_ref(&mut self, value: String) {
+    pub fn push_sub_function_ref(&mut self, value: RefTypeId) {
         self.sub_function_refs.push(value);
     }
 
@@ -666,8 +667,8 @@ impl McFunction {
 #[derive(Debug, Default)]
 pub struct McParameterElementGroup {
     base: ARObject,
-    ram_location_ref: Option<String>,
-    rom_location_ref: Option<String>,
+    ram_location_ref: Option<RefTypeId>,
+    rom_location_ref: Option<RefTypeId>,
     short_label: Option<String>,
 }
 
@@ -684,21 +685,21 @@ impl McParameterElementGroup {
         &mut self.base
     }
 
-    pub fn get_ram_location_ref(&self) -> Option<&str> {
-        self.ram_location_ref.as_deref()
+    pub fn get_ram_location_ref(&self) -> Option<RefTypeId> {
+        self.ram_location_ref
     }
 
-    pub fn set_ram_location_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ram_location_ref = Some(value.into());
+    pub fn set_ram_location_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ram_location_ref = Some(value);
         self
     }
 
-    pub fn get_rom_location_ref(&self) -> Option<&str> {
-        self.rom_location_ref.as_deref()
+    pub fn get_rom_location_ref(&self) -> Option<RefTypeId> {
+        self.rom_location_ref
     }
 
-    pub fn set_rom_location_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.rom_location_ref = Some(value.into());
+    pub fn set_rom_location_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.rom_location_ref = Some(value);
         self
     }
 
@@ -738,7 +739,7 @@ pub struct McSupportData {
     emulation_supports: Vec<McSwEmulationMethodSupportId>,
     mc_parameter_instances: Vec<McDataInstanceId>,
     mc_variable_instances: Vec<McDataInstanceId>,
-    measurable_system_constant_values_refs: Vec<String>,
+    measurable_system_constant_values_refs: Vec<RefTypeId>,
     rpt_support_data: Option<RptSupportDataId>,
 }
 
@@ -779,11 +780,11 @@ impl McSupportData {
         self.mc_variable_instances.push(value);
     }
 
-    pub fn get_measurable_system_constant_values_refs(&self) -> &[String] {
+    pub fn get_measurable_system_constant_values_refs(&self) -> &[RefTypeId] {
         &self.measurable_system_constant_values_refs
     }
 
-    pub fn push_measurable_system_constant_values_ref(&mut self, value: String) {
+    pub fn push_measurable_system_constant_values_ref(&mut self, value: RefTypeId) {
         self.measurable_system_constant_values_refs.push(value);
     }
 
@@ -821,10 +822,10 @@ impl McSupportData {
 pub struct McSwEmulationMethodSupport {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
-    base_reference_ref: Option<String>,
+    base_reference_ref: Option<RefTypeId>,
     category: Option<String>,
     element_groups: Vec<McParameterElementGroupId>,
-    reference_table_ref: Option<String>,
+    reference_table_ref: Option<RefTypeId>,
     short_label: Option<String>,
 }
 
@@ -849,12 +850,12 @@ impl McSwEmulationMethodSupport {
         &mut self.variation_point_capable
     }
 
-    pub fn get_base_reference_ref(&self) -> Option<&str> {
-        self.base_reference_ref.as_deref()
+    pub fn get_base_reference_ref(&self) -> Option<RefTypeId> {
+        self.base_reference_ref
     }
 
-    pub fn set_base_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_reference_ref = Some(value.into());
+    pub fn set_base_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_reference_ref = Some(value);
         self
     }
 
@@ -875,12 +876,12 @@ impl McSwEmulationMethodSupport {
         self.element_groups.push(value);
     }
 
-    pub fn get_reference_table_ref(&self) -> Option<&str> {
-        self.reference_table_ref.as_deref()
+    pub fn get_reference_table_ref(&self) -> Option<RefTypeId> {
+        self.reference_table_ref
     }
 
-    pub fn set_reference_table_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.reference_table_ref = Some(value.into());
+    pub fn set_reference_table_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.reference_table_ref = Some(value);
         self
     }
 
@@ -928,8 +929,8 @@ impl McSwEmulationMethodSupport {
 pub struct RoleBasedMcDataAssignment {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
-    execution_context_refs: Vec<String>,
-    mc_data_instance_refs: Vec<String>,
+    execution_context_refs: Vec<RefTypeId>,
+    mc_data_instance_refs: Vec<RefTypeId>,
     role: Option<String>,
 }
 
@@ -954,19 +955,19 @@ impl RoleBasedMcDataAssignment {
         &mut self.variation_point_capable
     }
 
-    pub fn get_execution_context_refs(&self) -> &[String] {
+    pub fn get_execution_context_refs(&self) -> &[RefTypeId] {
         &self.execution_context_refs
     }
 
-    pub fn push_execution_context_ref(&mut self, value: String) {
+    pub fn push_execution_context_ref(&mut self, value: RefTypeId) {
         self.execution_context_refs.push(value);
     }
 
-    pub fn get_mc_data_instance_refs(&self) -> &[String] {
+    pub fn get_mc_data_instance_refs(&self) -> &[RefTypeId] {
         &self.mc_data_instance_refs
     }
 
-    pub fn push_mc_data_instance_ref(&mut self, value: String) {
+    pub fn push_mc_data_instance_ref(&mut self, value: RefTypeId) {
         self.mc_data_instance_refs.push(value);
     }
 
@@ -1013,9 +1014,9 @@ impl RoleBasedMcDataAssignment {
 #[derive(Debug, Default)]
 pub struct RteEventInEcuInstanceRef {
     base: AtpInstanceRef,
-    context_root_composition_ref: Option<String>,
-    context_atomic_component_ref: Option<String>,
-    target_rte_event_ref: Option<String>,
+    context_root_composition_ref: Option<RefTypeId>,
+    context_atomic_component_ref: Option<RefTypeId>,
+    target_rte_event_ref: Option<RefTypeId>,
 }
 
 impl RteEventInEcuInstanceRef {
@@ -1031,55 +1032,55 @@ impl RteEventInEcuInstanceRef {
         &mut self.base
     }
 
-    pub fn get_context_root_composition_ref(&self) -> Option<&str> {
-        self.context_root_composition_ref.as_deref()
+    pub fn get_context_root_composition_ref(&self) -> Option<RefTypeId> {
+        self.context_root_composition_ref
     }
 
-    pub fn set_context_root_composition_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.context_root_composition_ref = Some(value.into());
+    pub fn set_context_root_composition_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_root_composition_ref = Some(value);
         self
     }
 
-    pub fn get_context_atomic_component_ref(&self) -> Option<&str> {
-        self.context_atomic_component_ref.as_deref()
+    pub fn get_context_atomic_component_ref(&self) -> Option<RefTypeId> {
+        self.context_atomic_component_ref
     }
 
-    pub fn set_context_atomic_component_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.context_atomic_component_ref = Some(value.into());
+    pub fn set_context_atomic_component_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_atomic_component_ref = Some(value);
         self
     }
 
-    pub fn get_target_rte_event_ref(&self) -> Option<&str> {
-        self.target_rte_event_ref.as_deref()
+    pub fn get_target_rte_event_ref(&self) -> Option<RefTypeId> {
+        self.target_rte_event_ref
     }
 
-    pub fn set_target_rte_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_rte_event_ref = Some(value.into());
+    pub fn set_target_rte_event_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_rte_event_ref = Some(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_target_ref(value);
         self
     }
@@ -1108,9 +1109,9 @@ impl RteEventInEcuInstanceRef {
 #[derive(Debug, Default)]
 pub struct VariableAccessInEcuInstanceRef {
     base: AtpInstanceRef,
-    context_root_composition_ref: Option<String>,
-    context_atomic_component_ref: Option<String>,
-    target_variable_access_ref: Option<String>,
+    context_root_composition_ref: Option<RefTypeId>,
+    context_atomic_component_ref: Option<RefTypeId>,
+    target_variable_access_ref: Option<RefTypeId>,
 }
 
 impl VariableAccessInEcuInstanceRef {
@@ -1126,55 +1127,55 @@ impl VariableAccessInEcuInstanceRef {
         &mut self.base
     }
 
-    pub fn get_context_root_composition_ref(&self) -> Option<&str> {
-        self.context_root_composition_ref.as_deref()
+    pub fn get_context_root_composition_ref(&self) -> Option<RefTypeId> {
+        self.context_root_composition_ref
     }
 
-    pub fn set_context_root_composition_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.context_root_composition_ref = Some(value.into());
+    pub fn set_context_root_composition_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_root_composition_ref = Some(value);
         self
     }
 
-    pub fn get_context_atomic_component_ref(&self) -> Option<&str> {
-        self.context_atomic_component_ref.as_deref()
+    pub fn get_context_atomic_component_ref(&self) -> Option<RefTypeId> {
+        self.context_atomic_component_ref
     }
 
-    pub fn set_context_atomic_component_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.context_atomic_component_ref = Some(value.into());
+    pub fn set_context_atomic_component_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_atomic_component_ref = Some(value);
         self
     }
 
-    pub fn get_target_variable_access_ref(&self) -> Option<&str> {
-        self.target_variable_access_ref.as_deref()
+    pub fn get_target_variable_access_ref(&self) -> Option<RefTypeId> {
+        self.target_variable_access_ref
     }
 
-    pub fn set_target_variable_access_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_variable_access_ref = Some(value.into());
+    pub fn set_target_variable_access_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_variable_access_ref = Some(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_target_ref(value);
         self
     }
@@ -1390,9 +1391,13 @@ impl Document {
             return Err(format!("{path}: SUB_FUNCTION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SUB_FUNCTION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SUB_FUNCTION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SUB_FUNCTION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SUB_FUNCTION_REFS[{index}]"))?;
         }
         Ok(())
     }
@@ -1496,11 +1501,14 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.MEASURABLE_SYSTEM_CONSTANT_VALUES_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| format!("{path}.MEASURABLE_SYSTEM_CONSTANT_VALUES_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| format!("{path}.MEASURABLE_SYSTEM_CONSTANT_VALUES_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.MEASURABLE_SYSTEM_CONSTANT_VALUES_REFS[{index}]"),
+            )?;
         }
         if a.get_rpt_support_data() != b.get_rpt_support_data() {
             return Err(format!("{path}: RPT_SUPPORT_DATA mismatch"));
@@ -1576,9 +1584,18 @@ impl Document {
             return Err(format!("{path}: EXECUTION_CONTEXT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.EXECUTION_CONTEXT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.EXECUTION_CONTEXT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.EXECUTION_CONTEXT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.EXECUTION_CONTEXT_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_mc_data_instance_refs();
         let list_b = b.get_mc_data_instance_refs();
@@ -1586,9 +1603,18 @@ impl Document {
             return Err(format!("{path}: MC_DATA_INSTANCE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.MC_DATA_INSTANCE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.MC_DATA_INSTANCE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.MC_DATA_INSTANCE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.MC_DATA_INSTANCE_REFS[{index}]"),
+            )?;
         }
         if a.get_role() != b.get_role() {
             return Err(format!("{path}: ROLE mismatch"));

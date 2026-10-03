@@ -13,6 +13,7 @@ use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::c
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -26,9 +27,9 @@ use crate::Document;
 pub struct DiagnosticSecurityAccess {
     base: ARElement,
     request_seed_id: Option<String>,
-    security_access_class: Option<String>,
+    security_access_class: Option<RefTypeId>,
     security_delay_time_on_boot: Option<String>,
-    security_level: Option<String>,
+    security_level: Option<RefTypeId>,
 }
 
 impl DiagnosticSecurityAccess {
@@ -53,12 +54,12 @@ impl DiagnosticSecurityAccess {
         self
     }
 
-    pub fn get_security_access_class(&self) -> Option<&str> {
-        self.security_access_class.as_deref()
+    pub fn get_security_access_class(&self) -> Option<RefTypeId> {
+        self.security_access_class
     }
 
-    pub fn set_security_access_class(&mut self, value: impl Into<String>) -> &mut Self {
-        self.security_access_class = Some(value.into());
+    pub fn set_security_access_class(&mut self, value: RefTypeId) -> &mut Self {
+        self.security_access_class = Some(value);
         self
     }
 
@@ -71,12 +72,12 @@ impl DiagnosticSecurityAccess {
         self
     }
 
-    pub fn get_security_level(&self) -> Option<&str> {
-        self.security_level.as_deref()
+    pub fn get_security_level(&self) -> Option<RefTypeId> {
+        self.security_level
     }
 
-    pub fn set_security_level(&mut self, value: impl Into<String>) -> &mut Self {
-        self.security_level = Some(value.into());
+    pub fn set_security_level(&mut self, value: RefTypeId) -> &mut Self {
+        self.security_level = Some(value);
         self
     }
 

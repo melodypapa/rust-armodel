@@ -15,6 +15,7 @@ use crate::m2::autosar_templates::common_structure::implementation_data_types::A
 use crate::m2::autosar_templates::generic_structure::abstract_structure::AtpPrototype;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::sw_component_template::datatype::datatypes::ArraySizeHandlingEnum;
@@ -33,7 +34,7 @@ pub struct ApplicationArrayElement {
     base: ApplicationCompositeElementDataPrototype,
     array_size_handling: Option<ArraySizeHandlingEnum>,
     array_size_semantics: Option<ArraySizeSemanticsEnum>,
-    index_data_type_ref: Option<String>,
+    index_data_type_ref: Option<RefTypeId>,
     max_number_of_elements: Option<String>,
 }
 
@@ -68,12 +69,12 @@ impl ApplicationArrayElement {
         self
     }
 
-    pub fn get_index_data_type_ref(&self) -> Option<&str> {
-        self.index_data_type_ref.as_deref()
+    pub fn get_index_data_type_ref(&self) -> Option<RefTypeId> {
+        self.index_data_type_ref
     }
 
-    pub fn set_index_data_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.index_data_type_ref = Some(value.into());
+    pub fn set_index_data_type_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.index_data_type_ref = Some(value);
         self
     }
 
@@ -104,11 +105,11 @@ impl ApplicationArrayElement {
         self
     }
 
-    pub fn get_atp_type_ref(&self) -> Option<&str> {
+    pub fn get_atp_type_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_atp_type_ref()
     }
 
-    pub fn set_atp_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_type_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -401,11 +402,11 @@ impl ApplicationCompositeElementDataPrototype {
         self
     }
 
-    pub fn get_atp_type_ref(&self) -> Option<&str> {
+    pub fn get_atp_type_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_atp_type_ref()
     }
 
-    pub fn set_atp_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_type_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_atp_type_ref(value);
         self
     }
@@ -682,11 +683,11 @@ impl ApplicationRecordElement {
         self
     }
 
-    pub fn get_atp_type_ref(&self) -> Option<&str> {
+    pub fn get_atp_type_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_atp_type_ref()
     }
 
-    pub fn set_atp_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_type_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -989,11 +990,11 @@ impl AutosarDataPrototype {
         self
     }
 
-    pub fn get_atp_type_ref(&self) -> Option<&str> {
+    pub fn get_atp_type_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_atp_type_ref()
     }
 
-    pub fn set_atp_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_type_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_atp_type_ref(value);
         self
     }
@@ -1243,11 +1244,11 @@ impl DataPrototype {
         self
     }
 
-    pub fn get_atp_type_ref(&self) -> Option<&str> {
+    pub fn get_atp_type_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_type_ref()
     }
 
-    pub fn set_atp_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_type_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_type_ref(value);
         self
     }
@@ -1480,11 +1481,11 @@ impl ParameterDataPrototype {
         self
     }
 
-    pub fn get_atp_type_ref(&self) -> Option<&str> {
+    pub fn get_atp_type_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_atp_type_ref()
     }
 
-    pub fn set_atp_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_type_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -1805,11 +1806,11 @@ impl VariableDataPrototype {
         self
     }
 
-    pub fn get_atp_type_ref(&self) -> Option<&str> {
+    pub fn get_atp_type_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_atp_type_ref()
     }
 
-    pub fn set_atp_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_type_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()

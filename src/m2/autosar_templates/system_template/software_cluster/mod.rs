@@ -29,6 +29,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::system_template::instance_refs::ComponentInSystemInstanceRefId;
@@ -90,7 +91,7 @@ pub struct CpSoftwareCluster {
     base: ARElement,
     software_cluster_id: Option<String>,
     sw_component_assignments: Vec<SwComponentPrototypeAssignmentId>,
-    sw_composition_refs: Vec<String>,
+    sw_composition_refs: Vec<RefTypeId>,
 }
 
 impl CpSoftwareCluster {
@@ -123,11 +124,11 @@ impl CpSoftwareCluster {
         self.sw_component_assignments.push(value);
     }
 
-    pub fn get_sw_composition_refs(&self) -> &[String] {
+    pub fn get_sw_composition_refs(&self) -> &[RefTypeId] {
         &self.sw_composition_refs
     }
 
-    pub fn push_sw_composition_ref(&mut self, value: String) {
+    pub fn push_sw_composition_ref(&mut self, value: RefTypeId) {
         self.sw_composition_refs.push(value);
     }
 
@@ -2427,9 +2428,13 @@ impl Document {
             return Err(format!("{path}: SW_COMPOSITION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SW_COMPOSITION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SW_COMPOSITION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SW_COMPOSITION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SW_COMPOSITION_REFS[{index}]"))?;
         }
         Ok(())
     }

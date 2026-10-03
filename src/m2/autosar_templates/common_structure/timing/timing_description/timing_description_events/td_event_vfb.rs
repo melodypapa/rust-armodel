@@ -16,6 +16,7 @@ new_key_type! {
 use crate::m2::autosar_templates::common_structure::timing::timing_description::TimingDescriptionEvent;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::sw_component_template::composition::instance_refs::ComponentInCompositionInstanceRefId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
@@ -163,9 +164,9 @@ impl TryFrom<&str> for TDEventVariableDataPrototypeTypeEnum {
 #[derive(Debug, Default)]
 pub struct TDEventModeDeclaration {
     base: TDEventVfbPort,
-    entry_mode_declaration_ref: Option<String>,
-    exit_mode_declaration_ref: Option<String>,
-    mode_declaration_ref: Option<String>,
+    entry_mode_declaration_ref: Option<RefTypeId>,
+    exit_mode_declaration_ref: Option<RefTypeId>,
+    mode_declaration_ref: Option<RefTypeId>,
     td_event_mode_declaration_type: Option<TDEventModeDeclarationTypeEnum>,
 }
 
@@ -182,30 +183,30 @@ impl TDEventModeDeclaration {
         &mut self.base
     }
 
-    pub fn get_entry_mode_declaration_ref(&self) -> Option<&str> {
-        self.entry_mode_declaration_ref.as_deref()
+    pub fn get_entry_mode_declaration_ref(&self) -> Option<RefTypeId> {
+        self.entry_mode_declaration_ref
     }
 
-    pub fn set_entry_mode_declaration_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.entry_mode_declaration_ref = Some(value.into());
+    pub fn set_entry_mode_declaration_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.entry_mode_declaration_ref = Some(value);
         self
     }
 
-    pub fn get_exit_mode_declaration_ref(&self) -> Option<&str> {
-        self.exit_mode_declaration_ref.as_deref()
+    pub fn get_exit_mode_declaration_ref(&self) -> Option<RefTypeId> {
+        self.exit_mode_declaration_ref
     }
 
-    pub fn set_exit_mode_declaration_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.exit_mode_declaration_ref = Some(value.into());
+    pub fn set_exit_mode_declaration_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.exit_mode_declaration_ref = Some(value);
         self
     }
 
-    pub fn get_mode_declaration_ref(&self) -> Option<&str> {
-        self.mode_declaration_ref.as_deref()
+    pub fn get_mode_declaration_ref(&self) -> Option<RefTypeId> {
+        self.mode_declaration_ref
     }
 
-    pub fn set_mode_declaration_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.mode_declaration_ref = Some(value.into());
+    pub fn set_mode_declaration_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.mode_declaration_ref = Some(value);
         self
     }
 
@@ -230,20 +231,20 @@ impl TDEventModeDeclaration {
         self
     }
 
-    pub fn get_port_ref(&self) -> Option<&str> {
+    pub fn get_port_ref(&self) -> Option<RefTypeId> {
         self.base().get_port_ref()
     }
 
-    pub fn set_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_port_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_port_ref(value);
         self
     }
 
-    pub fn get_port_prototype_blueprint_ref(&self) -> Option<&str> {
+    pub fn get_port_prototype_blueprint_ref(&self) -> Option<RefTypeId> {
         self.base().get_port_prototype_blueprint_ref()
     }
 
-    pub fn set_port_prototype_blueprint_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_port_prototype_blueprint_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_port_prototype_blueprint_ref(value);
         self
     }
@@ -257,11 +258,11 @@ impl TDEventModeDeclaration {
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -520,7 +521,7 @@ impl TDEventModeDeclaration {
 #[derive(Debug, Default)]
 pub struct TDEventOperation {
     base: TDEventVfbPort,
-    operation_ref: Option<String>,
+    operation_ref: Option<RefTypeId>,
     td_event_operation_type: Option<TDEventOperationTypeEnum>,
 }
 
@@ -537,12 +538,12 @@ impl TDEventOperation {
         &mut self.base
     }
 
-    pub fn get_operation_ref(&self) -> Option<&str> {
-        self.operation_ref.as_deref()
+    pub fn get_operation_ref(&self) -> Option<RefTypeId> {
+        self.operation_ref
     }
 
-    pub fn set_operation_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.operation_ref = Some(value.into());
+    pub fn set_operation_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.operation_ref = Some(value);
         self
     }
 
@@ -564,20 +565,20 @@ impl TDEventOperation {
         self
     }
 
-    pub fn get_port_ref(&self) -> Option<&str> {
+    pub fn get_port_ref(&self) -> Option<RefTypeId> {
         self.base().get_port_ref()
     }
 
-    pub fn set_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_port_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_port_ref(value);
         self
     }
 
-    pub fn get_port_prototype_blueprint_ref(&self) -> Option<&str> {
+    pub fn get_port_prototype_blueprint_ref(&self) -> Option<RefTypeId> {
         self.base().get_port_prototype_blueprint_ref()
     }
 
-    pub fn set_port_prototype_blueprint_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_port_prototype_blueprint_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_port_prototype_blueprint_ref(value);
         self
     }
@@ -591,11 +592,11 @@ impl TDEventOperation {
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -854,7 +855,7 @@ impl TDEventOperation {
 #[derive(Debug, Default)]
 pub struct TDEventTrigger {
     base: TDEventVfbPort,
-    trigger_ref: Option<String>,
+    trigger_ref: Option<RefTypeId>,
     td_event_trigger_type: Option<TDEventTriggerTypeEnum>,
 }
 
@@ -871,12 +872,12 @@ impl TDEventTrigger {
         &mut self.base
     }
 
-    pub fn get_trigger_ref(&self) -> Option<&str> {
-        self.trigger_ref.as_deref()
+    pub fn get_trigger_ref(&self) -> Option<RefTypeId> {
+        self.trigger_ref
     }
 
-    pub fn set_trigger_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.trigger_ref = Some(value.into());
+    pub fn set_trigger_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.trigger_ref = Some(value);
         self
     }
 
@@ -898,20 +899,20 @@ impl TDEventTrigger {
         self
     }
 
-    pub fn get_port_ref(&self) -> Option<&str> {
+    pub fn get_port_ref(&self) -> Option<RefTypeId> {
         self.base().get_port_ref()
     }
 
-    pub fn set_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_port_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_port_ref(value);
         self
     }
 
-    pub fn get_port_prototype_blueprint_ref(&self) -> Option<&str> {
+    pub fn get_port_prototype_blueprint_ref(&self) -> Option<RefTypeId> {
         self.base().get_port_prototype_blueprint_ref()
     }
 
-    pub fn set_port_prototype_blueprint_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_port_prototype_blueprint_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_port_prototype_blueprint_ref(value);
         self
     }
@@ -925,11 +926,11 @@ impl TDEventTrigger {
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -1188,7 +1189,7 @@ impl TDEventTrigger {
 #[derive(Debug, Default)]
 pub struct TDEventVariableDataPrototype {
     base: TDEventVfbPort,
-    data_element_ref: Option<String>,
+    data_element_ref: Option<RefTypeId>,
     td_event_variable_data_prototype_type: Option<TDEventVariableDataPrototypeTypeEnum>,
 }
 
@@ -1205,12 +1206,12 @@ impl TDEventVariableDataPrototype {
         &mut self.base
     }
 
-    pub fn get_data_element_ref(&self) -> Option<&str> {
-        self.data_element_ref.as_deref()
+    pub fn get_data_element_ref(&self) -> Option<RefTypeId> {
+        self.data_element_ref
     }
 
-    pub fn set_data_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.data_element_ref = Some(value.into());
+    pub fn set_data_element_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.data_element_ref = Some(value);
         self
     }
 
@@ -1237,20 +1238,20 @@ impl TDEventVariableDataPrototype {
         self
     }
 
-    pub fn get_port_ref(&self) -> Option<&str> {
+    pub fn get_port_ref(&self) -> Option<RefTypeId> {
         self.base().get_port_ref()
     }
 
-    pub fn set_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_port_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_port_ref(value);
         self
     }
 
-    pub fn get_port_prototype_blueprint_ref(&self) -> Option<&str> {
+    pub fn get_port_prototype_blueprint_ref(&self) -> Option<RefTypeId> {
         self.base().get_port_prototype_blueprint_ref()
     }
 
-    pub fn set_port_prototype_blueprint_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_port_prototype_blueprint_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_port_prototype_blueprint_ref(value);
         self
     }
@@ -1264,11 +1265,11 @@ impl TDEventVariableDataPrototype {
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -1552,11 +1553,11 @@ impl TDEventVfb {
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_clock_reference_ref(value);
         self
     }
@@ -1738,8 +1739,8 @@ impl TDEventVfb {
 pub struct TDEventVfbPort {
     base: TDEventVfb,
     is_external: Option<String>,
-    port_ref: Option<String>,
-    port_prototype_blueprint_ref: Option<String>,
+    port_ref: Option<RefTypeId>,
+    port_prototype_blueprint_ref: Option<RefTypeId>,
 }
 
 impl TDEventVfbPort {
@@ -1764,21 +1765,21 @@ impl TDEventVfbPort {
         self
     }
 
-    pub fn get_port_ref(&self) -> Option<&str> {
-        self.port_ref.as_deref()
+    pub fn get_port_ref(&self) -> Option<RefTypeId> {
+        self.port_ref
     }
 
-    pub fn set_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.port_ref = Some(value.into());
+    pub fn set_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.port_ref = Some(value);
         self
     }
 
-    pub fn get_port_prototype_blueprint_ref(&self) -> Option<&str> {
-        self.port_prototype_blueprint_ref.as_deref()
+    pub fn get_port_prototype_blueprint_ref(&self) -> Option<RefTypeId> {
+        self.port_prototype_blueprint_ref
     }
 
-    pub fn set_port_prototype_blueprint_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.port_prototype_blueprint_ref = Some(value.into());
+    pub fn set_port_prototype_blueprint_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.port_prototype_blueprint_ref = Some(value);
         self
     }
 
@@ -1791,11 +1792,11 @@ impl TDEventVfbPort {
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_clock_reference_ref(value);
         self
     }
@@ -2020,7 +2021,7 @@ impl TDEventVfbPort {
 #[derive(Debug, Default)]
 pub struct TDEventVfbReference {
     base: TDEventVfb,
-    referenced_td_event_vfb_ref: Option<String>,
+    referenced_td_event_vfb_ref: Option<RefTypeId>,
 }
 
 impl TDEventVfbReference {
@@ -2036,12 +2037,12 @@ impl TDEventVfbReference {
         &mut self.base
     }
 
-    pub fn get_referenced_td_event_vfb_ref(&self) -> Option<&str> {
-        self.referenced_td_event_vfb_ref.as_deref()
+    pub fn get_referenced_td_event_vfb_ref(&self) -> Option<RefTypeId> {
+        self.referenced_td_event_vfb_ref
     }
 
-    pub fn set_referenced_td_event_vfb_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.referenced_td_event_vfb_ref = Some(value.into());
+    pub fn set_referenced_td_event_vfb_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.referenced_td_event_vfb_ref = Some(value);
         self
     }
 
@@ -2054,11 +2055,11 @@ impl TDEventVfbReference {
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_clock_reference_ref(value);
         self
     }

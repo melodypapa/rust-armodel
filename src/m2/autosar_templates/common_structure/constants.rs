@@ -30,6 +30,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -513,7 +514,7 @@ impl CompositeValueSpecification {
 #[derive(Debug, Default)]
 pub struct ConstantReference {
     base: ValueSpecification,
-    constant_ref: Option<String>,
+    constant_ref: Option<RefTypeId>,
 }
 
 impl ConstantReference {
@@ -529,12 +530,12 @@ impl ConstantReference {
         &mut self.base
     }
 
-    pub fn get_constant_ref(&self) -> Option<&str> {
-        self.constant_ref.as_deref()
+    pub fn get_constant_ref(&self) -> Option<RefTypeId> {
+        self.constant_ref
     }
 
-    pub fn set_constant_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.constant_ref = Some(value.into());
+    pub fn set_constant_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.constant_ref = Some(value);
         self
     }
 
@@ -816,8 +817,8 @@ impl ConstantSpecification {
 #[derive(Debug, Default)]
 pub struct ConstantSpecificationMapping {
     base: ARObject,
-    appl_constant_ref: Option<String>,
-    impl_constant_ref: Option<String>,
+    appl_constant_ref: Option<RefTypeId>,
+    impl_constant_ref: Option<RefTypeId>,
 }
 
 impl ConstantSpecificationMapping {
@@ -833,21 +834,21 @@ impl ConstantSpecificationMapping {
         &mut self.base
     }
 
-    pub fn get_appl_constant_ref(&self) -> Option<&str> {
-        self.appl_constant_ref.as_deref()
+    pub fn get_appl_constant_ref(&self) -> Option<RefTypeId> {
+        self.appl_constant_ref
     }
 
-    pub fn set_appl_constant_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.appl_constant_ref = Some(value.into());
+    pub fn set_appl_constant_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.appl_constant_ref = Some(value);
         self
     }
 
-    pub fn get_impl_constant_ref(&self) -> Option<&str> {
-        self.impl_constant_ref.as_deref()
+    pub fn get_impl_constant_ref(&self) -> Option<RefTypeId> {
+        self.impl_constant_ref
     }
 
-    pub fn set_impl_constant_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.impl_constant_ref = Some(value.into());
+    pub fn set_impl_constant_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.impl_constant_ref = Some(value);
         self
     }
 
@@ -1430,7 +1431,7 @@ impl RecordValueSpecification {
 #[derive(Debug, Default)]
 pub struct ReferenceValueSpecification {
     base: ValueSpecification,
-    reference_value_ref: Option<String>,
+    reference_value_ref: Option<RefTypeId>,
 }
 
 impl ReferenceValueSpecification {
@@ -1446,12 +1447,12 @@ impl ReferenceValueSpecification {
         &mut self.base
     }
 
-    pub fn get_reference_value_ref(&self) -> Option<&str> {
-        self.reference_value_ref.as_deref()
+    pub fn get_reference_value_ref(&self) -> Option<RefTypeId> {
+        self.reference_value_ref
     }
 
-    pub fn set_reference_value_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.reference_value_ref = Some(value.into());
+    pub fn set_reference_value_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.reference_value_ref = Some(value);
         self
     }
 
@@ -1590,7 +1591,7 @@ pub struct RuleBasedAxisCont {
     rule_based_values: Option<RuleBasedValueSpecificationId>,
     sw_arraysize: Option<ValueListId>,
     sw_axis_index: Option<String>,
-    unit_ref: Option<String>,
+    unit_ref: Option<RefTypeId>,
 }
 
 impl RuleBasedAxisCont {
@@ -1642,12 +1643,12 @@ impl RuleBasedAxisCont {
         self
     }
 
-    pub fn get_unit_ref(&self) -> Option<&str> {
-        self.unit_ref.as_deref()
+    pub fn get_unit_ref(&self) -> Option<RefTypeId> {
+        self.unit_ref
     }
 
-    pub fn set_unit_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.unit_ref = Some(value.into());
+    pub fn set_unit_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.unit_ref = Some(value);
         self
     }
 
@@ -1677,7 +1678,7 @@ pub struct RuleBasedValueCont {
     base: ARObject,
     rule_based_values: Option<RuleBasedValueSpecificationId>,
     sw_arraysize: Option<ValueListId>,
-    unit_ref: Option<String>,
+    unit_ref: Option<RefTypeId>,
 }
 
 impl RuleBasedValueCont {
@@ -1711,12 +1712,12 @@ impl RuleBasedValueCont {
         self
     }
 
-    pub fn get_unit_ref(&self) -> Option<&str> {
-        self.unit_ref.as_deref()
+    pub fn get_unit_ref(&self) -> Option<RefTypeId> {
+        self.unit_ref
     }
 
-    pub fn set_unit_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.unit_ref = Some(value.into());
+    pub fn set_unit_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.unit_ref = Some(value);
         self
     }
 

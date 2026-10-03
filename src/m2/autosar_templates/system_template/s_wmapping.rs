@@ -23,6 +23,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::system_template::instance_refs::ComponentInSystemInstanceRefId;
@@ -276,8 +277,8 @@ impl ApplicationPartition {
 pub struct ApplicationPartitionToEcuPartitionMapping {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    application_partition_refs: Vec<String>,
-    ecu_partition_ref: Option<String>,
+    application_partition_refs: Vec<RefTypeId>,
+    ecu_partition_ref: Option<RefTypeId>,
 }
 
 impl ApplicationPartitionToEcuPartitionMapping {
@@ -301,20 +302,20 @@ impl ApplicationPartitionToEcuPartitionMapping {
         &mut self.variation_point_capable
     }
 
-    pub fn get_application_partition_refs(&self) -> &[String] {
+    pub fn get_application_partition_refs(&self) -> &[RefTypeId] {
         &self.application_partition_refs
     }
 
-    pub fn push_application_partition_ref(&mut self, value: String) {
+    pub fn push_application_partition_ref(&mut self, value: RefTypeId) {
         self.application_partition_refs.push(value);
     }
 
-    pub fn get_ecu_partition_ref(&self) -> Option<&str> {
-        self.ecu_partition_ref.as_deref()
+    pub fn get_ecu_partition_ref(&self) -> Option<RefTypeId> {
+        self.ecu_partition_ref
     }
 
-    pub fn set_ecu_partition_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ecu_partition_ref = Some(value.into());
+    pub fn set_ecu_partition_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ecu_partition_ref = Some(value);
         self
     }
 
@@ -1202,9 +1203,9 @@ pub struct SwcToEcuMapping {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
     component_i_refs: Vec<ComponentInSystemInstanceRefId>,
-    controlled_hw_element_ref: Option<String>,
-    ecu_instance_ref: Option<String>,
-    processing_unit_ref: Option<String>,
+    controlled_hw_element_ref: Option<RefTypeId>,
+    ecu_instance_ref: Option<RefTypeId>,
+    processing_unit_ref: Option<RefTypeId>,
 }
 
 impl SwcToEcuMapping {
@@ -1236,30 +1237,30 @@ impl SwcToEcuMapping {
         self.component_i_refs.push(value);
     }
 
-    pub fn get_controlled_hw_element_ref(&self) -> Option<&str> {
-        self.controlled_hw_element_ref.as_deref()
+    pub fn get_controlled_hw_element_ref(&self) -> Option<RefTypeId> {
+        self.controlled_hw_element_ref
     }
 
-    pub fn set_controlled_hw_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.controlled_hw_element_ref = Some(value.into());
+    pub fn set_controlled_hw_element_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.controlled_hw_element_ref = Some(value);
         self
     }
 
-    pub fn get_ecu_instance_ref(&self) -> Option<&str> {
-        self.ecu_instance_ref.as_deref()
+    pub fn get_ecu_instance_ref(&self) -> Option<RefTypeId> {
+        self.ecu_instance_ref
     }
 
-    pub fn set_ecu_instance_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ecu_instance_ref = Some(value.into());
+    pub fn set_ecu_instance_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ecu_instance_ref = Some(value);
         self
     }
 
-    pub fn get_processing_unit_ref(&self) -> Option<&str> {
-        self.processing_unit_ref.as_deref()
+    pub fn get_processing_unit_ref(&self) -> Option<RefTypeId> {
+        self.processing_unit_ref
     }
 
-    pub fn set_processing_unit_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.processing_unit_ref = Some(value.into());
+    pub fn set_processing_unit_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.processing_unit_ref = Some(value);
         self
     }
 
@@ -1411,7 +1412,7 @@ pub struct SwcToImplMapping {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
     component_i_refs: Vec<ComponentInSystemInstanceRefId>,
-    component_implementation_ref: Option<String>,
+    component_implementation_ref: Option<RefTypeId>,
 }
 
 impl SwcToImplMapping {
@@ -1443,12 +1444,12 @@ impl SwcToImplMapping {
         self.component_i_refs.push(value);
     }
 
-    pub fn get_component_implementation_ref(&self) -> Option<&str> {
-        self.component_implementation_ref.as_deref()
+    pub fn get_component_implementation_ref(&self) -> Option<RefTypeId> {
+        self.component_implementation_ref
     }
 
-    pub fn set_component_implementation_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.component_implementation_ref = Some(value.into());
+    pub fn set_component_implementation_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.component_implementation_ref = Some(value);
         self
     }
 
@@ -1627,11 +1628,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.APPLICATION_PARTITION_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.APPLICATION_PARTITION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.APPLICATION_PARTITION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.APPLICATION_PARTITION_REFS[{index}]"),
+            )?;
         }
         if a.get_ecu_partition_ref() != b.get_ecu_partition_ref() {
             return Err(format!("{path}: ECU_PARTITION_REF mismatch"));

@@ -21,6 +21,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::multidimensional_time::MultidimensionalTimeId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::autosar_templates::common_structure::timing::timing_constraint::TimingConstraint;
 use crate::Document;
@@ -72,29 +73,29 @@ impl ArbitraryEventTriggering {
         self.minimum_distances.push(value);
     }
 
-    pub fn get_event_ref(&self) -> Option<&str> {
+    pub fn get_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_event_ref()
     }
 
-    pub fn set_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_event_ref(value);
         self
     }
 
-    pub fn get_timing_condition_ref(&self) -> Option<&str> {
+    pub fn get_timing_condition_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_timing_condition_ref()
     }
 
-    pub fn set_timing_condition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_timing_condition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_timing_condition_ref(value);
         self
     }
 
-    pub fn get_trace_refs(&self) -> &[String] {
+    pub fn get_trace_refs(&self) -> &[RefTypeId] {
         self.base().base().base().get_trace_refs()
     }
 
-    pub fn push_trace_ref(&mut self, value: String) {
+    pub fn push_trace_ref(&mut self, value: RefTypeId) {
         self.base_mut().base_mut().base_mut().push_trace_ref(value)
     }
 
@@ -393,29 +394,29 @@ impl BurstPatternEventTriggering {
         self
     }
 
-    pub fn get_event_ref(&self) -> Option<&str> {
+    pub fn get_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_event_ref()
     }
 
-    pub fn set_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_event_ref(value);
         self
     }
 
-    pub fn get_timing_condition_ref(&self) -> Option<&str> {
+    pub fn get_timing_condition_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_timing_condition_ref()
     }
 
-    pub fn set_timing_condition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_timing_condition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_timing_condition_ref(value);
         self
     }
 
-    pub fn get_trace_refs(&self) -> &[String] {
+    pub fn get_trace_refs(&self) -> &[RefTypeId] {
         self.base().base().base().get_trace_refs()
     }
 
-    pub fn push_trace_ref(&mut self, value: String) {
+    pub fn push_trace_ref(&mut self, value: RefTypeId) {
         self.base_mut().base_mut().base_mut().push_trace_ref(value)
     }
 
@@ -693,29 +694,29 @@ impl ConcretePatternEventTriggering {
         self
     }
 
-    pub fn get_event_ref(&self) -> Option<&str> {
+    pub fn get_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_event_ref()
     }
 
-    pub fn set_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_event_ref(value);
         self
     }
 
-    pub fn get_timing_condition_ref(&self) -> Option<&str> {
+    pub fn get_timing_condition_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_timing_condition_ref()
     }
 
-    pub fn set_timing_condition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_timing_condition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_timing_condition_ref(value);
         self
     }
 
-    pub fn get_trace_refs(&self) -> &[String] {
+    pub fn get_trace_refs(&self) -> &[RefTypeId] {
         self.base().base().base().get_trace_refs()
     }
 
-    pub fn push_trace_ref(&mut self, value: String) {
+    pub fn push_trace_ref(&mut self, value: RefTypeId) {
         self.base_mut().base_mut().base_mut().push_trace_ref(value)
     }
 
@@ -1009,7 +1010,7 @@ impl ConfidenceInterval {
 #[derive(Debug, Default)]
 pub struct EventTriggeringConstraint {
     base: TimingConstraint,
-    event_ref: Option<String>,
+    event_ref: Option<RefTypeId>,
 }
 
 impl EventTriggeringConstraint {
@@ -1025,29 +1026,29 @@ impl EventTriggeringConstraint {
         &mut self.base
     }
 
-    pub fn get_event_ref(&self) -> Option<&str> {
-        self.event_ref.as_deref()
+    pub fn get_event_ref(&self) -> Option<RefTypeId> {
+        self.event_ref
     }
 
-    pub fn set_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.event_ref = Some(value.into());
+    pub fn set_event_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.event_ref = Some(value);
         self
     }
 
-    pub fn get_timing_condition_ref(&self) -> Option<&str> {
+    pub fn get_timing_condition_ref(&self) -> Option<RefTypeId> {
         self.base().get_timing_condition_ref()
     }
 
-    pub fn set_timing_condition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_timing_condition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_timing_condition_ref(value);
         self
     }
 
-    pub fn get_trace_refs(&self) -> &[String] {
+    pub fn get_trace_refs(&self) -> &[RefTypeId] {
         self.base().base().get_trace_refs()
     }
 
-    pub fn push_trace_ref(&mut self, value: String) {
+    pub fn push_trace_ref(&mut self, value: RefTypeId) {
         self.base_mut().base_mut().push_trace_ref(value)
     }
 
@@ -1272,29 +1273,29 @@ impl PeriodicEventTriggering {
         self
     }
 
-    pub fn get_event_ref(&self) -> Option<&str> {
+    pub fn get_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_event_ref()
     }
 
-    pub fn set_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_event_ref(value);
         self
     }
 
-    pub fn get_timing_condition_ref(&self) -> Option<&str> {
+    pub fn get_timing_condition_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_timing_condition_ref()
     }
 
-    pub fn set_timing_condition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_timing_condition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_timing_condition_ref(value);
         self
     }
 
-    pub fn get_trace_refs(&self) -> &[String] {
+    pub fn get_trace_refs(&self) -> &[RefTypeId] {
         self.base().base().base().get_trace_refs()
     }
 
-    pub fn push_trace_ref(&mut self, value: String) {
+    pub fn push_trace_ref(&mut self, value: RefTypeId) {
         self.base_mut().base_mut().base_mut().push_trace_ref(value)
     }
 
@@ -1573,29 +1574,29 @@ impl SporadicEventTriggering {
         self
     }
 
-    pub fn get_event_ref(&self) -> Option<&str> {
+    pub fn get_event_ref(&self) -> Option<RefTypeId> {
         self.base().get_event_ref()
     }
 
-    pub fn set_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_event_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_event_ref(value);
         self
     }
 
-    pub fn get_timing_condition_ref(&self) -> Option<&str> {
+    pub fn get_timing_condition_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_timing_condition_ref()
     }
 
-    pub fn set_timing_condition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_timing_condition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_timing_condition_ref(value);
         self
     }
 
-    pub fn get_trace_refs(&self) -> &[String] {
+    pub fn get_trace_refs(&self) -> &[RefTypeId] {
         self.base().base().base().get_trace_refs()
     }
 
-    pub fn push_trace_ref(&mut self, value: String) {
+    pub fn push_trace_ref(&mut self, value: RefTypeId) {
         self.base_mut().base_mut().base_mut().push_trace_ref(value)
     }
 

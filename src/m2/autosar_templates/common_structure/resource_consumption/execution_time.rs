@@ -22,6 +22,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::i
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::multidimensional_time::MultidimensionalTimeId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::autosar_templates::common_structure::resource_consumption::SoftwareContextId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
@@ -70,20 +71,20 @@ impl AnalyzedExecutionTime {
         self
     }
 
-    pub fn get_exclusive_area_ref(&self) -> Option<&str> {
+    pub fn get_exclusive_area_ref(&self) -> Option<RefTypeId> {
         self.base().get_exclusive_area_ref()
     }
 
-    pub fn set_exclusive_area_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_exclusive_area_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_exclusive_area_ref(value);
         self
     }
 
-    pub fn get_executable_entity_ref(&self) -> Option<&str> {
+    pub fn get_executable_entity_ref(&self) -> Option<RefTypeId> {
         self.base().get_executable_entity_ref()
     }
 
-    pub fn set_executable_entity_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_executable_entity_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_executable_entity_ref(value);
         self
     }
@@ -97,20 +98,20 @@ impl AnalyzedExecutionTime {
         self
     }
 
-    pub fn get_hw_element_ref(&self) -> Option<&str> {
+    pub fn get_hw_element_ref(&self) -> Option<RefTypeId> {
         self.base().get_hw_element_ref()
     }
 
-    pub fn set_hw_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_hw_element_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_hw_element_ref(value);
         self
     }
 
-    pub fn get_included_library_refs(&self) -> &[String] {
+    pub fn get_included_library_refs(&self) -> &[RefTypeId] {
         self.base().get_included_library_refs()
     }
 
-    pub fn push_included_library_ref(&mut self, value: String) {
+    pub fn push_included_library_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_included_library_ref(value)
     }
 
@@ -280,11 +281,11 @@ impl AnalyzedExecutionTime {
 pub struct ExecutionTime {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    exclusive_area_ref: Option<String>,
-    executable_entity_ref: Option<String>,
+    exclusive_area_ref: Option<RefTypeId>,
+    executable_entity_ref: Option<RefTypeId>,
     hardware_configuration: Option<HardwareConfigurationId>,
-    hw_element_ref: Option<String>,
-    included_library_refs: Vec<String>,
+    hw_element_ref: Option<RefTypeId>,
+    included_library_refs: Vec<RefTypeId>,
     memory_section_locations: Vec<MemorySectionLocationId>,
     software_context: Option<SoftwareContextId>,
 }
@@ -310,21 +311,21 @@ impl ExecutionTime {
         &mut self.variation_point_capable
     }
 
-    pub fn get_exclusive_area_ref(&self) -> Option<&str> {
-        self.exclusive_area_ref.as_deref()
+    pub fn get_exclusive_area_ref(&self) -> Option<RefTypeId> {
+        self.exclusive_area_ref
     }
 
-    pub fn set_exclusive_area_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.exclusive_area_ref = Some(value.into());
+    pub fn set_exclusive_area_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.exclusive_area_ref = Some(value);
         self
     }
 
-    pub fn get_executable_entity_ref(&self) -> Option<&str> {
-        self.executable_entity_ref.as_deref()
+    pub fn get_executable_entity_ref(&self) -> Option<RefTypeId> {
+        self.executable_entity_ref
     }
 
-    pub fn set_executable_entity_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.executable_entity_ref = Some(value.into());
+    pub fn set_executable_entity_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.executable_entity_ref = Some(value);
         self
     }
 
@@ -337,20 +338,20 @@ impl ExecutionTime {
         self
     }
 
-    pub fn get_hw_element_ref(&self) -> Option<&str> {
-        self.hw_element_ref.as_deref()
+    pub fn get_hw_element_ref(&self) -> Option<RefTypeId> {
+        self.hw_element_ref
     }
 
-    pub fn set_hw_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.hw_element_ref = Some(value.into());
+    pub fn set_hw_element_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.hw_element_ref = Some(value);
         self
     }
 
-    pub fn get_included_library_refs(&self) -> &[String] {
+    pub fn get_included_library_refs(&self) -> &[RefTypeId] {
         &self.included_library_refs
     }
 
-    pub fn push_included_library_ref(&mut self, value: String) {
+    pub fn push_included_library_ref(&mut self, value: RefTypeId) {
         self.included_library_refs.push(value);
     }
 
@@ -564,20 +565,20 @@ impl MeasuredExecutionTime {
         self
     }
 
-    pub fn get_exclusive_area_ref(&self) -> Option<&str> {
+    pub fn get_exclusive_area_ref(&self) -> Option<RefTypeId> {
         self.base().get_exclusive_area_ref()
     }
 
-    pub fn set_exclusive_area_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_exclusive_area_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_exclusive_area_ref(value);
         self
     }
 
-    pub fn get_executable_entity_ref(&self) -> Option<&str> {
+    pub fn get_executable_entity_ref(&self) -> Option<RefTypeId> {
         self.base().get_executable_entity_ref()
     }
 
-    pub fn set_executable_entity_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_executable_entity_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_executable_entity_ref(value);
         self
     }
@@ -591,20 +592,20 @@ impl MeasuredExecutionTime {
         self
     }
 
-    pub fn get_hw_element_ref(&self) -> Option<&str> {
+    pub fn get_hw_element_ref(&self) -> Option<RefTypeId> {
         self.base().get_hw_element_ref()
     }
 
-    pub fn set_hw_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_hw_element_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_hw_element_ref(value);
         self
     }
 
-    pub fn get_included_library_refs(&self) -> &[String] {
+    pub fn get_included_library_refs(&self) -> &[RefTypeId] {
         self.base().get_included_library_refs()
     }
 
-    pub fn push_included_library_ref(&mut self, value: String) {
+    pub fn push_included_library_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_included_library_ref(value)
     }
 
@@ -772,8 +773,8 @@ impl MeasuredExecutionTime {
 #[derive(Debug, Default)]
 pub struct MemorySectionLocation {
     base: ARObject,
-    provided_memory_ref: Option<String>,
-    software_memory_section_ref: Option<String>,
+    provided_memory_ref: Option<RefTypeId>,
+    software_memory_section_ref: Option<RefTypeId>,
 }
 
 impl MemorySectionLocation {
@@ -789,21 +790,21 @@ impl MemorySectionLocation {
         &mut self.base
     }
 
-    pub fn get_provided_memory_ref(&self) -> Option<&str> {
-        self.provided_memory_ref.as_deref()
+    pub fn get_provided_memory_ref(&self) -> Option<RefTypeId> {
+        self.provided_memory_ref
     }
 
-    pub fn set_provided_memory_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.provided_memory_ref = Some(value.into());
+    pub fn set_provided_memory_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.provided_memory_ref = Some(value);
         self
     }
 
-    pub fn get_software_memory_section_ref(&self) -> Option<&str> {
-        self.software_memory_section_ref.as_deref()
+    pub fn get_software_memory_section_ref(&self) -> Option<RefTypeId> {
+        self.software_memory_section_ref
     }
 
-    pub fn set_software_memory_section_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.software_memory_section_ref = Some(value.into());
+    pub fn set_software_memory_section_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.software_memory_section_ref = Some(value);
         self
     }
 
@@ -866,20 +867,20 @@ impl RoughEstimateOfExecutionTime {
         self
     }
 
-    pub fn get_exclusive_area_ref(&self) -> Option<&str> {
+    pub fn get_exclusive_area_ref(&self) -> Option<RefTypeId> {
         self.base().get_exclusive_area_ref()
     }
 
-    pub fn set_exclusive_area_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_exclusive_area_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_exclusive_area_ref(value);
         self
     }
 
-    pub fn get_executable_entity_ref(&self) -> Option<&str> {
+    pub fn get_executable_entity_ref(&self) -> Option<RefTypeId> {
         self.base().get_executable_entity_ref()
     }
 
-    pub fn set_executable_entity_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_executable_entity_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_executable_entity_ref(value);
         self
     }
@@ -893,20 +894,20 @@ impl RoughEstimateOfExecutionTime {
         self
     }
 
-    pub fn get_hw_element_ref(&self) -> Option<&str> {
+    pub fn get_hw_element_ref(&self) -> Option<RefTypeId> {
         self.base().get_hw_element_ref()
     }
 
-    pub fn set_hw_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_hw_element_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_hw_element_ref(value);
         self
     }
 
-    pub fn get_included_library_refs(&self) -> &[String] {
+    pub fn get_included_library_refs(&self) -> &[RefTypeId] {
         self.base().get_included_library_refs()
     }
 
-    pub fn push_included_library_ref(&mut self, value: String) {
+    pub fn push_included_library_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_included_library_ref(value)
     }
 
@@ -1121,20 +1122,20 @@ impl SimulatedExecutionTime {
         self
     }
 
-    pub fn get_exclusive_area_ref(&self) -> Option<&str> {
+    pub fn get_exclusive_area_ref(&self) -> Option<RefTypeId> {
         self.base().get_exclusive_area_ref()
     }
 
-    pub fn set_exclusive_area_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_exclusive_area_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_exclusive_area_ref(value);
         self
     }
 
-    pub fn get_executable_entity_ref(&self) -> Option<&str> {
+    pub fn get_executable_entity_ref(&self) -> Option<RefTypeId> {
         self.base().get_executable_entity_ref()
     }
 
-    pub fn set_executable_entity_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_executable_entity_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_executable_entity_ref(value);
         self
     }
@@ -1148,20 +1149,20 @@ impl SimulatedExecutionTime {
         self
     }
 
-    pub fn get_hw_element_ref(&self) -> Option<&str> {
+    pub fn get_hw_element_ref(&self) -> Option<RefTypeId> {
         self.base().get_hw_element_ref()
     }
 
-    pub fn set_hw_element_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_hw_element_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_hw_element_ref(value);
         self
     }
 
-    pub fn get_included_library_refs(&self) -> &[String] {
+    pub fn get_included_library_refs(&self) -> &[RefTypeId] {
         self.base().get_included_library_refs()
     }
 
-    pub fn push_included_library_ref(&mut self, value: String) {
+    pub fn push_included_library_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_included_library_ref(value)
     }
 
@@ -1374,9 +1375,18 @@ impl Document {
             return Err(format!("{path}: INCLUDED_LIBRARY_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.INCLUDED_LIBRARY_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.INCLUDED_LIBRARY_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.INCLUDED_LIBRARY_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.INCLUDED_LIBRARY_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_memory_section_locations();
         let list_b = b.get_memory_section_locations();

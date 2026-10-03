@@ -22,6 +22,7 @@ pub mod synchronization_timing;
 pub mod synchronization_timing_constraint;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -38,7 +39,7 @@ use crate::Document;
 pub struct TimingConstraint {
     base: Traceable,
     variation_point_capable: VariationPointCapable,
-    timing_condition_ref: Option<String>,
+    timing_condition_ref: Option<RefTypeId>,
 }
 
 impl TimingConstraint {
@@ -62,20 +63,20 @@ impl TimingConstraint {
         &mut self.variation_point_capable
     }
 
-    pub fn get_timing_condition_ref(&self) -> Option<&str> {
-        self.timing_condition_ref.as_deref()
+    pub fn get_timing_condition_ref(&self) -> Option<RefTypeId> {
+        self.timing_condition_ref
     }
 
-    pub fn set_timing_condition_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.timing_condition_ref = Some(value.into());
+    pub fn set_timing_condition_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.timing_condition_ref = Some(value);
         self
     }
 
-    pub fn get_trace_refs(&self) -> &[String] {
+    pub fn get_trace_refs(&self) -> &[RefTypeId] {
         self.base().get_trace_refs()
     }
 
-    pub fn push_trace_ref(&mut self, value: String) {
+    pub fn push_trace_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_trace_ref(value)
     }
 

@@ -16,6 +16,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::MultilanguageReferrable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::msr::documentation::text_model::language_data_model::XmlSpace;
@@ -331,8 +332,8 @@ pub struct SdgContents {
     sd: Vec<SdId>,
     sdf: Vec<SdfId>,
     sdg: Vec<SdgId>,
-    sdx_refs: Vec<String>,
-    sdxf_refs: Vec<String>,
+    sdx_refs: Vec<RefTypeId>,
+    sdxf_refs: Vec<RefTypeId>,
 }
 
 impl SdgContents {
@@ -372,19 +373,19 @@ impl SdgContents {
         self.sdg.push(value);
     }
 
-    pub fn get_sdx_refs(&self) -> &[String] {
+    pub fn get_sdx_refs(&self) -> &[RefTypeId] {
         &self.sdx_refs
     }
 
-    pub fn push_sdx_ref(&mut self, value: String) {
+    pub fn push_sdx_ref(&mut self, value: RefTypeId) {
         self.sdx_refs.push(value);
     }
 
-    pub fn get_sdxf_refs(&self) -> &[String] {
+    pub fn get_sdxf_refs(&self) -> &[RefTypeId] {
         &self.sdxf_refs
     }
 
-    pub fn push_sdxf_ref(&mut self, value: String) {
+    pub fn push_sdxf_ref(&mut self, value: RefTypeId) {
         self.sdxf_refs.push(value);
     }
 
@@ -547,9 +548,15 @@ impl Document {
             return Err(format!("{path}: SDX_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SDX_REFS[{index}] mismatch"));
-            }
+            let x = self
+                .ref_types
+                .get(*x)
+                .ok_or_else(|| format!("{path}.SDX_REFS[{index}]: id not found in own arena"))?;
+            let y = other
+                .ref_types
+                .get(*y)
+                .ok_or_else(|| format!("{path}.SDX_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SDX_REFS[{index}]"))?;
         }
         let list_a = a.get_sdxf_refs();
         let list_b = b.get_sdxf_refs();
@@ -557,9 +564,15 @@ impl Document {
             return Err(format!("{path}: SDXF_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SDXF_REFS[{index}] mismatch"));
-            }
+            let x = self
+                .ref_types
+                .get(*x)
+                .ok_or_else(|| format!("{path}.SDXF_REFS[{index}]: id not found in own arena"))?;
+            let y = other
+                .ref_types
+                .get(*y)
+                .ok_or_else(|| format!("{path}.SDXF_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SDXF_REFS[{index}]"))?;
         }
         Ok(())
     }

@@ -23,6 +23,7 @@ use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguage
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
 use crate::m2::autosar_templates::common_structure::service_needs::NvBlockNeedsId;
 use crate::m2::autosar_templates::sw_component_template::datatype::data_prototypes::ParameterDataPrototypeId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::common_structure::service_needs::RoleBasedDataAssignmentId;
 use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::service_mapping::RoleBasedPortAssignmentId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
@@ -302,7 +303,7 @@ pub struct ModeSwitchEventTriggeredActivity {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
     role: Option<String>,
-    swc_mode_switch_event_ref: Option<String>,
+    swc_mode_switch_event_ref: Option<RefTypeId>,
 }
 
 impl ModeSwitchEventTriggeredActivity {
@@ -335,12 +336,12 @@ impl ModeSwitchEventTriggeredActivity {
         self
     }
 
-    pub fn get_swc_mode_switch_event_ref(&self) -> Option<&str> {
-        self.swc_mode_switch_event_ref.as_deref()
+    pub fn get_swc_mode_switch_event_ref(&self) -> Option<RefTypeId> {
+        self.swc_mode_switch_event_ref
     }
 
-    pub fn set_swc_mode_switch_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.swc_mode_switch_event_ref = Some(value.into());
+    pub fn set_swc_mode_switch_event_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.swc_mode_switch_event_ref = Some(value);
         self
     }
 
@@ -505,8 +506,8 @@ pub struct NvBlockDescriptor {
     base: AtpStructureElement,
     variation_point_capable: VariationPointCapable,
     client_server_ports: Vec<RoleBasedPortAssignmentId>,
-    constant_value_mapping_refs: Vec<String>,
-    data_type_mapping_refs: Vec<String>,
+    constant_value_mapping_refs: Vec<RefTypeId>,
+    data_type_mapping_refs: Vec<RefTypeId>,
     instantiation_data_def_propss: Vec<InstantiationDataDefPropsId>,
     mode_switch_event_triggered_activitys: Vec<ModeSwitchEventTriggeredActivityId>,
     nv_block_data_mappings: Vec<NvBlockDataMappingId>,
@@ -514,7 +515,7 @@ pub struct NvBlockDescriptor {
     ram_block: Option<VariableDataPrototypeId>,
     rom_block: Option<ParameterDataPrototypeId>,
     support_dirty_flag: Option<String>,
-    timing_event_ref: Option<String>,
+    timing_event_ref: Option<RefTypeId>,
     writing_strategies: Vec<RoleBasedDataAssignmentId>,
 }
 
@@ -547,19 +548,19 @@ impl NvBlockDescriptor {
         self.client_server_ports.push(value);
     }
 
-    pub fn get_constant_value_mapping_refs(&self) -> &[String] {
+    pub fn get_constant_value_mapping_refs(&self) -> &[RefTypeId] {
         &self.constant_value_mapping_refs
     }
 
-    pub fn push_constant_value_mapping_ref(&mut self, value: String) {
+    pub fn push_constant_value_mapping_ref(&mut self, value: RefTypeId) {
         self.constant_value_mapping_refs.push(value);
     }
 
-    pub fn get_data_type_mapping_refs(&self) -> &[String] {
+    pub fn get_data_type_mapping_refs(&self) -> &[RefTypeId] {
         &self.data_type_mapping_refs
     }
 
-    pub fn push_data_type_mapping_ref(&mut self, value: String) {
+    pub fn push_data_type_mapping_ref(&mut self, value: RefTypeId) {
         self.data_type_mapping_refs.push(value);
     }
 
@@ -628,12 +629,12 @@ impl NvBlockDescriptor {
         self
     }
 
-    pub fn get_timing_event_ref(&self) -> Option<&str> {
-        self.timing_event_ref.as_deref()
+    pub fn get_timing_event_ref(&self) -> Option<RefTypeId> {
+        self.timing_event_ref
     }
 
-    pub fn set_timing_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.timing_event_ref = Some(value.into());
+    pub fn set_timing_event_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.timing_event_ref = Some(value);
         self
     }
 
@@ -981,11 +982,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.CONSTANT_VALUE_MAPPING_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.CONSTANT_VALUE_MAPPING_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.CONSTANT_VALUE_MAPPING_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONSTANT_VALUE_MAPPING_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_data_type_mapping_refs();
         let list_b = b.get_data_type_mapping_refs();
@@ -993,9 +1001,18 @@ impl Document {
             return Err(format!("{path}: DATA_TYPE_MAPPING_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.DATA_TYPE_MAPPING_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.DATA_TYPE_MAPPING_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.DATA_TYPE_MAPPING_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.DATA_TYPE_MAPPING_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_instantiation_data_def_propss();
         let list_b = b.get_instantiation_data_def_propss();

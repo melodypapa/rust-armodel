@@ -11,6 +11,7 @@ new_key_type! {
 }
 
 use crate::m2::autosar_templates::generic_structure::abstract_structure::AtpInstanceRef;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::system_template::transformer::DataPrototypeInPortInterfaceRef;
 use crate::m2::autosar_templates::system_template::transformer::DataPrototypeReference;
 use crate::Document;
@@ -21,10 +22,10 @@ use crate::Document;
 pub struct DataPrototypeInClientServerInterfaceInstanceRef {
     base: AtpInstanceRef,
     data_prototype_in_port_interface_ref: DataPrototypeInPortInterfaceRef,
-    base_ref: Option<String>,
-    context_data_prototype_in_cs_refs: Vec<String>,
-    root_data_prototype_in_cs_ref: Option<String>,
-    target_data_prototype_in_cs_ref: Option<String>,
+    base_ref: Option<RefTypeId>,
+    context_data_prototype_in_cs_refs: Vec<RefTypeId>,
+    root_data_prototype_in_cs_ref: Option<RefTypeId>,
+    target_data_prototype_in_cs_ref: Option<RefTypeId>,
 }
 
 impl DataPrototypeInClientServerInterfaceInstanceRef {
@@ -50,63 +51,63 @@ impl DataPrototypeInClientServerInterfaceInstanceRef {
         &mut self.data_prototype_in_port_interface_ref
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
-        self.base_ref.as_deref()
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
+        self.base_ref
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_ref = Some(value.into());
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_ref = Some(value);
         self
     }
 
-    pub fn get_context_data_prototype_in_cs_refs(&self) -> &[String] {
+    pub fn get_context_data_prototype_in_cs_refs(&self) -> &[RefTypeId] {
         &self.context_data_prototype_in_cs_refs
     }
 
-    pub fn push_context_data_prototype_in_cs_ref(&mut self, value: String) {
+    pub fn push_context_data_prototype_in_cs_ref(&mut self, value: RefTypeId) {
         self.context_data_prototype_in_cs_refs.push(value);
     }
 
-    pub fn get_root_data_prototype_in_cs_ref(&self) -> Option<&str> {
-        self.root_data_prototype_in_cs_ref.as_deref()
+    pub fn get_root_data_prototype_in_cs_ref(&self) -> Option<RefTypeId> {
+        self.root_data_prototype_in_cs_ref
     }
 
-    pub fn set_root_data_prototype_in_cs_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.root_data_prototype_in_cs_ref = Some(value.into());
+    pub fn set_root_data_prototype_in_cs_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.root_data_prototype_in_cs_ref = Some(value);
         self
     }
 
-    pub fn get_target_data_prototype_in_cs_ref(&self) -> Option<&str> {
-        self.target_data_prototype_in_cs_ref.as_deref()
+    pub fn get_target_data_prototype_in_cs_ref(&self) -> Option<RefTypeId> {
+        self.target_data_prototype_in_cs_ref
     }
 
-    pub fn set_target_data_prototype_in_cs_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_data_prototype_in_cs_ref = Some(value.into());
+    pub fn set_target_data_prototype_in_cs_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_data_prototype_in_cs_ref = Some(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_target_ref(value);
         self
     }
@@ -152,10 +153,10 @@ impl DataPrototypeInClientServerInterfaceInstanceRef {
 pub struct DataPrototypeInSenderReceiverInterfaceInstanceRef {
     base: AtpInstanceRef,
     data_prototype_in_port_interface_ref: DataPrototypeInPortInterfaceRef,
-    base_ref: Option<String>,
-    context_data_prototype_in_sr_refs: Vec<String>,
-    root_data_prototype_in_sr_ref: Option<String>,
-    target_data_prototype_in_sr_ref: Option<String>,
+    base_ref: Option<RefTypeId>,
+    context_data_prototype_in_sr_refs: Vec<RefTypeId>,
+    root_data_prototype_in_sr_ref: Option<RefTypeId>,
+    target_data_prototype_in_sr_ref: Option<RefTypeId>,
 }
 
 impl DataPrototypeInSenderReceiverInterfaceInstanceRef {
@@ -181,63 +182,63 @@ impl DataPrototypeInSenderReceiverInterfaceInstanceRef {
         &mut self.data_prototype_in_port_interface_ref
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
-        self.base_ref.as_deref()
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
+        self.base_ref
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_ref = Some(value.into());
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_ref = Some(value);
         self
     }
 
-    pub fn get_context_data_prototype_in_sr_refs(&self) -> &[String] {
+    pub fn get_context_data_prototype_in_sr_refs(&self) -> &[RefTypeId] {
         &self.context_data_prototype_in_sr_refs
     }
 
-    pub fn push_context_data_prototype_in_sr_ref(&mut self, value: String) {
+    pub fn push_context_data_prototype_in_sr_ref(&mut self, value: RefTypeId) {
         self.context_data_prototype_in_sr_refs.push(value);
     }
 
-    pub fn get_root_data_prototype_in_sr_ref(&self) -> Option<&str> {
-        self.root_data_prototype_in_sr_ref.as_deref()
+    pub fn get_root_data_prototype_in_sr_ref(&self) -> Option<RefTypeId> {
+        self.root_data_prototype_in_sr_ref
     }
 
-    pub fn set_root_data_prototype_in_sr_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.root_data_prototype_in_sr_ref = Some(value.into());
+    pub fn set_root_data_prototype_in_sr_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.root_data_prototype_in_sr_ref = Some(value);
         self
     }
 
-    pub fn get_target_data_prototype_in_sr_ref(&self) -> Option<&str> {
-        self.target_data_prototype_in_sr_ref.as_deref()
+    pub fn get_target_data_prototype_in_sr_ref(&self) -> Option<RefTypeId> {
+        self.target_data_prototype_in_sr_ref
     }
 
-    pub fn set_target_data_prototype_in_sr_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_data_prototype_in_sr_ref = Some(value.into());
+    pub fn set_target_data_prototype_in_sr_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_data_prototype_in_sr_ref = Some(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_target_ref(value);
         self
     }
@@ -282,9 +283,9 @@ impl DataPrototypeInSenderReceiverInterfaceInstanceRef {
 #[derive(Debug, Default)]
 pub struct ImplementationDataTypeElementInPortInterfaceRef {
     base: DataPrototypeReference,
-    context_implementation_data_element_refs: Vec<String>,
-    root_data_prototype_ref: Option<String>,
-    target_implementation_data_type_element_ref: Option<String>,
+    context_implementation_data_element_refs: Vec<RefTypeId>,
+    root_data_prototype_ref: Option<RefTypeId>,
+    target_implementation_data_type_element_ref: Option<RefTypeId>,
 }
 
 impl ImplementationDataTypeElementInPortInterfaceRef {
@@ -300,32 +301,32 @@ impl ImplementationDataTypeElementInPortInterfaceRef {
         &mut self.base
     }
 
-    pub fn get_context_implementation_data_element_refs(&self) -> &[String] {
+    pub fn get_context_implementation_data_element_refs(&self) -> &[RefTypeId] {
         &self.context_implementation_data_element_refs
     }
 
-    pub fn push_context_implementation_data_element_ref(&mut self, value: String) {
+    pub fn push_context_implementation_data_element_ref(&mut self, value: RefTypeId) {
         self.context_implementation_data_element_refs.push(value);
     }
 
-    pub fn get_root_data_prototype_ref(&self) -> Option<&str> {
-        self.root_data_prototype_ref.as_deref()
+    pub fn get_root_data_prototype_ref(&self) -> Option<RefTypeId> {
+        self.root_data_prototype_ref
     }
 
-    pub fn set_root_data_prototype_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.root_data_prototype_ref = Some(value.into());
+    pub fn set_root_data_prototype_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.root_data_prototype_ref = Some(value);
         self
     }
 
-    pub fn get_target_implementation_data_type_element_ref(&self) -> Option<&str> {
-        self.target_implementation_data_type_element_ref.as_deref()
+    pub fn get_target_implementation_data_type_element_ref(&self) -> Option<RefTypeId> {
+        self.target_implementation_data_type_element_ref
     }
 
     pub fn set_target_implementation_data_type_element_ref(
         &mut self,
-        value: impl Into<String>,
+        value: RefTypeId,
     ) -> &mut Self {
-        self.target_implementation_data_type_element_ref = Some(value.into());
+        self.target_implementation_data_type_element_ref = Some(value);
         self
     }
 
@@ -383,11 +384,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.CONTEXT_DATA_PROTOTYPE_IN_CS_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!(
+                    "{path}.CONTEXT_DATA_PROTOTYPE_IN_CS_REFS[{index}]: id not found in own arena"
+                )
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| format!("{path}.CONTEXT_DATA_PROTOTYPE_IN_CS_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONTEXT_DATA_PROTOTYPE_IN_CS_REFS[{index}]"),
+            )?;
         }
         if a.get_root_data_prototype_in_cs_ref() != b.get_root_data_prototype_in_cs_ref() {
             return Err(format!("{path}: ROOT_DATA_PROTOTYPE_IN_CS_REF mismatch"));
@@ -423,11 +431,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.CONTEXT_DATA_PROTOTYPE_IN_SR_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!(
+                    "{path}.CONTEXT_DATA_PROTOTYPE_IN_SR_REFS[{index}]: id not found in own arena"
+                )
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| format!("{path}.CONTEXT_DATA_PROTOTYPE_IN_SR_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONTEXT_DATA_PROTOTYPE_IN_SR_REFS[{index}]"),
+            )?;
         }
         if a.get_root_data_prototype_in_sr_ref() != b.get_root_data_prototype_in_sr_ref() {
             return Err(format!("{path}: ROOT_DATA_PROTOTYPE_IN_SR_REF mismatch"));
@@ -454,11 +469,14 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.CONTEXT_IMPLEMENTATION_DATA_ELEMENT_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| format!("{path}.CONTEXT_IMPLEMENTATION_DATA_ELEMENT_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| format!("{path}.CONTEXT_IMPLEMENTATION_DATA_ELEMENT_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONTEXT_IMPLEMENTATION_DATA_ELEMENT_REFS[{index}]"),
+            )?;
         }
         if a.get_root_data_prototype_ref() != b.get_root_data_prototype_ref() {
             return Err(format!("{path}: ROOT_DATA_PROTOTYPE_REF mismatch"));

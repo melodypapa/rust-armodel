@@ -13,6 +13,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -25,10 +26,10 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct McGroup {
     base: ARElement,
-    mc_function_refs: Vec<String>,
+    mc_function_refs: Vec<RefTypeId>,
     ref_calprm_set: Option<McGroupDataRefSetId>,
     ref_measurement_set: Option<McGroupDataRefSetId>,
-    sub_group_refs: Vec<String>,
+    sub_group_refs: Vec<RefTypeId>,
 }
 
 impl McGroup {
@@ -44,11 +45,11 @@ impl McGroup {
         &mut self.base
     }
 
-    pub fn get_mc_function_refs(&self) -> &[String] {
+    pub fn get_mc_function_refs(&self) -> &[RefTypeId] {
         &self.mc_function_refs
     }
 
-    pub fn push_mc_function_ref(&mut self, value: String) {
+    pub fn push_mc_function_ref(&mut self, value: RefTypeId) {
         self.mc_function_refs.push(value);
     }
 
@@ -70,11 +71,11 @@ impl McGroup {
         self
     }
 
-    pub fn get_sub_group_refs(&self) -> &[String] {
+    pub fn get_sub_group_refs(&self) -> &[RefTypeId] {
         &self.sub_group_refs
     }
 
-    pub fn push_sub_group_ref(&mut self, value: String) {
+    pub fn push_sub_group_ref(&mut self, value: RefTypeId) {
         self.sub_group_refs.push(value);
     }
 
@@ -298,8 +299,8 @@ impl McGroup {
 #[derive(Debug, Default)]
 pub struct McGroupDataRefSet {
     base: ARObject,
-    flat_map_entry_refs: Vec<String>,
-    mc_data_instance_refs: Vec<String>,
+    flat_map_entry_refs: Vec<RefTypeId>,
+    mc_data_instance_refs: Vec<RefTypeId>,
 }
 
 impl McGroupDataRefSet {
@@ -315,19 +316,19 @@ impl McGroupDataRefSet {
         &mut self.base
     }
 
-    pub fn get_flat_map_entry_refs(&self) -> &[String] {
+    pub fn get_flat_map_entry_refs(&self) -> &[RefTypeId] {
         &self.flat_map_entry_refs
     }
 
-    pub fn push_flat_map_entry_ref(&mut self, value: String) {
+    pub fn push_flat_map_entry_ref(&mut self, value: RefTypeId) {
         self.flat_map_entry_refs.push(value);
     }
 
-    pub fn get_mc_data_instance_refs(&self) -> &[String] {
+    pub fn get_mc_data_instance_refs(&self) -> &[RefTypeId] {
         &self.mc_data_instance_refs
     }
 
-    pub fn push_mc_data_instance_ref(&mut self, value: String) {
+    pub fn push_mc_data_instance_ref(&mut self, value: RefTypeId) {
         self.mc_data_instance_refs.push(value);
     }
 
@@ -365,9 +366,13 @@ impl Document {
             return Err(format!("{path}: MC_FUNCTION_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.MC_FUNCTION_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.MC_FUNCTION_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.MC_FUNCTION_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.MC_FUNCTION_REFS[{index}]"))?;
         }
         if a.get_ref_calprm_set() != b.get_ref_calprm_set() {
             return Err(format!("{path}: REF_CALPRM_SET mismatch"));
@@ -381,16 +386,20 @@ impl Document {
             return Err(format!("{path}: SUB_GROUP_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SUB_GROUP_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SUB_GROUP_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SUB_GROUP_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SUB_GROUP_REFS[{index}]"))?;
         }
         Ok(())
     }
 
     pub(crate) fn compare_mc_group_data_ref_set(
         &self,
-        _other: &Document,
+        other: &Document,
         a: &McGroupDataRefSet,
         b: &McGroupDataRefSet,
         path: &str,
@@ -402,9 +411,13 @@ impl Document {
             return Err(format!("{path}: FLAT_MAP_ENTRY_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.FLAT_MAP_ENTRY_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.FLAT_MAP_ENTRY_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.FLAT_MAP_ENTRY_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.FLAT_MAP_ENTRY_REFS[{index}]"))?;
         }
         let list_a = a.get_mc_data_instance_refs();
         let list_b = b.get_mc_data_instance_refs();
@@ -412,9 +425,18 @@ impl Document {
             return Err(format!("{path}: MC_DATA_INSTANCE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.MC_DATA_INSTANCE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.MC_DATA_INSTANCE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.MC_DATA_INSTANCE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.MC_DATA_INSTANCE_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }

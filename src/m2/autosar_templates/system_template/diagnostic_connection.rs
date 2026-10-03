@@ -15,6 +15,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Referrable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -27,8 +28,11 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct DiagnosticConnection {
     base: ARElement,
-    functional_request_refs: Vec<String>,
-    periodic_response_uudt_refs: Vec<String>,
+    functional_request_refs: Vec<RefTypeId>,
+    periodic_response_uudt_refs: Vec<RefTypeId>,
+    physical_request_ref: Option<RefTypeId>,
+    response_ref: Option<RefTypeId>,
+    response_on_event_ref: Option<RefTypeId>,
 }
 
 impl DiagnosticConnection {
@@ -44,20 +48,47 @@ impl DiagnosticConnection {
         &mut self.base
     }
 
-    pub fn get_functional_request_refs(&self) -> &[String] {
+    pub fn get_functional_request_refs(&self) -> &[RefTypeId] {
         &self.functional_request_refs
     }
 
-    pub fn push_functional_request_ref(&mut self, value: String) {
+    pub fn push_functional_request_ref(&mut self, value: RefTypeId) {
         self.functional_request_refs.push(value);
     }
 
-    pub fn get_periodic_response_uudt_refs(&self) -> &[String] {
+    pub fn get_periodic_response_uudt_refs(&self) -> &[RefTypeId] {
         &self.periodic_response_uudt_refs
     }
 
-    pub fn push_periodic_response_uudt_ref(&mut self, value: String) {
+    pub fn push_periodic_response_uudt_ref(&mut self, value: RefTypeId) {
         self.periodic_response_uudt_refs.push(value);
+    }
+
+    pub fn get_physical_request_ref(&self) -> Option<RefTypeId> {
+        self.physical_request_ref
+    }
+
+    pub fn set_physical_request_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.physical_request_ref = Some(value);
+        self
+    }
+
+    pub fn get_response_ref(&self) -> Option<RefTypeId> {
+        self.response_ref
+    }
+
+    pub fn set_response_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.response_ref = Some(value);
+        self
+    }
+
+    pub fn get_response_on_event_ref(&self) -> Option<RefTypeId> {
+        self.response_on_event_ref
+    }
+
+    pub fn set_response_on_event_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.response_on_event_ref = Some(value);
+        self
     }
 
     pub fn get_admin_data(&self) -> Option<AdminDataId> {
@@ -280,9 +311,9 @@ impl DiagnosticConnection {
 #[derive(Debug, Default)]
 pub struct DoIpTpConnection {
     base: TpConnection,
-    do_ip_source_address_ref: Option<String>,
-    do_ip_target_address_ref: Option<String>,
-    tp_sdu_ref: Option<String>,
+    do_ip_source_address_ref: Option<RefTypeId>,
+    do_ip_target_address_ref: Option<RefTypeId>,
+    tp_sdu_ref: Option<RefTypeId>,
 }
 
 impl DoIpTpConnection {
@@ -298,30 +329,30 @@ impl DoIpTpConnection {
         &mut self.base
     }
 
-    pub fn get_do_ip_source_address_ref(&self) -> Option<&str> {
-        self.do_ip_source_address_ref.as_deref()
+    pub fn get_do_ip_source_address_ref(&self) -> Option<RefTypeId> {
+        self.do_ip_source_address_ref
     }
 
-    pub fn set_do_ip_source_address_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.do_ip_source_address_ref = Some(value.into());
+    pub fn set_do_ip_source_address_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.do_ip_source_address_ref = Some(value);
         self
     }
 
-    pub fn get_do_ip_target_address_ref(&self) -> Option<&str> {
-        self.do_ip_target_address_ref.as_deref()
+    pub fn get_do_ip_target_address_ref(&self) -> Option<RefTypeId> {
+        self.do_ip_target_address_ref
     }
 
-    pub fn set_do_ip_target_address_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.do_ip_target_address_ref = Some(value.into());
+    pub fn set_do_ip_target_address_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.do_ip_target_address_ref = Some(value);
         self
     }
 
-    pub fn get_tp_sdu_ref(&self) -> Option<&str> {
-        self.tp_sdu_ref.as_deref()
+    pub fn get_tp_sdu_ref(&self) -> Option<RefTypeId> {
+        self.tp_sdu_ref
     }
 
-    pub fn set_tp_sdu_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.tp_sdu_ref = Some(value.into());
+    pub fn set_tp_sdu_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.tp_sdu_ref = Some(value);
         self
     }
 
@@ -482,9 +513,18 @@ impl Document {
             return Err(format!("{path}: FUNCTIONAL_REQUEST_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.FUNCTIONAL_REQUEST_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.FUNCTIONAL_REQUEST_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.FUNCTIONAL_REQUEST_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.FUNCTIONAL_REQUEST_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_periodic_response_uudt_refs();
         let list_b = b.get_periodic_response_uudt_refs();
@@ -494,11 +534,27 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.PERIODIC_RESPONSE_UUDT_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.PERIODIC_RESPONSE_UUDT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.PERIODIC_RESPONSE_UUDT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.PERIODIC_RESPONSE_UUDT_REFS[{index}]"),
+            )?;
+        }
+        if a.get_physical_request_ref() != b.get_physical_request_ref() {
+            return Err(format!("{path}: PHYSICAL_REQUEST_REF mismatch"));
+        }
+        if a.get_response_ref() != b.get_response_ref() {
+            return Err(format!("{path}: RESPONSE_REF mismatch"));
+        }
+        if a.get_response_on_event_ref() != b.get_response_on_event_ref() {
+            return Err(format!("{path}: RESPONSE_ON_EVENT_REF mismatch"));
         }
         Ok(())
     }

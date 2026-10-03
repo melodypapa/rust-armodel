@@ -13,6 +13,7 @@ use crate::m2::autosar_templates::generic_structure::abstract_structure::AtpStru
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -267,7 +268,7 @@ impl AbstractAccessPoint {
 pub struct AccessCount {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
-    access_point_ref: Option<String>,
+    access_point_ref: Option<RefTypeId>,
     value: Option<String>,
 }
 
@@ -292,12 +293,12 @@ impl AccessCount {
         &mut self.variation_point_capable
     }
 
-    pub fn get_access_point_ref(&self) -> Option<&str> {
-        self.access_point_ref.as_deref()
+    pub fn get_access_point_ref(&self) -> Option<RefTypeId> {
+        self.access_point_ref
     }
 
-    pub fn set_access_point_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.access_point_ref = Some(value.into());
+    pub fn set_access_point_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.access_point_ref = Some(value);
         self
     }
 

@@ -28,6 +28,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -779,8 +780,8 @@ impl FirewallRule {
 pub struct FirewallRuleProps {
     base: ARObject,
     action: Option<FirewallActionEnum>,
-    matching_egress_rule_refs: Vec<String>,
-    matching_ingress_rule_refs: Vec<String>,
+    matching_egress_rule_refs: Vec<RefTypeId>,
+    matching_ingress_rule_refs: Vec<RefTypeId>,
 }
 
 impl FirewallRuleProps {
@@ -805,19 +806,19 @@ impl FirewallRuleProps {
         self
     }
 
-    pub fn get_matching_egress_rule_refs(&self) -> &[String] {
+    pub fn get_matching_egress_rule_refs(&self) -> &[RefTypeId] {
         &self.matching_egress_rule_refs
     }
 
-    pub fn push_matching_egress_rule_ref(&mut self, value: String) {
+    pub fn push_matching_egress_rule_ref(&mut self, value: RefTypeId) {
         self.matching_egress_rule_refs.push(value);
     }
 
-    pub fn get_matching_ingress_rule_refs(&self) -> &[String] {
+    pub fn get_matching_ingress_rule_refs(&self) -> &[RefTypeId] {
         &self.matching_ingress_rule_refs
     }
 
-    pub fn push_matching_ingress_rule_ref(&mut self, value: String) {
+    pub fn push_matching_ingress_rule_ref(&mut self, value: RefTypeId) {
         self.matching_ingress_rule_refs.push(value);
     }
 
@@ -1608,7 +1609,7 @@ pub struct StateDependentFirewall {
     base: ARElement,
     default_action: Option<FirewallActionEnum>,
     firewall_rule_props: Vec<FirewallRulePropsId>,
-    firewall_state_mode_declaration_refs: Vec<String>,
+    firewall_state_mode_declaration_refs: Vec<RefTypeId>,
 }
 
 impl StateDependentFirewall {
@@ -1641,11 +1642,11 @@ impl StateDependentFirewall {
         self.firewall_rule_props.push(value);
     }
 
-    pub fn get_firewall_state_mode_declaration_refs(&self) -> &[String] {
+    pub fn get_firewall_state_mode_declaration_refs(&self) -> &[RefTypeId] {
         &self.firewall_state_mode_declaration_refs
     }
 
-    pub fn push_firewall_state_mode_declaration_ref(&mut self, value: String) {
+    pub fn push_firewall_state_mode_declaration_ref(&mut self, value: RefTypeId) {
         self.firewall_state_mode_declaration_refs.push(value);
     }
 
@@ -2187,7 +2188,7 @@ impl Document {
 
     pub(crate) fn compare_firewall_rule_props(
         &self,
-        _other: &Document,
+        other: &Document,
         a: &FirewallRuleProps,
         b: &FirewallRuleProps,
         path: &str,
@@ -2202,11 +2203,18 @@ impl Document {
             return Err(format!("{path}: MATCHING_EGRESS_RULE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.MATCHING_EGRESS_RULE_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.MATCHING_EGRESS_RULE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.MATCHING_EGRESS_RULE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.MATCHING_EGRESS_RULE_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_matching_ingress_rule_refs();
         let list_b = b.get_matching_ingress_rule_refs();
@@ -2216,11 +2224,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.MATCHING_INGRESS_RULE_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.MATCHING_INGRESS_RULE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.MATCHING_INGRESS_RULE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.MATCHING_INGRESS_RULE_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }
@@ -2502,11 +2517,14 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.FIREWALL_STATE_MODE_DECLARATION_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| format!("{path}.FIREWALL_STATE_MODE_DECLARATION_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| format!("{path}.FIREWALL_STATE_MODE_DECLARATION_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.FIREWALL_STATE_MODE_DECLARATION_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }

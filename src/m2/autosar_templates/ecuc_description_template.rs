@@ -33,6 +33,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -72,11 +73,11 @@ impl BooleanValue {
         self
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
         self.base().get_definition_ref()
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_definition_ref(value);
         self
     }
@@ -106,7 +107,7 @@ impl BooleanValue {
 #[derive(Debug, Default)]
 pub struct ConfigReferenceValue {
     base: ARObject,
-    definition_ref: Option<String>,
+    definition_ref: Option<RefTypeId>,
 }
 
 impl ConfigReferenceValue {
@@ -122,12 +123,12 @@ impl ConfigReferenceValue {
         &mut self.base
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
-        self.definition_ref.as_deref()
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
+        self.definition_ref
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.definition_ref = Some(value.into());
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.definition_ref = Some(value);
         self
     }
 
@@ -156,7 +157,7 @@ impl ConfigReferenceValue {
 #[derive(Debug, Default)]
 pub struct Container {
     base: Identifiable,
-    definition_ref: Option<String>,
+    definition_ref: Option<RefTypeId>,
     parameter_values: Vec<ElementRef>,
     reference_values: Vec<ElementRef>,
     sub_containers: Vec<ContainerId>,
@@ -175,12 +176,12 @@ impl Container {
         &mut self.base
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
-        self.definition_ref.as_deref()
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
+        self.definition_ref
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.definition_ref = Some(value.into());
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.definition_ref = Some(value);
         self
     }
 
@@ -346,7 +347,7 @@ pub struct EcucAbstractReferenceValue {
     base: EcucIndexableValue,
     variation_point_capable: VariationPointCapable,
     annotations: Vec<AnnotationId>,
-    definition_ref: Option<String>,
+    definition_ref: Option<RefTypeId>,
     is_auto_value: Option<String>,
 }
 
@@ -379,12 +380,12 @@ impl EcucAbstractReferenceValue {
         self.annotations.push(value);
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
-        self.definition_ref.as_deref()
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
+        self.definition_ref
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.definition_ref = Some(value.into());
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.definition_ref = Some(value);
         self
     }
 
@@ -473,11 +474,11 @@ impl EcucAddInfoParamValue {
         self.base_mut().push_annotation(value)
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
         self.base().get_definition_ref()
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_definition_ref(value);
         self
     }
@@ -526,7 +527,7 @@ pub struct EcucContainerValue {
     base: Identifiable,
     ecuc_indexable_value: EcucIndexableValue,
     variation_point_capable: VariationPointCapable,
-    definition_ref: Option<String>,
+    definition_ref: Option<RefTypeId>,
     parameter_values: Vec<ElementRef>,
     reference_values: Vec<ElementRef>,
     sub_containers: Vec<EcucContainerValueId>,
@@ -561,12 +562,12 @@ impl EcucContainerValue {
         &mut self.variation_point_capable
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
-        self.definition_ref.as_deref()
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
+        self.definition_ref
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.definition_ref = Some(value.into());
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.definition_ref = Some(value);
         self
     }
 
@@ -831,11 +832,11 @@ impl EcucInstanceReferenceValue {
         self.base_mut().push_annotation(value)
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
         self.base().get_definition_ref()
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_definition_ref(value);
         self
     }
@@ -883,10 +884,10 @@ impl EcucInstanceReferenceValue {
 pub struct EcucModuleConfigurationValues {
     base: ARElement,
     containers: Vec<EcucContainerValueId>,
-    definition_ref: Option<String>,
+    definition_ref: Option<RefTypeId>,
     ecuc_def_edition: Option<String>,
     implementation_config_variant: Option<EcucConfigurationVariantEnum>,
-    module_description_ref: Option<String>,
+    module_description_ref: Option<RefTypeId>,
     post_build_variant_used: Option<String>,
 }
 
@@ -911,12 +912,12 @@ impl EcucModuleConfigurationValues {
         self.containers.push(value);
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
-        self.definition_ref.as_deref()
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
+        self.definition_ref
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.definition_ref = Some(value.into());
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.definition_ref = Some(value);
         self
     }
 
@@ -941,12 +942,12 @@ impl EcucModuleConfigurationValues {
         self
     }
 
-    pub fn get_module_description_ref(&self) -> Option<&str> {
-        self.module_description_ref.as_deref()
+    pub fn get_module_description_ref(&self) -> Option<RefTypeId> {
+        self.module_description_ref
     }
 
-    pub fn set_module_description_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.module_description_ref = Some(value.into());
+    pub fn set_module_description_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.module_description_ref = Some(value);
         self
     }
 
@@ -1212,11 +1213,11 @@ impl EcucNumericalParamValue {
         self.base_mut().push_annotation(value)
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
         self.base().get_definition_ref()
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_definition_ref(value);
         self
     }
@@ -1265,7 +1266,7 @@ pub struct EcucParameterValue {
     base: EcucIndexableValue,
     variation_point_capable: VariationPointCapable,
     annotations: Vec<AnnotationId>,
-    definition_ref: Option<String>,
+    definition_ref: Option<RefTypeId>,
     is_auto_value: Option<String>,
 }
 
@@ -1298,12 +1299,12 @@ impl EcucParameterValue {
         self.annotations.push(value);
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
-        self.definition_ref.as_deref()
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
+        self.definition_ref
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.definition_ref = Some(value.into());
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.definition_ref = Some(value);
         self
     }
 
@@ -1359,7 +1360,7 @@ impl EcucParameterValue {
 #[derive(Debug, Default)]
 pub struct EcucReferenceValue {
     base: EcucAbstractReferenceValue,
-    value_ref: Option<String>,
+    value_ref: Option<RefTypeId>,
 }
 
 impl EcucReferenceValue {
@@ -1375,12 +1376,12 @@ impl EcucReferenceValue {
         &mut self.base
     }
 
-    pub fn get_value_ref(&self) -> Option<&str> {
-        self.value_ref.as_deref()
+    pub fn get_value_ref(&self) -> Option<RefTypeId> {
+        self.value_ref
     }
 
-    pub fn set_value_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.value_ref = Some(value.into());
+    pub fn set_value_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.value_ref = Some(value);
         self
     }
 
@@ -1392,11 +1393,11 @@ impl EcucReferenceValue {
         self.base_mut().push_annotation(value)
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
         self.base().get_definition_ref()
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_definition_ref(value);
         self
     }
@@ -1476,11 +1477,11 @@ impl EcucTextualParamValue {
         self.base_mut().push_annotation(value)
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
         self.base().get_definition_ref()
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_definition_ref(value);
         self
     }
@@ -1528,8 +1529,8 @@ impl EcucTextualParamValue {
 #[derive(Debug, Default)]
 pub struct EcucValueCollection {
     base: ARElement,
-    ecuc_value_refs: Vec<String>,
-    ecu_extract_ref: Option<String>,
+    ecuc_value_refs: Vec<RefTypeId>,
+    ecu_extract_ref: Option<RefTypeId>,
 }
 
 impl EcucValueCollection {
@@ -1545,20 +1546,20 @@ impl EcucValueCollection {
         &mut self.base
     }
 
-    pub fn get_ecuc_value_refs(&self) -> &[String] {
+    pub fn get_ecuc_value_refs(&self) -> &[RefTypeId] {
         &self.ecuc_value_refs
     }
 
-    pub fn push_ecuc_value_ref(&mut self, value: String) {
+    pub fn push_ecuc_value_ref(&mut self, value: RefTypeId) {
         self.ecuc_value_refs.push(value);
     }
 
-    pub fn get_ecu_extract_ref(&self) -> Option<&str> {
-        self.ecu_extract_ref.as_deref()
+    pub fn get_ecu_extract_ref(&self) -> Option<RefTypeId> {
+        self.ecu_extract_ref
     }
 
-    pub fn set_ecu_extract_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ecu_extract_ref = Some(value.into());
+    pub fn set_ecu_extract_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ecu_extract_ref = Some(value);
         self
     }
 
@@ -1807,11 +1808,11 @@ impl EnumerationValue {
         self
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
         self.base().get_definition_ref()
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_definition_ref(value);
         self
     }
@@ -1865,11 +1866,11 @@ impl FloatValue {
         self
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
         self.base().get_definition_ref()
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_definition_ref(value);
         self
     }
@@ -1922,11 +1923,11 @@ impl FunctionNameValue {
         self
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_definition_ref()
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -1991,11 +1992,11 @@ impl InstanceReferenceValue {
         self
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
         self.base().get_definition_ref()
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_definition_ref(value);
         self
     }
@@ -2049,11 +2050,11 @@ impl IntegerValue {
         self
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
         self.base().get_definition_ref()
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_definition_ref(value);
         self
     }
@@ -2106,11 +2107,11 @@ impl LinkerSymbolValue {
         self
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_definition_ref()
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_definition_ref(value);
         self
     }
@@ -2141,9 +2142,9 @@ impl LinkerSymbolValue {
 pub struct ModuleConfiguration {
     base: ARElement,
     containers: Vec<ContainerId>,
-    definition_ref: Option<String>,
+    definition_ref: Option<RefTypeId>,
     implementation_config_variant: Option<EcucConfigurationVariantEnum>,
-    module_description_ref: Option<String>,
+    module_description_ref: Option<RefTypeId>,
 }
 
 impl ModuleConfiguration {
@@ -2167,12 +2168,12 @@ impl ModuleConfiguration {
         self.containers.push(value);
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
-        self.definition_ref.as_deref()
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
+        self.definition_ref
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.definition_ref = Some(value.into());
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.definition_ref = Some(value);
         self
     }
 
@@ -2188,12 +2189,12 @@ impl ModuleConfiguration {
         self
     }
 
-    pub fn get_module_description_ref(&self) -> Option<&str> {
-        self.module_description_ref.as_deref()
+    pub fn get_module_description_ref(&self) -> Option<RefTypeId> {
+        self.module_description_ref
     }
 
-    pub fn set_module_description_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.module_description_ref = Some(value.into());
+    pub fn set_module_description_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.module_description_ref = Some(value);
         self
     }
 
@@ -2417,7 +2418,7 @@ impl ModuleConfiguration {
 #[derive(Debug, Default)]
 pub struct ParameterValue {
     base: ARObject,
-    definition_ref: Option<String>,
+    definition_ref: Option<RefTypeId>,
 }
 
 impl ParameterValue {
@@ -2433,12 +2434,12 @@ impl ParameterValue {
         &mut self.base
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
-        self.definition_ref.as_deref()
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
+        self.definition_ref
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.definition_ref = Some(value.into());
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.definition_ref = Some(value);
         self
     }
 
@@ -2467,7 +2468,7 @@ impl ParameterValue {
 #[derive(Debug, Default)]
 pub struct ReferenceValue {
     base: ConfigReferenceValue,
-    value_ref: Option<String>,
+    value_ref: Option<RefTypeId>,
 }
 
 impl ReferenceValue {
@@ -2483,20 +2484,20 @@ impl ReferenceValue {
         &mut self.base
     }
 
-    pub fn get_value_ref(&self) -> Option<&str> {
-        self.value_ref.as_deref()
+    pub fn get_value_ref(&self) -> Option<RefTypeId> {
+        self.value_ref
     }
 
-    pub fn set_value_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.value_ref = Some(value.into());
+    pub fn set_value_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.value_ref = Some(value);
         self
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
         self.base().get_definition_ref()
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_definition_ref(value);
         self
     }
@@ -2550,11 +2551,11 @@ impl StringValue {
         self
     }
 
-    pub fn get_definition_ref(&self) -> Option<&str> {
+    pub fn get_definition_ref(&self) -> Option<RefTypeId> {
         self.base().get_definition_ref()
     }
 
-    pub fn set_definition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_definition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_definition_ref(value);
         self
     }
@@ -2935,9 +2936,13 @@ impl Document {
             return Err(format!("{path}: ECUC_VALUE_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.ECUC_VALUE_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.ECUC_VALUE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.ECUC_VALUE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.ECUC_VALUE_REFS[{index}]"))?;
         }
         if a.get_ecu_extract_ref() != b.get_ecu_extract_ref() {
             return Err(format!("{path}: ECU_EXTRACT_REF mismatch"));

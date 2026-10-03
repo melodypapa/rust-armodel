@@ -13,6 +13,7 @@ new_key_type! {
 
 use crate::m2::autosar_templates::common_structure::constants::NumericalOrTextId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::units::SingleLanguageUnitNamesId;
 use crate::m2::msr::data_dictionary::data_def_properties::ValueListId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
@@ -63,7 +64,7 @@ pub struct SwValueCont {
     base: ARObject,
     sw_arraysize: Option<ValueListId>,
     sw_values_phys: Option<SwValuesId>,
-    unit_ref: Option<String>,
+    unit_ref: Option<RefTypeId>,
     unit_display_name: Option<SingleLanguageUnitNamesId>,
 }
 
@@ -98,12 +99,12 @@ impl SwValueCont {
         self
     }
 
-    pub fn get_unit_ref(&self) -> Option<&str> {
-        self.unit_ref.as_deref()
+    pub fn get_unit_ref(&self) -> Option<RefTypeId> {
+        self.unit_ref
     }
 
-    pub fn set_unit_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.unit_ref = Some(value.into());
+    pub fn set_unit_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.unit_ref = Some(value);
         self
     }
 

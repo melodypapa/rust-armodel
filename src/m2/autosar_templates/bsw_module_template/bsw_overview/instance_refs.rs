@@ -9,6 +9,7 @@ new_key_type! {
 }
 
 use crate::m2::autosar_templates::generic_structure::abstract_structure::AtpInstanceRef;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::Document;
 
 /// spec class `ModeInBswModuleDescriptionInstanceRef`
@@ -18,9 +19,9 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct ModeInBswModuleDescriptionInstanceRef {
     base: AtpInstanceRef,
-    base_ref: Option<String>,
-    context_mode_declaration_group_ref: Option<String>,
-    target_mode_ref: Option<String>,
+    base_ref: Option<RefTypeId>,
+    context_mode_declaration_group_ref: Option<RefTypeId>,
+    target_mode_ref: Option<RefTypeId>,
 }
 
 impl ModeInBswModuleDescriptionInstanceRef {
@@ -36,58 +37,55 @@ impl ModeInBswModuleDescriptionInstanceRef {
         &mut self.base
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
-        self.base_ref.as_deref()
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
+        self.base_ref
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_ref = Some(value.into());
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_ref = Some(value);
         self
     }
 
-    pub fn get_context_mode_declaration_group_ref(&self) -> Option<&str> {
-        self.context_mode_declaration_group_ref.as_deref()
+    pub fn get_context_mode_declaration_group_ref(&self) -> Option<RefTypeId> {
+        self.context_mode_declaration_group_ref
     }
 
-    pub fn set_context_mode_declaration_group_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
-        self.context_mode_declaration_group_ref = Some(value.into());
+    pub fn set_context_mode_declaration_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_mode_declaration_group_ref = Some(value);
         self
     }
 
-    pub fn get_target_mode_ref(&self) -> Option<&str> {
-        self.target_mode_ref.as_deref()
+    pub fn get_target_mode_ref(&self) -> Option<RefTypeId> {
+        self.target_mode_ref
     }
 
-    pub fn set_target_mode_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_mode_ref = Some(value.into());
+    pub fn set_target_mode_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_mode_ref = Some(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_target_ref(value);
         self
     }

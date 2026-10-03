@@ -24,6 +24,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
 use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::data_elements::instance_refs_usage::ParameterInAtomicSWCTypeInstanceRefId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::access_count::RteApiReturnValueProvisionEnum;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::msr::data_dictionary::data_def_properties::SwDataDefPropsId;
@@ -107,10 +108,10 @@ impl ArParameterInImplementationDataInstanceRef {
 #[derive(Debug, Default)]
 pub struct ArVariableInImplementationDataInstanceRef {
     base: ARObject,
-    context_data_prototype_refs: Vec<String>,
-    port_prototype_ref: Option<String>,
-    root_variable_data_prototype_ref: Option<String>,
-    target_data_prototype_ref: Option<String>,
+    context_data_prototype_refs: Vec<RefTypeId>,
+    port_prototype_ref: Option<RefTypeId>,
+    root_variable_data_prototype_ref: Option<RefTypeId>,
+    target_data_prototype_ref: Option<RefTypeId>,
 }
 
 impl ArVariableInImplementationDataInstanceRef {
@@ -126,38 +127,38 @@ impl ArVariableInImplementationDataInstanceRef {
         &mut self.base
     }
 
-    pub fn get_context_data_prototype_refs(&self) -> &[String] {
+    pub fn get_context_data_prototype_refs(&self) -> &[RefTypeId] {
         &self.context_data_prototype_refs
     }
 
-    pub fn push_context_data_prototype_ref(&mut self, value: String) {
+    pub fn push_context_data_prototype_ref(&mut self, value: RefTypeId) {
         self.context_data_prototype_refs.push(value);
     }
 
-    pub fn get_port_prototype_ref(&self) -> Option<&str> {
-        self.port_prototype_ref.as_deref()
+    pub fn get_port_prototype_ref(&self) -> Option<RefTypeId> {
+        self.port_prototype_ref
     }
 
-    pub fn set_port_prototype_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.port_prototype_ref = Some(value.into());
+    pub fn set_port_prototype_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.port_prototype_ref = Some(value);
         self
     }
 
-    pub fn get_root_variable_data_prototype_ref(&self) -> Option<&str> {
-        self.root_variable_data_prototype_ref.as_deref()
+    pub fn get_root_variable_data_prototype_ref(&self) -> Option<RefTypeId> {
+        self.root_variable_data_prototype_ref
     }
 
-    pub fn set_root_variable_data_prototype_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.root_variable_data_prototype_ref = Some(value.into());
+    pub fn set_root_variable_data_prototype_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.root_variable_data_prototype_ref = Some(value);
         self
     }
 
-    pub fn get_target_data_prototype_ref(&self) -> Option<&str> {
-        self.target_data_prototype_ref.as_deref()
+    pub fn get_target_data_prototype_ref(&self) -> Option<RefTypeId> {
+        self.target_data_prototype_ref
     }
 
-    pub fn set_target_data_prototype_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_data_prototype_ref = Some(value.into());
+    pub fn set_target_data_prototype_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_data_prototype_ref = Some(value);
         self
     }
 
@@ -186,7 +187,7 @@ impl ArVariableInImplementationDataInstanceRef {
 pub struct AutosarParameterRef {
     base: ARObject,
     autosar_parameter_i_ref: Option<ParameterInAtomicSWCTypeInstanceRefId>,
-    local_parameter_ref: Option<String>,
+    local_parameter_ref: Option<RefTypeId>,
 }
 
 impl AutosarParameterRef {
@@ -214,12 +215,12 @@ impl AutosarParameterRef {
         self
     }
 
-    pub fn get_local_parameter_ref(&self) -> Option<&str> {
-        self.local_parameter_ref.as_deref()
+    pub fn get_local_parameter_ref(&self) -> Option<RefTypeId> {
+        self.local_parameter_ref
     }
 
-    pub fn set_local_parameter_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.local_parameter_ref = Some(value.into());
+    pub fn set_local_parameter_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.local_parameter_ref = Some(value);
         self
     }
 
@@ -249,7 +250,7 @@ pub struct AutosarVariableRef {
     base: ARObject,
     autosar_variable_i_ref: Option<VariableInAtomicSWCTypeInstanceRefId>,
     autosar_variable_in_impl_datatype: Option<ArVariableInImplementationDataInstanceRefId>,
-    local_variable_ref: Option<String>,
+    local_variable_ref: Option<RefTypeId>,
 }
 
 impl AutosarVariableRef {
@@ -291,12 +292,12 @@ impl AutosarVariableRef {
         self
     }
 
-    pub fn get_local_variable_ref(&self) -> Option<&str> {
-        self.local_variable_ref.as_deref()
+    pub fn get_local_variable_ref(&self) -> Option<RefTypeId> {
+        self.local_variable_ref
     }
 
-    pub fn set_local_variable_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.local_variable_ref = Some(value.into());
+    pub fn set_local_variable_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.local_variable_ref = Some(value);
         self
     }
 
@@ -927,7 +928,7 @@ impl Document {
 
     pub(crate) fn compare_ar_variable_in_implementation_data_instance_ref(
         &self,
-        _other: &Document,
+        other: &Document,
         a: &ArVariableInImplementationDataInstanceRef,
         b: &ArVariableInImplementationDataInstanceRef,
         path: &str,
@@ -941,11 +942,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.CONTEXT_DATA_PROTOTYPE_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.CONTEXT_DATA_PROTOTYPE_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.CONTEXT_DATA_PROTOTYPE_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONTEXT_DATA_PROTOTYPE_REFS[{index}]"),
+            )?;
         }
         if a.get_port_prototype_ref() != b.get_port_prototype_ref() {
             return Err(format!("{path}: PORT_PROTOTYPE_REF mismatch"));

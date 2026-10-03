@@ -15,6 +15,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::sw_component_template::components::instance_refs::PModeGroupInAtomicSwcInstanceRefId;
@@ -31,9 +32,9 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct SwcBswMapping {
     base: ARElement,
-    bsw_behavior_ref: Option<String>,
+    bsw_behavior_ref: Option<RefTypeId>,
     runnable_mappings: Vec<SwcBswRunnableMappingId>,
-    swc_behavior_ref: Option<String>,
+    swc_behavior_ref: Option<RefTypeId>,
     synchronized_mode_groups: Vec<SwcBswSynchronizedModeGroupPrototypeId>,
     synchronized_triggers: Vec<SwcBswSynchronizedTriggerId>,
 }
@@ -51,12 +52,12 @@ impl SwcBswMapping {
         &mut self.base
     }
 
-    pub fn get_bsw_behavior_ref(&self) -> Option<&str> {
-        self.bsw_behavior_ref.as_deref()
+    pub fn get_bsw_behavior_ref(&self) -> Option<RefTypeId> {
+        self.bsw_behavior_ref
     }
 
-    pub fn set_bsw_behavior_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.bsw_behavior_ref = Some(value.into());
+    pub fn set_bsw_behavior_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.bsw_behavior_ref = Some(value);
         self
     }
 
@@ -68,12 +69,12 @@ impl SwcBswMapping {
         self.runnable_mappings.push(value);
     }
 
-    pub fn get_swc_behavior_ref(&self) -> Option<&str> {
-        self.swc_behavior_ref.as_deref()
+    pub fn get_swc_behavior_ref(&self) -> Option<RefTypeId> {
+        self.swc_behavior_ref
     }
 
-    pub fn set_swc_behavior_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.swc_behavior_ref = Some(value.into());
+    pub fn set_swc_behavior_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.swc_behavior_ref = Some(value);
         self
     }
 
@@ -314,8 +315,8 @@ impl SwcBswMapping {
 pub struct SwcBswRunnableMapping {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
-    bsw_entity_ref: Option<String>,
-    swc_runnable_ref: Option<String>,
+    bsw_entity_ref: Option<RefTypeId>,
+    swc_runnable_ref: Option<RefTypeId>,
 }
 
 impl SwcBswRunnableMapping {
@@ -339,21 +340,21 @@ impl SwcBswRunnableMapping {
         &mut self.variation_point_capable
     }
 
-    pub fn get_bsw_entity_ref(&self) -> Option<&str> {
-        self.bsw_entity_ref.as_deref()
+    pub fn get_bsw_entity_ref(&self) -> Option<RefTypeId> {
+        self.bsw_entity_ref
     }
 
-    pub fn set_bsw_entity_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.bsw_entity_ref = Some(value.into());
+    pub fn set_bsw_entity_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.bsw_entity_ref = Some(value);
         self
     }
 
-    pub fn get_swc_runnable_ref(&self) -> Option<&str> {
-        self.swc_runnable_ref.as_deref()
+    pub fn get_swc_runnable_ref(&self) -> Option<RefTypeId> {
+        self.swc_runnable_ref
     }
 
-    pub fn set_swc_runnable_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.swc_runnable_ref = Some(value.into());
+    pub fn set_swc_runnable_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.swc_runnable_ref = Some(value);
         self
     }
 
@@ -392,7 +393,7 @@ impl SwcBswRunnableMapping {
 pub struct SwcBswSynchronizedModeGroupPrototype {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
-    bsw_mode_group_ref: Option<String>,
+    bsw_mode_group_ref: Option<RefTypeId>,
     swc_mode_group_i_ref: Option<PModeGroupInAtomicSwcInstanceRefId>,
 }
 
@@ -417,12 +418,12 @@ impl SwcBswSynchronizedModeGroupPrototype {
         &mut self.variation_point_capable
     }
 
-    pub fn get_bsw_mode_group_ref(&self) -> Option<&str> {
-        self.bsw_mode_group_ref.as_deref()
+    pub fn get_bsw_mode_group_ref(&self) -> Option<RefTypeId> {
+        self.bsw_mode_group_ref
     }
 
-    pub fn set_bsw_mode_group_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.bsw_mode_group_ref = Some(value.into());
+    pub fn set_bsw_mode_group_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.bsw_mode_group_ref = Some(value);
         self
     }
 
@@ -473,7 +474,7 @@ impl SwcBswSynchronizedModeGroupPrototype {
 pub struct SwcBswSynchronizedTrigger {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
-    bsw_trigger_ref: Option<String>,
+    bsw_trigger_ref: Option<RefTypeId>,
     swc_trigger_i_ref: Option<PTriggerInAtomicSwcTypeInstanceRefId>,
 }
 
@@ -498,12 +499,12 @@ impl SwcBswSynchronizedTrigger {
         &mut self.variation_point_capable
     }
 
-    pub fn get_bsw_trigger_ref(&self) -> Option<&str> {
-        self.bsw_trigger_ref.as_deref()
+    pub fn get_bsw_trigger_ref(&self) -> Option<RefTypeId> {
+        self.bsw_trigger_ref
     }
 
-    pub fn set_bsw_trigger_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.bsw_trigger_ref = Some(value.into());
+    pub fn set_bsw_trigger_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.bsw_trigger_ref = Some(value);
         self
     }
 

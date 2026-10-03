@@ -11,6 +11,7 @@ new_key_type! {
 use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::common_service::DiagnosticServiceInstance;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -23,7 +24,7 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct DiagnosticCustomServiceInstance {
     base: DiagnosticServiceInstance,
-    custom_service_class_ref: Option<String>,
+    custom_service_class_ref: Option<RefTypeId>,
 }
 
 impl DiagnosticCustomServiceInstance {
@@ -39,29 +40,29 @@ impl DiagnosticCustomServiceInstance {
         &mut self.base
     }
 
-    pub fn get_custom_service_class_ref(&self) -> Option<&str> {
-        self.custom_service_class_ref.as_deref()
+    pub fn get_custom_service_class_ref(&self) -> Option<RefTypeId> {
+        self.custom_service_class_ref
     }
 
-    pub fn set_custom_service_class_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.custom_service_class_ref = Some(value.into());
+    pub fn set_custom_service_class_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.custom_service_class_ref = Some(value);
         self
     }
 
-    pub fn get_access_permission_ref(&self) -> Option<&str> {
+    pub fn get_access_permission_ref(&self) -> Option<RefTypeId> {
         self.base().get_access_permission_ref()
     }
 
-    pub fn set_access_permission_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_access_permission_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_access_permission_ref(value);
         self
     }
 
-    pub fn get_service_class_ref(&self) -> Option<&str> {
+    pub fn get_service_class_ref(&self) -> Option<RefTypeId> {
         self.base().get_service_class_ref()
     }
 
-    pub fn set_service_class_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_service_class_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_service_class_ref(value);
         self
     }

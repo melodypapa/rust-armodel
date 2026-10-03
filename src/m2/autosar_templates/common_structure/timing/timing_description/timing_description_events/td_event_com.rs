@@ -18,6 +18,7 @@ use crate::m2::autosar_templates::common_structure::timing::timing_description::
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -157,7 +158,7 @@ impl TryFrom<&str> for TDEventISignalTypeEnum {
 #[derive(Debug, Default)]
 pub struct TDEventCom {
     base: TimingDescriptionEvent,
-    ecu_instance_ref: Option<String>,
+    ecu_instance_ref: Option<RefTypeId>,
 }
 
 impl TDEventCom {
@@ -173,20 +174,20 @@ impl TDEventCom {
         &mut self.base
     }
 
-    pub fn get_ecu_instance_ref(&self) -> Option<&str> {
-        self.ecu_instance_ref.as_deref()
+    pub fn get_ecu_instance_ref(&self) -> Option<RefTypeId> {
+        self.ecu_instance_ref
     }
 
-    pub fn set_ecu_instance_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ecu_instance_ref = Some(value.into());
+    pub fn set_ecu_instance_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ecu_instance_ref = Some(value);
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_clock_reference_ref(value);
         self
     }
@@ -392,20 +393,20 @@ impl TDEventCycleStart {
         self
     }
 
-    pub fn get_ecu_instance_ref(&self) -> Option<&str> {
+    pub fn get_ecu_instance_ref(&self) -> Option<RefTypeId> {
         self.base().get_ecu_instance_ref()
     }
 
-    pub fn set_ecu_instance_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_ecu_instance_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_ecu_instance_ref(value);
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_clock_reference_ref(value);
         self
     }
@@ -630,7 +631,7 @@ impl TDEventCycleStart {
 #[derive(Debug, Default)]
 pub struct TDEventFrClusterCycleStart {
     base: TDEventCycleStart,
-    fr_cluster_ref: Option<String>,
+    fr_cluster_ref: Option<RefTypeId>,
 }
 
 impl TDEventFrClusterCycleStart {
@@ -646,12 +647,12 @@ impl TDEventFrClusterCycleStart {
         &mut self.base
     }
 
-    pub fn get_fr_cluster_ref(&self) -> Option<&str> {
-        self.fr_cluster_ref.as_deref()
+    pub fn get_fr_cluster_ref(&self) -> Option<RefTypeId> {
+        self.fr_cluster_ref
     }
 
-    pub fn set_fr_cluster_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.fr_cluster_ref = Some(value.into());
+    pub fn set_fr_cluster_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.fr_cluster_ref = Some(value);
         self
     }
 
@@ -664,20 +665,20 @@ impl TDEventFrClusterCycleStart {
         self
     }
 
-    pub fn get_ecu_instance_ref(&self) -> Option<&str> {
+    pub fn get_ecu_instance_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_ecu_instance_ref()
     }
 
-    pub fn set_ecu_instance_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_ecu_instance_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_ecu_instance_ref(value);
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -936,8 +937,8 @@ impl TDEventFrClusterCycleStart {
 #[derive(Debug, Default)]
 pub struct TDEventFrame {
     base: TDEventCom,
-    frame_ref: Option<String>,
-    physical_channel_ref: Option<String>,
+    frame_ref: Option<RefTypeId>,
+    physical_channel_ref: Option<RefTypeId>,
     td_event_type: Option<TDEventFrameTypeEnum>,
 }
 
@@ -954,21 +955,21 @@ impl TDEventFrame {
         &mut self.base
     }
 
-    pub fn get_frame_ref(&self) -> Option<&str> {
-        self.frame_ref.as_deref()
+    pub fn get_frame_ref(&self) -> Option<RefTypeId> {
+        self.frame_ref
     }
 
-    pub fn set_frame_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.frame_ref = Some(value.into());
+    pub fn set_frame_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.frame_ref = Some(value);
         self
     }
 
-    pub fn get_physical_channel_ref(&self) -> Option<&str> {
-        self.physical_channel_ref.as_deref()
+    pub fn get_physical_channel_ref(&self) -> Option<RefTypeId> {
+        self.physical_channel_ref
     }
 
-    pub fn set_physical_channel_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.physical_channel_ref = Some(value.into());
+    pub fn set_physical_channel_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.physical_channel_ref = Some(value);
         self
     }
 
@@ -981,20 +982,20 @@ impl TDEventFrame {
         self
     }
 
-    pub fn get_ecu_instance_ref(&self) -> Option<&str> {
+    pub fn get_ecu_instance_ref(&self) -> Option<RefTypeId> {
         self.base().get_ecu_instance_ref()
     }
 
-    pub fn set_ecu_instance_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_ecu_instance_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_ecu_instance_ref(value);
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_clock_reference_ref(value);
         self
     }
@@ -1219,10 +1220,10 @@ impl TDEventFrame {
 #[derive(Debug, Default)]
 pub struct TDEventFrameEthernet {
     base: TDEventCom,
-    static_socket_connection_ref: Option<String>,
+    static_socket_connection_ref: Option<RefTypeId>,
     td_event_type: Option<TDEventFrameEthernetTypeEnum>,
     td_header_id_filter: Vec<TDHeaderIdRangeId>,
-    td_pdu_triggering_filter_refs: Vec<String>,
+    td_pdu_triggering_filter_refs: Vec<RefTypeId>,
 }
 
 impl TDEventFrameEthernet {
@@ -1238,12 +1239,12 @@ impl TDEventFrameEthernet {
         &mut self.base
     }
 
-    pub fn get_static_socket_connection_ref(&self) -> Option<&str> {
-        self.static_socket_connection_ref.as_deref()
+    pub fn get_static_socket_connection_ref(&self) -> Option<RefTypeId> {
+        self.static_socket_connection_ref
     }
 
-    pub fn set_static_socket_connection_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.static_socket_connection_ref = Some(value.into());
+    pub fn set_static_socket_connection_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.static_socket_connection_ref = Some(value);
         self
     }
 
@@ -1264,28 +1265,28 @@ impl TDEventFrameEthernet {
         self.td_header_id_filter.push(value);
     }
 
-    pub fn get_td_pdu_triggering_filter_refs(&self) -> &[String] {
+    pub fn get_td_pdu_triggering_filter_refs(&self) -> &[RefTypeId] {
         &self.td_pdu_triggering_filter_refs
     }
 
-    pub fn push_td_pdu_triggering_filter_ref(&mut self, value: String) {
+    pub fn push_td_pdu_triggering_filter_ref(&mut self, value: RefTypeId) {
         self.td_pdu_triggering_filter_refs.push(value);
     }
 
-    pub fn get_ecu_instance_ref(&self) -> Option<&str> {
+    pub fn get_ecu_instance_ref(&self) -> Option<RefTypeId> {
         self.base().get_ecu_instance_ref()
     }
 
-    pub fn set_ecu_instance_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_ecu_instance_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_ecu_instance_ref(value);
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_clock_reference_ref(value);
         self
     }
@@ -1510,8 +1511,8 @@ impl TDEventFrameEthernet {
 #[derive(Debug, Default)]
 pub struct TDEventIPdu {
     base: TDEventCom,
-    i_pdu_ref: Option<String>,
-    physical_channel_ref: Option<String>,
+    i_pdu_ref: Option<RefTypeId>,
+    physical_channel_ref: Option<RefTypeId>,
     td_event_type: Option<TDEventIPduTypeEnum>,
 }
 
@@ -1528,21 +1529,21 @@ impl TDEventIPdu {
         &mut self.base
     }
 
-    pub fn get_i_pdu_ref(&self) -> Option<&str> {
-        self.i_pdu_ref.as_deref()
+    pub fn get_i_pdu_ref(&self) -> Option<RefTypeId> {
+        self.i_pdu_ref
     }
 
-    pub fn set_i_pdu_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.i_pdu_ref = Some(value.into());
+    pub fn set_i_pdu_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.i_pdu_ref = Some(value);
         self
     }
 
-    pub fn get_physical_channel_ref(&self) -> Option<&str> {
-        self.physical_channel_ref.as_deref()
+    pub fn get_physical_channel_ref(&self) -> Option<RefTypeId> {
+        self.physical_channel_ref
     }
 
-    pub fn set_physical_channel_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.physical_channel_ref = Some(value.into());
+    pub fn set_physical_channel_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.physical_channel_ref = Some(value);
         self
     }
 
@@ -1555,20 +1556,20 @@ impl TDEventIPdu {
         self
     }
 
-    pub fn get_ecu_instance_ref(&self) -> Option<&str> {
+    pub fn get_ecu_instance_ref(&self) -> Option<RefTypeId> {
         self.base().get_ecu_instance_ref()
     }
 
-    pub fn set_ecu_instance_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_ecu_instance_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_ecu_instance_ref(value);
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_clock_reference_ref(value);
         self
     }
@@ -1793,8 +1794,8 @@ impl TDEventIPdu {
 #[derive(Debug, Default)]
 pub struct TDEventISignal {
     base: TDEventCom,
-    i_signal_ref: Option<String>,
-    physical_channel_ref: Option<String>,
+    i_signal_ref: Option<RefTypeId>,
+    physical_channel_ref: Option<RefTypeId>,
     td_event_type: Option<TDEventISignalTypeEnum>,
 }
 
@@ -1811,21 +1812,21 @@ impl TDEventISignal {
         &mut self.base
     }
 
-    pub fn get_i_signal_ref(&self) -> Option<&str> {
-        self.i_signal_ref.as_deref()
+    pub fn get_i_signal_ref(&self) -> Option<RefTypeId> {
+        self.i_signal_ref
     }
 
-    pub fn set_i_signal_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.i_signal_ref = Some(value.into());
+    pub fn set_i_signal_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.i_signal_ref = Some(value);
         self
     }
 
-    pub fn get_physical_channel_ref(&self) -> Option<&str> {
-        self.physical_channel_ref.as_deref()
+    pub fn get_physical_channel_ref(&self) -> Option<RefTypeId> {
+        self.physical_channel_ref
     }
 
-    pub fn set_physical_channel_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.physical_channel_ref = Some(value.into());
+    pub fn set_physical_channel_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.physical_channel_ref = Some(value);
         self
     }
 
@@ -1838,20 +1839,20 @@ impl TDEventISignal {
         self
     }
 
-    pub fn get_ecu_instance_ref(&self) -> Option<&str> {
+    pub fn get_ecu_instance_ref(&self) -> Option<RefTypeId> {
         self.base().get_ecu_instance_ref()
     }
 
-    pub fn set_ecu_instance_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_ecu_instance_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_ecu_instance_ref(value);
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_clock_reference_ref(value);
         self
     }
@@ -2076,7 +2077,7 @@ impl TDEventISignal {
 #[derive(Debug, Default)]
 pub struct TDEventTTCanCycleStart {
     base: TDEventCycleStart,
-    tt_can_cluster_ref: Option<String>,
+    tt_can_cluster_ref: Option<RefTypeId>,
 }
 
 impl TDEventTTCanCycleStart {
@@ -2092,12 +2093,12 @@ impl TDEventTTCanCycleStart {
         &mut self.base
     }
 
-    pub fn get_tt_can_cluster_ref(&self) -> Option<&str> {
-        self.tt_can_cluster_ref.as_deref()
+    pub fn get_tt_can_cluster_ref(&self) -> Option<RefTypeId> {
+        self.tt_can_cluster_ref
     }
 
-    pub fn set_tt_can_cluster_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.tt_can_cluster_ref = Some(value.into());
+    pub fn set_tt_can_cluster_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.tt_can_cluster_ref = Some(value);
         self
     }
 
@@ -2110,20 +2111,20 @@ impl TDEventTTCanCycleStart {
         self
     }
 
-    pub fn get_ecu_instance_ref(&self) -> Option<&str> {
+    pub fn get_ecu_instance_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_ecu_instance_ref()
     }
 
-    pub fn set_ecu_instance_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_ecu_instance_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_ecu_instance_ref(value);
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().base().base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .base_mut()
@@ -2540,11 +2541,20 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.TD_PDU_TRIGGERING_FILTER_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.TD_PDU_TRIGGERING_FILTER_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!(
+                    "{path}.TD_PDU_TRIGGERING_FILTER_REFS[{index}]: id not found in other arena"
+                )
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.TD_PDU_TRIGGERING_FILTER_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }

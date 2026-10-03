@@ -44,6 +44,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::system_template::diagnostic_connection::DoIpTpConnectionId;
@@ -561,11 +562,11 @@ impl CanTpConfig {
         self.tp_nodes.push(value);
     }
 
-    pub fn get_communication_cluster_ref(&self) -> Option<&str> {
+    pub fn get_communication_cluster_ref(&self) -> Option<RefTypeId> {
         self.base().get_communication_cluster_ref()
     }
 
-    pub fn set_communication_cluster_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_communication_cluster_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_communication_cluster_ref(value);
         self
     }
@@ -825,20 +826,20 @@ pub struct CanTpConnection {
     variation_point_capable: VariationPointCapable,
     addressing_format: Option<CanTpAddressingFormatType>,
     cancellation: Option<String>,
-    can_tp_channel_ref: Option<String>,
-    data_pdu_ref: Option<String>,
-    flow_control_pdu_ref: Option<String>,
+    can_tp_channel_ref: Option<RefTypeId>,
+    data_pdu_ref: Option<RefTypeId>,
+    flow_control_pdu_ref: Option<RefTypeId>,
     max_block_size: Option<String>,
-    multicast_ref: Option<String>,
+    multicast_ref: Option<RefTypeId>,
     padding_activation: Option<String>,
-    receiver_refs: Vec<String>,
+    receiver_refs: Vec<RefTypeId>,
     ta_type: Option<String>,
     timeout_br: Option<String>,
     timeout_bs: Option<String>,
     timeout_cr: Option<String>,
     timeout_cs: Option<String>,
-    tp_sdu_ref: Option<String>,
-    transmitter_ref: Option<String>,
+    tp_sdu_ref: Option<RefTypeId>,
+    transmitter_ref: Option<RefTypeId>,
 }
 
 impl CanTpConnection {
@@ -880,30 +881,30 @@ impl CanTpConnection {
         self
     }
 
-    pub fn get_can_tp_channel_ref(&self) -> Option<&str> {
-        self.can_tp_channel_ref.as_deref()
+    pub fn get_can_tp_channel_ref(&self) -> Option<RefTypeId> {
+        self.can_tp_channel_ref
     }
 
-    pub fn set_can_tp_channel_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.can_tp_channel_ref = Some(value.into());
+    pub fn set_can_tp_channel_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.can_tp_channel_ref = Some(value);
         self
     }
 
-    pub fn get_data_pdu_ref(&self) -> Option<&str> {
-        self.data_pdu_ref.as_deref()
+    pub fn get_data_pdu_ref(&self) -> Option<RefTypeId> {
+        self.data_pdu_ref
     }
 
-    pub fn set_data_pdu_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.data_pdu_ref = Some(value.into());
+    pub fn set_data_pdu_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.data_pdu_ref = Some(value);
         self
     }
 
-    pub fn get_flow_control_pdu_ref(&self) -> Option<&str> {
-        self.flow_control_pdu_ref.as_deref()
+    pub fn get_flow_control_pdu_ref(&self) -> Option<RefTypeId> {
+        self.flow_control_pdu_ref
     }
 
-    pub fn set_flow_control_pdu_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.flow_control_pdu_ref = Some(value.into());
+    pub fn set_flow_control_pdu_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.flow_control_pdu_ref = Some(value);
         self
     }
 
@@ -916,12 +917,12 @@ impl CanTpConnection {
         self
     }
 
-    pub fn get_multicast_ref(&self) -> Option<&str> {
-        self.multicast_ref.as_deref()
+    pub fn get_multicast_ref(&self) -> Option<RefTypeId> {
+        self.multicast_ref
     }
 
-    pub fn set_multicast_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.multicast_ref = Some(value.into());
+    pub fn set_multicast_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.multicast_ref = Some(value);
         self
     }
 
@@ -934,11 +935,11 @@ impl CanTpConnection {
         self
     }
 
-    pub fn get_receiver_refs(&self) -> &[String] {
+    pub fn get_receiver_refs(&self) -> &[RefTypeId] {
         &self.receiver_refs
     }
 
-    pub fn push_receiver_ref(&mut self, value: String) {
+    pub fn push_receiver_ref(&mut self, value: RefTypeId) {
         self.receiver_refs.push(value);
     }
 
@@ -987,21 +988,21 @@ impl CanTpConnection {
         self
     }
 
-    pub fn get_tp_sdu_ref(&self) -> Option<&str> {
-        self.tp_sdu_ref.as_deref()
+    pub fn get_tp_sdu_ref(&self) -> Option<RefTypeId> {
+        self.tp_sdu_ref
     }
 
-    pub fn set_tp_sdu_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.tp_sdu_ref = Some(value.into());
+    pub fn set_tp_sdu_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.tp_sdu_ref = Some(value);
         self
     }
 
-    pub fn get_transmitter_ref(&self) -> Option<&str> {
-        self.transmitter_ref.as_deref()
+    pub fn get_transmitter_ref(&self) -> Option<RefTypeId> {
+        self.transmitter_ref
     }
 
-    pub fn set_transmitter_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.transmitter_ref = Some(value.into());
+    pub fn set_transmitter_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.transmitter_ref = Some(value);
         self
     }
 
@@ -1050,7 +1051,7 @@ pub struct CanTpEcu {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
     cycle_time_main_function: Option<String>,
-    ecu_instance_ref: Option<String>,
+    ecu_instance_ref: Option<RefTypeId>,
 }
 
 impl CanTpEcu {
@@ -1083,12 +1084,12 @@ impl CanTpEcu {
         self
     }
 
-    pub fn get_ecu_instance_ref(&self) -> Option<&str> {
-        self.ecu_instance_ref.as_deref()
+    pub fn get_ecu_instance_ref(&self) -> Option<RefTypeId> {
+        self.ecu_instance_ref
     }
 
-    pub fn set_ecu_instance_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ecu_instance_ref = Some(value.into());
+    pub fn set_ecu_instance_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ecu_instance_ref = Some(value);
         self
     }
 
@@ -1127,12 +1128,12 @@ impl CanTpEcu {
 pub struct CanTpNode {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    connector_ref: Option<String>,
+    connector_ref: Option<RefTypeId>,
     max_fc_wait: Option<String>,
     st_min: Option<String>,
     timeout_ar: Option<String>,
     timeout_as: Option<String>,
-    tp_address_ref: Option<String>,
+    tp_address_ref: Option<RefTypeId>,
 }
 
 impl CanTpNode {
@@ -1156,12 +1157,12 @@ impl CanTpNode {
         &mut self.variation_point_capable
     }
 
-    pub fn get_connector_ref(&self) -> Option<&str> {
-        self.connector_ref.as_deref()
+    pub fn get_connector_ref(&self) -> Option<RefTypeId> {
+        self.connector_ref
     }
 
-    pub fn set_connector_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.connector_ref = Some(value.into());
+    pub fn set_connector_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.connector_ref = Some(value);
         self
     }
 
@@ -1201,12 +1202,12 @@ impl CanTpNode {
         self
     }
 
-    pub fn get_tp_address_ref(&self) -> Option<&str> {
-        self.tp_address_ref.as_deref()
+    pub fn get_tp_address_ref(&self) -> Option<RefTypeId> {
+        self.tp_address_ref
     }
 
-    pub fn set_tp_address_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.tp_address_ref = Some(value.into());
+    pub fn set_tp_address_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.tp_address_ref = Some(value);
         self
     }
 
@@ -1560,11 +1561,11 @@ impl DoIpTpConfig {
         self.tp_connections.push(value);
     }
 
-    pub fn get_communication_cluster_ref(&self) -> Option<&str> {
+    pub fn get_communication_cluster_ref(&self) -> Option<RefTypeId> {
         self.base().get_communication_cluster_ref()
     }
 
-    pub fn set_communication_cluster_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_communication_cluster_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_communication_cluster_ref(value);
         self
     }
@@ -3645,11 +3646,11 @@ impl LinTpConfig {
         self.tp_nodes.push(value);
     }
 
-    pub fn get_communication_cluster_ref(&self) -> Option<&str> {
+    pub fn get_communication_cluster_ref(&self) -> Option<RefTypeId> {
         self.base().get_communication_cluster_ref()
     }
 
-    pub fn set_communication_cluster_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_communication_cluster_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_communication_cluster_ref(value);
         self
     }
@@ -3907,15 +3908,15 @@ impl LinTpConfig {
 pub struct LinTpConnection {
     base: TpConnection,
     variation_point_capable: VariationPointCapable,
-    data_pdu_ref: Option<String>,
-    flow_control_ref: Option<String>,
-    lin_tp_n_sdu_ref: Option<String>,
-    multicast_ref: Option<String>,
-    receiver_refs: Vec<String>,
+    data_pdu_ref: Option<RefTypeId>,
+    flow_control_ref: Option<RefTypeId>,
+    lin_tp_n_sdu_ref: Option<RefTypeId>,
+    multicast_ref: Option<RefTypeId>,
+    receiver_refs: Vec<RefTypeId>,
     timeout_as: Option<String>,
     timeout_cr: Option<String>,
     timeout_cs: Option<String>,
-    transmitter_ref: Option<String>,
+    transmitter_ref: Option<RefTypeId>,
 }
 
 impl LinTpConnection {
@@ -3939,47 +3940,47 @@ impl LinTpConnection {
         &mut self.variation_point_capable
     }
 
-    pub fn get_data_pdu_ref(&self) -> Option<&str> {
-        self.data_pdu_ref.as_deref()
+    pub fn get_data_pdu_ref(&self) -> Option<RefTypeId> {
+        self.data_pdu_ref
     }
 
-    pub fn set_data_pdu_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.data_pdu_ref = Some(value.into());
+    pub fn set_data_pdu_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.data_pdu_ref = Some(value);
         self
     }
 
-    pub fn get_flow_control_ref(&self) -> Option<&str> {
-        self.flow_control_ref.as_deref()
+    pub fn get_flow_control_ref(&self) -> Option<RefTypeId> {
+        self.flow_control_ref
     }
 
-    pub fn set_flow_control_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.flow_control_ref = Some(value.into());
+    pub fn set_flow_control_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.flow_control_ref = Some(value);
         self
     }
 
-    pub fn get_lin_tp_n_sdu_ref(&self) -> Option<&str> {
-        self.lin_tp_n_sdu_ref.as_deref()
+    pub fn get_lin_tp_n_sdu_ref(&self) -> Option<RefTypeId> {
+        self.lin_tp_n_sdu_ref
     }
 
-    pub fn set_lin_tp_n_sdu_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.lin_tp_n_sdu_ref = Some(value.into());
+    pub fn set_lin_tp_n_sdu_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.lin_tp_n_sdu_ref = Some(value);
         self
     }
 
-    pub fn get_multicast_ref(&self) -> Option<&str> {
-        self.multicast_ref.as_deref()
+    pub fn get_multicast_ref(&self) -> Option<RefTypeId> {
+        self.multicast_ref
     }
 
-    pub fn set_multicast_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.multicast_ref = Some(value.into());
+    pub fn set_multicast_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.multicast_ref = Some(value);
         self
     }
 
-    pub fn get_receiver_refs(&self) -> &[String] {
+    pub fn get_receiver_refs(&self) -> &[RefTypeId] {
         &self.receiver_refs
     }
 
-    pub fn push_receiver_ref(&mut self, value: String) {
+    pub fn push_receiver_ref(&mut self, value: RefTypeId) {
         self.receiver_refs.push(value);
     }
 
@@ -4010,12 +4011,12 @@ impl LinTpConnection {
         self
     }
 
-    pub fn get_transmitter_ref(&self) -> Option<&str> {
-        self.transmitter_ref.as_deref()
+    pub fn get_transmitter_ref(&self) -> Option<RefTypeId> {
+        self.transmitter_ref
     }
 
-    pub fn set_transmitter_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.transmitter_ref = Some(value.into());
+    pub fn set_transmitter_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.transmitter_ref = Some(value);
         self
     }
 
@@ -4063,12 +4064,12 @@ impl LinTpConnection {
 pub struct LinTpNode {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    connector_ref: Option<String>,
+    connector_ref: Option<RefTypeId>,
     drop_not_requested_nad: Option<String>,
     max_number_of_resp_pending_frames: Option<String>,
     p2_max: Option<String>,
     p2_timing: Option<String>,
-    tp_address_ref: Option<String>,
+    tp_address_ref: Option<RefTypeId>,
 }
 
 impl LinTpNode {
@@ -4092,12 +4093,12 @@ impl LinTpNode {
         &mut self.variation_point_capable
     }
 
-    pub fn get_connector_ref(&self) -> Option<&str> {
-        self.connector_ref.as_deref()
+    pub fn get_connector_ref(&self) -> Option<RefTypeId> {
+        self.connector_ref
     }
 
-    pub fn set_connector_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.connector_ref = Some(value.into());
+    pub fn set_connector_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.connector_ref = Some(value);
         self
     }
 
@@ -4137,12 +4138,12 @@ impl LinTpNode {
         self
     }
 
-    pub fn get_tp_address_ref(&self) -> Option<&str> {
-        self.tp_address_ref.as_deref()
+    pub fn get_tp_address_ref(&self) -> Option<RefTypeId> {
+        self.tp_address_ref
     }
 
-    pub fn set_tp_address_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.tp_address_ref = Some(value.into());
+    pub fn set_tp_address_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.tp_address_ref = Some(value);
         self
     }
 
@@ -4895,7 +4896,7 @@ impl TpAddress {
 #[derive(Debug, Default)]
 pub struct TpConfig {
     base: FibexElement,
-    communication_cluster_ref: Option<String>,
+    communication_cluster_ref: Option<RefTypeId>,
 }
 
 impl TpConfig {
@@ -4911,12 +4912,12 @@ impl TpConfig {
         &mut self.base
     }
 
-    pub fn get_communication_cluster_ref(&self) -> Option<&str> {
-        self.communication_cluster_ref.as_deref()
+    pub fn get_communication_cluster_ref(&self) -> Option<RefTypeId> {
+        self.communication_cluster_ref
     }
 
-    pub fn set_communication_cluster_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.communication_cluster_ref = Some(value.into());
+    pub fn set_communication_cluster_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.communication_cluster_ref = Some(value);
         self
     }
 
@@ -5314,9 +5315,13 @@ impl Document {
             return Err(format!("{path}: RECEIVER_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.RECEIVER_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.RECEIVER_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.RECEIVER_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.RECEIVER_REFS[{index}]"))?;
         }
         if a.get_ta_type() != b.get_ta_type() {
             return Err(format!("{path}: TA_TYPE mismatch"));
@@ -5734,9 +5739,13 @@ impl Document {
             return Err(format!("{path}: RECEIVER_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.RECEIVER_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.RECEIVER_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.RECEIVER_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.RECEIVER_REFS[{index}]"))?;
         }
         if a.get_timeout_as() != b.get_timeout_as() {
             return Err(format!("{path}: TIMEOUT_AS mismatch"));

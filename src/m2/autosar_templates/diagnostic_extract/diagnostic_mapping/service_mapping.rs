@@ -19,6 +19,7 @@ use crate::m2::autosar_templates::diagnostic_extract::diagnostic_mapping::Diagno
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::sw_component_template::rpt_scenario::IdentCaption;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
@@ -293,20 +294,20 @@ impl DiagnosticDemProvidedDataMapping {
         &mut self.base
     }
 
-    pub fn get_provider_software_cluster_ref(&self) -> Option<&str> {
+    pub fn get_provider_software_cluster_ref(&self) -> Option<RefTypeId> {
         self.base().get_provider_software_cluster_ref()
     }
 
-    pub fn set_provider_software_cluster_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_provider_software_cluster_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_provider_software_cluster_ref(value);
         self
     }
 
-    pub fn get_requester_software_cluster_ref(&self) -> Option<&str> {
+    pub fn get_requester_software_cluster_ref(&self) -> Option<RefTypeId> {
         self.base().get_requester_software_cluster_ref()
     }
 
-    pub fn set_requester_software_cluster_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_requester_software_cluster_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_requester_software_cluster_ref(value);
         self
     }
@@ -652,20 +653,20 @@ impl DiagnosticSecurityEventReportingModeMapping {
         &mut self.base
     }
 
-    pub fn get_provider_software_cluster_ref(&self) -> Option<&str> {
+    pub fn get_provider_software_cluster_ref(&self) -> Option<RefTypeId> {
         self.base().get_provider_software_cluster_ref()
     }
 
-    pub fn set_provider_software_cluster_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_provider_software_cluster_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_provider_software_cluster_ref(value);
         self
     }
 
-    pub fn get_requester_software_cluster_ref(&self) -> Option<&str> {
+    pub fn get_requester_software_cluster_ref(&self) -> Option<RefTypeId> {
         self.base().get_requester_software_cluster_ref()
     }
 
-    pub fn set_requester_software_cluster_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_requester_software_cluster_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_requester_software_cluster_ref(value);
         self
     }
@@ -935,22 +936,22 @@ impl DiagnosticServiceDataMapping {
         &mut self.base
     }
 
-    pub fn get_provider_software_cluster_ref(&self) -> Option<&str> {
+    pub fn get_provider_software_cluster_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_provider_software_cluster_ref()
     }
 
-    pub fn set_provider_software_cluster_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_provider_software_cluster_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .set_provider_software_cluster_ref(value);
         self
     }
 
-    pub fn get_requester_software_cluster_ref(&self) -> Option<&str> {
+    pub fn get_requester_software_cluster_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_requester_software_cluster_ref()
     }
 
-    pub fn set_requester_software_cluster_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_requester_software_cluster_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut()
             .base_mut()
             .set_requester_software_cluster_ref(value);

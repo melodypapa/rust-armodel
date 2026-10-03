@@ -7,6 +7,11 @@ use quick_xml::events::{BytesEnd, BytesStart, BytesText, Event};
 use quick_xml::writer::Writer;
 use thiserror::Error;
 
+use crate::m2::autosar_templates::autosar_top_level_structure::Document;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::{
+    RefType, RefTypeId,
+};
+
 /// Error model for the writer (mirrors `ParseError`).
 #[derive(Debug, Error)]
 pub enum WriteError {
@@ -28,10 +33,98 @@ pub(crate) fn write_text_element<W: Write>(
 ) -> Result<(), WriteError> {
     writer.write_event(Event::Start(element))?;
     match text {
-        Some(value) => writer.write_event(Event::Text(BytesText::new(value)))?,
+        Some(value) => {
+            writer.write_event(Event::Text(BytesText::from_escaped(escape_text(value))))?;
+        }
         None => writer.write_event(Event::Text(BytesText::from_escaped("")))?,
     }
     writer.write_event(Event::End(BytesEnd::new(name)))?;
+    Ok(())
+}
+
+/// py's text escaping (ElementTree `_escape_cdata` + minidom `_write_data`):
+/// `&`, `<`, `>`, `"` are escaped, the apostrophe stays raw. quick-xml's
+/// `BytesText::new` would additionally emit `&apos;` (e.g. "Young's" in the
+/// Unit_Standard fixture), so text goes through `from_escaped` with this
+/// function applied instead.
+fn escape_text(value: &str) -> String {
+    let mut out = String::with_capacity(value.len());
+    for ch in value.chars() {
+        match ch {
+            '&' => out.push_str("&amp;"),
+            '<' => out.push_str("&lt;"),
+            '>' => out.push_str("&gt;"),
+            '"' => out.push_str("&quot;"),
+            other => out.push(other),
+        }
+    }
+    out
+}
+
+/// py `setChildElementOptionalLiteral` — nothing is emitted when None.
+pub(crate) fn write_optional_text_element<W: Write>(
+    writer: &mut quick_xml::writer::Writer<W>,
+    tag: &str,
+    value: Option<&str>,
+) -> Result<(), WriteError> {
+    if let Some(value) = value {
+        write_text_element(writer, tag, BytesStart::new(tag), Some(value))?;
+    }
+    Ok(())
+}
+
+/// py `setChildElementOptionalBooleanValue` — the Boolean's text is the
+/// "true"/"false" the reader captured.
+pub(crate) fn write_optional_boolean_element<W: Write>(
+    writer: &mut quick_xml::writer::Writer<W>,
+    tag: &str,
+    value: Option<bool>,
+) -> Result<(), WriteError> {
+    match value {
+        Some(true) => write_optional_text_element(writer, tag, Some("true")),
+        Some(false) => write_optional_text_element(writer, tag, Some("false")),
+        None => Ok(()),
+    }
+}
+
+/// py `setChildElementOptionalRefType` — BASE, then DEST, then text value.
+pub(crate) fn write_optional_ref_type<W: Write>(
+    writer: &mut quick_xml::writer::Writer<W>,
+    tag: &str,
+    r#ref: Option<&RefType>,
+) -> Result<(), WriteError> {
+    if let Some(r#ref) = r#ref {
+        let mut element = BytesStart::new(tag);
+        if let Some(base) = r#ref.get_base() {
+            element.push_attribute(("BASE", base));
+        }
+        if let Some(dest) = r#ref.get_dest() {
+            element.push_attribute(("DEST", dest));
+        }
+        write_text_element(writer, tag, element, r#ref.get_value())?;
+    }
+    Ok(())
+}
+
+/// py's `ET.SubElement(wrapper)` + per-item `setChildElementOptionalRefType`
+/// — the wrapper is emitted only when the list is non-empty.
+pub(crate) fn write_ref_type_list<W: Write>(
+    writer: &mut quick_xml::writer::Writer<W>,
+    wrapper: &str,
+    tag: &str,
+    refs: &[RefTypeId],
+    document: &Document,
+) -> Result<(), WriteError> {
+    if refs.is_empty() {
+        return Ok(());
+    }
+    writer.write_event(Event::Start(BytesStart::new(wrapper)))?;
+    for ref_id in refs {
+        if let Some(r#ref) = document.ref_types.get(*ref_id) {
+            write_optional_ref_type(writer, tag, Some(r#ref))?;
+        }
+    }
+    writer.write_event(Event::End(BytesEnd::new(wrapper)))?;
     Ok(())
 }
 
@@ -59,6 +152,19 @@ mod tests {
         assert_eq!(
             String::from_utf8(buffer).unwrap(),
             "<SHORT-NAME>a&lt;b</SHORT-NAME>"
+        );
+    }
+
+    #[test]
+    fn text_element_keeps_apostrophes_raw_like_py() {
+        let mut buffer: Vec<u8> = Vec::new();
+        let mut writer = Writer::new_with_indent(&mut buffer, b' ', 2);
+        let element = BytesStart::new("L-1");
+        write_text_element(&mut writer, "L-1", element, Some("Young's \"Pascal\"")).unwrap();
+        writer.write_event(Event::Eof).unwrap();
+        assert_eq!(
+            String::from_utf8(buffer).unwrap(),
+            "<L-1>Young's &quot;Pascal&quot;</L-1>"
         );
     }
 }

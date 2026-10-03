@@ -59,6 +59,12 @@ def _annotation_parts(annotation) -> tuple[str, str] | None:
         # as Option<String> (P0 design §5)
         if annotation.id in ("str", "int", "float", "bool"):
             return "optional", annotation.id
+        # bare class-typed annotations (BaseType.baseTypeDefinition:
+        # BaseTypeDirectDefinition = BaseTypeDirectDefinition()) — referenced
+        # classes are Option<...> in the generated model (code_guide §6);
+        # typemap decides String / enum / arena-link from the name.
+        if annotation.id[:1].isupper():
+            return "optional", annotation.id
         return None
     if not (isinstance(annotation, ast.Subscript)
             and isinstance(annotation.value, ast.Name)

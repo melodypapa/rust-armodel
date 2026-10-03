@@ -20,6 +20,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Referrable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::system_template::fibex::fibex4_lin::lin_communication::LinErrorResponseId;
 use crate::m2::autosar_templates::system_template::fibex::fibex4_lin::lin_communication::LinScheduleTableId;
 use crate::m2::autosar_templates::system_template::fibex::fibex_core::core_communication::ISignalTriggeringId;
@@ -396,11 +397,11 @@ impl LinCommunicationConnector {
         self
     }
 
-    pub fn get_comm_controller_ref(&self) -> Option<&str> {
+    pub fn get_comm_controller_ref(&self) -> Option<RefTypeId> {
         self.base().get_comm_controller_ref()
     }
 
-    pub fn set_comm_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_comm_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_comm_controller_ref(value);
         self
     }
@@ -780,7 +781,7 @@ impl LinCommunicationController {
 #[derive(Debug, Default)]
 pub struct LinConfigurableFrame {
     base: ARObject,
-    frame_ref: Option<String>,
+    frame_ref: Option<RefTypeId>,
     message_id: Option<String>,
 }
 
@@ -797,12 +798,12 @@ impl LinConfigurableFrame {
         &mut self.base
     }
 
-    pub fn get_frame_ref(&self) -> Option<&str> {
-        self.frame_ref.as_deref()
+    pub fn get_frame_ref(&self) -> Option<RefTypeId> {
+        self.frame_ref
     }
 
-    pub fn set_frame_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.frame_ref = Some(value.into());
+    pub fn set_frame_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.frame_ref = Some(value);
         self
     }
 
@@ -1079,7 +1080,7 @@ impl LinMaster {
 #[derive(Debug, Default)]
 pub struct LinOrderedConfigurableFrame {
     base: ARObject,
-    frame_ref: Option<String>,
+    frame_ref: Option<RefTypeId>,
     index: Option<String>,
 }
 
@@ -1096,12 +1097,12 @@ impl LinOrderedConfigurableFrame {
         &mut self.base
     }
 
-    pub fn get_frame_ref(&self) -> Option<&str> {
-        self.frame_ref.as_deref()
+    pub fn get_frame_ref(&self) -> Option<RefTypeId> {
+        self.frame_ref
     }
 
-    pub fn set_frame_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.frame_ref = Some(value.into());
+    pub fn set_frame_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.frame_ref = Some(value);
         self
     }
 
@@ -1140,6 +1141,7 @@ impl LinOrderedConfigurableFrame {
 #[derive(Debug, Default)]
 pub struct LinPhysicalChannel {
     base: PhysicalChannel,
+    bus_idle_timeout_period: Option<String>,
     schedule_tables: Vec<LinScheduleTableId>,
 }
 
@@ -1156,6 +1158,15 @@ impl LinPhysicalChannel {
         &mut self.base
     }
 
+    pub fn get_bus_idle_timeout_period(&self) -> Option<&str> {
+        self.bus_idle_timeout_period.as_deref()
+    }
+
+    pub fn set_bus_idle_timeout_period(&mut self, value: impl Into<String>) -> &mut Self {
+        self.bus_idle_timeout_period = Some(value.into());
+        self
+    }
+
     pub fn get_schedule_tables(&self) -> &[LinScheduleTableId] {
         &self.schedule_tables
     }
@@ -1164,11 +1175,11 @@ impl LinPhysicalChannel {
         self.schedule_tables.push(value);
     }
 
-    pub fn get_comm_connector_refs(&self) -> &[String] {
+    pub fn get_comm_connector_refs(&self) -> &[RefTypeId] {
         self.base().get_comm_connector_refs()
     }
 
-    pub fn push_comm_connector_ref(&mut self, value: String) {
+    pub fn push_comm_connector_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_comm_connector_ref(value)
     }
 
@@ -1188,11 +1199,11 @@ impl LinPhysicalChannel {
         self.base_mut().push_i_signal_triggering(value)
     }
 
-    pub fn get_managed_physical_channel_refs(&self) -> &[String] {
+    pub fn get_managed_physical_channel_refs(&self) -> &[RefTypeId] {
         self.base().get_managed_physical_channel_refs()
     }
 
-    pub fn push_managed_physical_channel_ref(&mut self, value: String) {
+    pub fn push_managed_physical_channel_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_managed_physical_channel_ref(value)
     }
 
@@ -1911,6 +1922,9 @@ impl Document {
         path: &str,
     ) -> Result<(), String> {
         self.compare_physical_channel(other, a.base(), b.base(), path)?;
+        if a.get_bus_idle_timeout_period() != b.get_bus_idle_timeout_period() {
+            return Err(format!("{path}: BUS_IDLE_TIMEOUT_PERIOD mismatch"));
+        }
         let list_a = a.get_schedule_tables();
         let list_b = b.get_schedule_tables();
         if list_a.len() != list_b.len() {

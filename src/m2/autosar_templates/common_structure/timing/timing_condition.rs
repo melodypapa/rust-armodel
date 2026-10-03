@@ -25,6 +25,7 @@ use crate::m2::autosar_templates::generic_structure::formula_language::FormulaEx
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
@@ -36,9 +37,9 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct ModeInBswInstanceRef {
     base: ModeInSwcBswInstanceRef,
-    context_bsw_implementation_ref: Option<String>,
-    context_mode_declaration_group_prototype_ref: Option<String>,
-    target_mode_declaration_ref: Option<String>,
+    context_bsw_implementation_ref: Option<RefTypeId>,
+    context_mode_declaration_group_prototype_ref: Option<RefTypeId>,
+    target_mode_declaration_ref: Option<RefTypeId>,
 }
 
 impl ModeInBswInstanceRef {
@@ -54,33 +55,33 @@ impl ModeInBswInstanceRef {
         &mut self.base
     }
 
-    pub fn get_context_bsw_implementation_ref(&self) -> Option<&str> {
-        self.context_bsw_implementation_ref.as_deref()
+    pub fn get_context_bsw_implementation_ref(&self) -> Option<RefTypeId> {
+        self.context_bsw_implementation_ref
     }
 
-    pub fn set_context_bsw_implementation_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.context_bsw_implementation_ref = Some(value.into());
+    pub fn set_context_bsw_implementation_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_bsw_implementation_ref = Some(value);
         self
     }
 
-    pub fn get_context_mode_declaration_group_prototype_ref(&self) -> Option<&str> {
-        self.context_mode_declaration_group_prototype_ref.as_deref()
+    pub fn get_context_mode_declaration_group_prototype_ref(&self) -> Option<RefTypeId> {
+        self.context_mode_declaration_group_prototype_ref
     }
 
     pub fn set_context_mode_declaration_group_prototype_ref(
         &mut self,
-        value: impl Into<String>,
+        value: RefTypeId,
     ) -> &mut Self {
-        self.context_mode_declaration_group_prototype_ref = Some(value.into());
+        self.context_mode_declaration_group_prototype_ref = Some(value);
         self
     }
 
-    pub fn get_target_mode_declaration_ref(&self) -> Option<&str> {
-        self.target_mode_declaration_ref.as_deref()
+    pub fn get_target_mode_declaration_ref(&self) -> Option<RefTypeId> {
+        self.target_mode_declaration_ref
     }
 
-    pub fn set_target_mode_declaration_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_mode_declaration_ref = Some(value.into());
+    pub fn set_target_mode_declaration_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_mode_declaration_ref = Some(value);
         self
     }
 
@@ -148,11 +149,11 @@ impl ModeInSwcBswInstanceRef {
 pub struct ModeInSwcInstanceRef {
     base: AtpInstanceRef,
     mode_in_swc_bsw_instance_ref: ModeInSwcBswInstanceRef,
-    base_ref: Option<String>,
-    context_component_refs: Vec<String>,
-    context_mode_declaration_group_prototype_ref: Option<String>,
-    context_port_ref: Option<String>,
-    target_mode_declaration_ref: Option<String>,
+    base_ref: Option<RefTypeId>,
+    context_component_refs: Vec<RefTypeId>,
+    context_mode_declaration_group_prototype_ref: Option<RefTypeId>,
+    context_port_ref: Option<RefTypeId>,
+    target_mode_declaration_ref: Option<RefTypeId>,
 }
 
 impl ModeInSwcInstanceRef {
@@ -176,75 +177,75 @@ impl ModeInSwcInstanceRef {
         &mut self.mode_in_swc_bsw_instance_ref
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
-        self.base_ref.as_deref()
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
+        self.base_ref
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_ref = Some(value.into());
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_ref = Some(value);
         self
     }
 
-    pub fn get_context_component_refs(&self) -> &[String] {
+    pub fn get_context_component_refs(&self) -> &[RefTypeId] {
         &self.context_component_refs
     }
 
-    pub fn push_context_component_ref(&mut self, value: String) {
+    pub fn push_context_component_ref(&mut self, value: RefTypeId) {
         self.context_component_refs.push(value);
     }
 
-    pub fn get_context_mode_declaration_group_prototype_ref(&self) -> Option<&str> {
-        self.context_mode_declaration_group_prototype_ref.as_deref()
+    pub fn get_context_mode_declaration_group_prototype_ref(&self) -> Option<RefTypeId> {
+        self.context_mode_declaration_group_prototype_ref
     }
 
     pub fn set_context_mode_declaration_group_prototype_ref(
         &mut self,
-        value: impl Into<String>,
+        value: RefTypeId,
     ) -> &mut Self {
-        self.context_mode_declaration_group_prototype_ref = Some(value.into());
+        self.context_mode_declaration_group_prototype_ref = Some(value);
         self
     }
 
-    pub fn get_context_port_ref(&self) -> Option<&str> {
-        self.context_port_ref.as_deref()
+    pub fn get_context_port_ref(&self) -> Option<RefTypeId> {
+        self.context_port_ref
     }
 
-    pub fn set_context_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.context_port_ref = Some(value.into());
+    pub fn set_context_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.context_port_ref = Some(value);
         self
     }
 
-    pub fn get_target_mode_declaration_ref(&self) -> Option<&str> {
-        self.target_mode_declaration_ref.as_deref()
+    pub fn get_target_mode_declaration_ref(&self) -> Option<RefTypeId> {
+        self.target_mode_declaration_ref
     }
 
-    pub fn set_target_mode_declaration_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_mode_declaration_ref = Some(value.into());
+    pub fn set_target_mode_declaration_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_mode_declaration_ref = Some(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_target_ref(value);
         self
     }
@@ -453,11 +454,11 @@ impl TimingCondition {
 #[derive(Debug, Default)]
 pub struct TimingConditionFormula {
     base: FormulaExpression,
-    timing_argument_ref: Option<String>,
-    timing_condition_ref: Option<String>,
-    timing_event_ref: Option<String>,
-    timing_mode_ref: Option<String>,
-    timing_variable_ref: Option<String>,
+    timing_argument_ref: Option<RefTypeId>,
+    timing_condition_ref: Option<RefTypeId>,
+    timing_event_ref: Option<RefTypeId>,
+    timing_mode_ref: Option<RefTypeId>,
+    timing_variable_ref: Option<RefTypeId>,
 }
 
 impl TimingConditionFormula {
@@ -473,48 +474,48 @@ impl TimingConditionFormula {
         &mut self.base
     }
 
-    pub fn get_timing_argument_ref(&self) -> Option<&str> {
-        self.timing_argument_ref.as_deref()
+    pub fn get_timing_argument_ref(&self) -> Option<RefTypeId> {
+        self.timing_argument_ref
     }
 
-    pub fn set_timing_argument_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.timing_argument_ref = Some(value.into());
+    pub fn set_timing_argument_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.timing_argument_ref = Some(value);
         self
     }
 
-    pub fn get_timing_condition_ref(&self) -> Option<&str> {
-        self.timing_condition_ref.as_deref()
+    pub fn get_timing_condition_ref(&self) -> Option<RefTypeId> {
+        self.timing_condition_ref
     }
 
-    pub fn set_timing_condition_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.timing_condition_ref = Some(value.into());
+    pub fn set_timing_condition_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.timing_condition_ref = Some(value);
         self
     }
 
-    pub fn get_timing_event_ref(&self) -> Option<&str> {
-        self.timing_event_ref.as_deref()
+    pub fn get_timing_event_ref(&self) -> Option<RefTypeId> {
+        self.timing_event_ref
     }
 
-    pub fn set_timing_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.timing_event_ref = Some(value.into());
+    pub fn set_timing_event_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.timing_event_ref = Some(value);
         self
     }
 
-    pub fn get_timing_mode_ref(&self) -> Option<&str> {
-        self.timing_mode_ref.as_deref()
+    pub fn get_timing_mode_ref(&self) -> Option<RefTypeId> {
+        self.timing_mode_ref
     }
 
-    pub fn set_timing_mode_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.timing_mode_ref = Some(value.into());
+    pub fn set_timing_mode_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.timing_mode_ref = Some(value);
         self
     }
 
-    pub fn get_timing_variable_ref(&self) -> Option<&str> {
-        self.timing_variable_ref.as_deref()
+    pub fn get_timing_variable_ref(&self) -> Option<RefTypeId> {
+        self.timing_variable_ref
     }
 
-    pub fn set_timing_variable_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.timing_variable_ref = Some(value.into());
+    pub fn set_timing_variable_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.timing_variable_ref = Some(value);
         self
     }
 
@@ -970,9 +971,18 @@ impl Document {
             return Err(format!("{path}: CONTEXT_COMPONENT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.CONTEXT_COMPONENT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.CONTEXT_COMPONENT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.CONTEXT_COMPONENT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONTEXT_COMPONENT_REFS[{index}]"),
+            )?;
         }
         if a.get_context_mode_declaration_group_prototype_ref()
             != b.get_context_mode_declaration_group_prototype_ref()

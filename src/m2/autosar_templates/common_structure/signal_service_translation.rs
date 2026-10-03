@@ -15,6 +15,7 @@ use crate::m2::autosar_templates::common_structure::filter::DataFilterId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::system_template::instance_refs::VariableDataPrototypeInSystemInstanceRefId;
 use crate::m2::autosar_templates::system_template::transformer::DataPrototypeInPortInterfaceRefId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -449,9 +450,9 @@ impl SignalServiceTranslationEventProps {
 #[derive(Debug, Default)]
 pub struct SignalServiceTranslationProps {
     base: Identifiable,
-    control_consumed_event_group_refs: Vec<String>,
-    control_pnc_refs: Vec<String>,
-    control_provided_event_group_refs: Vec<String>,
+    control_consumed_event_group_refs: Vec<RefTypeId>,
+    control_pnc_refs: Vec<RefTypeId>,
+    control_provided_event_group_refs: Vec<RefTypeId>,
     service_control: Option<SignalServiceTranslationControlEnum>,
     signal_service_translation_event_props: Vec<SignalServiceTranslationEventPropsId>,
 }
@@ -469,27 +470,27 @@ impl SignalServiceTranslationProps {
         &mut self.base
     }
 
-    pub fn get_control_consumed_event_group_refs(&self) -> &[String] {
+    pub fn get_control_consumed_event_group_refs(&self) -> &[RefTypeId] {
         &self.control_consumed_event_group_refs
     }
 
-    pub fn push_control_consumed_event_group_ref(&mut self, value: String) {
+    pub fn push_control_consumed_event_group_ref(&mut self, value: RefTypeId) {
         self.control_consumed_event_group_refs.push(value);
     }
 
-    pub fn get_control_pnc_refs(&self) -> &[String] {
+    pub fn get_control_pnc_refs(&self) -> &[RefTypeId] {
         &self.control_pnc_refs
     }
 
-    pub fn push_control_pnc_ref(&mut self, value: String) {
+    pub fn push_control_pnc_ref(&mut self, value: RefTypeId) {
         self.control_pnc_refs.push(value);
     }
 
-    pub fn get_control_provided_event_group_refs(&self) -> &[String] {
+    pub fn get_control_provided_event_group_refs(&self) -> &[RefTypeId] {
         &self.control_provided_event_group_refs
     }
 
-    pub fn push_control_provided_event_group_ref(&mut self, value: String) {
+    pub fn push_control_provided_event_group_ref(&mut self, value: RefTypeId) {
         self.control_provided_event_group_refs.push(value);
     }
 
@@ -889,11 +890,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.CONTROL_CONSUMED_EVENT_GROUP_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!(
+                    "{path}.CONTROL_CONSUMED_EVENT_GROUP_REFS[{index}]: id not found in own arena"
+                )
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| format!("{path}.CONTROL_CONSUMED_EVENT_GROUP_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONTROL_CONSUMED_EVENT_GROUP_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_control_pnc_refs();
         let list_b = b.get_control_pnc_refs();
@@ -901,9 +909,13 @@ impl Document {
             return Err(format!("{path}: CONTROL_PNC_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.CONTROL_PNC_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.CONTROL_PNC_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.CONTROL_PNC_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.CONTROL_PNC_REFS[{index}]"))?;
         }
         let list_a = a.get_control_provided_event_group_refs();
         let list_b = b.get_control_provided_event_group_refs();
@@ -913,11 +925,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.CONTROL_PROVIDED_EVENT_GROUP_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!(
+                    "{path}.CONTROL_PROVIDED_EVENT_GROUP_REFS[{index}]: id not found in own arena"
+                )
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| format!("{path}.CONTROL_PROVIDED_EVENT_GROUP_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONTROL_PROVIDED_EVENT_GROUP_REFS[{index}]"),
+            )?;
         }
         if a.get_service_control() != b.get_service_control() {
             return Err(format!("{path}: SERVICE_CONTROL mismatch"));

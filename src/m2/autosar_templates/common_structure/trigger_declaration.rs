@@ -18,6 +18,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::multidimensional_time::MultidimensionalTimeId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::msr::data_dictionary::data_def_properties::SwImplPolicyEnum;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
@@ -267,8 +268,8 @@ impl Trigger {
 #[derive(Debug, Default)]
 pub struct TriggerMapping {
     base: ARObject,
-    first_trigger_ref: Option<String>,
-    second_trigger_ref: Option<String>,
+    first_trigger_ref: Option<RefTypeId>,
+    second_trigger_ref: Option<RefTypeId>,
 }
 
 impl TriggerMapping {
@@ -284,21 +285,21 @@ impl TriggerMapping {
         &mut self.base
     }
 
-    pub fn get_first_trigger_ref(&self) -> Option<&str> {
-        self.first_trigger_ref.as_deref()
+    pub fn get_first_trigger_ref(&self) -> Option<RefTypeId> {
+        self.first_trigger_ref
     }
 
-    pub fn set_first_trigger_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.first_trigger_ref = Some(value.into());
+    pub fn set_first_trigger_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.first_trigger_ref = Some(value);
         self
     }
 
-    pub fn get_second_trigger_ref(&self) -> Option<&str> {
-        self.second_trigger_ref.as_deref()
+    pub fn get_second_trigger_ref(&self) -> Option<RefTypeId> {
+        self.second_trigger_ref
     }
 
-    pub fn set_second_trigger_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.second_trigger_ref = Some(value.into());
+    pub fn set_second_trigger_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.second_trigger_ref = Some(value);
         self
     }
 

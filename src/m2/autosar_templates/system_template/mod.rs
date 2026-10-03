@@ -62,6 +62,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::ByteOrderEnum;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::system_template::ecu_resource_mapping::ECUMappingId;
@@ -522,9 +523,9 @@ impl ClientIdDefinitionSet {
 pub struct ComManagementMapping {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    com_management_group_refs: Vec<String>,
+    com_management_group_refs: Vec<RefTypeId>,
     com_management_port_group_i_refs: Vec<PortGroupInSystemInstanceRefId>,
-    physical_channel_refs: Vec<String>,
+    physical_channel_refs: Vec<RefTypeId>,
 }
 
 impl ComManagementMapping {
@@ -548,11 +549,11 @@ impl ComManagementMapping {
         &mut self.variation_point_capable
     }
 
-    pub fn get_com_management_group_refs(&self) -> &[String] {
+    pub fn get_com_management_group_refs(&self) -> &[RefTypeId] {
         &self.com_management_group_refs
     }
 
-    pub fn push_com_management_group_ref(&mut self, value: String) {
+    pub fn push_com_management_group_ref(&mut self, value: RefTypeId) {
         self.com_management_group_refs.push(value);
     }
 
@@ -564,11 +565,11 @@ impl ComManagementMapping {
         self.com_management_port_group_i_refs.push(value);
     }
 
-    pub fn get_physical_channel_refs(&self) -> &[String] {
+    pub fn get_physical_channel_refs(&self) -> &[RefTypeId] {
         &self.physical_channel_refs
     }
 
-    pub fn push_physical_channel_ref(&mut self, value: String) {
+    pub fn push_physical_channel_ref(&mut self, value: RefTypeId) {
         self.physical_channel_refs.push(value);
     }
 
@@ -719,7 +720,7 @@ impl ComManagementMapping {
 pub struct J1939SharedAddressCluster {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    participating_j1939_cluster_refs: Vec<String>,
+    participating_j1939_cluster_refs: Vec<RefTypeId>,
 }
 
 impl J1939SharedAddressCluster {
@@ -743,11 +744,11 @@ impl J1939SharedAddressCluster {
         &mut self.variation_point_capable
     }
 
-    pub fn get_participating_j1939_cluster_refs(&self) -> &[String] {
+    pub fn get_participating_j1939_cluster_refs(&self) -> &[RefTypeId] {
         &self.participating_j1939_cluster_refs
     }
 
-    pub fn push_participating_j1939_cluster_ref(&mut self, value: String) {
+    pub fn push_participating_j1939_cluster_ref(&mut self, value: RefTypeId) {
         self.participating_j1939_cluster_refs.push(value);
     }
 
@@ -1048,8 +1049,8 @@ impl PortElementToCommunicationResourceMapping {
 pub struct RootSwCompositionPrototype {
     base: AtpPrototype,
     variation_point_capable: VariationPointCapable,
-    calibration_parameter_value_set_refs: Vec<String>,
-    flat_map_ref: Option<String>,
+    calibration_parameter_value_set_refs: Vec<RefTypeId>,
+    flat_map_ref: Option<RefTypeId>,
     software_composition_t_ref: Option<String>,
 }
 
@@ -1074,20 +1075,20 @@ impl RootSwCompositionPrototype {
         &mut self.variation_point_capable
     }
 
-    pub fn get_calibration_parameter_value_set_refs(&self) -> &[String] {
+    pub fn get_calibration_parameter_value_set_refs(&self) -> &[RefTypeId] {
         &self.calibration_parameter_value_set_refs
     }
 
-    pub fn push_calibration_parameter_value_set_ref(&mut self, value: String) {
+    pub fn push_calibration_parameter_value_set_ref(&mut self, value: RefTypeId) {
         self.calibration_parameter_value_set_refs.push(value);
     }
 
-    pub fn get_flat_map_ref(&self) -> Option<&str> {
-        self.flat_map_ref.as_deref()
+    pub fn get_flat_map_ref(&self) -> Option<RefTypeId> {
+        self.flat_map_ref
     }
 
-    pub fn set_flat_map_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.flat_map_ref = Some(value.into());
+    pub fn set_flat_map_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.flat_map_ref = Some(value);
         self
     }
 
@@ -1100,11 +1101,11 @@ impl RootSwCompositionPrototype {
         self
     }
 
-    pub fn get_atp_type_ref(&self) -> Option<&str> {
+    pub fn get_atp_type_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_type_ref()
     }
 
-    pub fn set_atp_type_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_type_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_type_ref(value);
         self
     }
@@ -1296,17 +1297,17 @@ impl RootSwCompositionPrototype {
 #[derive(Debug, Default)]
 pub struct System {
     base: AtpStructureElement,
-    client_id_definition_set_refs: Vec<String>,
+    client_id_definition_set_refs: Vec<RefTypeId>,
     container_i_pdu_header_byte_order: Option<ByteOrderEnum>,
     ecu_extract_version: Option<String>,
-    fibex_element_refs: Vec<String>,
-    interpolation_routine_mapping_set_refs: Vec<String>,
+    fibex_element_refs: Vec<RefTypeId>,
+    interpolation_routine_mapping_set_refs: Vec<RefTypeId>,
     j1939_shared_address_clusters: Vec<J1939SharedAddressClusterId>,
     mappings: Vec<SystemMappingId>,
     pnc_vector_length: Option<String>,
     pnc_vector_offset: Option<String>,
     root_software_composition: Option<RootSwCompositionPrototypeId>,
-    sw_cluster_refs: Vec<String>,
+    sw_cluster_refs: Vec<RefTypeId>,
     system_documentations: Vec<ChapterId>,
     system_version: Option<String>,
 }
@@ -1324,11 +1325,11 @@ impl System {
         &mut self.base
     }
 
-    pub fn get_client_id_definition_set_refs(&self) -> &[String] {
+    pub fn get_client_id_definition_set_refs(&self) -> &[RefTypeId] {
         &self.client_id_definition_set_refs
     }
 
-    pub fn push_client_id_definition_set_ref(&mut self, value: String) {
+    pub fn push_client_id_definition_set_ref(&mut self, value: RefTypeId) {
         self.client_id_definition_set_refs.push(value);
     }
 
@@ -1350,19 +1351,19 @@ impl System {
         self
     }
 
-    pub fn get_fibex_element_refs(&self) -> &[String] {
+    pub fn get_fibex_element_refs(&self) -> &[RefTypeId] {
         &self.fibex_element_refs
     }
 
-    pub fn push_fibex_element_ref(&mut self, value: String) {
+    pub fn push_fibex_element_ref(&mut self, value: RefTypeId) {
         self.fibex_element_refs.push(value);
     }
 
-    pub fn get_interpolation_routine_mapping_set_refs(&self) -> &[String] {
+    pub fn get_interpolation_routine_mapping_set_refs(&self) -> &[RefTypeId] {
         &self.interpolation_routine_mapping_set_refs
     }
 
-    pub fn push_interpolation_routine_mapping_set_ref(&mut self, value: String) {
+    pub fn push_interpolation_routine_mapping_set_ref(&mut self, value: RefTypeId) {
         self.interpolation_routine_mapping_set_refs.push(value);
     }
 
@@ -1412,11 +1413,11 @@ impl System {
         self
     }
 
-    pub fn get_sw_cluster_refs(&self) -> &[String] {
+    pub fn get_sw_cluster_refs(&self) -> &[RefTypeId] {
         &self.sw_cluster_refs
     }
 
-    pub fn push_sw_cluster_ref(&mut self, value: String) {
+    pub fn push_sw_cluster_ref(&mut self, value: RefTypeId) {
         self.sw_cluster_refs.push(value);
     }
 
@@ -1630,9 +1631,25 @@ pub struct SystemMapping {
     com_management_mappings: Vec<ComManagementMappingId>,
     crypto_service_mappings: Vec<ElementRef>,
     data_mappings: Vec<ElementRef>,
+    dds_i_signal_to_topic_mappings: Option<String>,
     ecu_resource_mappings: Vec<ECUMappingId>,
+    j1939_controller_application_to_j1939_nm_node_mappings: Option<String>,
+    mapping_constraints: Option<String>,
+    pnc_mappings: Option<String>,
+    port_element_to_com_resource_mappings: Option<String>,
+    resource_estimations: Option<String>,
+    resource_to_application_partition_mappings: Option<String>,
+    rte_event_separations: Option<String>,
+    rte_event_to_os_task_proxy_mappings: Option<String>,
+    signal_path_constraints: Option<String>,
+    software_cluster_to_application_partition_mappings: Option<String>,
+    software_cluster_to_resource_mappings: Option<String>,
+    sw_cluster_mappings: Option<String>,
+    swc_to_application_partition_mappings: Option<String>,
     sw_impl_mappings: Vec<SwcToImplMappingId>,
     sw_mappings: Vec<SwcToEcuMappingId>,
+    system_signal_group_to_com_resource_mappings: Option<String>,
+    system_signal_to_com_resource_mappings: Option<String>,
 }
 
 impl SystemMapping {
@@ -1708,12 +1725,161 @@ impl SystemMapping {
         self.data_mappings.push(value);
     }
 
+    pub fn get_dds_i_signal_to_topic_mappings(&self) -> Option<&str> {
+        self.dds_i_signal_to_topic_mappings.as_deref()
+    }
+
+    pub fn set_dds_i_signal_to_topic_mappings(&mut self, value: impl Into<String>) -> &mut Self {
+        self.dds_i_signal_to_topic_mappings = Some(value.into());
+        self
+    }
+
     pub fn get_ecu_resource_mappings(&self) -> &[ECUMappingId] {
         &self.ecu_resource_mappings
     }
 
     pub fn push_ecu_resource_mapping(&mut self, value: ECUMappingId) {
         self.ecu_resource_mappings.push(value);
+    }
+
+    pub fn get_j1939_controller_application_to_j1939_nm_node_mappings(&self) -> Option<&str> {
+        self.j1939_controller_application_to_j1939_nm_node_mappings
+            .as_deref()
+    }
+
+    pub fn set_j1939_controller_application_to_j1939_nm_node_mappings(
+        &mut self,
+        value: impl Into<String>,
+    ) -> &mut Self {
+        self.j1939_controller_application_to_j1939_nm_node_mappings = Some(value.into());
+        self
+    }
+
+    pub fn get_mapping_constraints(&self) -> Option<&str> {
+        self.mapping_constraints.as_deref()
+    }
+
+    pub fn set_mapping_constraints(&mut self, value: impl Into<String>) -> &mut Self {
+        self.mapping_constraints = Some(value.into());
+        self
+    }
+
+    pub fn get_pnc_mappings(&self) -> Option<&str> {
+        self.pnc_mappings.as_deref()
+    }
+
+    pub fn set_pnc_mappings(&mut self, value: impl Into<String>) -> &mut Self {
+        self.pnc_mappings = Some(value.into());
+        self
+    }
+
+    pub fn get_port_element_to_com_resource_mappings(&self) -> Option<&str> {
+        self.port_element_to_com_resource_mappings.as_deref()
+    }
+
+    pub fn set_port_element_to_com_resource_mappings(
+        &mut self,
+        value: impl Into<String>,
+    ) -> &mut Self {
+        self.port_element_to_com_resource_mappings = Some(value.into());
+        self
+    }
+
+    pub fn get_resource_estimations(&self) -> Option<&str> {
+        self.resource_estimations.as_deref()
+    }
+
+    pub fn set_resource_estimations(&mut self, value: impl Into<String>) -> &mut Self {
+        self.resource_estimations = Some(value.into());
+        self
+    }
+
+    pub fn get_resource_to_application_partition_mappings(&self) -> Option<&str> {
+        self.resource_to_application_partition_mappings.as_deref()
+    }
+
+    pub fn set_resource_to_application_partition_mappings(
+        &mut self,
+        value: impl Into<String>,
+    ) -> &mut Self {
+        self.resource_to_application_partition_mappings = Some(value.into());
+        self
+    }
+
+    pub fn get_rte_event_separations(&self) -> Option<&str> {
+        self.rte_event_separations.as_deref()
+    }
+
+    pub fn set_rte_event_separations(&mut self, value: impl Into<String>) -> &mut Self {
+        self.rte_event_separations = Some(value.into());
+        self
+    }
+
+    pub fn get_rte_event_to_os_task_proxy_mappings(&self) -> Option<&str> {
+        self.rte_event_to_os_task_proxy_mappings.as_deref()
+    }
+
+    pub fn set_rte_event_to_os_task_proxy_mappings(
+        &mut self,
+        value: impl Into<String>,
+    ) -> &mut Self {
+        self.rte_event_to_os_task_proxy_mappings = Some(value.into());
+        self
+    }
+
+    pub fn get_signal_path_constraints(&self) -> Option<&str> {
+        self.signal_path_constraints.as_deref()
+    }
+
+    pub fn set_signal_path_constraints(&mut self, value: impl Into<String>) -> &mut Self {
+        self.signal_path_constraints = Some(value.into());
+        self
+    }
+
+    pub fn get_software_cluster_to_application_partition_mappings(&self) -> Option<&str> {
+        self.software_cluster_to_application_partition_mappings
+            .as_deref()
+    }
+
+    pub fn set_software_cluster_to_application_partition_mappings(
+        &mut self,
+        value: impl Into<String>,
+    ) -> &mut Self {
+        self.software_cluster_to_application_partition_mappings = Some(value.into());
+        self
+    }
+
+    pub fn get_software_cluster_to_resource_mappings(&self) -> Option<&str> {
+        self.software_cluster_to_resource_mappings.as_deref()
+    }
+
+    pub fn set_software_cluster_to_resource_mappings(
+        &mut self,
+        value: impl Into<String>,
+    ) -> &mut Self {
+        self.software_cluster_to_resource_mappings = Some(value.into());
+        self
+    }
+
+    pub fn get_sw_cluster_mappings(&self) -> Option<&str> {
+        self.sw_cluster_mappings.as_deref()
+    }
+
+    pub fn set_sw_cluster_mappings(&mut self, value: impl Into<String>) -> &mut Self {
+        self.sw_cluster_mappings = Some(value.into());
+        self
+    }
+
+    pub fn get_swc_to_application_partition_mappings(&self) -> Option<&str> {
+        self.swc_to_application_partition_mappings.as_deref()
+    }
+
+    pub fn set_swc_to_application_partition_mappings(
+        &mut self,
+        value: impl Into<String>,
+    ) -> &mut Self {
+        self.swc_to_application_partition_mappings = Some(value.into());
+        self
     }
 
     pub fn get_sw_impl_mappings(&self) -> &[SwcToImplMappingId] {
@@ -1730,6 +1896,30 @@ impl SystemMapping {
 
     pub fn push_sw_mapping(&mut self, value: SwcToEcuMappingId) {
         self.sw_mappings.push(value);
+    }
+
+    pub fn get_system_signal_group_to_com_resource_mappings(&self) -> Option<&str> {
+        self.system_signal_group_to_com_resource_mappings.as_deref()
+    }
+
+    pub fn set_system_signal_group_to_com_resource_mappings(
+        &mut self,
+        value: impl Into<String>,
+    ) -> &mut Self {
+        self.system_signal_group_to_com_resource_mappings = Some(value.into());
+        self
+    }
+
+    pub fn get_system_signal_to_com_resource_mappings(&self) -> Option<&str> {
+        self.system_signal_to_com_resource_mappings.as_deref()
+    }
+
+    pub fn set_system_signal_to_com_resource_mappings(
+        &mut self,
+        value: impl Into<String>,
+    ) -> &mut Self {
+        self.system_signal_to_com_resource_mappings = Some(value.into());
+        self
     }
 
     pub fn get_admin_data(&self) -> Option<AdminDataId> {
@@ -1947,11 +2137,18 @@ impl Document {
             return Err(format!("{path}: COM_MANAGEMENT_GROUP_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.COM_MANAGEMENT_GROUP_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.COM_MANAGEMENT_GROUP_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.COM_MANAGEMENT_GROUP_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.COM_MANAGEMENT_GROUP_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_com_management_port_group_i_refs();
         let list_b = b.get_com_management_port_group_i_refs();
@@ -1976,9 +2173,18 @@ impl Document {
             return Err(format!("{path}: PHYSICAL_CHANNEL_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.PHYSICAL_CHANNEL_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.PHYSICAL_CHANNEL_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.PHYSICAL_CHANNEL_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.PHYSICAL_CHANNEL_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }
@@ -2005,11 +2211,22 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.PARTICIPATING_J1939_CLUSTER_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!(
+                    "{path}.PARTICIPATING_J1939_CLUSTER_REFS[{index}]: id not found in own arena"
+                )
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!(
+                    "{path}.PARTICIPATING_J1939_CLUSTER_REFS[{index}]: id not found in other arena"
+                )
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.PARTICIPATING_J1939_CLUSTER_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }
@@ -2047,11 +2264,14 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.CALIBRATION_PARAMETER_VALUE_SET_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| format!("{path}.CALIBRATION_PARAMETER_VALUE_SET_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| format!("{path}.CALIBRATION_PARAMETER_VALUE_SET_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CALIBRATION_PARAMETER_VALUE_SET_REFS[{index}]"),
+            )?;
         }
         if a.get_flat_map_ref() != b.get_flat_map_ref() {
             return Err(format!("{path}: FLAT_MAP_REF mismatch"));
@@ -2078,11 +2298,20 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.CLIENT_ID_DEFINITION_SET_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.CLIENT_ID_DEFINITION_SET_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!(
+                    "{path}.CLIENT_ID_DEFINITION_SET_REFS[{index}]: id not found in other arena"
+                )
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CLIENT_ID_DEFINITION_SET_REFS[{index}]"),
+            )?;
         }
         if a.get_container_i_pdu_header_byte_order() != b.get_container_i_pdu_header_byte_order() {
             return Err(format!(
@@ -2098,9 +2327,13 @@ impl Document {
             return Err(format!("{path}: FIBEX_ELEMENT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.FIBEX_ELEMENT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.FIBEX_ELEMENT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.FIBEX_ELEMENT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.FIBEX_ELEMENT_REFS[{index}]"))?;
         }
         let list_a = a.get_interpolation_routine_mapping_set_refs();
         let list_b = b.get_interpolation_routine_mapping_set_refs();
@@ -2110,11 +2343,14 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.INTERPOLATION_ROUTINE_MAPPING_SET_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| format!("{path}.INTERPOLATION_ROUTINE_MAPPING_SET_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| format!("{path}.INTERPOLATION_ROUTINE_MAPPING_SET_REFS[{index}]: id not found in other arena"))?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.INTERPOLATION_ROUTINE_MAPPING_SET_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_j1939_shared_address_clusters();
         let list_b = b.get_j1939_shared_address_clusters();
@@ -2170,9 +2406,13 @@ impl Document {
             return Err(format!("{path}: SW_CLUSTER_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SW_CLUSTER_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SW_CLUSTER_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SW_CLUSTER_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SW_CLUSTER_REFS[{index}]"))?;
         }
         let list_a = a.get_system_documentations();
         let list_b = b.get_system_documentations();
@@ -2286,6 +2526,9 @@ impl Document {
                 return Err(format!("{path}.DATA_MAPPINGS[{index}] mismatch"));
             }
         }
+        if a.get_dds_i_signal_to_topic_mappings() != b.get_dds_i_signal_to_topic_mappings() {
+            return Err(format!("{path}: DDS_I_SIGNAL_TO_TOPIC_MAPPINGS mismatch"));
+        }
         let list_a = a.get_ecu_resource_mappings();
         let list_b = b.get_ecu_resource_mappings();
         if list_a.len() != list_b.len() {
@@ -2304,6 +2547,73 @@ impl Document {
                 y,
                 &format!("{path}.ECU_RESOURCE_MAPPINGS[{index}]"),
             )?;
+        }
+        if a.get_j1939_controller_application_to_j1939_nm_node_mappings()
+            != b.get_j1939_controller_application_to_j1939_nm_node_mappings()
+        {
+            return Err(format!(
+                "{path}: J1939_CONTROLLER_APPLICATION_TO_J1939_NM_NODE_MAPPINGS mismatch"
+            ));
+        }
+        if a.get_mapping_constraints() != b.get_mapping_constraints() {
+            return Err(format!("{path}: MAPPING_CONSTRAINTS mismatch"));
+        }
+        if a.get_pnc_mappings() != b.get_pnc_mappings() {
+            return Err(format!("{path}: PNC_MAPPINGS mismatch"));
+        }
+        if a.get_port_element_to_com_resource_mappings()
+            != b.get_port_element_to_com_resource_mappings()
+        {
+            return Err(format!(
+                "{path}: PORT_ELEMENT_TO_COM_RESOURCE_MAPPINGS mismatch"
+            ));
+        }
+        if a.get_resource_estimations() != b.get_resource_estimations() {
+            return Err(format!("{path}: RESOURCE_ESTIMATIONS mismatch"));
+        }
+        if a.get_resource_to_application_partition_mappings()
+            != b.get_resource_to_application_partition_mappings()
+        {
+            return Err(format!(
+                "{path}: RESOURCE_TO_APPLICATION_PARTITION_MAPPINGS mismatch"
+            ));
+        }
+        if a.get_rte_event_separations() != b.get_rte_event_separations() {
+            return Err(format!("{path}: RTE_EVENT_SEPARATIONS mismatch"));
+        }
+        if a.get_rte_event_to_os_task_proxy_mappings()
+            != b.get_rte_event_to_os_task_proxy_mappings()
+        {
+            return Err(format!(
+                "{path}: RTE_EVENT_TO_OS_TASK_PROXY_MAPPINGS mismatch"
+            ));
+        }
+        if a.get_signal_path_constraints() != b.get_signal_path_constraints() {
+            return Err(format!("{path}: SIGNAL_PATH_CONSTRAINTS mismatch"));
+        }
+        if a.get_software_cluster_to_application_partition_mappings()
+            != b.get_software_cluster_to_application_partition_mappings()
+        {
+            return Err(format!(
+                "{path}: SOFTWARE_CLUSTER_TO_APPLICATION_PARTITION_MAPPINGS mismatch"
+            ));
+        }
+        if a.get_software_cluster_to_resource_mappings()
+            != b.get_software_cluster_to_resource_mappings()
+        {
+            return Err(format!(
+                "{path}: SOFTWARE_CLUSTER_TO_RESOURCE_MAPPINGS mismatch"
+            ));
+        }
+        if a.get_sw_cluster_mappings() != b.get_sw_cluster_mappings() {
+            return Err(format!("{path}: SW_CLUSTER_MAPPINGS mismatch"));
+        }
+        if a.get_swc_to_application_partition_mappings()
+            != b.get_swc_to_application_partition_mappings()
+        {
+            return Err(format!(
+                "{path}: SWC_TO_APPLICATION_PARTITION_MAPPINGS mismatch"
+            ));
         }
         let list_a = a.get_sw_impl_mappings();
         let list_b = b.get_sw_impl_mappings();
@@ -2338,6 +2648,20 @@ impl Document {
                 format!("{path}.SW_MAPPINGS[{index}]: id not found in other arena")
             })?;
             self.compare_swc_to_ecu_mapping(other, x, y, &format!("{path}.SW_MAPPINGS[{index}]"))?;
+        }
+        if a.get_system_signal_group_to_com_resource_mappings()
+            != b.get_system_signal_group_to_com_resource_mappings()
+        {
+            return Err(format!(
+                "{path}: SYSTEM_SIGNAL_GROUP_TO_COM_RESOURCE_MAPPINGS mismatch"
+            ));
+        }
+        if a.get_system_signal_to_com_resource_mappings()
+            != b.get_system_signal_to_com_resource_mappings()
+        {
+            return Err(format!(
+                "{path}: SYSTEM_SIGNAL_TO_COM_RESOURCE_MAPPINGS mismatch"
+            ));
         }
         Ok(())
     }

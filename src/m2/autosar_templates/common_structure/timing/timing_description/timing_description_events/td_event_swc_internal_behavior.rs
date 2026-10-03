@@ -12,6 +12,7 @@ new_key_type! {
 use crate::m2::autosar_templates::common_structure::timing::timing_description::TimingDescriptionEvent;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::sw_component_template::composition::instance_refs::ComponentInCompositionInstanceRefId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
@@ -97,11 +98,11 @@ impl TDEventSwc {
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_clock_reference_ref(value);
         self
     }
@@ -282,9 +283,9 @@ impl TDEventSwc {
 #[derive(Debug, Default)]
 pub struct TDEventSwcInternalBehavior {
     base: TDEventSwc,
-    runnable_ref: Option<String>,
+    runnable_ref: Option<RefTypeId>,
     td_event_swc_internal_behavior_type: Option<TDEventSwcInternalBehaviorTypeEnum>,
-    variable_access_ref: Option<String>,
+    variable_access_ref: Option<RefTypeId>,
 }
 
 impl TDEventSwcInternalBehavior {
@@ -300,12 +301,12 @@ impl TDEventSwcInternalBehavior {
         &mut self.base
     }
 
-    pub fn get_runnable_ref(&self) -> Option<&str> {
-        self.runnable_ref.as_deref()
+    pub fn get_runnable_ref(&self) -> Option<RefTypeId> {
+        self.runnable_ref
     }
 
-    pub fn set_runnable_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.runnable_ref = Some(value.into());
+    pub fn set_runnable_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.runnable_ref = Some(value);
         self
     }
 
@@ -323,12 +324,12 @@ impl TDEventSwcInternalBehavior {
         self
     }
 
-    pub fn get_variable_access_ref(&self) -> Option<&str> {
-        self.variable_access_ref.as_deref()
+    pub fn get_variable_access_ref(&self) -> Option<RefTypeId> {
+        self.variable_access_ref
     }
 
-    pub fn set_variable_access_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.variable_access_ref = Some(value.into());
+    pub fn set_variable_access_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.variable_access_ref = Some(value);
         self
     }
 
@@ -341,11 +342,11 @@ impl TDEventSwcInternalBehavior {
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_clock_reference_ref(value);
         self
     }
@@ -570,7 +571,7 @@ impl TDEventSwcInternalBehavior {
 #[derive(Debug, Default)]
 pub struct TDEventSwcInternalBehaviorReference {
     base: TDEventSwc,
-    referenced_td_event_swc_ref: Option<String>,
+    referenced_td_event_swc_ref: Option<RefTypeId>,
 }
 
 impl TDEventSwcInternalBehaviorReference {
@@ -586,12 +587,12 @@ impl TDEventSwcInternalBehaviorReference {
         &mut self.base
     }
 
-    pub fn get_referenced_td_event_swc_ref(&self) -> Option<&str> {
-        self.referenced_td_event_swc_ref.as_deref()
+    pub fn get_referenced_td_event_swc_ref(&self) -> Option<RefTypeId> {
+        self.referenced_td_event_swc_ref
     }
 
-    pub fn set_referenced_td_event_swc_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.referenced_td_event_swc_ref = Some(value.into());
+    pub fn set_referenced_td_event_swc_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.referenced_td_event_swc_ref = Some(value);
         self
     }
 
@@ -604,11 +605,11 @@ impl TDEventSwcInternalBehaviorReference {
         self
     }
 
-    pub fn get_clock_reference_ref(&self) -> Option<&str> {
+    pub fn get_clock_reference_ref(&self) -> Option<RefTypeId> {
         self.base().base().get_clock_reference_ref()
     }
 
-    pub fn set_clock_reference_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_clock_reference_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().base_mut().set_clock_reference_ref(value);
         self
     }

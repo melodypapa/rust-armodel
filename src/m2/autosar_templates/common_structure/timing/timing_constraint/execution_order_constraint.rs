@@ -15,6 +15,7 @@ use crate::m2::autosar_templates::common_structure::timing::timing_constraint::T
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::sw_component_template::composition::instance_refs::ComponentInCompositionInstanceRefId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
@@ -85,10 +86,10 @@ impl TryFrom<&str> for LetDataExchangeParadigmEnum {
 #[derive(Debug, Default)]
 pub struct EOCEventRef {
     base: EOCExecutableEntityRefAbstract,
-    bsw_module_instance_ref: Option<String>,
+    bsw_module_instance_ref: Option<RefTypeId>,
     component_i_ref: Option<ComponentInCompositionInstanceRefId>,
-    event_ref: Option<String>,
-    successor_refs: Vec<String>,
+    event_ref: Option<RefTypeId>,
+    successor_refs: Vec<RefTypeId>,
 }
 
 impl EOCEventRef {
@@ -104,12 +105,12 @@ impl EOCEventRef {
         &mut self.base
     }
 
-    pub fn get_bsw_module_instance_ref(&self) -> Option<&str> {
-        self.bsw_module_instance_ref.as_deref()
+    pub fn get_bsw_module_instance_ref(&self) -> Option<RefTypeId> {
+        self.bsw_module_instance_ref
     }
 
-    pub fn set_bsw_module_instance_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.bsw_module_instance_ref = Some(value.into());
+    pub fn set_bsw_module_instance_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.bsw_module_instance_ref = Some(value);
         self
     }
 
@@ -122,28 +123,28 @@ impl EOCEventRef {
         self
     }
 
-    pub fn get_event_ref(&self) -> Option<&str> {
-        self.event_ref.as_deref()
+    pub fn get_event_ref(&self) -> Option<RefTypeId> {
+        self.event_ref
     }
 
-    pub fn set_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.event_ref = Some(value.into());
+    pub fn set_event_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.event_ref = Some(value);
         self
     }
 
-    pub fn get_successor_refs(&self) -> &[String] {
+    pub fn get_successor_refs(&self) -> &[RefTypeId] {
         &self.successor_refs
     }
 
-    pub fn push_successor_ref(&mut self, value: String) {
+    pub fn push_successor_ref(&mut self, value: RefTypeId) {
         self.successor_refs.push(value);
     }
 
-    pub fn get_direct_successor_refs(&self) -> &[String] {
+    pub fn get_direct_successor_refs(&self) -> &[RefTypeId] {
         self.base().get_direct_successor_refs()
     }
 
-    pub fn push_direct_successor_ref(&mut self, value: String) {
+    pub fn push_direct_successor_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_direct_successor_ref(value)
     }
 
@@ -294,10 +295,10 @@ impl EOCEventRef {
 #[derive(Debug, Default)]
 pub struct EOCExecutableEntityRef {
     base: EOCExecutableEntityRefAbstract,
-    bsw_module_instance_ref: Option<String>,
+    bsw_module_instance_ref: Option<RefTypeId>,
     component_i_ref: Option<ComponentInCompositionInstanceRefId>,
-    executable_ref: Option<String>,
-    successor_refs: Vec<String>,
+    executable_ref: Option<RefTypeId>,
+    successor_refs: Vec<RefTypeId>,
 }
 
 impl EOCExecutableEntityRef {
@@ -313,12 +314,12 @@ impl EOCExecutableEntityRef {
         &mut self.base
     }
 
-    pub fn get_bsw_module_instance_ref(&self) -> Option<&str> {
-        self.bsw_module_instance_ref.as_deref()
+    pub fn get_bsw_module_instance_ref(&self) -> Option<RefTypeId> {
+        self.bsw_module_instance_ref
     }
 
-    pub fn set_bsw_module_instance_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.bsw_module_instance_ref = Some(value.into());
+    pub fn set_bsw_module_instance_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.bsw_module_instance_ref = Some(value);
         self
     }
 
@@ -331,28 +332,28 @@ impl EOCExecutableEntityRef {
         self
     }
 
-    pub fn get_executable_ref(&self) -> Option<&str> {
-        self.executable_ref.as_deref()
+    pub fn get_executable_ref(&self) -> Option<RefTypeId> {
+        self.executable_ref
     }
 
-    pub fn set_executable_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.executable_ref = Some(value.into());
+    pub fn set_executable_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.executable_ref = Some(value);
         self
     }
 
-    pub fn get_successor_refs(&self) -> &[String] {
+    pub fn get_successor_refs(&self) -> &[RefTypeId] {
         &self.successor_refs
     }
 
-    pub fn push_successor_ref(&mut self, value: String) {
+    pub fn push_successor_ref(&mut self, value: RefTypeId) {
         self.successor_refs.push(value);
     }
 
-    pub fn get_direct_successor_refs(&self) -> &[String] {
+    pub fn get_direct_successor_refs(&self) -> &[RefTypeId] {
         self.base().get_direct_successor_refs()
     }
 
-    pub fn push_direct_successor_ref(&mut self, value: String) {
+    pub fn push_direct_successor_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_direct_successor_ref(value)
     }
 
@@ -503,7 +504,7 @@ impl EOCExecutableEntityRef {
 #[derive(Debug, Default)]
 pub struct EOCExecutableEntityRefAbstract {
     base: Identifiable,
-    direct_successor_refs: Vec<String>,
+    direct_successor_refs: Vec<RefTypeId>,
 }
 
 impl EOCExecutableEntityRefAbstract {
@@ -519,11 +520,11 @@ impl EOCExecutableEntityRefAbstract {
         &mut self.base
     }
 
-    pub fn get_direct_successor_refs(&self) -> &[String] {
+    pub fn get_direct_successor_refs(&self) -> &[RefTypeId] {
         &self.direct_successor_refs
     }
 
-    pub fn push_direct_successor_ref(&mut self, value: String) {
+    pub fn push_direct_successor_ref(&mut self, value: RefTypeId) {
         self.direct_successor_refs.push(value);
     }
 
@@ -664,14 +665,14 @@ impl EOCExecutableEntityRefAbstract {
 pub struct EOCExecutableEntityRefGroup {
     base: EOCExecutableEntityRefAbstract,
     let_data_exchange_paradigm: Option<LetDataExchangeParadigmEnum>,
-    let_interval_refs: Vec<String>,
+    let_interval_refs: Vec<RefTypeId>,
     max_cycle_repetitions: Option<String>,
     max_cycles: Option<String>,
     max_slots: Option<String>,
     max_slots_per_cycle: Option<String>,
-    nested_element_refs: Vec<String>,
-    successor_refs: Vec<String>,
-    triggering_event_ref: Option<String>,
+    nested_element_refs: Vec<RefTypeId>,
+    successor_refs: Vec<RefTypeId>,
+    triggering_event_ref: Option<RefTypeId>,
 }
 
 impl EOCExecutableEntityRefGroup {
@@ -699,11 +700,11 @@ impl EOCExecutableEntityRefGroup {
         self
     }
 
-    pub fn get_let_interval_refs(&self) -> &[String] {
+    pub fn get_let_interval_refs(&self) -> &[RefTypeId] {
         &self.let_interval_refs
     }
 
-    pub fn push_let_interval_ref(&mut self, value: String) {
+    pub fn push_let_interval_ref(&mut self, value: RefTypeId) {
         self.let_interval_refs.push(value);
     }
 
@@ -743,36 +744,36 @@ impl EOCExecutableEntityRefGroup {
         self
     }
 
-    pub fn get_nested_element_refs(&self) -> &[String] {
+    pub fn get_nested_element_refs(&self) -> &[RefTypeId] {
         &self.nested_element_refs
     }
 
-    pub fn push_nested_element_ref(&mut self, value: String) {
+    pub fn push_nested_element_ref(&mut self, value: RefTypeId) {
         self.nested_element_refs.push(value);
     }
 
-    pub fn get_successor_refs(&self) -> &[String] {
+    pub fn get_successor_refs(&self) -> &[RefTypeId] {
         &self.successor_refs
     }
 
-    pub fn push_successor_ref(&mut self, value: String) {
+    pub fn push_successor_ref(&mut self, value: RefTypeId) {
         self.successor_refs.push(value);
     }
 
-    pub fn get_triggering_event_ref(&self) -> Option<&str> {
-        self.triggering_event_ref.as_deref()
+    pub fn get_triggering_event_ref(&self) -> Option<RefTypeId> {
+        self.triggering_event_ref
     }
 
-    pub fn set_triggering_event_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.triggering_event_ref = Some(value.into());
+    pub fn set_triggering_event_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.triggering_event_ref = Some(value);
         self
     }
 
-    pub fn get_direct_successor_refs(&self) -> &[String] {
+    pub fn get_direct_successor_refs(&self) -> &[RefTypeId] {
         self.base().get_direct_successor_refs()
     }
 
-    pub fn push_direct_successor_ref(&mut self, value: String) {
+    pub fn push_direct_successor_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_direct_successor_ref(value)
     }
 
@@ -923,7 +924,7 @@ impl EOCExecutableEntityRefGroup {
 #[derive(Debug, Default)]
 pub struct ExecutionOrderConstraint {
     base: TimingConstraint,
-    base_composition_ref: Option<String>,
+    base_composition_ref: Option<RefTypeId>,
     execution_order_constraint_type: Option<ExecutionOrderConstraintTypeEnum>,
     ignore_order_allowed: Option<String>,
     is_event: Option<String>,
@@ -944,12 +945,12 @@ impl ExecutionOrderConstraint {
         &mut self.base
     }
 
-    pub fn get_base_composition_ref(&self) -> Option<&str> {
-        self.base_composition_ref.as_deref()
+    pub fn get_base_composition_ref(&self) -> Option<RefTypeId> {
+        self.base_composition_ref
     }
 
-    pub fn set_base_composition_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_composition_ref = Some(value.into());
+    pub fn set_base_composition_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_composition_ref = Some(value);
         self
     }
 
@@ -1000,20 +1001,20 @@ impl ExecutionOrderConstraint {
         self
     }
 
-    pub fn get_timing_condition_ref(&self) -> Option<&str> {
+    pub fn get_timing_condition_ref(&self) -> Option<RefTypeId> {
         self.base().get_timing_condition_ref()
     }
 
-    pub fn set_timing_condition_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_timing_condition_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_timing_condition_ref(value);
         self
     }
 
-    pub fn get_trace_refs(&self) -> &[String] {
+    pub fn get_trace_refs(&self) -> &[RefTypeId] {
         self.base().base().get_trace_refs()
     }
 
-    pub fn push_trace_ref(&mut self, value: String) {
+    pub fn push_trace_ref(&mut self, value: RefTypeId) {
         self.base_mut().base_mut().push_trace_ref(value)
     }
 
@@ -1212,9 +1213,13 @@ impl Document {
             return Err(format!("{path}: SUCCESSOR_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SUCCESSOR_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SUCCESSOR_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SUCCESSOR_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SUCCESSOR_REFS[{index}]"))?;
         }
         Ok(())
     }
@@ -1242,9 +1247,13 @@ impl Document {
             return Err(format!("{path}: SUCCESSOR_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SUCCESSOR_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SUCCESSOR_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SUCCESSOR_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SUCCESSOR_REFS[{index}]"))?;
         }
         Ok(())
     }
@@ -1263,9 +1272,18 @@ impl Document {
             return Err(format!("{path}: DIRECT_SUCCESSOR_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.DIRECT_SUCCESSOR_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.DIRECT_SUCCESSOR_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.DIRECT_SUCCESSOR_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.DIRECT_SUCCESSOR_REFS[{index}]"),
+            )?;
         }
         Ok(())
     }
@@ -1287,9 +1305,13 @@ impl Document {
             return Err(format!("{path}: LET_INTERVAL_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.LET_INTERVAL_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.LET_INTERVAL_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.LET_INTERVAL_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.LET_INTERVAL_REFS[{index}]"))?;
         }
         if a.get_max_cycle_repetitions() != b.get_max_cycle_repetitions() {
             return Err(format!("{path}: MAX_CYCLE_REPETITIONS mismatch"));
@@ -1309,9 +1331,13 @@ impl Document {
             return Err(format!("{path}: NESTED_ELEMENT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.NESTED_ELEMENT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.NESTED_ELEMENT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.NESTED_ELEMENT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.NESTED_ELEMENT_REFS[{index}]"))?;
         }
         let list_a = a.get_successor_refs();
         let list_b = b.get_successor_refs();
@@ -1319,9 +1345,13 @@ impl Document {
             return Err(format!("{path}: SUCCESSOR_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SUCCESSOR_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SUCCESSOR_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SUCCESSOR_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SUCCESSOR_REFS[{index}]"))?;
         }
         if a.get_triggering_event_ref() != b.get_triggering_event_ref() {
             return Err(format!("{path}: TRIGGERING_EVENT_REF mismatch"));

@@ -12,6 +12,7 @@ new_key_type! {
 
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::sw_component_template::components::instance_refs::ROperationInAtomicSwcInstanceRefId;
@@ -338,7 +339,7 @@ impl AsynchronousServerCallPoint {
 pub struct AsynchronousServerCallResultPoint {
     base: AbstractAccessPoint,
     variation_point_capable: VariationPointCapable,
-    asynchronous_server_call_point_ref: Option<String>,
+    asynchronous_server_call_point_ref: Option<RefTypeId>,
 }
 
 impl AsynchronousServerCallResultPoint {
@@ -362,15 +363,12 @@ impl AsynchronousServerCallResultPoint {
         &mut self.variation_point_capable
     }
 
-    pub fn get_asynchronous_server_call_point_ref(&self) -> Option<&str> {
-        self.asynchronous_server_call_point_ref.as_deref()
+    pub fn get_asynchronous_server_call_point_ref(&self) -> Option<RefTypeId> {
+        self.asynchronous_server_call_point_ref
     }
 
-    pub fn set_asynchronous_server_call_point_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
-        self.asynchronous_server_call_point_ref = Some(value.into());
+    pub fn set_asynchronous_server_call_point_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.asynchronous_server_call_point_ref = Some(value);
         self
     }
 
@@ -924,7 +922,7 @@ impl ServerCallPoint {
 #[derive(Debug, Default)]
 pub struct SynchronousServerCallPoint {
     base: ServerCallPoint,
-    called_from_within_exclusive_area_ref: Option<String>,
+    called_from_within_exclusive_area_ref: Option<RefTypeId>,
 }
 
 impl SynchronousServerCallPoint {
@@ -940,15 +938,12 @@ impl SynchronousServerCallPoint {
         &mut self.base
     }
 
-    pub fn get_called_from_within_exclusive_area_ref(&self) -> Option<&str> {
-        self.called_from_within_exclusive_area_ref.as_deref()
+    pub fn get_called_from_within_exclusive_area_ref(&self) -> Option<RefTypeId> {
+        self.called_from_within_exclusive_area_ref
     }
 
-    pub fn set_called_from_within_exclusive_area_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
-        self.called_from_within_exclusive_area_ref = Some(value.into());
+    pub fn set_called_from_within_exclusive_area_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.called_from_within_exclusive_area_ref = Some(value);
         self
     }
 

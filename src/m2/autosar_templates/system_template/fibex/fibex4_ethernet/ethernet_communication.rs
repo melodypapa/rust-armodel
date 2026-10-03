@@ -13,6 +13,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Referrable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::system_template::fibex::fibex4_ethernet::obsolete_model::SocketConnectionId;
 use crate::m2::autosar_templates::system_template::fibex::fibex4_ethernet::service_instances::PduCollectionSemanticsEnum;
 use crate::m2::autosar_templates::system_template::fibex::fibex4_ethernet::service_instances::PduCollectionTriggerEnum;
@@ -56,7 +57,7 @@ pub struct SocketConnectionBundle {
     flow_label: Option<String>,
     path_mtu_discovery_enabled: Option<String>,
     pdus: Vec<SocketConnectionIpduIdentifierId>,
-    server_port_ref: Option<String>,
+    server_port_ref: Option<RefTypeId>,
     udp_checksum_handling: Option<UdpChecksumCalculationEnum>,
 }
 
@@ -116,12 +117,12 @@ impl SocketConnectionBundle {
         self.pdus.push(value);
     }
 
-    pub fn get_server_port_ref(&self) -> Option<&str> {
-        self.server_port_ref.as_deref()
+    pub fn get_server_port_ref(&self) -> Option<RefTypeId> {
+        self.server_port_ref
     }
 
-    pub fn set_server_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.server_port_ref = Some(value.into());
+    pub fn set_server_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.server_port_ref = Some(value);
         self
     }
 
@@ -188,8 +189,8 @@ pub struct SocketConnectionIpduIdentifier {
     pdu_collection_pdu_timeout: Option<String>,
     pdu_collection_semantics: Option<PduCollectionSemanticsEnum>,
     pdu_collection_trigger: Option<PduCollectionTriggerEnum>,
-    pdu_triggering_ref: Option<String>,
-    routing_group_refs: Vec<String>,
+    pdu_triggering_ref: Option<RefTypeId>,
+    routing_group_refs: Vec<RefTypeId>,
 }
 
 impl SocketConnectionIpduIdentifier {
@@ -241,20 +242,20 @@ impl SocketConnectionIpduIdentifier {
         self
     }
 
-    pub fn get_pdu_triggering_ref(&self) -> Option<&str> {
-        self.pdu_triggering_ref.as_deref()
+    pub fn get_pdu_triggering_ref(&self) -> Option<RefTypeId> {
+        self.pdu_triggering_ref
     }
 
-    pub fn set_pdu_triggering_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.pdu_triggering_ref = Some(value.into());
+    pub fn set_pdu_triggering_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.pdu_triggering_ref = Some(value);
         self
     }
 
-    pub fn get_routing_group_refs(&self) -> &[String] {
+    pub fn get_routing_group_refs(&self) -> &[RefTypeId] {
         &self.routing_group_refs
     }
 
-    pub fn push_routing_group_ref(&mut self, value: String) {
+    pub fn push_routing_group_ref(&mut self, value: RefTypeId) {
         self.routing_group_refs.push(value);
     }
 
@@ -346,7 +347,7 @@ impl Document {
 
     pub(crate) fn compare_socket_connection_ipdu_identifier(
         &self,
-        _other: &Document,
+        other: &Document,
         a: &SocketConnectionIpduIdentifier,
         b: &SocketConnectionIpduIdentifier,
         path: &str,
@@ -373,9 +374,13 @@ impl Document {
             return Err(format!("{path}: ROUTING_GROUP_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.ROUTING_GROUP_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.ROUTING_GROUP_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.ROUTING_GROUP_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.ROUTING_GROUP_REFS[{index}]"))?;
         }
         Ok(())
     }

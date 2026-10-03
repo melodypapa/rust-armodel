@@ -103,6 +103,7 @@ use crate::m2::autosar_templates::system_template::fibex::fibex_core::core_commu
 use crate::m2::autosar_templates::system_template::fibex::fibex_core::core_topology::PhysicalChannel;
 use crate::m2::autosar_templates::system_template::fibex::fibex_core::core_topology::PncGatewayTypeEnum;
 use crate::m2::autosar_templates::system_template::fibex::fibex4_ethernet::service_instances::ProvidedServiceInstanceId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Referrable;
 use crate::m2::autosar_templates::system_template::fibex::fibex4_ethernet::service_instances::RequestResponseDelayId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
@@ -530,10 +531,10 @@ pub struct ApplicationEndpoint {
     base: Identifiable,
     consumed_service_instances: Vec<ConsumedServiceInstanceId>,
     max_number_of_connections: Option<String>,
-    network_endpoint_ref: Option<String>,
+    network_endpoint_ref: Option<RefTypeId>,
     priority: Option<String>,
     provided_service_instances: Vec<ProvidedServiceInstanceId>,
-    tls_crypto_mapping_ref: Option<String>,
+    tls_crypto_mapping_ref: Option<RefTypeId>,
     tp_configuration: Option<ElementRef>,
 }
 
@@ -567,12 +568,12 @@ impl ApplicationEndpoint {
         self
     }
 
-    pub fn get_network_endpoint_ref(&self) -> Option<&str> {
-        self.network_endpoint_ref.as_deref()
+    pub fn get_network_endpoint_ref(&self) -> Option<RefTypeId> {
+        self.network_endpoint_ref
     }
 
-    pub fn set_network_endpoint_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.network_endpoint_ref = Some(value.into());
+    pub fn set_network_endpoint_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.network_endpoint_ref = Some(value);
         self
     }
 
@@ -593,12 +594,12 @@ impl ApplicationEndpoint {
         self.provided_service_instances.push(value);
     }
 
-    pub fn get_tls_crypto_mapping_ref(&self) -> Option<&str> {
-        self.tls_crypto_mapping_ref.as_deref()
+    pub fn get_tls_crypto_mapping_ref(&self) -> Option<RefTypeId> {
+        self.tls_crypto_mapping_ref
     }
 
-    pub fn set_tls_crypto_mapping_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.tls_crypto_mapping_ref = Some(value.into());
+    pub fn set_tls_crypto_mapping_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.tls_crypto_mapping_ref = Some(value);
         self
     }
 
@@ -1100,17 +1101,17 @@ pub struct CouplingPort {
     connection_negotiation_behavior: Option<EthernetConnectionNegotiationEnum>,
     coupling_port_details: Option<CouplingPortDetailsId>,
     coupling_port_role: Option<CouplingPortRoleEnum>,
-    default_vlan_ref: Option<String>,
+    default_vlan_ref: Option<RefTypeId>,
     mac_layer_type: Option<EthernetMacLayerTypeEnum>,
-    mac_multicast_address_refs: Vec<String>,
+    mac_multicast_address_refs: Vec<RefTypeId>,
     mac_sec_props: Vec<MacSecPropsId>,
     physical_layer_type: Option<EthernetPhysicalLayerTypeEnum>,
     plca_props: Option<PlcaPropsId>,
-    pnc_mapping_refs: Vec<String>,
+    pnc_mapping_refs: Vec<RefTypeId>,
     receive_activity: Option<EthernetSwitchVlanIngressTagEnum>,
     vlan_memberships: Vec<VlanMembershipId>,
-    vlan_modifier_ref: Option<String>,
-    wakeup_sleep_on_dataline_config_ref: Option<String>,
+    vlan_modifier_ref: Option<RefTypeId>,
+    wakeup_sleep_on_dataline_config_ref: Option<RefTypeId>,
 }
 
 impl CouplingPort {
@@ -1164,12 +1165,12 @@ impl CouplingPort {
         self
     }
 
-    pub fn get_default_vlan_ref(&self) -> Option<&str> {
-        self.default_vlan_ref.as_deref()
+    pub fn get_default_vlan_ref(&self) -> Option<RefTypeId> {
+        self.default_vlan_ref
     }
 
-    pub fn set_default_vlan_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.default_vlan_ref = Some(value.into());
+    pub fn set_default_vlan_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.default_vlan_ref = Some(value);
         self
     }
 
@@ -1182,11 +1183,11 @@ impl CouplingPort {
         self
     }
 
-    pub fn get_mac_multicast_address_refs(&self) -> &[String] {
+    pub fn get_mac_multicast_address_refs(&self) -> &[RefTypeId] {
         &self.mac_multicast_address_refs
     }
 
-    pub fn push_mac_multicast_address_ref(&mut self, value: String) {
+    pub fn push_mac_multicast_address_ref(&mut self, value: RefTypeId) {
         self.mac_multicast_address_refs.push(value);
     }
 
@@ -1216,11 +1217,11 @@ impl CouplingPort {
         self
     }
 
-    pub fn get_pnc_mapping_refs(&self) -> &[String] {
+    pub fn get_pnc_mapping_refs(&self) -> &[RefTypeId] {
         &self.pnc_mapping_refs
     }
 
-    pub fn push_pnc_mapping_ref(&mut self, value: String) {
+    pub fn push_pnc_mapping_ref(&mut self, value: RefTypeId) {
         self.pnc_mapping_refs.push(value);
     }
 
@@ -1241,24 +1242,21 @@ impl CouplingPort {
         self.vlan_memberships.push(value);
     }
 
-    pub fn get_vlan_modifier_ref(&self) -> Option<&str> {
-        self.vlan_modifier_ref.as_deref()
+    pub fn get_vlan_modifier_ref(&self) -> Option<RefTypeId> {
+        self.vlan_modifier_ref
     }
 
-    pub fn set_vlan_modifier_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.vlan_modifier_ref = Some(value.into());
+    pub fn set_vlan_modifier_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.vlan_modifier_ref = Some(value);
         self
     }
 
-    pub fn get_wakeup_sleep_on_dataline_config_ref(&self) -> Option<&str> {
-        self.wakeup_sleep_on_dataline_config_ref.as_deref()
+    pub fn get_wakeup_sleep_on_dataline_config_ref(&self) -> Option<RefTypeId> {
+        self.wakeup_sleep_on_dataline_config_ref
     }
 
-    pub fn set_wakeup_sleep_on_dataline_config_ref(
-        &mut self,
-        value: impl Into<String>,
-    ) -> &mut Self {
-        self.wakeup_sleep_on_dataline_config_ref = Some(value.into());
+    pub fn set_wakeup_sleep_on_dataline_config_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.wakeup_sleep_on_dataline_config_ref = Some(value);
         self
     }
 
@@ -1560,11 +1558,11 @@ impl CouplingPortAbstractShaper {
 pub struct CouplingPortConnection {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
-    first_port_ref: Option<String>,
-    node_port_refs: Vec<String>,
+    first_port_ref: Option<RefTypeId>,
+    node_port_refs: Vec<RefTypeId>,
     plca_local_node_count: Option<String>,
     plca_transmit_opportunity_timer: Option<String>,
-    second_port_ref: Option<String>,
+    second_port_ref: Option<RefTypeId>,
 }
 
 impl CouplingPortConnection {
@@ -1588,20 +1586,20 @@ impl CouplingPortConnection {
         &mut self.variation_point_capable
     }
 
-    pub fn get_first_port_ref(&self) -> Option<&str> {
-        self.first_port_ref.as_deref()
+    pub fn get_first_port_ref(&self) -> Option<RefTypeId> {
+        self.first_port_ref
     }
 
-    pub fn set_first_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.first_port_ref = Some(value.into());
+    pub fn set_first_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.first_port_ref = Some(value);
         self
     }
 
-    pub fn get_node_port_refs(&self) -> &[String] {
+    pub fn get_node_port_refs(&self) -> &[RefTypeId] {
         &self.node_port_refs
     }
 
-    pub fn push_node_port_ref(&mut self, value: String) {
+    pub fn push_node_port_ref(&mut self, value: RefTypeId) {
         self.node_port_refs.push(value);
     }
 
@@ -1623,12 +1621,12 @@ impl CouplingPortConnection {
         self
     }
 
-    pub fn get_second_port_ref(&self) -> Option<&str> {
-        self.second_port_ref.as_deref()
+    pub fn get_second_port_ref(&self) -> Option<RefTypeId> {
+        self.second_port_ref
     }
 
-    pub fn set_second_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.second_port_ref = Some(value.into());
+    pub fn set_second_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.second_port_ref = Some(value);
         self
     }
 
@@ -1670,7 +1668,7 @@ pub struct CouplingPortDetails {
     ethernet_priority_regenerations: Vec<EthernetPriorityRegenerationId>,
     ethernet_traffic_class_assignments: Vec<CouplingPortTrafficClassAssignmentId>,
     global_time_props: Option<GlobalTimeCouplingPortPropsId>,
-    last_egress_scheduler_ref: Option<String>,
+    last_egress_scheduler_ref: Option<RefTypeId>,
     rate_policies: Vec<CouplingPortRatePolicyId>,
 }
 
@@ -1725,12 +1723,12 @@ impl CouplingPortDetails {
         self
     }
 
-    pub fn get_last_egress_scheduler_ref(&self) -> Option<&str> {
-        self.last_egress_scheduler_ref.as_deref()
+    pub fn get_last_egress_scheduler_ref(&self) -> Option<RefTypeId> {
+        self.last_egress_scheduler_ref
     }
 
-    pub fn set_last_egress_scheduler_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.last_egress_scheduler_ref = Some(value.into());
+    pub fn set_last_egress_scheduler_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.last_egress_scheduler_ref = Some(value);
         self
     }
 
@@ -1961,7 +1959,7 @@ pub struct CouplingPortRatePolicy {
     policy_action: Option<CouplingPortRatePolicyActionEnum>,
     priority: Option<String>,
     time_interval: Option<String>,
-    v_lan_refs: Vec<String>,
+    v_lan_refs: Vec<RefTypeId>,
 }
 
 impl CouplingPortRatePolicy {
@@ -2013,11 +2011,11 @@ impl CouplingPortRatePolicy {
         self
     }
 
-    pub fn get_v_lan_refs(&self) -> &[String] {
+    pub fn get_v_lan_refs(&self) -> &[RefTypeId] {
         &self.v_lan_refs
     }
 
-    pub fn push_v_lan_ref(&mut self, value: String) {
+    pub fn push_v_lan_ref(&mut self, value: RefTypeId) {
         self.v_lan_refs.push(value);
     }
 
@@ -2046,7 +2044,7 @@ impl CouplingPortRatePolicy {
 pub struct CouplingPortScheduler {
     base: CouplingPortStructuralElement,
     port_scheduler: Option<EthernetCouplingPortSchedulerEnum>,
-    predecessor_refs: Vec<String>,
+    predecessor_refs: Vec<RefTypeId>,
 }
 
 impl CouplingPortScheduler {
@@ -2071,11 +2069,11 @@ impl CouplingPortScheduler {
         self
     }
 
-    pub fn get_predecessor_refs(&self) -> &[String] {
+    pub fn get_predecessor_refs(&self) -> &[RefTypeId] {
         &self.predecessor_refs
     }
 
-    pub fn push_predecessor_ref(&mut self, value: String) {
+    pub fn push_predecessor_ref(&mut self, value: RefTypeId) {
         self.predecessor_refs.push(value);
     }
 
@@ -3857,7 +3855,7 @@ impl EthernetCluster {
 #[derive(Debug, Default)]
 pub struct EthernetCommunicationConnector {
     base: CommunicationConnector,
-    eth_ip_props_ref: Option<String>,
+    eth_ip_props_ref: Option<RefTypeId>,
     maximum_transmission_unit: Option<String>,
     neighbor_cache_size: Option<String>,
     path_mtu_enabled: Option<String>,
@@ -3877,12 +3875,12 @@ impl EthernetCommunicationConnector {
         &mut self.base
     }
 
-    pub fn get_eth_ip_props_ref(&self) -> Option<&str> {
-        self.eth_ip_props_ref.as_deref()
+    pub fn get_eth_ip_props_ref(&self) -> Option<RefTypeId> {
+        self.eth_ip_props_ref
     }
 
-    pub fn set_eth_ip_props_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.eth_ip_props_ref = Some(value.into());
+    pub fn set_eth_ip_props_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.eth_ip_props_ref = Some(value);
         self
     }
 
@@ -3922,11 +3920,11 @@ impl EthernetCommunicationConnector {
         self
     }
 
-    pub fn get_comm_controller_ref(&self) -> Option<&str> {
+    pub fn get_comm_controller_ref(&self) -> Option<RefTypeId> {
         self.base().get_comm_controller_ref()
     }
 
-    pub fn set_comm_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_comm_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_comm_controller_ref(value);
         self
     }
@@ -4125,7 +4123,7 @@ impl EthernetCommunicationConnector {
 #[derive(Debug, Default)]
 pub struct EthernetCommunicationController {
     base: CommunicationController,
-    can_xl_config_ref: Option<String>,
+    can_xl_config_ref: Option<RefTypeId>,
     coupling_ports: Vec<CouplingPortId>,
     mac_layer_type: Option<EthernetMacLayerTypeEnum>,
     mac_unicast_address: Option<String>,
@@ -4148,12 +4146,12 @@ impl EthernetCommunicationController {
         &mut self.base
     }
 
-    pub fn get_can_xl_config_ref(&self) -> Option<&str> {
-        self.can_xl_config_ref.as_deref()
+    pub fn get_can_xl_config_ref(&self) -> Option<RefTypeId> {
+        self.can_xl_config_ref
     }
 
-    pub fn set_can_xl_config_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.can_xl_config_ref = Some(value.into());
+    pub fn set_can_xl_config_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.can_xl_config_ref = Some(value);
         self
     }
 
@@ -4426,11 +4424,11 @@ impl EthernetPhysicalChannel {
         self
     }
 
-    pub fn get_comm_connector_refs(&self) -> &[String] {
+    pub fn get_comm_connector_refs(&self) -> &[RefTypeId] {
         self.base().get_comm_connector_refs()
     }
 
-    pub fn push_comm_connector_ref(&mut self, value: String) {
+    pub fn push_comm_connector_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_comm_connector_ref(value)
     }
 
@@ -4450,11 +4448,11 @@ impl EthernetPhysicalChannel {
         self.base_mut().push_i_signal_triggering(value)
     }
 
-    pub fn get_managed_physical_channel_refs(&self) -> &[String] {
+    pub fn get_managed_physical_channel_refs(&self) -> &[RefTypeId] {
         self.base().get_managed_physical_channel_refs()
     }
 
-    pub fn push_managed_physical_channel_ref(&mut self, value: String) {
+    pub fn push_managed_physical_channel_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_managed_physical_channel_ref(value)
     }
 
@@ -6442,7 +6440,7 @@ impl NetworkEndpointAddress {
 pub struct OrderedMaster {
     base: ARObject,
     index: Option<String>,
-    time_sync_server_ref: Option<String>,
+    time_sync_server_ref: Option<RefTypeId>,
 }
 
 impl OrderedMaster {
@@ -6467,12 +6465,12 @@ impl OrderedMaster {
         self
     }
 
-    pub fn get_time_sync_server_ref(&self) -> Option<&str> {
-        self.time_sync_server_ref.as_deref()
+    pub fn get_time_sync_server_ref(&self) -> Option<RefTypeId> {
+        self.time_sync_server_ref
     }
 
-    pub fn set_time_sync_server_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.time_sync_server_ref = Some(value.into());
+    pub fn set_time_sync_server_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.time_sync_server_ref = Some(value);
         self
     }
 
@@ -9143,7 +9141,7 @@ pub struct VlanMembership {
     default_priority: Option<String>,
     dhcp_address_assignment: Option<DhcpServerConfigurationId>,
     send_activity: Option<EthernetSwitchVlanEgressTaggingEnum>,
-    vlan_ref: Option<String>,
+    vlan_ref: Option<RefTypeId>,
 }
 
 impl VlanMembership {
@@ -9186,12 +9184,12 @@ impl VlanMembership {
         self
     }
 
-    pub fn get_vlan_ref(&self) -> Option<&str> {
-        self.vlan_ref.as_deref()
+    pub fn get_vlan_ref(&self) -> Option<RefTypeId> {
+        self.vlan_ref
     }
 
-    pub fn set_vlan_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.vlan_ref = Some(value.into());
+    pub fn set_vlan_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.vlan_ref = Some(value);
         self
     }
 
@@ -9353,11 +9351,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.MAC_MULTICAST_ADDRESS_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.MAC_MULTICAST_ADDRESS_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.MAC_MULTICAST_ADDRESS_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.MAC_MULTICAST_ADDRESS_REFS[{index}]"),
+            )?;
         }
         let list_a = a.get_mac_sec_props();
         let list_b = b.get_mac_sec_props();
@@ -9385,9 +9390,13 @@ impl Document {
             return Err(format!("{path}: PNC_MAPPING_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.PNC_MAPPING_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.PNC_MAPPING_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.PNC_MAPPING_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.PNC_MAPPING_REFS[{index}]"))?;
         }
         if a.get_receive_activity() != b.get_receive_activity() {
             return Err(format!("{path}: RECEIVE_ACTIVITY mismatch"));
@@ -9458,9 +9467,13 @@ impl Document {
             return Err(format!("{path}: NODE_PORT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.NODE_PORT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.NODE_PORT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.NODE_PORT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.NODE_PORT_REFS[{index}]"))?;
         }
         if a.get_plca_local_node_count() != b.get_plca_local_node_count() {
             return Err(format!("{path}: PLCA_LOCAL_NODE_COUNT mismatch"));
@@ -9587,7 +9600,7 @@ impl Document {
 
     pub(crate) fn compare_coupling_port_rate_policy(
         &self,
-        _other: &Document,
+        other: &Document,
         a: &CouplingPortRatePolicy,
         b: &CouplingPortRatePolicy,
         path: &str,
@@ -9611,9 +9624,14 @@ impl Document {
             return Err(format!("{path}: V_LAN_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.V_LAN_REFS[{index}] mismatch"));
-            }
+            let x = self
+                .ref_types
+                .get(*x)
+                .ok_or_else(|| format!("{path}.V_LAN_REFS[{index}]: id not found in own arena"))?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.V_LAN_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.V_LAN_REFS[{index}]"))?;
         }
         Ok(())
     }
@@ -9635,9 +9653,13 @@ impl Document {
             return Err(format!("{path}: PREDECESSOR_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.PREDECESSOR_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.PREDECESSOR_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.PREDECESSOR_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.PREDECESSOR_REFS[{index}]"))?;
         }
         Ok(())
     }

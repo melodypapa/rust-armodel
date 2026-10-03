@@ -14,6 +14,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -28,8 +29,8 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct CommunicationControllerMapping {
     base: ARObject,
-    communication_controller_ref: Option<String>,
-    hw_communication_controller_ref: Option<String>,
+    communication_controller_ref: Option<RefTypeId>,
+    hw_communication_controller_ref: Option<RefTypeId>,
 }
 
 impl CommunicationControllerMapping {
@@ -45,21 +46,21 @@ impl CommunicationControllerMapping {
         &mut self.base
     }
 
-    pub fn get_communication_controller_ref(&self) -> Option<&str> {
-        self.communication_controller_ref.as_deref()
+    pub fn get_communication_controller_ref(&self) -> Option<RefTypeId> {
+        self.communication_controller_ref
     }
 
-    pub fn set_communication_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.communication_controller_ref = Some(value.into());
+    pub fn set_communication_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.communication_controller_ref = Some(value);
         self
     }
 
-    pub fn get_hw_communication_controller_ref(&self) -> Option<&str> {
-        self.hw_communication_controller_ref.as_deref()
+    pub fn get_hw_communication_controller_ref(&self) -> Option<RefTypeId> {
+        self.hw_communication_controller_ref
     }
 
-    pub fn set_hw_communication_controller_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.hw_communication_controller_ref = Some(value.into());
+    pub fn set_hw_communication_controller_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.hw_communication_controller_ref = Some(value);
         self
     }
 
@@ -89,8 +90,8 @@ pub struct ECUMapping {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
     comm_controller_mappings: Vec<CommunicationControllerMappingId>,
-    ecu_ref: Option<String>,
-    ecu_instance_ref: Option<String>,
+    ecu_ref: Option<RefTypeId>,
+    ecu_instance_ref: Option<RefTypeId>,
     hw_port_mappings: Vec<HwPortMappingId>,
 }
 
@@ -123,21 +124,21 @@ impl ECUMapping {
         self.comm_controller_mappings.push(value);
     }
 
-    pub fn get_ecu_ref(&self) -> Option<&str> {
-        self.ecu_ref.as_deref()
+    pub fn get_ecu_ref(&self) -> Option<RefTypeId> {
+        self.ecu_ref
     }
 
-    pub fn set_ecu_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ecu_ref = Some(value.into());
+    pub fn set_ecu_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ecu_ref = Some(value);
         self
     }
 
-    pub fn get_ecu_instance_ref(&self) -> Option<&str> {
-        self.ecu_instance_ref.as_deref()
+    pub fn get_ecu_instance_ref(&self) -> Option<RefTypeId> {
+        self.ecu_instance_ref
     }
 
-    pub fn set_ecu_instance_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.ecu_instance_ref = Some(value.into());
+    pub fn set_ecu_instance_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.ecu_instance_ref = Some(value);
         self
     }
 
@@ -295,8 +296,8 @@ impl ECUMapping {
 #[derive(Debug, Default)]
 pub struct HwPortMapping {
     base: ARObject,
-    communication_connector_ref: Option<String>,
-    hw_communication_port_ref: Option<String>,
+    communication_connector_ref: Option<RefTypeId>,
+    hw_communication_port_ref: Option<RefTypeId>,
 }
 
 impl HwPortMapping {
@@ -312,21 +313,21 @@ impl HwPortMapping {
         &mut self.base
     }
 
-    pub fn get_communication_connector_ref(&self) -> Option<&str> {
-        self.communication_connector_ref.as_deref()
+    pub fn get_communication_connector_ref(&self) -> Option<RefTypeId> {
+        self.communication_connector_ref
     }
 
-    pub fn set_communication_connector_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.communication_connector_ref = Some(value.into());
+    pub fn set_communication_connector_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.communication_connector_ref = Some(value);
         self
     }
 
-    pub fn get_hw_communication_port_ref(&self) -> Option<&str> {
-        self.hw_communication_port_ref.as_deref()
+    pub fn get_hw_communication_port_ref(&self) -> Option<RefTypeId> {
+        self.hw_communication_port_ref
     }
 
-    pub fn set_hw_communication_port_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.hw_communication_port_ref = Some(value.into());
+    pub fn set_hw_communication_port_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.hw_communication_port_ref = Some(value);
         self
     }
 

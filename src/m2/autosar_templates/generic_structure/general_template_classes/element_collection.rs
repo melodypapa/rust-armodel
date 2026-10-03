@@ -12,6 +12,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -57,9 +58,9 @@ pub struct Collection {
     auto_collect: Option<AutoCollectEnum>,
     collected_instance_i_refs: Vec<AnyInstanceRefId>,
     collection_semantics: Option<String>,
-    element_refs: Vec<String>,
+    element_refs: Vec<RefTypeId>,
     element_role: Option<String>,
-    source_element_refs: Vec<String>,
+    source_element_refs: Vec<RefTypeId>,
     source_instance_i_refs: Vec<AnyInstanceRefId>,
 }
 
@@ -102,11 +103,11 @@ impl Collection {
         self
     }
 
-    pub fn get_element_refs(&self) -> &[String] {
+    pub fn get_element_refs(&self) -> &[RefTypeId] {
         &self.element_refs
     }
 
-    pub fn push_element_ref(&mut self, value: String) {
+    pub fn push_element_ref(&mut self, value: RefTypeId) {
         self.element_refs.push(value);
     }
 
@@ -119,11 +120,11 @@ impl Collection {
         self
     }
 
-    pub fn get_source_element_refs(&self) -> &[String] {
+    pub fn get_source_element_refs(&self) -> &[RefTypeId] {
         &self.source_element_refs
     }
 
-    pub fn push_source_element_ref(&mut self, value: String) {
+    pub fn push_source_element_ref(&mut self, value: RefTypeId) {
         self.source_element_refs.push(value);
     }
 
@@ -306,9 +307,13 @@ impl Document {
             return Err(format!("{path}: ELEMENT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.ELEMENT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.ELEMENT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.ELEMENT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.ELEMENT_REFS[{index}]"))?;
         }
         if a.get_element_role() != b.get_element_role() {
             return Err(format!("{path}: ELEMENT_ROLE mismatch"));
@@ -319,9 +324,13 @@ impl Document {
             return Err(format!("{path}: SOURCE_ELEMENT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.SOURCE_ELEMENT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.SOURCE_ELEMENT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.SOURCE_ELEMENT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(other, x, y, &format!("{path}.SOURCE_ELEMENT_REFS[{index}]"))?;
         }
         let list_a = a.get_source_instance_i_refs();
         let list_b = b.get_source_instance_i_refs();

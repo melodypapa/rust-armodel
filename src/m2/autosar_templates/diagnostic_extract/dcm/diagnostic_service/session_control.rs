@@ -13,6 +13,7 @@ use crate::m2::autosar_templates::diagnostic_extract::dcm::diagnostic_service::c
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::documentation::annotation::AnnotationId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
@@ -25,8 +26,8 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct DiagnosticSessionControl {
     base: ARElement,
-    diagnostic_session_ref: Option<String>,
-    session_control_class_ref: Option<String>,
+    diagnostic_session_ref: Option<RefTypeId>,
+    session_control_class_ref: Option<RefTypeId>,
 }
 
 impl DiagnosticSessionControl {
@@ -42,21 +43,21 @@ impl DiagnosticSessionControl {
         &mut self.base
     }
 
-    pub fn get_diagnostic_session_ref(&self) -> Option<&str> {
-        self.diagnostic_session_ref.as_deref()
+    pub fn get_diagnostic_session_ref(&self) -> Option<RefTypeId> {
+        self.diagnostic_session_ref
     }
 
-    pub fn set_diagnostic_session_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.diagnostic_session_ref = Some(value.into());
+    pub fn set_diagnostic_session_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.diagnostic_session_ref = Some(value);
         self
     }
 
-    pub fn get_session_control_class_ref(&self) -> Option<&str> {
-        self.session_control_class_ref.as_deref()
+    pub fn get_session_control_class_ref(&self) -> Option<RefTypeId> {
+        self.session_control_class_ref
     }
 
-    pub fn set_session_control_class_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.session_control_class_ref = Some(value.into());
+    pub fn set_session_control_class_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.session_control_class_ref = Some(value);
         self
     }
 

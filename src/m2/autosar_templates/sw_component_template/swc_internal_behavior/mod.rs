@@ -62,6 +62,7 @@ use crate::m2::autosar_templates::sw_component_template::datatype::data_prototyp
 use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::per_instance_memory::PerInstanceMemoryId;
 use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::port_api_options::PortAPIOptionId;
 use crate::m2::autosar_templates::common_structure::internal_behavior::ReentrancyLevelEnum;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::runnable_entity::RunnableEntityArgumentId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::autosar_templates::sw_component_template::swc_internal_behavior::service_mapping::SwcServiceDependencyId;
@@ -81,6 +82,7 @@ pub struct RunnableEntity {
     variation_point_capable: VariationPointCapable,
     arguments: Vec<RunnableEntityArgumentId>,
     asynchronous_server_call_result_points: Vec<AsynchronousServerCallResultPointId>,
+    can_be_invoked_concurrently: Option<String>,
     data_read_accesses: Vec<VariableAccessId>,
     data_receive_point_by_arguments: Vec<VariableAccessId>,
     data_receive_point_by_values: Vec<VariableAccessId>,
@@ -93,6 +95,7 @@ pub struct RunnableEntity {
     parameter_accesses: Vec<ParameterAccessId>,
     read_local_variables: Vec<VariableAccessId>,
     server_call_points: Vec<ElementRef>,
+    symbol: Option<String>,
     wait_points: Vec<WaitPointId>,
     written_local_variables: Vec<VariableAccessId>,
 }
@@ -137,6 +140,15 @@ impl RunnableEntity {
         value: AsynchronousServerCallResultPointId,
     ) {
         self.asynchronous_server_call_result_points.push(value);
+    }
+
+    pub fn get_can_be_invoked_concurrently(&self) -> Option<&str> {
+        self.can_be_invoked_concurrently.as_deref()
+    }
+
+    pub fn set_can_be_invoked_concurrently(&mut self, value: impl Into<String>) -> &mut Self {
+        self.can_be_invoked_concurrently = Some(value.into());
+        self
     }
 
     pub fn get_data_read_accesses(&self) -> &[VariableAccessId] {
@@ -235,6 +247,15 @@ impl RunnableEntity {
         self.server_call_points.push(value);
     }
 
+    pub fn get_symbol(&self) -> Option<&str> {
+        self.symbol.as_deref()
+    }
+
+    pub fn set_symbol(&mut self, value: impl Into<String>) -> &mut Self {
+        self.symbol = Some(value.into());
+        self
+    }
+
     pub fn get_wait_points(&self) -> &[WaitPointId] {
         &self.wait_points
     }
@@ -259,19 +280,19 @@ impl RunnableEntity {
         self.base_mut().push_activation_reason(value)
     }
 
-    pub fn get_can_enter_refs(&self) -> &[String] {
+    pub fn get_can_enter_refs(&self) -> &[RefTypeId] {
         self.base().get_can_enter_refs()
     }
 
-    pub fn push_can_enter_ref(&mut self, value: String) {
+    pub fn push_can_enter_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_can_enter_ref(value)
     }
 
-    pub fn get_exclusive_area_nesting_order_refs(&self) -> &[String] {
+    pub fn get_exclusive_area_nesting_order_refs(&self) -> &[RefTypeId] {
         self.base().get_exclusive_area_nesting_order_refs()
     }
 
-    pub fn push_exclusive_area_nesting_order_ref(&mut self, value: String) {
+    pub fn push_exclusive_area_nesting_order_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_exclusive_area_nesting_order_ref(value)
     }
 
@@ -293,19 +314,19 @@ impl RunnableEntity {
         self
     }
 
-    pub fn get_runs_inside_refs(&self) -> &[String] {
+    pub fn get_runs_inside_refs(&self) -> &[RefTypeId] {
         self.base().get_runs_inside_refs()
     }
 
-    pub fn push_runs_inside_ref(&mut self, value: String) {
+    pub fn push_runs_inside_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_runs_inside_ref(value)
     }
 
-    pub fn get_sw_addr_method_ref(&self) -> Option<&str> {
+    pub fn get_sw_addr_method_ref(&self) -> Option<RefTypeId> {
         self.base().get_sw_addr_method_ref()
     }
 
-    pub fn set_sw_addr_method_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_sw_addr_method_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_sw_addr_method_ref(value);
         self
     }
@@ -471,7 +492,7 @@ pub struct SwcExclusiveAreaPolicy {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
     api_principle: Option<ApiPrincipleEnum>,
-    exclusive_area_ref: Option<String>,
+    exclusive_area_ref: Option<RefTypeId>,
 }
 
 impl SwcExclusiveAreaPolicy {
@@ -504,12 +525,12 @@ impl SwcExclusiveAreaPolicy {
         self
     }
 
-    pub fn get_exclusive_area_ref(&self) -> Option<&str> {
-        self.exclusive_area_ref.as_deref()
+    pub fn get_exclusive_area_ref(&self) -> Option<RefTypeId> {
+        self.exclusive_area_ref
     }
 
-    pub fn set_exclusive_area_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.exclusive_area_ref = Some(value.into());
+    pub fn set_exclusive_area_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.exclusive_area_ref = Some(value);
         self
     }
 
@@ -737,19 +758,19 @@ impl SwcInternalBehavior {
         self.base_mut().push_constant_memorie(value)
     }
 
-    pub fn get_constant_value_mapping_refs(&self) -> &[String] {
+    pub fn get_constant_value_mapping_refs(&self) -> &[RefTypeId] {
         self.base().get_constant_value_mapping_refs()
     }
 
-    pub fn push_constant_value_mapping_ref(&mut self, value: String) {
+    pub fn push_constant_value_mapping_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_constant_value_mapping_ref(value)
     }
 
-    pub fn get_data_type_mapping_refs(&self) -> &[String] {
+    pub fn get_data_type_mapping_refs(&self) -> &[RefTypeId] {
         self.base().get_data_type_mapping_refs()
     }
 
-    pub fn push_data_type_mapping_ref(&mut self, value: String) {
+    pub fn push_data_type_mapping_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_data_type_mapping_ref(value)
     }
 
@@ -1066,6 +1087,9 @@ impl Document {
                 &format!("{path}.ASYNCHRONOUS_SERVER_CALL_RESULT_POINTS[{index}]"),
             )?;
         }
+        if a.get_can_be_invoked_concurrently() != b.get_can_be_invoked_concurrently() {
+            return Err(format!("{path}: CAN_BE_INVOKED_CONCURRENTLY mismatch"));
+        }
         let list_a = a.get_data_read_accesses();
         let list_b = b.get_data_read_accesses();
         if list_a.len() != list_b.len() {
@@ -1296,6 +1320,9 @@ impl Document {
             if x != y {
                 return Err(format!("{path}.SERVER_CALL_POINTS[{index}] mismatch"));
             }
+        }
+        if a.get_symbol() != b.get_symbol() {
+            return Err(format!("{path}: SYMBOL mismatch"));
         }
         let list_a = a.get_wait_points();
         let list_b = b.get_wait_points();

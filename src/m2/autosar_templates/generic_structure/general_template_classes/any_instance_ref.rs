@@ -9,6 +9,7 @@ new_key_type! {
 }
 
 use crate::m2::autosar_templates::generic_structure::abstract_structure::AtpInstanceRef;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::Document;
@@ -19,9 +20,9 @@ use crate::Document;
 pub struct AnyInstanceRef {
     base: AtpInstanceRef,
     variation_point_capable: VariationPointCapable,
-    base_ref: Option<String>,
-    context_element_refs: Vec<String>,
-    target_ref: Option<String>,
+    base_ref: Option<RefTypeId>,
+    context_element_refs: Vec<RefTypeId>,
+    target_ref: Option<RefTypeId>,
 }
 
 impl AnyInstanceRef {
@@ -45,54 +46,54 @@ impl AnyInstanceRef {
         &mut self.variation_point_capable
     }
 
-    pub fn get_base_ref(&self) -> Option<&str> {
-        self.base_ref.as_deref()
+    pub fn get_base_ref(&self) -> Option<RefTypeId> {
+        self.base_ref
     }
 
-    pub fn set_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.base_ref = Some(value.into());
+    pub fn set_base_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.base_ref = Some(value);
         self
     }
 
-    pub fn get_context_element_refs(&self) -> &[String] {
+    pub fn get_context_element_refs(&self) -> &[RefTypeId] {
         &self.context_element_refs
     }
 
-    pub fn push_context_element_ref(&mut self, value: String) {
+    pub fn push_context_element_ref(&mut self, value: RefTypeId) {
         self.context_element_refs.push(value);
     }
 
-    pub fn get_target_ref(&self) -> Option<&str> {
-        self.target_ref.as_deref()
+    pub fn get_target_ref(&self) -> Option<RefTypeId> {
+        self.target_ref
     }
 
-    pub fn set_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.target_ref = Some(value.into());
+    pub fn set_target_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.target_ref = Some(value);
         self
     }
 
-    pub fn get_atp_base_ref(&self) -> Option<&str> {
+    pub fn get_atp_base_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_base_ref()
     }
 
-    pub fn set_atp_base_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_base_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_base_ref(value);
         self
     }
 
-    pub fn get_atp_context_element_refs(&self) -> &[String] {
+    pub fn get_atp_context_element_refs(&self) -> &[RefTypeId] {
         self.base().get_atp_context_element_refs()
     }
 
-    pub fn push_atp_context_element_ref(&mut self, value: String) {
+    pub fn push_atp_context_element_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_atp_context_element_ref(value)
     }
 
-    pub fn get_atp_target_ref(&self) -> Option<&str> {
+    pub fn get_atp_target_ref(&self) -> Option<RefTypeId> {
         self.base().get_atp_target_ref()
     }
 
-    pub fn set_atp_target_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_atp_target_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_atp_target_ref(value);
         self
     }
@@ -150,9 +151,18 @@ impl Document {
             return Err(format!("{path}: CONTEXT_ELEMENT_REFS length mismatch"));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!("{path}.CONTEXT_ELEMENT_REFS[{index}] mismatch"));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.CONTEXT_ELEMENT_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.CONTEXT_ELEMENT_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.CONTEXT_ELEMENT_REFS[{index}]"),
+            )?;
         }
         if a.get_target_ref() != b.get_target_ref() {
             return Err(format!("{path}: TARGET_REF mismatch"));

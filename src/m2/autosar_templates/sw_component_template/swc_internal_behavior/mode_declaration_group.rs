@@ -13,6 +13,7 @@ new_key_type! {
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::sw_component_template::components::instance_refs::PModeGroupInAtomicSwcInstanceRefId;
@@ -31,7 +32,7 @@ use crate::Document;
 #[derive(Debug, Default)]
 pub struct IncludedModeDeclarationGroupSet {
     base: ARObject,
-    mode_declaration_group_refs: Vec<String>,
+    mode_declaration_group_refs: Vec<RefTypeId>,
     prefix: Option<String>,
 }
 
@@ -48,11 +49,11 @@ impl IncludedModeDeclarationGroupSet {
         &mut self.base
     }
 
-    pub fn get_mode_declaration_group_refs(&self) -> &[String] {
+    pub fn get_mode_declaration_group_refs(&self) -> &[RefTypeId] {
         &self.mode_declaration_group_refs
     }
 
-    pub fn push_mode_declaration_group_ref(&mut self, value: String) {
+    pub fn push_mode_declaration_group_ref(&mut self, value: RefTypeId) {
         self.mode_declaration_group_refs.push(value);
     }
 
@@ -453,7 +454,7 @@ impl ModeSwitchPoint {
 impl Document {
     pub(crate) fn compare_included_mode_declaration_group_set(
         &self,
-        _other: &Document,
+        other: &Document,
         a: &IncludedModeDeclarationGroupSet,
         b: &IncludedModeDeclarationGroupSet,
         path: &str,
@@ -467,11 +468,18 @@ impl Document {
             ));
         }
         for (index, (x, y)) in list_a.iter().zip(list_b.iter()).enumerate() {
-            if x != y {
-                return Err(format!(
-                    "{path}.MODE_DECLARATION_GROUP_REFS[{index}] mismatch"
-                ));
-            }
+            let x = self.ref_types.get(*x).ok_or_else(|| {
+                format!("{path}.MODE_DECLARATION_GROUP_REFS[{index}]: id not found in own arena")
+            })?;
+            let y = other.ref_types.get(*y).ok_or_else(|| {
+                format!("{path}.MODE_DECLARATION_GROUP_REFS[{index}]: id not found in other arena")
+            })?;
+            self.compare_ref_type(
+                other,
+                x,
+                y,
+                &format!("{path}.MODE_DECLARATION_GROUP_REFS[{index}]"),
+            )?;
         }
         if a.get_prefix() != b.get_prefix() {
             return Err(format!("{path}: PREFIX mismatch"));

@@ -20,6 +20,7 @@ use crate::m2::autosar_templates::common_structure::resource_consumption::Resour
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -36,7 +37,7 @@ pub struct PerInstanceMemorySize {
     base: ARObject,
     variation_point_capable: VariationPointCapable,
     alignment: Option<String>,
-    per_instance_memory_ref: Option<String>,
+    per_instance_memory_ref: Option<RefTypeId>,
     size: Option<String>,
 }
 
@@ -70,12 +71,12 @@ impl PerInstanceMemorySize {
         self
     }
 
-    pub fn get_per_instance_memory_ref(&self) -> Option<&str> {
-        self.per_instance_memory_ref.as_deref()
+    pub fn get_per_instance_memory_ref(&self) -> Option<RefTypeId> {
+        self.per_instance_memory_ref
     }
 
-    pub fn set_per_instance_memory_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.per_instance_memory_ref = Some(value.into());
+    pub fn set_per_instance_memory_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.per_instance_memory_ref = Some(value);
         self
     }
 
@@ -122,7 +123,7 @@ impl PerInstanceMemorySize {
 #[derive(Debug, Default)]
 pub struct SwcImplementation {
     base: Implementation,
-    behavior_ref: Option<String>,
+    behavior_ref: Option<RefTypeId>,
     per_instance_memory_sizes: Vec<PerInstanceMemorySizeId>,
     required_rte_vendor: Option<String>,
 }
@@ -140,12 +141,12 @@ impl SwcImplementation {
         &mut self.base
     }
 
-    pub fn get_behavior_ref(&self) -> Option<&str> {
-        self.behavior_ref.as_deref()
+    pub fn get_behavior_ref(&self) -> Option<RefTypeId> {
+        self.behavior_ref
     }
 
-    pub fn set_behavior_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.behavior_ref = Some(value.into());
+    pub fn set_behavior_ref(&mut self, value: RefTypeId) -> &mut Self {
+        self.behavior_ref = Some(value);
         self
     }
 
@@ -166,11 +167,11 @@ impl SwcImplementation {
         self
     }
 
-    pub fn get_build_action_manifest_ref(&self) -> Option<&str> {
+    pub fn get_build_action_manifest_ref(&self) -> Option<RefTypeId> {
         self.base().get_build_action_manifest_ref()
     }
 
-    pub fn set_build_action_manifest_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_build_action_manifest_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_build_action_manifest_ref(value);
         self
     }
@@ -199,11 +200,11 @@ impl SwcImplementation {
         self.base_mut().push_generated_artifact(value)
     }
 
-    pub fn get_hw_element_refs(&self) -> &[String] {
+    pub fn get_hw_element_refs(&self) -> &[RefTypeId] {
         self.base().get_hw_element_refs()
     }
 
-    pub fn push_hw_element_ref(&mut self, value: String) {
+    pub fn push_hw_element_ref(&mut self, value: RefTypeId) {
         self.base_mut().push_hw_element_ref(value)
     }
 
@@ -258,11 +259,11 @@ impl SwcImplementation {
         self
     }
 
-    pub fn get_swc_bsw_mapping_ref(&self) -> Option<&str> {
+    pub fn get_swc_bsw_mapping_ref(&self) -> Option<RefTypeId> {
         self.base().get_swc_bsw_mapping_ref()
     }
 
-    pub fn set_swc_bsw_mapping_ref(&mut self, value: impl Into<String>) -> &mut Self {
+    pub fn set_swc_bsw_mapping_ref(&mut self, value: RefTypeId) -> &mut Self {
         self.base_mut().set_swc_bsw_mapping_ref(value);
         self
     }

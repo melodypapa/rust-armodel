@@ -25,7 +25,10 @@ const FIXTURE_COUNT: usize = 32;
 /// consumes every element they contain. A fixture joins this list exactly
 /// when its batch lands (roadmap spec §5.3); byte-identity additionally
 /// requires a FORMAT_SOURCES entry in format_byte_roundtrip.rs.
-const WARNING_FREE_SOURCES: &[&str] = &["AdminDataWhitespace.arxml"];
+const WARNING_FREE_SOURCES: &[&str] = &[
+    "AdminDataWhitespace.arxml",
+    "AUTOSAR_MOD_AISpecification_BaseTypes_Standard.arxml",
+];
 
 fn fixture_files() -> Vec<PathBuf> {
     let mut files: Vec<PathBuf> = std::fs::read_dir(FIXTURE_DIR)
@@ -125,7 +128,6 @@ const P2_P4_PENDING: &[&str] = &[
     "AUTOSAR_Datatypes.arxml",
     "AUTOSAR_MOD_AISpecification_ApplicationDataType_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_ApplicationDataType_LifeCycle_Standard.arxml",
-    "AUTOSAR_MOD_AISpecification_BaseTypes_Standard.arxml",
     "AUTOSAR_MOD_AISpecification_Collection_Body_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_Collection_Chassis_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_Collection_MmedTelmHmi_Blueprint.arxml",

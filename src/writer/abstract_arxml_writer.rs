@@ -7,6 +7,11 @@ use quick_xml::events::{BytesEnd, BytesStart, BytesText, Event};
 use quick_xml::writer::Writer;
 use thiserror::Error;
 
+use crate::m2::autosar_templates::autosar_top_level_structure::Document;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::{
+    RefType, RefTypeId,
+};
+
 /// Error model for the writer (mirrors `ParseError`).
 #[derive(Debug, Error)]
 pub enum WriteError {
@@ -32,6 +37,79 @@ pub(crate) fn write_text_element<W: Write>(
         None => writer.write_event(Event::Text(BytesText::from_escaped("")))?,
     }
     writer.write_event(Event::End(BytesEnd::new(name)))?;
+    Ok(())
+}
+
+/// py `setChildElementOptionalLiteral` — nothing is emitted when None.
+pub(crate) fn write_optional_text_element<W: Write>(
+    writer: &mut quick_xml::writer::Writer<W>,
+    tag: &str,
+    value: Option<&str>,
+) -> Result<(), WriteError> {
+    if let Some(value) = value {
+        write_text_element(writer, tag, BytesStart::new(tag), Some(value))?;
+    }
+    Ok(())
+}
+
+/// py `setChildElementOptionalBooleanValue` — the Boolean's text is the
+/// "true"/"false" the reader captured.
+/// `allow(dead_code)` until Task 6 (Collection) adds the first caller.
+#[allow(dead_code)]
+pub(crate) fn write_optional_boolean_element<W: Write>(
+    writer: &mut quick_xml::writer::Writer<W>,
+    tag: &str,
+    value: Option<bool>,
+) -> Result<(), WriteError> {
+    match value {
+        Some(true) => write_optional_text_element(writer, tag, Some("true")),
+        Some(false) => write_optional_text_element(writer, tag, Some("false")),
+        None => Ok(()),
+    }
+}
+
+/// py `setChildElementOptionalRefType` — BASE, then DEST, then text value.
+/// `allow(dead_code)` until Task 5 (ReferenceBase) adds the first caller.
+#[allow(dead_code)]
+pub(crate) fn write_optional_ref_type<W: Write>(
+    writer: &mut quick_xml::writer::Writer<W>,
+    tag: &str,
+    r#ref: Option<&RefType>,
+) -> Result<(), WriteError> {
+    if let Some(r#ref) = r#ref {
+        let mut element = BytesStart::new(tag);
+        if let Some(base) = r#ref.get_base() {
+            element.push_attribute(("BASE", base));
+        }
+        if let Some(dest) = r#ref.get_dest() {
+            element.push_attribute(("DEST", dest));
+        }
+        write_text_element(writer, tag, element, r#ref.get_value())?;
+    }
+    Ok(())
+}
+
+/// py's `ET.SubElement(wrapper)` + per-item `setChildElementOptionalRefType`
+/// — the wrapper is emitted only when the list is non-empty.
+/// `allow(dead_code)` until Task 6 (Collection) adds the first caller.
+#[allow(dead_code)]
+pub(crate) fn write_ref_type_list<W: Write>(
+    writer: &mut quick_xml::writer::Writer<W>,
+    wrapper: &str,
+    tag: &str,
+    refs: &[RefTypeId],
+    document: &Document,
+) -> Result<(), WriteError> {
+    if refs.is_empty() {
+        return Ok(());
+    }
+    writer.write_event(Event::Start(BytesStart::new(wrapper)))?;
+    for ref_id in refs {
+        if let Some(r#ref) = document.ref_types.get(*ref_id) {
+            write_optional_ref_type(writer, tag, Some(r#ref))?;
+        }
+    }
+    writer.write_event(Event::End(BytesEnd::new(wrapper)))?;
     Ok(())
 }
 

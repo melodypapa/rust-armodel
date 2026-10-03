@@ -12,11 +12,13 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
     ARObject, ElementRef,
 };
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARPackageId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::ByteOrderEnum;
 use crate::m2::element_registry::{
     element_factory_for_tag, element_set_category, element_set_checksum, element_set_timestamp,
     element_set_uuid,
 };
 use crate::m2::msr::asam_hdo::admin_data::{AdminData, AdminDataId};
+use crate::m2::msr::asam_hdo::base_types::BaseTypeDirectDefinition;
 use crate::m2::msr::asam_hdo::special_data::{Sd, Sdf, Sdg, SdgCaption, SdgContents, SdgId};
 use crate::m2::msr::documentation::block_elements::list_elements::{ARList, Item, ListEnum};
 use crate::m2::msr::documentation::block_elements::pagination_and_view::{
@@ -41,8 +43,6 @@ use crate::parser::abstract_arxml_parser::{
 /// (py `readIdentifiable` minus SHORT-NAME/UUID/CATEGORY, which the
 /// allocation path already consumed, and minus annotations — no pinned
 /// fixture carries `ANNOTATIONS`; tracked on the port checklist).
-/// `allow(dead_code)` until Task 4 adds the first dispatch arm.
-#[allow(dead_code)]
 struct IdentifiablePayload {
     long_name: Option<MultilanguageLongNameId>,
     desc: Option<MultiLanguageOverviewParagraphId>,
@@ -356,6 +356,11 @@ impl ARXMLParser {
         };
         let uuid = element.attrs.get("UUID").cloned();
         let category = get_child_element_string(element, "CATEGORY").map(str::to_string);
+        // py readIdentifiable on AR-PACKAGE: LONG-NAME/DESC/INTRODUCTION are
+        // read before the arena borrow so the fill below stays one scoped block.
+        let long_name = self.get_multilanguage_long_name(element, document)?;
+        let desc = self.get_multi_language_overview_paragraph(element, document)?;
+        let introduction = self.get_documentation_block(element, document)?;
 
         if let Some(package) = document.ar_packages.get_mut(id) {
             if let Some(admin_data) = admin_data {
@@ -366,6 +371,19 @@ impl ARXMLParser {
             }
             if let Some(category) = category {
                 package.set_category(category);
+            }
+            // ARPackage forwards only a subset; the payload fields live on
+            // its CollectableElement → Identifiable / MultilanguageReferrable
+            // bases.
+            let identifiable = package.base_mut().base_mut();
+            if let Some(long_name) = long_name {
+                identifiable.base_mut().set_long_name(long_name);
+            }
+            if let Some(desc) = desc {
+                identifiable.set_desc(desc);
+            }
+            if let Some(introduction) = introduction {
+                identifiable.set_introduction(introduction);
             }
         }
 
@@ -416,8 +434,6 @@ impl ARXMLParser {
     }
 
     /// py `getMultilanguageLongName` / `readLLongName` / `readMixedContentForLongName`.
-    /// `allow(dead_code)` until Task 4 wires the first dispatch arm.
-    #[allow(dead_code)]
     fn get_multilanguage_long_name(
         &mut self,
         element: &Node,
@@ -465,7 +481,6 @@ impl ARXMLParser {
     }
 
     /// py `getMultiLanguageOverviewParagraph` / `readLOverviewParagraph`.
-    #[allow(dead_code)] // reachable once Task 4 wires the first arm
     fn get_multi_language_overview_paragraph(
         &mut self,
         element: &Node,
@@ -504,7 +519,6 @@ impl ARXMLParser {
     }
 
     /// py `getDocumentationBlock` — the INTRODUCTION wrapper.
-    #[allow(dead_code)] // reachable once Task 4 wires the first arm
     fn get_documentation_block(
         &mut self,
         element: &Node,
@@ -522,7 +536,6 @@ impl ARXMLParser {
     /// not occur in any pinned fixture; py only reads them when present, so
     /// their absence here is behavior-identical (tracked on the checklist).
     fn read_documentation_block(
-        #[allow(dead_code)] // reachable once Task 4 wires the first arm
         &mut self,
         element: &Node,
         document: &mut Document,
@@ -589,7 +602,6 @@ impl ARXMLParser {
     }
 
     /// py `readPaginateable` — BREAK / KEEP-WITH-PREVIOUS attributes.
-    #[allow(dead_code)] // reachable once Task 4 wires the first arm
     fn read_paginateable(
         &mut self,
         element: &Node,
@@ -623,8 +635,7 @@ impl ARXMLParser {
     /// py `readIdentifiable` — everything under the MultilanguageReferrable
     /// chain except SHORT-NAME/UUID/CATEGORY (read by the allocation path)
     /// and annotations/variation points (no pinned fixture carries them;
-    /// tracked on the port checklist). `allow(dead_code)` until Task 4.
-    #[allow(dead_code)]
+    /// tracked on the port checklist).
     fn read_identifiable_payload(
         &mut self,
         element: &Node,
@@ -641,41 +652,92 @@ impl ARXMLParser {
         })
     }
 
-    /// Copies an `IdentifiablePayload` into one arena entry. Each family arm
-    /// calls this with the `Identifiable` embed of its arena entry (code_guide
-    /// §3: no shared trait — the embed is reached through the entry's own
-    /// `base_mut()` hop chain). `allow(dead_code)` until Task 4.
-    #[allow(dead_code)]
-    fn apply_identifiable_payload(
-        &mut self,
-        payload: IdentifiablePayload,
-        identifiable: &mut crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable,
-    ) {
-        // long_name lives on the MultilanguageReferrable embed, one hop down
-        if let Some(long_name) = payload.long_name {
-            identifiable.base_mut().set_long_name(long_name);
-        }
-        if let Some(desc) = payload.desc {
-            identifiable.set_desc(desc);
-        }
-        if let Some(introduction) = payload.introduction {
-            identifiable.set_introduction(introduction);
-        }
-        if let Some(admin_data) = payload.admin_data {
-            identifiable.set_admin_data(admin_data);
-        }
-    }
-
     /// py's per-class read dispatch (the tag→create+read chain in
     /// readARPackageElements). Grows one arm per ported family; the
     /// wildcard keeps unported families on the warnings-and-skip path.
     fn read_element_payload(
         &mut self,
-        _element: &Node,
-        _element_ref: ElementRef,
-        _document: &mut Document,
+        element: &Node,
+        element_ref: ElementRef,
+        document: &mut Document,
     ) -> Result<(), ParseError> {
-        // Arms land with Tasks 4-9.
+        match element_ref {
+            ElementRef::SwBaseType(id) => {
+                let payload = self.read_identifiable_payload(element, document)?;
+                // py readBaseTypeDirectDefinition(element, getBaseTypeDefinition()):
+                // the definition exists once Task 0's extractor fix landed —
+                // create it lazily only for models built without one.
+                let definition_id = match document
+                    .sw_base_types
+                    .get(id)
+                    .and_then(|sw_base_type| sw_base_type.get_base_type_definition())
+                {
+                    Some(definition_id) => definition_id,
+                    None => {
+                        let definition_id = document
+                            .base_type_direct_definitions
+                            .insert(BaseTypeDirectDefinition::new());
+                        if let Some(sw_base_type) = document.sw_base_types.get_mut(id) {
+                            sw_base_type.set_base_type_definition(definition_id);
+                        }
+                        definition_id
+                    }
+                };
+                if let Some(sw_base_type) = document.sw_base_types.get_mut(id) {
+                    if let Some(long_name) = payload.long_name {
+                        sw_base_type.set_long_name(long_name);
+                    }
+                    if let Some(desc) = payload.desc {
+                        sw_base_type.set_desc(desc);
+                    }
+                    if let Some(introduction) = payload.introduction {
+                        sw_base_type.set_introduction(introduction);
+                    }
+                    if let Some(admin_data) = payload.admin_data {
+                        sw_base_type.set_admin_data(admin_data);
+                    }
+                }
+                if let Some(definition) =
+                    document.base_type_direct_definitions.get_mut(definition_id)
+                {
+                    self.read_base_type_direct_definition(element, definition)?;
+                }
+                Ok(())
+            }
+            // Arms land with Tasks 5-9.
+            _ => Ok(()),
+        }
+    }
+
+    /// py `readBaseTypeDirectDefinition`.
+    fn read_base_type_direct_definition(
+        &mut self,
+        element: &Node,
+        definition: &mut BaseTypeDirectDefinition,
+    ) -> Result<(), ParseError> {
+        if let Some(size) = get_child_element_string(element, "BASE-TYPE-SIZE") {
+            definition.set_base_type_size(size);
+        }
+        if let Some(encoding) = get_child_element_string(element, "BASE-TYPE-ENCODING") {
+            definition.set_base_type_encoding(encoding);
+        }
+        if let Some(alignment) = get_child_element_string(element, "MEM-ALIGNMENT") {
+            definition.set_mem_alignment(alignment);
+        }
+        if let Some(order) = get_child_element_string(element, "BYTE-ORDER") {
+            match ByteOrderEnum::try_from(order) {
+                Ok(value) => {
+                    definition.set_byte_order(value);
+                }
+                Err(_) => {
+                    let message = format!("Unsupported BYTE-ORDER <{order}>");
+                    self.not_implemented(message)?;
+                }
+            }
+        }
+        if let Some(native) = get_child_element_string(element, "NATIVE-DECLARATION") {
+            definition.set_native_declaration(native);
+        }
         Ok(())
     }
 }
@@ -760,6 +822,70 @@ mod tests {
             &mut document,
         );
         assert!(matches!(result, Err(ParseError::UnexpectedRoot(_))));
+    }
+
+    const IDENTIFIABLE_SAMPLE: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Pkg</SHORT-NAME>
+      <ELEMENTS>
+        <SW-BASE-TYPE>
+          <SHORT-NAME>T</SHORT-NAME>
+          <LONG-NAME>
+            <L-4 L="DE">Ein Typ</L-4>
+          </LONG-NAME>
+          <DESC>
+            <L-2 L="EN" xml:space="preserve">A  type</L-2>
+          </DESC>
+          <INTRODUCTION>
+            <P>
+              <L-1 L="EN">Intro text</L-1>
+            </P>
+            <LIST TYPE="LIST">
+              <ITEM>
+                <P><L-1>Nested</L-1></P>
+              </ITEM>
+            </LIST>
+          </INTRODUCTION>
+        </SW-BASE-TYPE>
+      </ELEMENTS>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>"#;
+
+    #[test]
+    fn identifiable_payload_round_trips_text_nodes() {
+        let mut document = Document::new();
+        ARXMLParser::new(default_options())
+            .load_from_reader(Reader::from_str(IDENTIFIABLE_SAMPLE), &mut document)
+            .unwrap();
+
+        let pkg = document
+            .get_ar_package(document.get_ar_packages()[0])
+            .unwrap();
+        let ElementRef::SwBaseType(id) = pkg.get_elements()[0] else {
+            panic!("expected SwBaseType element");
+        };
+        let base_type = document.get_sw_base_type(id).unwrap();
+        let long_name = document
+            .get_multilanguage_long_name(base_type.get_long_name().unwrap())
+            .unwrap();
+        let l4 = document.get_l_long_name(long_name.get_l4()[0]).unwrap();
+        assert_eq!(l4.get_l(), Some("DE"));
+        assert_eq!(l4.get_value(), Some("Ein Typ"));
+
+        let desc = document
+            .get_multi_language_overview_paragraph(base_type.get_desc().unwrap())
+            .unwrap();
+        let l2 = document.get_l_overview_paragraph(desc.get_l2()[0]).unwrap();
+        assert_eq!(l2.get_value(), Some("A  type"));
+
+        let introduction = document
+            .get_documentation_block(base_type.get_introduction().unwrap())
+            .unwrap();
+        assert_eq!(introduction.get_ps().len(), 1);
+        assert_eq!(introduction.get_lists().len(), 1);
     }
 
     #[test]

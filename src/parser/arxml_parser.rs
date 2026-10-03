@@ -32,8 +32,7 @@ use crate::m2::element_registry::{
 };
 use crate::m2::msr::asam_hdo::admin_data::{AdminData, AdminDataId};
 use crate::m2::autosar_templates::sw_component_template::datatype::data_prototypes::{
-    ApplicationArrayElement, ApplicationArrayElementId, ApplicationRecordElement,
-    ApplicationRecordElementId,
+    ApplicationArrayElement, ApplicationRecordElement,
 };
 use crate::m2::autosar_templates::sw_component_template::datatype::datatypes::{
     ApplicationArrayDataTypeId, ApplicationPrimitiveDataTypeId, ApplicationRecordDataTypeId,
@@ -43,7 +42,7 @@ use crate::m2::msr::data_dictionary::data_def_properties::{
     DisplayPresentationEnum, SwDataDefProps, SwDataDefPropsId,
 };
 use crate::m2::msr::asam_hdo::constraints::global_constraints::{
-    DataConstrId, DataConstrRuleId, InternalConstrs, PhysConstrs, ScaleConstr,
+    DataConstrId, InternalConstrs, PhysConstrs, ScaleConstr,
     ScaleConstrValidityEnum,
 };
 use crate::m2::msr::asam_hdo::computation_method::{

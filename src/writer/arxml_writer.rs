@@ -12,13 +12,10 @@ use crate::m2::autosar_templates::autosar_top_level_structure::Document;
 use crate::m2::autosar_templates::common_structure::standardization_template::keyword::{
     Keyword, KeywordSetId,
 };
-use crate::m2::autosar_templates::sw_component_template::datatype::data_prototypes::{
-    ApplicationArrayElement, ApplicationRecordElement,
-};
 use crate::m2::autosar_templates::sw_component_template::datatype::datatypes::{
     ApplicationArrayDataTypeId, ApplicationPrimitiveDataTypeId, ApplicationRecordDataTypeId,
 };
-use crate::m2::msr::data_dictionary::data_def_properties::SwDataDefProps;
+use crate::m2::msr::data_dictionary::data_def_properties::{SwDataDefProps, SwDataDefPropsId};
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::{
@@ -33,7 +30,7 @@ use crate::m2::autosar_templates::generic_structure::life_cycles::{
 use crate::m2::element_registry;
 use crate::m2::msr::asam_hdo::admin_data::{AdminData, AdminDataId};
 use crate::m2::msr::asam_hdo::constraints::global_constraints::{
-    DataConstrId, DataConstrRule, InternalConstrs, PhysConstrs, ScaleConstr,
+    DataConstrId, DataConstrRule, InternalConstrs, PhysConstrs,
 };
 use crate::m2::msr::asam_hdo::computation_method::{
     Compu, CompuConst, CompuConstContentRef, CompuMethodId, CompuScaleContentsRef,
@@ -67,6 +64,9 @@ struct IdentifiableParts<'a> {
     category: Option<&'a str>,
     introduction: Option<DocumentationBlockId>,
     admin_data: Option<AdminDataId>,
+    /// The `AutosarDataType` tail (py `writeAutosarDataType`): emitted after
+    /// the Identifiable chain. `None` for non-datatype elements.
+    sw_data_def_props: Option<SwDataDefPropsId>,
 }
 
 const DEFAULT_NAMESPACE: &str = "http://autosar.org/schema/r4.0";
@@ -353,6 +353,7 @@ impl ARXMLWriter {
                 category: package.get_category(),
                 introduction: package.base().base().get_introduction(),
                 admin_data: package.get_admin_data(),
+                sw_data_def_props: None,
             },
             document,
         )?;
@@ -679,6 +680,7 @@ impl ARXMLWriter {
                 category: compu_method.get_category(),
                 introduction: compu_method.get_introduction(),
                 admin_data: compu_method.get_admin_data(),
+                sw_data_def_props: None,
             },
             document,
         )?;
@@ -921,6 +923,7 @@ impl ARXMLWriter {
                 category: data_constr.get_category(),
                 introduction: data_constr.get_introduction(),
                 admin_data: data_constr.get_admin_data(),
+                sw_data_def_props: None,
             },
             document,
         )?;
@@ -993,7 +996,7 @@ impl ARXMLWriter {
         self.write_scale_constrs(
             writer,
             "SCALE-CONSTRS",
-            &constrs.get_scale_constrs(),
+            constrs.get_scale_constrs(),
             document,
         )?;
         write_optional_text_element(writer, "MAX-GRADIENT", constrs.get_max_gradient())?;
@@ -1035,7 +1038,7 @@ impl ARXMLWriter {
         self.write_scale_constrs(
             writer,
             "SCALE-CONSTRS",
-            &constrs.get_scale_constrs(),
+            constrs.get_scale_constrs(),
             document,
         )?;
         write_optional_text_element(writer, "MAX-GRADIENT", constrs.get_max_gradient())?;
@@ -1136,6 +1139,7 @@ impl ARXMLWriter {
                 category: keyword.get_category(),
                 introduction: keyword.get_introduction(),
                 admin_data: keyword.get_admin_data(),
+                sw_data_def_props: None,
             },
             document,
         )?;
@@ -1191,6 +1195,7 @@ impl ARXMLWriter {
                 category: keyword_set.get_category(),
                 introduction: keyword_set.get_introduction(),
                 admin_data: keyword_set.get_admin_data(),
+                sw_data_def_props: None,
             },
             document,
         )?;
@@ -1295,35 +1300,11 @@ impl ARXMLWriter {
     fn write_autosar_data_type_parts<W: Write>(
         &self,
         writer: &mut Writer<W>,
-        checksum: Option<&str>,
-        timestamp: Option<&str>,
-        uuid: Option<&str>,
-        short_name: Option<&str>,
-        long_name: Option<
-            crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId,
-        >,
-        desc: Option<crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId>,
-        category: Option<&str>,
-        introduction: Option<
-            crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId,
-        >,
-        admin_data: Option<AdminDataId>,
-        sw_data_def_props: Option<
-            crate::m2::msr::data_dictionary::data_def_properties::SwDataDefPropsId,
-        >,
+        parts: IdentifiableParts<'_>,
         document: &Document,
     ) -> Result<(), WriteError> {
-        self.write_identifiable_parts(
-            writer,
-            IdentifiableParts {
-                long_name,
-                desc,
-                category,
-                introduction,
-                admin_data,
-            },
-            document,
-        )?;
+        let sw_data_def_props = parts.sw_data_def_props;
+        self.write_identifiable_parts(writer, parts, document)?;
         if let Some(props) = sw_data_def_props.and_then(|id| document.sw_data_def_props.get(id)) {
             self.set_sw_data_def_props(writer, props, document)?;
         }
@@ -1358,16 +1339,14 @@ impl ARXMLWriter {
         }
         self.write_autosar_data_type_parts(
             writer,
-            None,
-            None,
-            None,
-            None,
-            data_type.get_long_name(),
-            data_type.get_desc(),
-            data_type.get_category(),
-            data_type.get_introduction(),
-            data_type.get_admin_data(),
-            data_type.get_sw_data_def_props(),
+            IdentifiableParts {
+                long_name: data_type.get_long_name(),
+                desc: data_type.get_desc(),
+                category: data_type.get_category(),
+                introduction: data_type.get_introduction(),
+                admin_data: data_type.get_admin_data(),
+                sw_data_def_props: data_type.get_sw_data_def_props(),
+            },
             document,
         )?;
         writer.write_event(Event::End(BytesEnd::new("APPLICATION-PRIMITIVE-DATA-TYPE")))?;
@@ -1379,22 +1358,8 @@ impl ARXMLWriter {
     fn write_composite_element_prototype_body<W: Write>(
         &self,
         writer: &mut Writer<W>,
-        checksum: Option<&str>,
-        timestamp: Option<&str>,
-        uuid: Option<&str>,
         short_name: Option<&str>,
-        long_name: Option<
-            crate::m2::msr::documentation::text_model::multilanguage_data::MultilanguageLongNameId,
-        >,
-        desc: Option<crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguageOverviewParagraphId>,
-        category: Option<&str>,
-        introduction: Option<
-            crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId,
-        >,
-        admin_data: Option<AdminDataId>,
-        sw_data_def_props: Option<
-            crate::m2::msr::data_dictionary::data_def_properties::SwDataDefPropsId,
-        >,
+        parts: IdentifiableParts<'_>,
         type_t_ref: Option<crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::TRefTypeId>,
         document: &Document,
     ) -> Result<(), WriteError> {
@@ -1406,20 +1371,7 @@ impl ARXMLWriter {
                 Some(short_name),
             )?;
         }
-        self.write_autosar_data_type_parts(
-            writer,
-            checksum,
-            timestamp,
-            uuid,
-            short_name,
-            long_name,
-            desc,
-            category,
-            introduction,
-            admin_data,
-            sw_data_def_props,
-            document,
-        )?;
+        self.write_autosar_data_type_parts(writer, parts, document)?;
         write_optional_t_ref_type(
             writer,
             "TYPE-TREF",
@@ -1456,16 +1408,14 @@ impl ARXMLWriter {
         }
         self.write_autosar_data_type_parts(
             writer,
-            None,
-            None,
-            None,
-            None,
-            data_type.get_long_name(),
-            data_type.get_desc(),
-            data_type.get_category(),
-            data_type.get_introduction(),
-            data_type.get_admin_data(),
-            data_type.get_sw_data_def_props(),
+            IdentifiableParts {
+                long_name: data_type.get_long_name(),
+                desc: data_type.get_desc(),
+                category: data_type.get_category(),
+                introduction: data_type.get_introduction(),
+                admin_data: data_type.get_admin_data(),
+                sw_data_def_props: data_type.get_sw_data_def_props(),
+            },
             document,
         )?;
         write_optional_text_element(
@@ -1488,16 +1438,15 @@ impl ARXMLWriter {
             writer.write_event(Event::Start(element_wrapper))?;
             self.write_composite_element_prototype_body(
                 writer,
-                None,
-                None,
-                None,
                 array_element.get_short_name(),
-                array_element.get_long_name(),
-                array_element.get_desc(),
-                array_element.get_category(),
-                array_element.get_introduction(),
-                array_element.get_admin_data(),
-                array_element.get_sw_data_def_props(),
+                IdentifiableParts {
+                    long_name: array_element.get_long_name(),
+                    desc: array_element.get_desc(),
+                    category: array_element.get_category(),
+                    introduction: array_element.get_introduction(),
+                    admin_data: array_element.get_admin_data(),
+                    sw_data_def_props: array_element.get_sw_data_def_props(),
+                },
                 array_element.get_type_t_ref(),
                 document,
             )?;
@@ -1557,16 +1506,14 @@ impl ARXMLWriter {
         }
         self.write_autosar_data_type_parts(
             writer,
-            None,
-            None,
-            None,
-            None,
-            data_type.get_long_name(),
-            data_type.get_desc(),
-            data_type.get_category(),
-            data_type.get_introduction(),
-            data_type.get_admin_data(),
-            data_type.get_sw_data_def_props(),
+            IdentifiableParts {
+                long_name: data_type.get_long_name(),
+                desc: data_type.get_desc(),
+                category: data_type.get_category(),
+                introduction: data_type.get_introduction(),
+                admin_data: data_type.get_admin_data(),
+                sw_data_def_props: data_type.get_sw_data_def_props(),
+            },
             document,
         )?;
         let record_elements = data_type.get_record_elements();
@@ -1585,16 +1532,15 @@ impl ARXMLWriter {
                     writer.write_event(Event::Start(record_wrapper))?;
                     self.write_composite_element_prototype_body(
                         writer,
-                        None,
-                        None,
-                        None,
                         record_element.get_short_name(),
-                        record_element.get_long_name(),
-                        record_element.get_desc(),
-                        record_element.get_category(),
-                        record_element.get_introduction(),
-                        record_element.get_admin_data(),
-                        record_element.get_sw_data_def_props(),
+                        IdentifiableParts {
+                            long_name: record_element.get_long_name(),
+                            desc: record_element.get_desc(),
+                            category: record_element.get_category(),
+                            introduction: record_element.get_introduction(),
+                            admin_data: record_element.get_admin_data(),
+                            sw_data_def_props: record_element.get_sw_data_def_props(),
+                        },
                         record_element.get_type_t_ref(),
                         document,
                     )?;
@@ -1708,6 +1654,7 @@ impl ARXMLWriter {
                 category: sw_base_type.get_category(),
                 introduction: sw_base_type.get_introduction(),
                 admin_data: sw_base_type.get_admin_data(),
+                sw_data_def_props: None,
             },
             document,
         )?;
@@ -1773,6 +1720,7 @@ impl ARXMLWriter {
                 category: collection.get_category(),
                 introduction: collection.get_introduction(),
                 admin_data: collection.get_admin_data(),
+                sw_data_def_props: None,
             },
             document,
         )?;
@@ -1922,6 +1870,7 @@ impl ARXMLWriter {
                 category: info_set.get_category(),
                 introduction: info_set.get_introduction(),
                 admin_data: info_set.get_admin_data(),
+                sw_data_def_props: None,
             },
             document,
         )?;
@@ -2000,6 +1949,7 @@ impl ARXMLWriter {
                 category: dimension.get_category(),
                 introduction: dimension.get_introduction(),
                 admin_data: dimension.get_admin_data(),
+                sw_data_def_props: None,
             },
             document,
         )?;
@@ -2056,6 +2006,7 @@ impl ARXMLWriter {
                 category: unit.get_category(),
                 introduction: unit.get_introduction(),
                 admin_data: unit.get_admin_data(),
+                sw_data_def_props: None,
             },
             document,
         )?;

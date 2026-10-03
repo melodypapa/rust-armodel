@@ -24,6 +24,7 @@ use crate::m2::element_registry;
 use crate::m2::msr::asam_hdo::admin_data::{AdminData, AdminDataId};
 use crate::m2::msr::asam_hdo::base_types::SwBaseTypeId;
 use crate::m2::msr::asam_hdo::special_data::{Sd, Sdg};
+use crate::m2::msr::asam_hdo::units::PhysicalDimensionId;
 use crate::m2::msr::documentation::text_model::block_elements::{
     DocumentationBlock, DocumentationBlockId,
 };
@@ -626,6 +627,9 @@ impl ARXMLWriter {
             ElementRef::LifeCycleInfoSet(id) => {
                 return self.write_life_cycle_info_set(writer, id, document)
             }
+            ElementRef::PhysicalDimension(id) => {
+                return self.write_physical_dimension(writer, id, document)
+            }
             _ => {}
         }
         let tag = element_registry::element_tag(&element_ref);
@@ -938,6 +942,62 @@ impl ARXMLWriter {
         )?;
 
         writer.write_event(Event::End(BytesEnd::new("LIFE-CYCLE-INFO-SET")))?;
+        Ok(())
+    }
+
+    /// py `writePhysicalDimension` — the seven numerical children in fixed
+    /// order after the Identifiable parts.
+    fn write_physical_dimension<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        id: PhysicalDimensionId,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let Some(dimension) = document.physical_dimensions.get(id) else {
+            return Ok(());
+        };
+        let mut element = BytesStart::new("PHYSICAL-DIMENSION");
+        self.write_identifiable_attributes(
+            &mut element,
+            dimension.get_checksum(),
+            dimension.get_timestamp(),
+            dimension.get_uuid(),
+        );
+        writer.write_event(Event::Start(element))?;
+
+        let short_name_element = BytesStart::new("SHORT-NAME");
+        write_text_element(
+            writer,
+            "SHORT-NAME",
+            short_name_element,
+            dimension.get_short_name(),
+        )?;
+
+        self.write_identifiable_parts(
+            writer,
+            IdentifiableParts {
+                long_name: dimension.get_long_name(),
+                desc: dimension.get_desc(),
+                category: dimension.get_category(),
+                introduction: dimension.get_introduction(),
+                admin_data: dimension.get_admin_data(),
+            },
+            document,
+        )?;
+
+        write_optional_text_element(writer, "LENGTH-EXP", dimension.get_length_exp())?;
+        write_optional_text_element(
+            writer,
+            "LUMINOUS-INTENSITY-EXP",
+            dimension.get_luminous_intensity_exp(),
+        )?;
+        write_optional_text_element(writer, "MASS-EXP", dimension.get_mass_exp())?;
+        write_optional_text_element(writer, "MOLAR-AMOUNT-EXP", dimension.get_molar_amount_exp())?;
+        write_optional_text_element(writer, "TEMPERATURE-EXP", dimension.get_temperature_exp())?;
+        write_optional_text_element(writer, "TIME-EXP", dimension.get_time_exp())?;
+        write_optional_text_element(writer, "CURRENT-EXP", dimension.get_current_exp())?;
+
+        writer.write_event(Event::End(BytesEnd::new("PHYSICAL-DIMENSION")))?;
         Ok(())
     }
 }

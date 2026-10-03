@@ -27,6 +27,7 @@ const FORMAT_SOURCES: &[&str] = &[
     "AUTOSAR_MOD_AISpecification_Collection_Pt_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_ApplicationDataType_LifeCycle_Standard.arxml",
     "AUTOSAR_MOD_AISpecification_Keyword_LifeCycle_Standard.arxml",
+    "AUTOSAR_MOD_AISpecification_PhysicalDimension_Standard.arxml",
 ];
 
 fn first_difference(expected: &[u8], actual: &[u8]) -> Option<String> {

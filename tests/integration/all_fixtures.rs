@@ -35,6 +35,7 @@ const WARNING_FREE_SOURCES: &[&str] = &[
     "AUTOSAR_MOD_AISpecification_Collection_Pt_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_ApplicationDataType_LifeCycle_Standard.arxml",
     "AUTOSAR_MOD_AISpecification_Keyword_LifeCycle_Standard.arxml",
+    "AUTOSAR_MOD_AISpecification_PhysicalDimension_Standard.arxml",
 ];
 
 fn fixture_files() -> Vec<PathBuf> {
@@ -140,7 +141,6 @@ const P2_P4_PENDING: &[&str] = &[
     "AUTOSAR_MOD_AISpecification_DataConstr_LifeCycle_Standard.arxml",
     "AUTOSAR_MOD_AISpecification_KeywordSet_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_PhysicalDimension_LifeCycle_Standard.arxml",
-    "AUTOSAR_MOD_AISpecification_PhysicalDimension_Standard.arxml",
     "AUTOSAR_MOD_AISpecification_PortInterface_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_PortInterface_LifeCycle_Standard.arxml",
     "AUTOSAR_MOD_AISpecification_PortPrototypeBlueprint_Blueprint.arxml",

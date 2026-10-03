@@ -26,7 +26,8 @@ use crate::m2::msr::documentation::text_model::multilanguage_data::{
     MultilanguageLongNameId,
 };
 use crate::writer::abstract_arxml_writer::{
-    write_optional_text_element, write_text_element, WriteError,
+    write_optional_boolean_element, write_optional_ref_type, write_optional_text_element,
+    write_ref_type_list, write_text_element, WriteError,
 };
 
 /// The per-class `Identifiable` payload pieces a family emitter hands to
@@ -326,6 +327,53 @@ impl ARXMLWriter {
             },
             document,
         )?;
+
+        // py writeReferenceBases — REFERENCE-BASES comes before ELEMENTS.
+        let reference_bases = package.get_reference_bases();
+        if !reference_bases.is_empty() {
+            writer.write_event(Event::Start(BytesStart::new("REFERENCE-BASES")))?;
+            for base_id in reference_bases {
+                if let Some(base) = document.reference_bases.get(*base_id) {
+                    writer.write_event(Event::Start(BytesStart::new("REFERENCE-BASE")))?;
+                    write_optional_text_element(writer, "SHORT-LABEL", base.get_short_label())?;
+                    write_optional_boolean_element(writer, "IS-DEFAULT", base.get_is_default())?;
+                    write_optional_boolean_element(writer, "IS-GLOBAL", base.get_is_global())?;
+                    write_optional_boolean_element(
+                        writer,
+                        "BASE-IS-THIS-PACKAGE",
+                        base.get_base_is_this_package(),
+                    )?;
+                    write_ref_type_list(
+                        writer,
+                        "GLOBAL-IN-PACKAGE-REFS",
+                        "GLOBAL-IN-PACKAGE-REF",
+                        base.get_global_in_package_refs(),
+                        document,
+                    )?;
+                    let global_elements = base.get_global_elements();
+                    if !global_elements.is_empty() {
+                        writer.write_event(Event::Start(BytesStart::new("GLOBAL-ELEMENTS")))?;
+                        for element_text in global_elements {
+                            write_text_element(
+                                writer,
+                                "GLOBAL-ELEMENT",
+                                BytesStart::new("GLOBAL-ELEMENT"),
+                                Some(element_text),
+                            )?;
+                        }
+                        writer.write_event(Event::End(BytesEnd::new("GLOBAL-ELEMENTS")))?;
+                    }
+                    write_optional_ref_type(
+                        writer,
+                        "PACKAGE-REF",
+                        base.get_package_ref()
+                            .and_then(|ref_id| document.ref_types.get(ref_id)),
+                    )?;
+                    writer.write_event(Event::End(BytesEnd::new("REFERENCE-BASE")))?;
+                }
+            }
+            writer.write_event(Event::End(BytesEnd::new("REFERENCE-BASES")))?;
+        }
 
         // py writeARPackageElements — one <TAG> per element carrying the
         // common Identifiable parts; per-class payload is the P2–P4 port.

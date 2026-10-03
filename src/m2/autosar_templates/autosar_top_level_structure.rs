@@ -2673,10 +2673,24 @@ impl Document {
             }
         }
 
-        // ReferenceBase is a P0 placeholder (no fields); list length is the
-        // whole comparison until P1 fills it in.
-        if a.get_reference_bases().len() != b.get_reference_bases().len() {
+        let bases_a = a.get_reference_bases();
+        let bases_b = b.get_reference_bases();
+        if bases_a.len() != bases_b.len() {
             return Err(format!("{path}: REFERENCE-BASES length mismatch"));
+        }
+        for (index, (base_a, base_b)) in bases_a.iter().zip(bases_b.iter()).enumerate() {
+            let base_a = self.reference_bases.get(*base_a).ok_or_else(|| {
+                format!("{path}.REFERENCE-BASES[{index}]: id not found in own arena")
+            })?;
+            let base_b = other.reference_bases.get(*base_b).ok_or_else(|| {
+                format!("{path}.REFERENCE-BASES[{index}]: id not found in other arena")
+            })?;
+            self.compare_reference_base(
+                other,
+                base_a,
+                base_b,
+                &format!("{path}.REFERENCE-BASES[{index}]"),
+            )?;
         }
         Ok(())
     }

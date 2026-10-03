@@ -2270,6 +2270,11 @@ impl ARPackage {
     pub fn get_reference_bases(&self) -> &[ReferenceBaseId] {
         &self.reference_bases
     }
+
+    pub fn push_reference_base(&mut self, id: ReferenceBaseId) -> &mut Self {
+        self.reference_bases.push(id);
+        self
+    }
 }
 
 /// spec class `ReferenceBase` — `ReferenceBase : ARObject`

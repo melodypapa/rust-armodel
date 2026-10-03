@@ -11,7 +11,9 @@ use crate::m2::autosar_templates::autosar_top_level_structure::Document;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::{
     ARObject, ElementRef,
 };
-use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARPackageId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::{
+    ARPackageId, ReferenceBase,
+};
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::ByteOrderEnum;
 use crate::m2::element_registry::{
     element_factory_for_tag, element_set_category, element_set_checksum, element_set_timestamp,
@@ -35,8 +37,9 @@ use crate::m2::msr::documentation::text_model::multilanguage_data::{
     MultiLanguagePlainText, MultilanguageLongName, MultilanguageLongNameId,
 };
 use crate::parser::abstract_arxml_parser::{
-    build_dom_from_reader, find, find_all, get_child_element_string, get_short_name, Node,
-    ParseError,
+    build_dom_from_reader, find, find_all, get_child_element_optional_boolean,
+    get_child_element_optional_ref_type, get_child_element_ref_type_list, get_child_element_string,
+    get_short_name, Node, ParseError,
 };
 
 /// The `Identifiable`-owned XML payload read by `read_identifiable_payload`
@@ -423,9 +426,46 @@ impl ARXMLParser {
                 self.read_element_payload(child, element_ref, document)?;
             }
         }
-        if let Some(reference_bases_node) = find(element, "REFERENCE-BASES") {
-            if !find_all(reference_bases_node, "*").is_empty() {
-                self.not_implemented("REFERENCE-BASES are not supported in P0".to_string())?;
+        // py readReferenceBases
+        if let Some(bases_node) = find(element, "REFERENCE-BASES") {
+            for base_node in find_all(bases_node, "REFERENCE-BASE") {
+                let mut base = ReferenceBase::new();
+                self.read_ar_object(base_node, base.base_mut());
+                if let Some(label) = get_child_element_string(base_node, "SHORT-LABEL") {
+                    base.set_short_label(label);
+                }
+                if let Some(value) = get_child_element_optional_boolean(base_node, "IS-DEFAULT") {
+                    base.set_is_default(value);
+                }
+                if let Some(value) = get_child_element_optional_boolean(base_node, "IS-GLOBAL") {
+                    base.set_is_global(value);
+                }
+                if let Some(value) =
+                    get_child_element_optional_boolean(base_node, "BASE-IS-THIS-PACKAGE")
+                {
+                    base.set_base_is_this_package(value);
+                }
+                // RefType values live in the arena; the model links by id.
+                for r#ref in get_child_element_ref_type_list(
+                    base_node,
+                    "GLOBAL-IN-PACKAGE-REFS/GLOBAL-IN-PACKAGE-REF",
+                ) {
+                    let ref_id = document.ref_types.insert(r#ref);
+                    base.push_global_in_package_ref(ref_id);
+                }
+                for global in find_all(base_node, "GLOBAL-ELEMENTS/GLOBAL-ELEMENT") {
+                    if let Some(text) = &global.text {
+                        base.push_global_elements(text.as_str());
+                    }
+                }
+                if let Some(r#ref) = get_child_element_optional_ref_type(base_node, "PACKAGE-REF") {
+                    let ref_id = document.ref_types.insert(r#ref);
+                    base.set_package_ref(ref_id);
+                }
+                let base_id = document.reference_bases.insert(base);
+                if let Some(package) = document.ar_packages.get_mut(id) {
+                    package.push_reference_base(base_id);
+                }
             }
         }
 
@@ -886,6 +926,48 @@ mod tests {
             .unwrap();
         assert_eq!(introduction.get_ps().len(), 1);
         assert_eq!(introduction.get_lists().len(), 1);
+    }
+
+    const REFERENCE_BASE_SAMPLE: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Pkg</SHORT-NAME>
+      <REFERENCE-BASES>
+        <REFERENCE-BASE>
+          <SHORT-LABEL>AUTOSAR</SHORT-LABEL>
+          <IS-DEFAULT>false</IS-DEFAULT>
+          <IS-GLOBAL>true</IS-GLOBAL>
+          <BASE-IS-THIS-PACKAGE>false</BASE-IS-THIS-PACKAGE>
+          <PACKAGE-REF DEST="AR-PACKAGE">/AUTOSAR/Platform</PACKAGE-REF>
+        </REFERENCE-BASE>
+      </REFERENCE-BASES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>"#;
+
+    #[test]
+    fn reference_bases_parse_into_the_arena() {
+        let mut document = Document::new();
+        ARXMLParser::new(default_options())
+            .load_from_reader(Reader::from_str(REFERENCE_BASE_SAMPLE), &mut document)
+            .unwrap();
+
+        let pkg = document
+            .get_ar_package(document.get_ar_packages()[0])
+            .unwrap();
+        let base_id = pkg.get_reference_bases()[0];
+        let base = document.reference_bases.get(base_id).unwrap();
+        assert_eq!(base.get_short_label(), Some("AUTOSAR"));
+        assert_eq!(base.get_is_default(), Some(false));
+        assert_eq!(base.get_is_global(), Some(true));
+        assert_eq!(base.get_base_is_this_package(), Some(false));
+        let package_ref = document
+            .ref_types
+            .get(base.get_package_ref().unwrap())
+            .unwrap();
+        assert_eq!(package_ref.get_dest(), Some("AR-PACKAGE"));
+        assert_eq!(package_ref.get_value(), Some("/AUTOSAR/Platform"));
     }
 
     #[test]

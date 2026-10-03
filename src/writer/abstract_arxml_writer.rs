@@ -54,8 +54,6 @@ pub(crate) fn write_optional_text_element<W: Write>(
 
 /// py `setChildElementOptionalBooleanValue` — the Boolean's text is the
 /// "true"/"false" the reader captured.
-/// `allow(dead_code)` until Task 6 (Collection) adds the first caller.
-#[allow(dead_code)]
 pub(crate) fn write_optional_boolean_element<W: Write>(
     writer: &mut quick_xml::writer::Writer<W>,
     tag: &str,
@@ -69,8 +67,6 @@ pub(crate) fn write_optional_boolean_element<W: Write>(
 }
 
 /// py `setChildElementOptionalRefType` — BASE, then DEST, then text value.
-/// `allow(dead_code)` until Task 5 (ReferenceBase) adds the first caller.
-#[allow(dead_code)]
 pub(crate) fn write_optional_ref_type<W: Write>(
     writer: &mut quick_xml::writer::Writer<W>,
     tag: &str,
@@ -91,8 +87,6 @@ pub(crate) fn write_optional_ref_type<W: Write>(
 
 /// py's `ET.SubElement(wrapper)` + per-item `setChildElementOptionalRefType`
 /// — the wrapper is emitted only when the list is non-empty.
-/// `allow(dead_code)` until Task 6 (Collection) adds the first caller.
-#[allow(dead_code)]
 pub(crate) fn write_ref_type_list<W: Write>(
     writer: &mut quick_xml::writer::Writer<W>,
     wrapper: &str,

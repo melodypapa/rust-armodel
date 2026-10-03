@@ -31,7 +31,17 @@ use crate::m2::element_registry::{
     element_set_uuid,
 };
 use crate::m2::msr::asam_hdo::admin_data::{AdminData, AdminDataId};
+use crate::m2::autosar_templates::sw_component_template::datatype::data_prototypes::{
+    ApplicationArrayElement, ApplicationArrayElementId, ApplicationRecordElement,
+    ApplicationRecordElementId,
+};
+use crate::m2::autosar_templates::sw_component_template::datatype::datatypes::{
+    ApplicationArrayDataTypeId, ApplicationPrimitiveDataTypeId, ApplicationRecordDataTypeId,
+};
 use crate::m2::msr::asam_hdo::base_types::{BaseTypeDirectDefinition, SwBaseTypeId};
+use crate::m2::msr::data_dictionary::data_def_properties::{
+    DisplayPresentationEnum, SwDataDefProps, SwDataDefPropsId,
+};
 use crate::m2::msr::asam_hdo::constraints::global_constraints::{
     DataConstrId, DataConstrRuleId, InternalConstrs, PhysConstrs, ScaleConstr,
     ScaleConstrValidityEnum,
@@ -59,9 +69,17 @@ use crate::m2::msr::documentation::text_model::multilanguage_data::{
     MultiLanguagePlainText, MultilanguageLongName, MultilanguageLongNameId,
 };
 use crate::parser::abstract_arxml_parser::{
-    build_dom_from_reader, find, find_all, get_child_element_optional_boolean,
-    get_child_element_optional_ref_type, get_child_element_ref_type_list, get_child_element_string,
-    get_short_name, Node, ParseError,
+    Node,
+    ParseError,
+    build_dom_from_reader,
+    find,
+    find_all,
+    get_child_element_optional_boolean,
+    get_child_element_optional_ref_type,
+    get_child_element_optional_t_ref_type,
+    get_child_element_ref_type_list,
+    get_child_element_string,
+    get_short_name,
 };
 
 /// The `Identifiable`-owned XML payload read by `read_identifiable_payload`
@@ -659,7 +677,8 @@ impl ARXMLParser {
             let mut list = ARList::new();
             self.read_paginateable(list_node, list.base_mut())?;
             if let Some(type_attr) = list_node.attrs.get("TYPE") {
-                match ListEnum::try_from(type_attr.as_str()) {
+                // py: ListEnum().setValue(value.lower()); the writer uppercases
+                match ListEnum::try_from(type_attr.to_lowercase().as_str()) {
                     Ok(value) => {
                         list.set_type(value);
                     }
@@ -747,6 +766,15 @@ impl ARXMLParser {
             ElementRef::CompuMethod(id) => self.read_compu_method(element, id, document),
             ElementRef::DataConstr(id) => self.read_data_constr(element, id, document),
             ElementRef::KeywordSet(id) => self.read_keyword_set(element, id, document),
+            ElementRef::ApplicationPrimitiveDataType(id) => {
+                self.read_application_primitive_data_type(element, id, document)
+            }
+            ElementRef::ApplicationArrayDataType(id) => {
+                self.read_application_array_data_type(element, id, document)
+            }
+            ElementRef::ApplicationRecordDataType(id) => {
+                self.read_application_record_data_type(element, id, document)
+            }
             ElementRef::SwBaseType(id) => self.read_sw_base_type(element, id, document),
             ElementRef::Collection(id) => self.read_collection(element, id, document),
             ElementRef::LifeCycleInfoSet(id) => {
@@ -1228,6 +1256,296 @@ impl ARXMLParser {
             }
             for keyword in keywords {
                 keyword_set.push_keyword(keyword);
+            }
+        }
+        Ok(())
+    }
+
+    /// py `getSwDataDefProps` — the VARIANTS/CONDITIONAL walk. py's model
+    /// stores the conditional inline (no wrapper class); the Rust side does
+    /// the same. Only the model-backed fields py reads unconditionally are
+    /// ported; absent fixtures never trigger the rest.
+    fn get_sw_data_def_props(
+        &mut self,
+        element: &Node,
+        key: &str,
+        document: &mut Document,
+    ) -> Result<Option<SwDataDefPropsId>, ParseError> {
+        let Some(child) = find(element, key) else {
+            return Ok(None);
+        };
+        let conditional = find(
+            child,
+            "SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL",
+        );
+        let mut read_props = |document: &mut Document,
+                              source: &Node|
+         -> Result<SwDataDefPropsId, ParseError> {
+            let mut props = SwDataDefProps::new();
+            if let Some(checksum) = source.attrs.get("S") {
+                props.set_checksum(checksum.as_str());
+            }
+            if let Some(timestamp) = source.attrs.get("T") {
+                props.set_timestamp(timestamp.as_str());
+            }
+            if let Some(text) = get_child_element_string(source, "DISPLAY-PRESENTATION") {
+                match DisplayPresentationEnum::try_from(text) {
+                    Ok(value) => {
+                        props.set_display_presentation(value);
+                    }
+                    Err(_) => {
+                        let message = format!("Unsupported DISPLAY-PRESENTATION <{text}>");
+                        self.not_implemented(message)?;
+                    }
+                }
+            }
+            if let Some(r#ref) = get_child_element_optional_ref_type(source, "BASE-TYPE-REF") {
+                let id = document.ref_types.insert(r#ref);
+                props.set_base_type_ref(id);
+            }
+            if let Some(r#ref) = get_child_element_optional_ref_type(source, "SW-ADDR-METHOD-REF") {
+                let id = document.ref_types.insert(r#ref);
+                props.set_sw_addr_method_ref(id);
+            }
+            if let Some(text) = get_child_element_string(source, "SW-ALIGNMENT") {
+                props.set_sw_alignment(text);
+            }
+            if let Some(text) = get_child_element_string(source, "SW-CALIBRATION-ACCESS") {
+                props.set_sw_calibration_access(text);
+            }
+            if let Some(r#ref) = get_child_element_optional_ref_type(source, "COMPU-METHOD-REF") {
+                let id = document.ref_types.insert(r#ref);
+                props.set_compu_method_ref(id);
+            }
+            if let Some(text) = get_child_element_string(source, "STEP-SIZE") {
+                props.set_step_size(text);
+            }
+            if let Some(r#ref) = get_child_element_optional_ref_type(source, "DATA-CONSTR-REF") {
+                let id = document.ref_types.insert(r#ref);
+                props.set_data_constr_ref(id);
+            }
+            if let Some(r#ref) =
+                get_child_element_optional_ref_type(source, "IMPLEMENTATION-DATA-TYPE-REF")
+            {
+                let id = document.ref_types.insert(r#ref);
+                props.set_implementation_data_type_ref(id);
+            }
+            if let Some(text) = get_child_element_string(source, "SW-INTENDED-RESOLUTION") {
+                props.set_sw_intended_resolution(text);
+            }
+            if let Some(r#ref) = get_child_element_optional_ref_type(source, "UNIT-REF") {
+                let id = document.ref_types.insert(r#ref);
+                props.set_unit_ref(id);
+            }
+            if let Some(text) = get_child_element_string(source, "DISPLAY-FORMAT") {
+                props.set_display_format(text);
+            }
+            Ok(document.sw_data_def_props.insert(props))
+        };
+        match conditional {
+            Some(conditional_node) => {
+                let id = read_props(document, conditional_node)?;
+                Ok(Some(id))
+            }
+            None => {
+                // py keeps the props even without the conditional wrapper
+                let id = read_props(document, child)?;
+                Ok(Some(id))
+            }
+        }
+    }
+
+    /// py `readApplicationPrimitiveDataType`.
+    fn read_application_primitive_data_type(
+        &mut self,
+        element: &Node,
+        id: ApplicationPrimitiveDataTypeId,
+        document: &mut Document,
+    ) -> Result<(), ParseError> {
+        let payload = self.read_identifiable_payload(element, document)?;
+        let props = self.get_sw_data_def_props(element, "SW-DATA-DEF-PROPS", document)?;
+        if let Some(data_type) = document.application_primitive_data_types.get_mut(id) {
+            if let Some(long_name) = payload.long_name {
+                data_type.set_long_name(long_name);
+            }
+            if let Some(desc) = payload.desc {
+                data_type.set_desc(desc);
+            }
+            if let Some(introduction) = payload.introduction {
+                data_type.set_introduction(introduction);
+            }
+            if let Some(admin_data) = payload.admin_data {
+                data_type.set_admin_data(admin_data);
+            }
+            if let Some(props) = props {
+                data_type.set_sw_data_def_props(props);
+            }
+        }
+        Ok(())
+    }
+
+    /// py `readApplicationArrayDataType` (+ readApplicationArrayElement).
+    fn read_application_array_data_type(
+        &mut self,
+        element: &Node,
+        id: ApplicationArrayDataTypeId,
+        document: &mut Document,
+    ) -> Result<(), ParseError> {
+        let payload = self.read_identifiable_payload(element, document)?;
+        let props = self.get_sw_data_def_props(element, "SW-DATA-DEF-PROPS", document)?;
+        let dynamic_profile =
+            get_child_element_string(element, "DYNAMIC-ARRAY-SIZE-PROFILE").map(str::to_string);
+        // py readApplicationArrayElement — the ELEMENT child.
+        let array_element = match find(element, "ELEMENT") {
+            Some(element_node) => {
+                let short_name = get_short_name(element_node)?;
+                let element_id = document
+                    .application_array_elements
+                    .insert(ApplicationArrayElement::new());
+                let element_payload = self.read_identifiable_payload(element_node, document)?;
+                let props =
+                    self.get_sw_data_def_props(element_node, "SW-DATA-DEF-PROPS", document)?;
+                let type_t_ref = get_child_element_optional_t_ref_type(element_node, "TYPE-TREF");
+                let handling = get_child_element_string(element_node, "ARRAY-SIZE-HANDLING")
+                    .map(str::to_string);
+                let semantics = get_child_element_string(element_node, "ARRAY-SIZE-SEMANTICS")
+                    .map(str::to_string);
+                let index_ref =
+                    get_child_element_optional_ref_type(element_node, "INDEX-DATA-TYPE-REF");
+                let max_elements = get_child_element_string(element_node, "MAX-NUMBER-OF-ELEMENTS")
+                    .map(str::to_string);
+                if let Some(array_element) = document.application_array_elements.get_mut(element_id)
+                {
+                    array_element.set_short_name(short_name);
+                    if let Some(long_name) = element_payload.long_name {
+                        array_element.set_long_name(long_name);
+                    }
+                    if let Some(desc) = element_payload.desc {
+                        array_element.set_desc(desc);
+                    }
+                    if let Some(introduction) = element_payload.introduction {
+                        array_element.set_introduction(introduction);
+                    }
+                    if let Some(admin_data) = element_payload.admin_data {
+                        array_element.set_admin_data(admin_data);
+                    }
+                    if let Some(props) = props {
+                        array_element.set_sw_data_def_props(props);
+                    }
+                    if let Some(type_t_ref) = type_t_ref {
+                        let type_t_ref_id = document.t_ref_types.insert(type_t_ref);
+                        array_element.set_type_t_ref(type_t_ref_id);
+                    }
+                    if let Some(handling) = handling {
+                        array_element.set_array_size_handling(handling);
+                    }
+                    if let Some(semantics) = semantics {
+                        array_element.set_array_size_semantics(semantics);
+                    }
+                    if let Some(index_ref) = index_ref {
+                        let id = document.ref_types.insert(index_ref);
+                        array_element.set_index_data_type_ref(id);
+                    }
+                    if let Some(max_elements) = max_elements {
+                        array_element.set_max_number_of_elements(max_elements);
+                    }
+                }
+                Some(element_id)
+            }
+            None => None,
+        };
+        if let Some(data_type) = document.application_array_data_types.get_mut(id) {
+            if let Some(long_name) = payload.long_name {
+                data_type.set_long_name(long_name);
+            }
+            if let Some(desc) = payload.desc {
+                data_type.set_desc(desc);
+            }
+            if let Some(introduction) = payload.introduction {
+                data_type.set_introduction(introduction);
+            }
+            if let Some(admin_data) = payload.admin_data {
+                data_type.set_admin_data(admin_data);
+            }
+            if let Some(props) = props {
+                data_type.set_sw_data_def_props(props);
+            }
+            if let Some(profile) = dynamic_profile {
+                data_type.set_dynamic_array_size_profile(profile);
+            }
+            if let Some(array_element) = array_element {
+                data_type.set_element(array_element);
+            }
+        }
+        Ok(())
+    }
+
+    /// py `readApplicationRecordDataType` (+ record ELEMENTS children).
+    fn read_application_record_data_type(
+        &mut self,
+        element: &Node,
+        id: ApplicationRecordDataTypeId,
+        document: &mut Document,
+    ) -> Result<(), ParseError> {
+        let payload = self.read_identifiable_payload(element, document)?;
+        let props = self.get_sw_data_def_props(element, "SW-DATA-DEF-PROPS", document)?;
+        let mut record_elements = Vec::new();
+        for record_node in find_all(element, "ELEMENTS/APPLICATION-RECORD-ELEMENT") {
+            let short_name = get_short_name(record_node)?;
+            let record_id = document
+                .application_record_elements
+                .insert(ApplicationRecordElement::new());
+            let element_payload = self.read_identifiable_payload(record_node, document)?;
+            let element_props =
+                self.get_sw_data_def_props(record_node, "SW-DATA-DEF-PROPS", document)?;
+            let type_t_ref = get_child_element_optional_t_ref_type(record_node, "TYPE-TREF");
+            let is_optional =
+                get_child_element_string(record_node, "IS-OPTIONAL").map(str::to_string);
+            if let Some(record_element) = document.application_record_elements.get_mut(record_id) {
+                record_element.set_short_name(short_name);
+                if let Some(long_name) = element_payload.long_name {
+                    record_element.set_long_name(long_name);
+                }
+                if let Some(desc) = element_payload.desc {
+                    record_element.set_desc(desc);
+                }
+                if let Some(introduction) = element_payload.introduction {
+                    record_element.set_introduction(introduction);
+                }
+                if let Some(admin_data) = element_payload.admin_data {
+                    record_element.set_admin_data(admin_data);
+                }
+                if let Some(props) = element_props {
+                    record_element.set_sw_data_def_props(props);
+                }
+                if let Some(type_t_ref) = type_t_ref {
+                    let type_t_ref_id = document.t_ref_types.insert(type_t_ref);
+                    record_element.set_type_t_ref(type_t_ref_id);
+                }
+                if let Some(is_optional) = is_optional {
+                    record_element.set_is_optional(is_optional);
+                }
+            }
+            record_elements.push(record_id);
+        }
+        if let Some(data_type) = document.application_record_data_types.get_mut(id) {
+            if let Some(long_name) = payload.long_name {
+                data_type.set_long_name(long_name);
+            }
+            if let Some(desc) = payload.desc {
+                data_type.set_desc(desc);
+            }
+            if let Some(introduction) = payload.introduction {
+                data_type.set_introduction(introduction);
+            }
+            if let Some(admin_data) = payload.admin_data {
+                data_type.set_admin_data(admin_data);
+            }
+            if let Some(props) = props {
+                data_type.set_sw_data_def_props(props);
+            }
+            for record_element in record_elements {
+                data_type.push_record_element(record_element);
             }
         }
         Ok(())

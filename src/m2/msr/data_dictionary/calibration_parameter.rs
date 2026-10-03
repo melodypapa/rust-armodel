@@ -12,7 +12,6 @@ new_key_type! {
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::MonotonyEnum;
-use crate::m2::msr::data_dictionary::data_def_properties::SwCalibrationAccessEnum;
 use crate::Document;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -56,7 +55,7 @@ pub struct SwCalprmAxis {
     category: Option<CalprmAxisCategoryEnum>,
     display_format: Option<String>,
     sw_axis_index: Option<String>,
-    sw_calibration_access: Option<SwCalibrationAccessEnum>,
+    sw_calibration_access: Option<String>,
     sw_calprm_axis_type_props: Option<ElementRef>,
 }
 
@@ -100,12 +99,12 @@ impl SwCalprmAxis {
         self
     }
 
-    pub fn get_sw_calibration_access(&self) -> Option<SwCalibrationAccessEnum> {
-        self.sw_calibration_access
+    pub fn get_sw_calibration_access(&self) -> Option<&str> {
+        self.sw_calibration_access.as_deref()
     }
 
-    pub fn set_sw_calibration_access(&mut self, value: SwCalibrationAccessEnum) -> &mut Self {
-        self.sw_calibration_access = Some(value);
+    pub fn set_sw_calibration_access(&mut self, value: impl Into<String>) -> &mut Self {
+        self.sw_calibration_access = Some(value.into());
         self
     }
 

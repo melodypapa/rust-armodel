@@ -15,7 +15,6 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::i
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::sw_component_template::components::SymbolPropsId;
-use crate::m2::autosar_templates::sw_component_template::datatype::datatypes::ArraySizeHandlingEnum;
 use crate::m2::autosar_templates::sw_component_template::datatype::datatypes::AutosarDataType;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
 use crate::m2::msr::data_dictionary::data_def_properties::SwDataDefPropsId;
@@ -936,8 +935,8 @@ pub struct ImplementationDataTypeElement {
     variation_point_capable: VariationPointCapable,
     array_impl_policy: Option<ArrayImplPolicyEnum>,
     array_size: Option<String>,
-    array_size_handling: Option<ArraySizeHandlingEnum>,
-    array_size_semantics: Option<ArraySizeSemanticsEnum>,
+    array_size_handling: Option<String>,
+    array_size_semantics: Option<String>,
     is_optional: Option<String>,
     sub_elements: Vec<ImplementationDataTypeElementId>,
     sw_data_def_props: Option<SwDataDefPropsId>,
@@ -982,21 +981,21 @@ impl ImplementationDataTypeElement {
         self
     }
 
-    pub fn get_array_size_handling(&self) -> Option<ArraySizeHandlingEnum> {
-        self.array_size_handling
+    pub fn get_array_size_handling(&self) -> Option<&str> {
+        self.array_size_handling.as_deref()
     }
 
-    pub fn set_array_size_handling(&mut self, value: ArraySizeHandlingEnum) -> &mut Self {
-        self.array_size_handling = Some(value);
+    pub fn set_array_size_handling(&mut self, value: impl Into<String>) -> &mut Self {
+        self.array_size_handling = Some(value.into());
         self
     }
 
-    pub fn get_array_size_semantics(&self) -> Option<ArraySizeSemanticsEnum> {
-        self.array_size_semantics
+    pub fn get_array_size_semantics(&self) -> Option<&str> {
+        self.array_size_semantics.as_deref()
     }
 
-    pub fn set_array_size_semantics(&mut self, value: ArraySizeSemanticsEnum) -> &mut Self {
-        self.array_size_semantics = Some(value);
+    pub fn set_array_size_semantics(&mut self, value: impl Into<String>) -> &mut Self {
+        self.array_size_semantics = Some(value.into());
         self
     }
 

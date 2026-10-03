@@ -25,10 +25,11 @@ PRIMITIVES = {
     # are stored as plain String in the P0 model, not as the generated LEnum.
     "LEnum",
     # P2-parity quirk: py AREnum.setValue stores attribute text verbatim and
-    # the writer emits getValue() — fixtures carry INTERVAL-TYPE="CLOSED"
-    # (uppercase) against the enum's lowercase literal, so the field must be
-    # a verbatim String, not the generated enum.
-    "IntervalTypeEnum",
+    # the writer emits getValue() — fixtures carry casing that disagrees with
+    # the generated enum literals (INTERVAL-TYPE="CLOSED", READ-ONLY,
+    # FIXED-SIZE), so these fields must be verbatim Strings.
+    "IntervalTypeEnum", "SwCalibrationAccessEnum", "ArraySizeSemanticsEnum",
+    "ArraySizeHandlingEnum",
 }
 # RefType/TRefType are deliberately NOT primitives (P2 Task 0 / batch-2
 # Task 0): collapsing them to String drops the BASE/DEST attributes the byte

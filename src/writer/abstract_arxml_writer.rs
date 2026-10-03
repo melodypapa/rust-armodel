@@ -9,7 +9,7 @@ use thiserror::Error;
 
 use crate::m2::autosar_templates::autosar_top_level_structure::Document;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::{
-    Limit, RefType, RefTypeId,
+    Limit, RefType, RefTypeId, TRefType,
 };
 
 /// Error model for the writer (mirrors `ParseError`).
@@ -132,6 +132,26 @@ pub(crate) fn write_limit_element<W: Write>(
         element.push_attribute(("INTERVAL-TYPE", interval));
     }
     write_text_element(writer, key, element, limit.get_value())?;
+    Ok(())
+}
+
+/// py `setChildElementOptionalRefType` for TRefType-typed elements —
+/// identical wire form (BASE, DEST, text).
+pub(crate) fn write_optional_t_ref_type<W: Write>(
+    writer: &mut Writer<W>,
+    tag: &str,
+    r#ref: Option<&TRefType>,
+) -> Result<(), WriteError> {
+    if let Some(r#ref) = r#ref {
+        let mut element = BytesStart::new(tag);
+        if let Some(base) = r#ref.get_base() {
+            element.push_attribute(("BASE", base));
+        }
+        if let Some(dest) = r#ref.get_dest() {
+            element.push_attribute(("DEST", dest));
+        }
+        write_text_element(writer, tag, element, r#ref.get_value())?;
+    }
     Ok(())
 }
 

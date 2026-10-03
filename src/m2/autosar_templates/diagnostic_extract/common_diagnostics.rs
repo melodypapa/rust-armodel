@@ -21,7 +21,6 @@ new_key_type! {
     pub struct DiagnosticSupportInfoByteId;
 }
 
-use crate::m2::autosar_templates::common_structure::implementation_data_types::ArraySizeSemanticsEnum;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARElement;
@@ -596,7 +595,7 @@ impl DiagnosticCommonElement {
 pub struct DiagnosticDataElement {
     base: Identifiable,
     variation_point_capable: VariationPointCapable,
-    array_size_semantics: Option<ArraySizeSemanticsEnum>,
+    array_size_semantics: Option<String>,
     max_number_of_elements: Option<String>,
     scaling_info_size: Option<String>,
     sw_data_def_props: Option<SwDataDefPropsId>,
@@ -623,12 +622,12 @@ impl DiagnosticDataElement {
         &mut self.variation_point_capable
     }
 
-    pub fn get_array_size_semantics(&self) -> Option<ArraySizeSemanticsEnum> {
-        self.array_size_semantics
+    pub fn get_array_size_semantics(&self) -> Option<&str> {
+        self.array_size_semantics.as_deref()
     }
 
-    pub fn set_array_size_semantics(&mut self, value: ArraySizeSemanticsEnum) -> &mut Self {
-        self.array_size_semantics = Some(value);
+    pub fn set_array_size_semantics(&mut self, value: impl Into<String>) -> &mut Self {
+        self.array_size_semantics = Some(value.into());
         self
     }
 

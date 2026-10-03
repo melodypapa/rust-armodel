@@ -12,7 +12,9 @@ use quick_xml::reader::Reader;
 use quick_xml::XmlVersion;
 use thiserror::Error;
 
-use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefType;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::{
+    RefType, TRefType,
+};
 
 /// Error model mirroring py's raise/notImplemented split
 /// (`docs/code_guide.md` §7).
@@ -242,6 +244,22 @@ pub fn get_child_element_optional_boolean(element: &Node, key: &str) -> Option<b
 pub fn get_child_element_optional_ref_type(element: &Node, key: &str) -> Option<RefType> {
     let child = find(element, key)?;
     Some(get_ref_type_dest_and_value(child))
+}
+
+/// py `getChildElementOptionalRefType` for TRefType-typed elements.
+pub fn get_child_element_optional_t_ref_type(element: &Node, key: &str) -> Option<TRefType> {
+    let child = find(element, key)?;
+    let mut r#ref = TRefType::new();
+    if let Some(base) = child.attrs.get("BASE") {
+        r#ref.set_base(base.as_str());
+    }
+    if let Some(dest) = child.attrs.get("DEST") {
+        r#ref.set_dest(dest.as_str());
+    }
+    if let Some(text) = &child.text {
+        r#ref.set_value(text.as_str());
+    }
+    Some(r#ref)
 }
 
 /// py `getChildElementRefTypeList` — `key` may be a nested path like

@@ -20,7 +20,14 @@ class Overrides:
     def default() -> "Overrides":
         return Overrides(
             # generated enum name -> existing hand-written Rust type (not regenerated)
-            type_alias={"XmlSpaceEnum": "XmlSpace"},
+            type_alias={
+                "XmlSpaceEnum": "XmlSpace",
+                # abstract compu content classes → pinned usage-site enums
+                # (batch-2 Task 3; the concrete subclasses are arena'd)
+                "CompuContent": "CompuContentRef",
+                "CompuScaleContents": "CompuScaleContentsRef",
+                "CompuConstContent": "CompuConstContentRef",
+            },
             # not emitted as Rust: aliased, pinned templates, or primitive meta-bases
             skip_emission={
                 "XmlSpaceEnum",                                   # aliased to hand-written XmlSpace
@@ -35,6 +42,9 @@ class Overrides:
             tag_overrides={},
             alias_module={
                 "XmlSpace": "m2::msr::documentation::text_model::language_data_model",
+                "CompuContentRef": "m2::msr::asam_hdo::computation_method",
+                "CompuScaleContentsRef": "m2::msr::asam_hdo::computation_method",
+                "CompuConstContentRef": "m2::msr::asam_hdo::computation_method",
                 # the type-erased handle lives in the pinned ar_object.rs template
                 "ElementRef": "m2::autosar_templates::generic_structure::general_template_classes::ar_object",
             },

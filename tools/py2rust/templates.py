@@ -1466,6 +1466,29 @@ impl fmt::Display for XmlSpace {
 }
 '''
 
+COMPU_REFS_BLOCK = '''\
+/// Heterogeneous handles for the abstract compu content classes (code_guide
+/// §3: abstract-marker py classes become Rust enums at the usage site).
+/// Variants carry the concrete subclass's arena key.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum CompuContentRef {
+    CompuScales(CompuScalesId),
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum CompuScaleContentsRef {
+    CompuScaleConstantContents(CompuScaleConstantContentsId),
+    CompuScaleRationalFormula(CompuScaleRationalFormulaId),
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum CompuConstContentRef {
+    CompuConstTextContent(CompuConstTextContentId),
+    CompuConstNumericContent(CompuConstNumericContentId),
+    CompuConstFormulaContent(CompuConstFormulaContentId),
+}
+'''
+
 TEMPLATE_ACCESSORS = {
     # py constructor params that are not IR fields (extract.py skips parent/short_name)
     "Referrable": [

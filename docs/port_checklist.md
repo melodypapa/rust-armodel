@@ -60,7 +60,7 @@
 | `readAutosarOperationArgumentInstance` | `read_autosar_operation_argument_instance` | [ ] | `parser/arxml_parser.py:3852` |
 | `readAutosarVariableInstance` | `read_autosar_variable_instance` | [ ] | `parser/arxml_parser.py:3880` |
 | `readBackgroundEvent` | `read_background_event` | [ ] | `parser/arxml_parser.py:6189` |
-| `readBaseTypeDirectDefinition` | `read_base_type_direct_definition` | [ ] | `parser/arxml_parser.py:7198` |
+| `readBaseTypeDirectDefinition` | `read_base_type_direct_definition` | [x] | `parser/arxml_parser.py:7198` |
 | `readBlueprintFormula` | `read_blueprint_formula` | [ ] | `parser/arxml_parser.py:1568` |
 | `readBlueprintGenerator` | `read_blueprint_generator` | [ ] | `parser/arxml_parser.py:1537` |
 | `readBlueprintMapping` | `read_blueprint_mapping` | [ ] | `parser/arxml_parser.py:15920` |
@@ -211,7 +211,7 @@
 | `readClientServerOperationArguments` | `read_client_server_operation_arguments` | [ ] | `parser/arxml_parser.py:8313` |
 | `readClientServerOperationMapping` | `read_client_server_operation_mapping` | [ ] | `parser/arxml_parser.py:15097` |
 | `readCodeDescriptor` | `read_code_descriptor` | [ ] | `parser/arxml_parser.py:4991` |
-| `readCollection` | `read_collection` | [ ] | `parser/arxml_parser.py:16185` |
+| `readCollection` | `read_collection` | [x] | `parser/arxml_parser.py:16185` |
 | `readColspec` | `read_colspec` | [ ] | `parser/arxml_parser.py:6516` |
 | `readComManagementMapping` | `read_com_management_mapping` | [ ] | `parser/arxml_parser.py:14582` |
 | `readComMgrUserNeeds` | `read_com_mgr_user_needs` | [ ] | `parser/arxml_parser.py:3140` |
@@ -414,7 +414,7 @@
 | `readDocRevisionModifications` | `read_doc_revision_modifications` | [ ] | `parser/arxml_parser.py:1670` |
 | `readDocumentViewSelectable` | `read_document_view_selectable` | [ ] | `parser/arxml_parser.py:6509` |
 | `readDocumentation` | `read_documentation` | [ ] | `parser/arxml_parser.py:7804` |
-| `readDocumentationBlock` | `read_documentation_block` | [ ] | `parser/arxml_parser.py:6891` |
+| `readDocumentationBlock` | `read_documentation_block` | [x] | `parser/arxml_parser.py:6891` |
 | `readDocumentationContext` | `read_documentation_context` | [ ] | `parser/arxml_parser.py:7797` |
 | `readDtcStatusChangeNotificationNeeds` | `read_dtc_status_change_notification_needs` | [ ] | `parser/arxml_parser.py:3130` |
 | `readDynamicPart` | `read_dynamic_part` | [ ] | `parser/arxml_parser.py:10867` |
@@ -689,8 +689,8 @@
 | `readLOverviewParagraph` | `read_l_overview_paragraph` | [ ] | `parser/arxml_parser.py:2092` |
 | `readLanguageSpecific` | `read_language_specific` | [ ] | `parser/arxml_parser.py:6275` |
 | `readLatencyTimingConstraint` | `read_latency_timing_constraint` | [ ] | `parser/arxml_parser.py:3922` |
-| `readLifeCycleInfo` | `read_life_cycle_info` | [ ] | `parser/arxml_parser.py:14979` |
-| `readLifeCycleInfoSet` | `read_life_cycle_info_set` | [ ] | `parser/arxml_parser.py:14998` |
+| `readLifeCycleInfo` | `read_life_cycle_info` | [x] | `parser/arxml_parser.py:14979` |
+| `readLifeCycleInfoSet` | `read_life_cycle_info_set` | [x] | `parser/arxml_parser.py:14998` |
 | `readLifeCycleInfoSetLifeCycleInfos` | `read_life_cycle_info_set_life_cycle_infos` | [ ] | `parser/arxml_parser.py:14988` |
 | `readLifeCycleInfoUseInsteadRefs` | `read_life_cycle_info_use_instead_refs` | [ ] | `parser/arxml_parser.py:14975` |
 | `readLifeCycleState` | `read_life_cycle_state` | [ ] | `parser/arxml_parser.py:16136` |
@@ -821,7 +821,7 @@
 | `readPPortPrototype` | `read_p_port_prototype` | [ ] | `parser/arxml_parser.py:7449` |
 | `readPRPortPrototype` | `read_pr_port_prototype` | [ ] | `parser/arxml_parser.py:7467` |
 | `readPTriggerInAtomicSwcTypeInstanceRef` | `read_p_trigger_in_atomic_swc_type_instance_ref` | [ ] | `parser/arxml_parser.py:5832` |
-| `readPaginateable` | `read_paginateable` | [ ] | `parser/arxml_parser.py:6631` |
+| `readPaginateable` | `read_paginateable` | [x] | `parser/arxml_parser.py:6631` |
 | `readParameterAccess` | `read_parameter_access` | [ ] | `parser/arxml_parser.py:5712` |
 | `readParameterDataPrototype` | `read_parameter_data_prototype` | [ ] | `parser/arxml_parser.py:6102` |
 | `readParameterInterface` | `read_parameter_interface` | [ ] | `parser/arxml_parser.py:8367` |
@@ -843,7 +843,7 @@
 | `readPhysicalChannelISignalTriggerings` | `read_physical_channel_i_signal_triggerings` | [ ] | `parser/arxml_parser.py:9383` |
 | `readPhysicalChannelManagedPhysicalChannelRefs` | `read_physical_channel_managed_physical_channel_refs` | [ ] | `parser/arxml_parser.py:9401` |
 | `readPhysicalChannelPduTriggerings` | `read_physical_channel_pdu_triggerings` | [ ] | `parser/arxml_parser.py:9392` |
-| `readPhysicalDimension` | `read_physical_dimension` | [ ] | `parser/arxml_parser.py:13986` |
+| `readPhysicalDimension` | `read_physical_dimension` | [x] | `parser/arxml_parser.py:13986` |
 | `readPlatformModuleEthernetEndpointConfiguration` | `read_platform_module_ethernet_endpoint_configuration` | [ ] | `parser/arxml_parser.py:15979` |
 | `readPortDefinedArgumentValue` | `read_port_defined_argument_value` | [ ] | `parser/arxml_parser.py:6112` |
 | `readPortGroup` | `read_port_group` | [ ] | `parser/arxml_parser.py:7696` |
@@ -1015,7 +1015,7 @@
 | `readSupervisedEntityCheckpointNeeds` | `read_supervised_entity_checkpoint_needs` | [ ] | `parser/arxml_parser.py:3145` |
 | `readSupervisedEntityNeeds` | `read_supervised_entity_needs` | [ ] | `parser/arxml_parser.py:3166` |
 | `readSwAddrMethod` | `read_sw_addr_method` | [ ] | `parser/arxml_parser.py:9001` |
-| `readSwBaseType` | `read_sw_base_type` | [ ] | `parser/arxml_parser.py:7205` |
+| `readSwBaseType` | `read_sw_base_type` | [x] | `parser/arxml_parser.py:7205` |
 | `readSwCalprmRefProxy` | `read_sw_calprm_ref_proxy` | [ ] | `parser/arxml_parser.py:7126` |
 | `readSwComparisonVariables` | `read_sw_comparison_variables` | [ ] | `parser/arxml_parser.py:7083` |
 | `readSwComponentDocumentationElement` | `read_sw_component_documentation_element` | [ ] | `parser/arxml_parser.py:7724` |
@@ -1192,7 +1192,7 @@
 | `readUdpNmNode` | `read_udp_nm_node` | [ ] | `parser/arxml_parser.py:11307` |
 | `readUdpProps` | `read_udp_props` | [ ] | `parser/arxml_parser.py:10257` |
 | `readUdpTp` | `read_udp_tp` | [ ] | `parser/arxml_parser.py:9819` |
-| `readUnit` | `read_unit` | [ ] | `parser/arxml_parser.py:8796` |
+| `readUnit` | `read_unit` | [x] | `parser/arxml_parser.py:8796` |
 | `readUnitGroup` | `read_unit_group` | [ ] | `parser/arxml_parser.py:8804` |
 | `readUserDefinedIPdu` | `read_user_defined_i_pdu` | [ ] | `parser/arxml_parser.py:10912` |
 | `readUserDefinedPdu` | `read_user_defined_pdu` | [ ] | `parser/arxml_parser.py:10917` |
@@ -1223,7 +1223,7 @@
 | `readWorstCaseStackUsage` | `read_worst_case_stack_usage` | [ ] | `parser/arxml_parser.py:5278` |
 | `writeARElement` | `write_ar_element` | [ ] | `writer/arxml_writer.py:1889` |
 | `writeARPackage` | `write_ar_package` | [x] | `writer/arxml_writer.py:15823` |
-| `writeARPackageElement` | `write_ar_package_element` | [ ] | `writer/arxml_writer.py:14925` |
+| `writeARPackageElement` | `write_ar_package_element` | [x] | `writer/arxml_writer.py:14925` |
 | `writeARPackageElements` | `write_ar_package_elements` | [ ] | `writer/arxml_writer.py:15832` |
 | `writeARPackages` | `write_ar_packages` | [x] | `writer/arxml_writer.py:15840` |
 | `writeAbstractCanCluster` | `write_abstract_can_cluster` | [ ] | `writer/arxml_writer.py:10321` |
@@ -1432,7 +1432,7 @@
 | `writeCode` | `write_code` | [ ] | `writer/arxml_writer.py:6346` |
 | `writeCodeCallbackHeaderRefs` | `write_code_callback_header_refs` | [ ] | `writer/arxml_writer.py:6353` |
 | `writeCodeDescriptors` | `write_code_descriptors` | [ ] | `writer/arxml_writer.py:6360` |
-| `writeCollection` | `write_collection` | [ ] | `writer/arxml_writer.py:15683` |
+| `writeCollection` | `write_collection` | [x] | `writer/arxml_writer.py:15683` |
 | `writeCollectionElementRefs` | `write_collection_element_refs` | [ ] | `writer/arxml_writer.py:15711` |
 | `writeCollectionSourceElementRefs` | `write_collection_source_element_refs` | [ ] | `writer/arxml_writer.py:15718` |
 | `writeColspec` | `write_colspec` | [ ] | `writer/arxml_writer.py:3032` |
@@ -1640,8 +1640,8 @@
 | `writeDocRevisionModifications` | `write_doc_revision_modifications` | [ ] | `writer/arxml_writer.py:1821` |
 | `writeDocumentViewSelectable` | `write_document_view_selectable` | [ ] | `writer/arxml_writer.py:3025` |
 | `writeDocumentation` | `write_documentation` | [ ] | `writer/arxml_writer.py:2552` |
-| `writeDocumentationBlock` | `write_documentation_block` | [ ] | `writer/arxml_writer.py:3161` |
-| `writeDocumentationBlockContent` | `write_documentation_block_content` | [ ] | `writer/arxml_writer.py:3166` |
+| `writeDocumentationBlock` | `write_documentation_block` | [x] | `writer/arxml_writer.py:3161` |
+| `writeDocumentationBlockContent` | `write_documentation_block_content` | [x] | `writer/arxml_writer.py:3166` |
 | `writeDocumentationContext` | `write_documentation_context` | [ ] | `writer/arxml_writer.py:2545` |
 | `writeDtcStatusChangeNotificationNeeds` | `write_dtc_status_change_notification_needs` | [ ] | `writer/arxml_writer.py:5978` |
 | `writeDynamicPart` | `write_dynamic_part` | [ ] | `writer/arxml_writer.py:14229` |
@@ -1913,8 +1913,8 @@
 | `writeLGraphic` | `write_l_graphic` | [ ] | `writer/arxml_writer.py:3007` |
 | `writeLParagraphs` | `write_l_paragraphs` | [ ] | `writer/arxml_writer.py:2837` |
 | `writeLatencyTimingConstraint` | `write_latency_timing_constraint` | [ ] | `writer/arxml_writer.py:5142` |
-| `writeLifeCycleInfo` | `write_life_cycle_info` | [ ] | `writer/arxml_writer.py:13678` |
-| `writeLifeCycleInfoSet` | `write_life_cycle_info_set` | [ ] | `writer/arxml_writer.py:13699` |
+| `writeLifeCycleInfo` | `write_life_cycle_info` | [x] | `writer/arxml_writer.py:13678` |
+| `writeLifeCycleInfoSet` | `write_life_cycle_info_set` | [x] | `writer/arxml_writer.py:13699` |
 | `writeLifeCycleInfoSetLifeCycleInfos` | `write_life_cycle_info_set_life_cycle_infos` | [ ] | `writer/arxml_writer.py:13689` |
 | `writeLifeCycleInfoUseInsteadRefs` | `write_life_cycle_info_use_instead_refs` | [ ] | `writer/arxml_writer.py:13671` |
 | `writeLifeCycleState` | `write_life_cycle_state` | [ ] | `writer/arxml_writer.py:15617` |
@@ -2073,7 +2073,7 @@
 | `writePhysicalChannelISignalTriggerings` | `write_physical_channel_i_signal_triggerings` | [ ] | `writer/arxml_writer.py:9479` |
 | `writePhysicalChannelManagedPhysicalChannelRefs` | `write_physical_channel_managed_physical_channel_refs` | [ ] | `writer/arxml_writer.py:9499` |
 | `writePhysicalChannelPduTriggerings` | `write_physical_channel_pdu_triggerings` | [ ] | `writer/arxml_writer.py:9489` |
-| `writePhysicalDimension` | `write_physical_dimension` | [ ] | `writer/arxml_writer.py:12570` |
+| `writePhysicalDimension` | `write_physical_dimension` | [x] | `writer/arxml_writer.py:12570` |
 | `writePlatformModuleEthernetEndpointConfiguration` | `write_platform_module_ethernet_endpoint_configuration` | [ ] | `writer/arxml_writer.py:15490` |
 | `writePortDefinedArgumentValues` | `write_port_defined_argument_values` | [ ] | `writer/arxml_writer.py:5343` |
 | `writePortGroup` | `write_port_group` | [ ] | `writer/arxml_writer.py:2467` |
@@ -2244,7 +2244,7 @@
 | `writeSupervisedEntityCheckpointNeeds` | `write_supervised_entity_checkpoint_needs` | [ ] | `writer/arxml_writer.py:5996` |
 | `writeSupervisedEntityNeeds` | `write_supervised_entity_needs` | [ ] | `writer/arxml_writer.py:6031` |
 | `writeSwAddrMethod` | `write_sw_addr_method` | [ ] | `writer/arxml_writer.py:8409` |
-| `writeSwBaseType` | `write_sw_base_type` | [ ] | `writer/arxml_writer.py:3603` |
+| `writeSwBaseType` | `write_sw_base_type` | [x] | `writer/arxml_writer.py:3603` |
 | `writeSwComponentDocumentationElement` | `write_sw_component_documentation_element` | [ ] | `writer/arxml_writer.py:2488` |
 | `writeSwComponentPrototype` | `write_sw_component_prototype` | [ ] | `writer/arxml_writer.py:2694` |
 | `writeSwComponentPrototypeAssignment` | `write_sw_component_prototype_assignment` | [ ] | `writer/arxml_writer.py:12487` |
@@ -2414,7 +2414,7 @@
 | `writeUdpNmNode` | `write_udp_nm_node` | [ ] | `writer/arxml_writer.py:8766` |
 | `writeUdpProps` | `write_udp_props` | [ ] | `writer/arxml_writer.py:10361` |
 | `writeUdpTp` | `write_udp_tp` | [ ] | `writer/arxml_writer.py:9850` |
-| `writeUnit` | `write_unit` | [ ] | `writer/arxml_writer.py:3895` |
+| `writeUnit` | `write_unit` | [x] | `writer/arxml_writer.py:3895` |
 | `writeUnitGroup` | `write_unit_group` | [ ] | `writer/arxml_writer.py:3904` |
 | `writeUserDefinedIPdu` | `write_user_defined_i_pdu` | [ ] | `writer/arxml_writer.py:14270` |
 | `writeUserDefinedPdu` | `write_user_defined_pdu` | [ ] | `writer/arxml_writer.py:14276` |
@@ -2442,4 +2442,4 @@
 | `writeWhitespaceControlled` | `write_whitespace_controlled` | [ ] | `writer/arxml_writer.py:1546` |
 | `writeWorstCaseHeapUsage` | `write_worst_case_heap_usage` | [ ] | `writer/arxml_writer.py:6503` |
 
-**4/2438 ported.**
+**22/2438 ported.**

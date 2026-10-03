@@ -41,6 +41,9 @@ const WARNING_FREE_SOURCES: &[&str] = &[
     "AUTOSAR_MOD_AISpecification_DataConstr_LifeCycle_Standard.arxml",
     "AUTOSAR_MOD_AISpecification_KeywordSet_Blueprint.arxml",
     "AUTOSAR_Datatypes.arxml",
+    "AUTOSAR_MOD_AISpecification_PhysicalDimension_LifeCycle_Standard.arxml",
+    "AUTOSAR_MOD_AISpecification_Unit_LifeCycle_Standard.arxml",
+    "AUTOSAR_MOD_AISpecification_CompuMethod_LifeCycle_Standard.arxml",
 ];
 
 fn fixture_files() -> Vec<PathBuf> {
@@ -140,14 +143,11 @@ fn elements_are_ingested_through_the_registry() {
 const P2_P4_PENDING: &[&str] = &[
     "AUTOSAR_MOD_AISpecification_ApplicationDataType_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_CompuMethod_Blueprint.arxml",
-    "AUTOSAR_MOD_AISpecification_CompuMethod_LifeCycle_Standard.arxml",
-    "AUTOSAR_MOD_AISpecification_PhysicalDimension_LifeCycle_Standard.arxml",
     "AUTOSAR_MOD_AISpecification_PortInterface_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_PortInterface_LifeCycle_Standard.arxml",
     "AUTOSAR_MOD_AISpecification_PortPrototypeBlueprint_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_PortPrototypeBlueprint_LifeCycle_Standard.arxml",
     "AUTOSAR_MOD_AISpecification_SwComponentTypes_Blueprint.arxml",
-    "AUTOSAR_MOD_AISpecification_Unit_LifeCycle_Standard.arxml",
     "BswMMode.arxml",
     "BswM_Bswmd.arxml",
     "CanSystem.arxml",

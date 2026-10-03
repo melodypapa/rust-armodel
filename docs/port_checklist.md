@@ -28,15 +28,15 @@
 | `readAgeConstraint` | `read_age_constraint` | [ ] | `parser/arxml_parser.py:3992` |
 | `readAnalyzedExecutionTime` | `read_analyzed_execution_time` | [ ] | `parser/arxml_parser.py:5118` |
 | `readAppOsTaskProxyToEcuTaskProxyMapping` | `read_app_os_task_proxy_to_ecu_task_proxy_mapping` | [ ] | `parser/arxml_parser.py:14508` |
-| `readApplicationArrayDataType` | `read_application_array_data_type` | [ ] | `parser/arxml_parser.py:8949` |
+| `readApplicationArrayDataType` | `read_application_array_data_type` | [x] | `parser/arxml_parser.py:8949` |
 | `readApplicationArrayElement` | `read_application_array_element` | [ ] | `parser/arxml_parser.py:8937` |
 | `readApplicationCompositeDataType` | `read_application_composite_data_type` | [ ] | `parser/arxml_parser.py:8926` |
 | `readApplicationCompositeElementDataPrototype` | `read_application_composite_element_data_prototype` | [ ] | `parser/arxml_parser.py:8933` |
 | `readApplicationDataType` | `read_application_data_type` | [ ] | `parser/arxml_parser.py:8923` |
 | `readApplicationDeferredDataType` | `read_application_deferred_data_type` | [ ] | `parser/arxml_parser.py:7143` |
 | `readApplicationPartitionToEcuPartitionMapping` | `read_application_partition_to_ecu_partition_mapping` | [ ] | `parser/arxml_parser.py:14497` |
-| `readApplicationPrimitiveDataType` | `read_application_primitive_data_type` | [ ] | `parser/arxml_parser.py:7147` |
-| `readApplicationRecordDataType` | `read_application_record_data_type` | [ ] | `parser/arxml_parser.py:7165` |
+| `readApplicationPrimitiveDataType` | `read_application_primitive_data_type` | [x] | `parser/arxml_parser.py:7147` |
+| `readApplicationRecordDataType` | `read_application_record_data_type` | [x] | `parser/arxml_parser.py:7165` |
 | `readApplicationRecordDataTypeElements` | `read_application_record_data_type_elements` | [ ] | `parser/arxml_parser.py:7156` |
 | `readApplicationRecordElement` | `read_application_record_element` | [ ] | `parser/arxml_parser.py:7151` |
 | `readApplicationSwComponentType` | `read_application_sw_component_type` | [ ] | `parser/arxml_parser.py:8032` |
@@ -235,10 +235,10 @@
 | `readCompositionSwComponentTypePhysicalDimensionMapping` | `read_composition_sw_component_type_physical_dimension_mapping` | [ ] | `parser/arxml_parser.py:8222` |
 | `readCompositionSwComponentTypeSwConnectors` | `read_composition_sw_component_type_sw_connectors` | [ ] | `parser/arxml_parser.py:8119` |
 | `readCompuConst` | `read_compu_const` | [ ] | `parser/arxml_parser.py:8419` |
-| `readCompuMethod` | `read_compu_method` | [ ] | `parser/arxml_parser.py:8484` |
+| `readCompuMethod` | `read_compu_method` | [x] | `parser/arxml_parser.py:8484` |
 | `readCompuNominatorDenominator` | `read_compu_nominator_denominator` | [ ] | `parser/arxml_parser.py:8430` |
 | `readCompuRationCoeffs` | `read_compu_ration_coeffs` | [ ] | `parser/arxml_parser.py:8435` |
-| `readCompuScale` | `read_compu_scale` | [ ] | `parser/arxml_parser.py:8451` |
+| `readCompuScale` | `read_compu_scale` | [x] | `parser/arxml_parser.py:8451` |
 | `readCompuScaleContents` | `read_compu_scale_contents` | [ ] | `parser/arxml_parser.py:8447` |
 | `readConcretePatternEventTriggering` | `read_concrete_pattern_event_triggering` | [ ] | `parser/arxml_parser.py:4054` |
 | `readConditionByFormula` | `read_condition_by_formula` | [ ] | `parser/arxml_parser.py:1545` |
@@ -284,7 +284,7 @@
 | `readCryptoSignatureScheme` | `read_crypto_signature_scheme` | [ ] | `parser/arxml_parser.py:14613` |
 | `readCycleCounter` | `read_cycle_counter` | [ ] | `parser/arxml_parser.py:9268` |
 | `readCycleRepetition` | `read_cycle_repetition` | [ ] | `parser/arxml_parser.py:9272` |
-| `readDataConstr` | `read_data_constr` | [ ] | `parser/arxml_parser.py:8791` |
+| `readDataConstr` | `read_data_constr` | [x] | `parser/arxml_parser.py:8791` |
 | `readDataConstrRule` | `read_data_constr_rule` | [ ] | `parser/arxml_parser.py:8781` |
 | `readDataInterface` | `read_data_interface` | [ ] | `parser/arxml_parser.py:8364` |
 | `readDataLinkLayerRule` | `read_data_link_layer_rule` | [ ] | `parser/arxml_parser.py:15687` |
@@ -642,7 +642,7 @@
 | `readIdsPlatformInstantiation` | `read_ids_platform_instantiation` | [ ] | `parser/arxml_parser.py:15964` |
 | `readIdsmModuleInstantiation` | `read_idsm_module_instantiation` | [ ] | `parser/arxml_parser.py:15976` |
 | `readImplementation` | `read_implementation` | [ ] | `parser/arxml_parser.py:5309` |
-| `readImplementationDataType` | `read_implementation_data_type` | [ ] | `parser/arxml_parser.py:7189` |
+| `readImplementationDataType` | `read_implementation_data_type` | [x] | `parser/arxml_parser.py:7189` |
 | `readImplementationDataTypeElement` | `read_implementation_data_type_element` | [ ] | `parser/arxml_parser.py:7171` |
 | `readImplementationDataTypeSubElements` | `read_implementation_data_type_sub_elements` | [ ] | `parser/arxml_parser.py:7180` |
 | `readImplementationDataTypeSymbolProps` | `read_implementation_data_type_symbol_props` | [ ] | `parser/arxml_parser.py:8917` |
@@ -680,9 +680,9 @@
 | `readJ1939RmIncomingRequestServiceNeeds` | `read_j1939_rm_incoming_request_service_needs` | [ ] | `parser/arxml_parser.py:3095` |
 | `readJ1939RmOutgoingRequestServiceNeeds` | `read_j1939_rm_outgoing_request_service_needs` | [ ] | `parser/arxml_parser.py:3098` |
 | `readJ1939SharedAddressCluster` | `read_j1939_shared_address_cluster` | [ ] | `parser/arxml_parser.py:14928` |
-| `readKeyword` | `read_keyword` | [ ] | `parser/arxml_parser.py:11891` |
+| `readKeyword` | `read_keyword` | [x] | `parser/arxml_parser.py:11891` |
 | `readKeywordClassifications` | `read_keyword_classifications` | [ ] | `parser/arxml_parser.py:11887` |
-| `readKeywordSet` | `read_keyword_set` | [ ] | `parser/arxml_parser.py:11906` |
+| `readKeywordSet` | `read_keyword_set` | [x] | `parser/arxml_parser.py:11906` |
 | `readKeywordSetKeywords` | `read_keyword_set_keywords` | [ ] | `parser/arxml_parser.py:11897` |
 | `readLGraphic` | `read_l_graphic` | [ ] | `parser/arxml_parser.py:6488` |
 | `readLLongName` | `read_l_long_name` | [ ] | `parser/arxml_parser.py:1796` |
@@ -932,7 +932,7 @@
 | `readRunsInsideRefs` | `read_runs_inside_refs` | [ ] | `parser/arxml_parser.py:2336` |
 | `readRuntimeError` | `read_runtime_error` | [ ] | `parser/arxml_parser.py:3184` |
 | `readSOMEIPTransformationISignalProps` | `read_someip_transformation_i_signal_props` | [ ] | `parser/arxml_parser.py:14075` |
-| `readScaleConstr` | `read_scale_constr` | [ ] | `parser/arxml_parser.py:8754` |
+| `readScaleConstr` | `read_scale_constr` | [x] | `parser/arxml_parser.py:8754` |
 | `readScheduleTableEntry` | `read_schedule_table_entry` | [ ] | `parser/arxml_parser.py:9417` |
 | `readSd` | `read_sd` | [ ] | `parser/arxml_parser.py:1486` |
 | `readSdf` | `read_sdf` | [ ] | `parser/arxml_parser.py:1497` |
@@ -1246,14 +1246,14 @@
 | `writeAgeConstraint` | `write_age_constraint` | [ ] | `writer/arxml_writer.py:5159` |
 | `writeAnalyzedExecutionTime` | `write_analyzed_execution_time` | [ ] | `writer/arxml_writer.py:6443` |
 | `writeAppOsTaskProxyToEcuTaskProxyMapping` | `write_app_os_task_proxy_to_ecu_task_proxy_mapping` | [ ] | `writer/arxml_writer.py:12065` |
-| `writeApplicationArrayDataType` | `write_application_array_data_type` | [ ] | `writer/arxml_writer.py:8363` |
+| `writeApplicationArrayDataType` | `write_application_array_data_type` | [x] | `writer/arxml_writer.py:8363` |
 | `writeApplicationCompositeElementDataPrototype` | `write_application_composite_element_data_prototype` | [ ] | `writer/arxml_writer.py:3561` |
 | `writeApplicationDataTypes` | `write_application_data_types` | [ ] | `writer/arxml_writer.py:3585` |
 | `writeApplicationDeferredDataType` | `write_application_deferred_data_type` | [ ] | `writer/arxml_writer.py:3547` |
 | `writeApplicationError` | `write_application_error` | [ ] | `writer/arxml_writer.py:8290` |
 | `writeApplicationPartitionToEcuPartitionMapping` | `write_application_partition_to_ecu_partition_mapping` | [ ] | `writer/arxml_writer.py:12047` |
-| `writeApplicationPrimitiveDataType` | `write_application_primitive_data_type` | [ ] | `writer/arxml_writer.py:3552` |
-| `writeApplicationRecordDataType` | `write_application_record_data_type` | [ ] | `writer/arxml_writer.py:3580` |
+| `writeApplicationPrimitiveDataType` | `write_application_primitive_data_type` | [x] | `writer/arxml_writer.py:3552` |
+| `writeApplicationRecordDataType` | `write_application_record_data_type` | [x] | `writer/arxml_writer.py:3580` |
 | `writeApplicationRecordDataTypeElements` | `write_application_record_data_type_elements` | [ ] | `writer/arxml_writer.py:3570` |
 | `writeApplicationRecordElement` | `write_application_record_element` | [ ] | `writer/arxml_writer.py:3565` |
 | `writeApplicationRuleBasedValueSpecification` | `write_application_rule_based_value_specification` | [ ] | `writer/arxml_writer.py:3745` |
@@ -1461,9 +1461,9 @@
 | `writeCompositionSwComponentTypePhysicalDimensionMapping` | `write_composition_sw_component_type_physical_dimension_mapping` | [ ] | `writer/arxml_writer.py:2819` |
 | `writeCompositionSwComponentTypeSwConnectors` | `write_composition_sw_component_type_sw_connectors` | [ ] | `writer/arxml_writer.py:2763` |
 | `writeCompositionSwComponentTypes` | `write_composition_sw_component_types` | [ ] | `writer/arxml_writer.py:2833` |
-| `writeCompuMethod` | `write_compu_method` | [ ] | `writer/arxml_writer.py:3681` |
+| `writeCompuMethod` | `write_compu_method` | [x] | `writer/arxml_writer.py:3681` |
 | `writeCompuNominatorDenominator` | `write_compu_nominator_denominator` | [ ] | `writer/arxml_writer.py:3613` |
-| `writeCompuScale` | `write_compu_scale` | [ ] | `writer/arxml_writer.py:3648` |
+| `writeCompuScale` | `write_compu_scale` | [x] | `writer/arxml_writer.py:3648` |
 | `writeCompuScaleConstantContents` | `write_compu_scale_constant_contents` | [ ] | `writer/arxml_writer.py:3608` |
 | `writeCompuScaleContents` | `write_compu_scale_contents` | [ ] | `writer/arxml_writer.py:3627` |
 | `writeCompuScaleRationalFormula` | `write_compu_scale_rational_formula` | [ ] | `writer/arxml_writer.py:3619` |
@@ -1512,7 +1512,7 @@
 | `writeCryptoSignatureScheme` | `write_crypto_signature_scheme` | [ ] | `writer/arxml_writer.py:12210` |
 | `writeCycleCounter` | `write_cycle_counter` | [ ] | `writer/arxml_writer.py:9332` |
 | `writeCycleRepetition` | `write_cycle_repetition` | [ ] | `writer/arxml_writer.py:9338` |
-| `writeDataConstr` | `write_data_constr` | [ ] | `writer/arxml_writer.py:3890` |
+| `writeDataConstr` | `write_data_constr` | [x] | `writer/arxml_writer.py:3890` |
 | `writeDataConstrRules` | `write_data_constr_rules` | [ ] | `writer/arxml_writer.py:3879` |
 | `writeDataInterface` | `write_data_interface` | [ ] | `writer/arxml_writer.py:8311` |
 | `writeDataLinkLayerRule` | `write_data_link_layer_rule` | [ ] | `writer/arxml_writer.py:15253` |
@@ -1870,7 +1870,7 @@
 | `writeIdsmModuleInstantiation` | `write_idsm_module_instantiation` | [ ] | `writer/arxml_writer.py:15485` |
 | `writeImplementation` | `write_implementation` | [ ] | `writer/arxml_writer.py:6598` |
 | `writeImplementationBuildActionManifests` | `write_implementation_build_action_manifests` | [ ] | `writer/arxml_writer.py:6827` |
-| `writeImplementationDataType` | `write_implementation_data_type` | [ ] | `writer/arxml_writer.py:8239` |
+| `writeImplementationDataType` | `write_implementation_data_type` | [x] | `writer/arxml_writer.py:8239` |
 | `writeImplementationDataTypeElement` | `write_implementation_data_type_element` | [ ] | `writer/arxml_writer.py:8205` |
 | `writeImplementationDataTypeElementSubElements` | `write_implementation_data_type_element_sub_elements` | [ ] | `writer/arxml_writer.py:8195` |
 | `writeImplementationDataTypeSubElements` | `write_implementation_data_type_sub_elements` | [ ] | `writer/arxml_writer.py:8217` |
@@ -1906,9 +1906,9 @@
 | `writeJ1939RmIncomingRequestServiceNeeds` | `write_j1939_rm_incoming_request_service_needs` | [ ] | `writer/arxml_writer.py:5928` |
 | `writeJ1939RmOutgoingRequestServiceNeeds` | `write_j1939_rm_outgoing_request_service_needs` | [ ] | `writer/arxml_writer.py:5933` |
 | `writeJ1939SharedAddressCluster` | `write_j1939_shared_address_cluster` | [ ] | `writer/arxml_writer.py:12461` |
-| `writeKeyword` | `write_keyword` | [ ] | `writer/arxml_writer.py:10490` |
+| `writeKeyword` | `write_keyword` | [x] | `writer/arxml_writer.py:10490` |
 | `writeKeywordClassifications` | `write_keyword_classifications` | [ ] | `writer/arxml_writer.py:10483` |
-| `writeKeywordSet` | `write_keyword_set` | [ ] | `writer/arxml_writer.py:10508` |
+| `writeKeywordSet` | `write_keyword_set` | [x] | `writer/arxml_writer.py:10508` |
 | `writeKeywordSetKeywords` | `write_keyword_set_keywords` | [ ] | `writer/arxml_writer.py:10498` |
 | `writeLGraphic` | `write_l_graphic` | [ ] | `writer/arxml_writer.py:3007` |
 | `writeLParagraphs` | `write_l_paragraphs` | [ ] | `writer/arxml_writer.py:2837` |
@@ -2442,4 +2442,4 @@
 | `writeWhitespaceControlled` | `write_whitespace_controlled` | [ ] | `writer/arxml_writer.py:1546` |
 | `writeWorstCaseHeapUsage` | `write_worst_case_heap_usage` | [ ] | `writer/arxml_writer.py:6503` |
 
-**22/2438 ported.**
+**41/2438 ported.**

@@ -28,6 +28,7 @@ use crate::m2::element_registry::{
 use crate::m2::msr::asam_hdo::admin_data::{AdminData, AdminDataId};
 use crate::m2::msr::asam_hdo::base_types::BaseTypeDirectDefinition;
 use crate::m2::msr::asam_hdo::special_data::{Sd, Sdf, Sdg, SdgCaption, SdgContents, SdgId};
+use crate::m2::msr::asam_hdo::units::SingleLanguageUnitNames;
 use crate::m2::msr::documentation::block_elements::list_elements::{ARList, Item, ListEnum};
 use crate::m2::msr::documentation::block_elements::pagination_and_view::{
     ChapterEnumBreak, KeepWithPreviousEnum, Paginateable,
@@ -374,6 +375,9 @@ impl ARXMLParser {
             Some(admin_data_node) => Some(self.read_admin_data(admin_data_node, document)?),
             None => None,
         };
+        // py readIdentifiable → readARObject: the package's own S/T attrs.
+        let checksum = element.attrs.get("S").cloned();
+        let timestamp = element.attrs.get("T").cloned();
         let uuid = element.attrs.get("UUID").cloned();
         let category = get_child_element_string(element, "CATEGORY").map(str::to_string);
         // py readIdentifiable on AR-PACKAGE: LONG-NAME/DESC/INTRODUCTION are
@@ -385,6 +389,12 @@ impl ARXMLParser {
         if let Some(package) = document.ar_packages.get_mut(id) {
             if let Some(admin_data) = admin_data {
                 package.set_admin_data(admin_data);
+            }
+            if let Some(checksum) = checksum {
+                package.set_checksum(checksum);
+            }
+            if let Some(timestamp) = timestamp {
+                package.set_timestamp(timestamp);
             }
             if let Some(uuid) = uuid {
                 package.set_uuid(uuid);
@@ -917,7 +927,63 @@ impl ARXMLParser {
                 }
                 Ok(())
             }
-            // Arm lands with Task 9.
+            ElementRef::Unit(id) => {
+                let payload = self.read_identifiable_payload(element, document)?;
+                // py getSingleLanguageUnitNames — DISPLAY-NAME wrapper whose
+                // text is the mixed string (SUP/SUB attrs and the wrapper's
+                // own S/T never occur in this batch).
+                let display_name = match find(element, "DISPLAY-NAME") {
+                    Some(node) => {
+                        let mut names = SingleLanguageUnitNames::new();
+                        if let Some(text) = &node.text {
+                            names
+                                .base_mut()
+                                .atp_mixed_string_mut()
+                                .set_mixed_string(text.as_str());
+                        }
+                        Some(document.single_language_unit_names.insert(names))
+                    }
+                    None => None,
+                };
+                let factor =
+                    get_child_element_string(element, "FACTOR-SI-TO-UNIT").map(str::to_string);
+                let offset =
+                    get_child_element_string(element, "OFFSET-SI-TO-UNIT").map(str::to_string);
+                let dimension_ref =
+                    match get_child_element_optional_ref_type(element, "PHYSICAL-DIMENSION-REF") {
+                        Some(r#ref) => Some(document.ref_types.insert(r#ref)),
+                        None => None,
+                    };
+
+                if let Some(unit) = document.units.get_mut(id) {
+                    if let Some(long_name) = payload.long_name {
+                        unit.set_long_name(long_name);
+                    }
+                    if let Some(desc) = payload.desc {
+                        unit.set_desc(desc);
+                    }
+                    if let Some(introduction) = payload.introduction {
+                        unit.set_introduction(introduction);
+                    }
+                    if let Some(admin_data) = payload.admin_data {
+                        unit.set_admin_data(admin_data);
+                    }
+                    if let Some(names_id) = display_name {
+                        unit.set_display_name(names_id);
+                    }
+                    if let Some(value) = factor {
+                        unit.set_factor_si_to_unit(value);
+                    }
+                    if let Some(value) = offset {
+                        unit.set_offset_si_to_unit(value);
+                    }
+                    if let Some(ref_id) = dimension_ref {
+                        unit.set_physical_dimension_ref(ref_id);
+                    }
+                }
+                Ok(())
+            }
+            // Remaining families land in later P2 batches.
             _ => Ok(()),
         }
     }

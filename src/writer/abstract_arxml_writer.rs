@@ -33,11 +33,32 @@ pub(crate) fn write_text_element<W: Write>(
 ) -> Result<(), WriteError> {
     writer.write_event(Event::Start(element))?;
     match text {
-        Some(value) => writer.write_event(Event::Text(BytesText::new(value)))?,
+        Some(value) => {
+            writer.write_event(Event::Text(BytesText::from_escaped(escape_text(value))))?;
+        }
         None => writer.write_event(Event::Text(BytesText::from_escaped("")))?,
     }
     writer.write_event(Event::End(BytesEnd::new(name)))?;
     Ok(())
+}
+
+/// py's text escaping (ElementTree `_escape_cdata` + minidom `_write_data`):
+/// `&`, `<`, `>`, `"` are escaped, the apostrophe stays raw. quick-xml's
+/// `BytesText::new` would additionally emit `&apos;` (e.g. "Young's" in the
+/// Unit_Standard fixture), so text goes through `from_escaped` with this
+/// function applied instead.
+fn escape_text(value: &str) -> String {
+    let mut out = String::with_capacity(value.len());
+    for ch in value.chars() {
+        match ch {
+            '&' => out.push_str("&amp;"),
+            '<' => out.push_str("&lt;"),
+            '>' => out.push_str("&gt;"),
+            '"' => out.push_str("&quot;"),
+            other => out.push(other),
+        }
+    }
+    out
 }
 
 /// py `setChildElementOptionalLiteral` — nothing is emitted when None.
@@ -131,6 +152,19 @@ mod tests {
         assert_eq!(
             String::from_utf8(buffer).unwrap(),
             "<SHORT-NAME>a&lt;b</SHORT-NAME>"
+        );
+    }
+
+    #[test]
+    fn text_element_keeps_apostrophes_raw_like_py() {
+        let mut buffer: Vec<u8> = Vec::new();
+        let mut writer = Writer::new_with_indent(&mut buffer, b' ', 2);
+        let element = BytesStart::new("L-1");
+        write_text_element(&mut writer, "L-1", element, Some("Young's \"Pascal\"")).unwrap();
+        writer.write_event(Event::Eof).unwrap();
+        assert_eq!(
+            String::from_utf8(buffer).unwrap(),
+            "<L-1>Young's &quot;Pascal&quot;</L-1>"
         );
     }
 }

@@ -37,6 +37,7 @@ use crate::m2::autosar_templates::sw_component_template::datatype::data_prototyp
 use crate::m2::autosar_templates::sw_component_template::datatype::datatypes::{
     ApplicationArrayDataTypeId, ApplicationPrimitiveDataTypeId, ApplicationRecordDataTypeId,
 };
+use crate::m2::autosar_templates::common_structure::implementation_data_types::ImplementationDataTypeId;
 use crate::m2::msr::asam_hdo::base_types::{BaseTypeDirectDefinition, SwBaseTypeId};
 use crate::m2::msr::data_dictionary::data_def_properties::{
     DisplayPresentationEnum, SwDataDefProps, SwDataDefPropsId,
@@ -773,6 +774,9 @@ impl ARXMLParser {
             }
             ElementRef::ApplicationRecordDataType(id) => {
                 self.read_application_record_data_type(element, id, document)
+            }
+            ElementRef::ImplementationDataType(id) => {
+                self.read_implementation_data_type(element, id, document)
             }
             ElementRef::SwBaseType(id) => self.read_sw_base_type(element, id, document),
             ElementRef::Collection(id) => self.read_collection(element, id, document),
@@ -1545,6 +1549,52 @@ impl ARXMLParser {
             }
             for record_element in record_elements {
                 data_type.push_record_element(record_element);
+            }
+        }
+        Ok(())
+    }
+
+    /// py `readImplementationDataType` — the Identifiable chain, the array
+    /// profile / struct flags and `TYPE-EMITTER`. The sub-element and symbol
+    /// prop branches are deferred (no pinned fixture carries them; tracked on
+    /// the port checklist).
+    fn read_implementation_data_type(
+        &mut self,
+        element: &Node,
+        id: ImplementationDataTypeId,
+        document: &mut Document,
+    ) -> Result<(), ParseError> {
+        let payload = self.read_identifiable_payload(element, document)?;
+        let props = self.get_sw_data_def_props(element, "SW-DATA-DEF-PROPS", document)?;
+        let dynamic_profile =
+            get_child_element_string(element, "DYNAMIC-ARRAY-SIZE-PROFILE").map(str::to_string);
+        let is_struct = get_child_element_string(element, "IS-STRUCT-WITH-OPTIONAL-ELEMENT")
+            .map(str::to_string);
+        let type_emitter = get_child_element_string(element, "TYPE-EMITTER").map(str::to_string);
+        if let Some(data_type) = document.implementation_data_types.get_mut(id) {
+            if let Some(long_name) = payload.long_name {
+                data_type.set_long_name(long_name);
+            }
+            if let Some(desc) = payload.desc {
+                data_type.set_desc(desc);
+            }
+            if let Some(introduction) = payload.introduction {
+                data_type.set_introduction(introduction);
+            }
+            if let Some(admin_data) = payload.admin_data {
+                data_type.set_admin_data(admin_data);
+            }
+            if let Some(props) = props {
+                data_type.set_sw_data_def_props(props);
+            }
+            if let Some(profile) = dynamic_profile {
+                data_type.set_dynamic_array_size_profile(profile);
+            }
+            if let Some(is_struct) = is_struct {
+                data_type.set_is_struct_with_optional_element(is_struct);
+            }
+            if let Some(type_emitter) = type_emitter {
+                data_type.set_type_emitter(type_emitter);
             }
         }
         Ok(())

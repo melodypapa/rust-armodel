@@ -40,6 +40,7 @@ const WARNING_FREE_SOURCES: &[&str] = &[
     "AUTOSAR_MOD_AISpecification_DataConstr_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_DataConstr_LifeCycle_Standard.arxml",
     "AUTOSAR_MOD_AISpecification_KeywordSet_Blueprint.arxml",
+    "AUTOSAR_Datatypes.arxml",
 ];
 
 fn fixture_files() -> Vec<PathBuf> {
@@ -137,7 +138,6 @@ fn elements_are_ingested_through_the_registry() {
 /// values) that arrives with the P2-P4 mass port; entries leave this list as
 /// that work lands, and the text comparison then guards them automatically.
 const P2_P4_PENDING: &[&str] = &[
-    "AUTOSAR_Datatypes.arxml",
     "AUTOSAR_MOD_AISpecification_ApplicationDataType_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_CompuMethod_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_CompuMethod_LifeCycle_Standard.arxml",

@@ -15,6 +15,9 @@ use crate::m2::autosar_templates::common_structure::standardization_template::ke
 use crate::m2::autosar_templates::sw_component_template::datatype::datatypes::{
     ApplicationArrayDataTypeId, ApplicationPrimitiveDataTypeId, ApplicationRecordDataTypeId,
 };
+use crate::m2::autosar_templates::common_structure::implementation_data_types::{
+    ImplementationDataTypeId,
+};
 use crate::m2::msr::data_dictionary::data_def_properties::{SwDataDefProps, SwDataDefPropsId};
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
@@ -1558,6 +1561,60 @@ impl ARXMLWriter {
         Ok(())
     }
 
+    /// py `writeImplementationDataType` — chain, array-profile/struct flags,
+    /// TYPE-EMITTER (sub-elements/symbol props deferred: no fixture).
+    fn write_implementation_data_type<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        id: ImplementationDataTypeId,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let Some(data_type) = document.implementation_data_types.get(id) else {
+            return Ok(());
+        };
+        let mut element = BytesStart::new("IMPLEMENTATION-DATA-TYPE");
+        self.write_identifiable_attributes(
+            &mut element,
+            data_type.get_checksum(),
+            data_type.get_timestamp(),
+            data_type.get_uuid(),
+        );
+        writer.write_event(Event::Start(element))?;
+        if let Some(short_name) = data_type.get_short_name() {
+            write_text_element(
+                writer,
+                "SHORT-NAME",
+                BytesStart::new("SHORT-NAME"),
+                Some(short_name),
+            )?;
+        }
+        self.write_autosar_data_type_parts(
+            writer,
+            IdentifiableParts {
+                long_name: data_type.get_long_name(),
+                desc: data_type.get_desc(),
+                category: data_type.get_category(),
+                introduction: data_type.get_introduction(),
+                admin_data: data_type.get_admin_data(),
+                sw_data_def_props: data_type.get_sw_data_def_props(),
+            },
+            document,
+        )?;
+        write_optional_text_element(
+            writer,
+            "DYNAMIC-ARRAY-SIZE-PROFILE",
+            data_type.get_dynamic_array_size_profile(),
+        )?;
+        write_optional_text_element(
+            writer,
+            "IS-STRUCT-WITH-OPTIONAL-ELEMENT",
+            data_type.get_is_struct_with_optional_element(),
+        )?;
+        write_optional_text_element(writer, "TYPE-EMITTER", data_type.get_type_emitter())?;
+        writer.write_event(Event::End(BytesEnd::new("IMPLEMENTATION-DATA-TYPE")))?;
+        Ok(())
+    }
+
     /// py `writeARPackageElement`'s isinstance chain. Grows one arm per
     /// ported family; the wildcard keeps unported families on the P0 shape
     /// (common Identifiable parts only).
@@ -1585,6 +1642,9 @@ impl ARXMLWriter {
             }
             ElementRef::ApplicationRecordDataType(id) => {
                 return self.write_application_record_data_type(writer, id, document);
+            }
+            ElementRef::ImplementationDataType(id) => {
+                return self.write_implementation_data_type(writer, id, document);
             }
             ElementRef::SwBaseType(id) => return self.write_sw_base_type(writer, id, document),
             ElementRef::Collection(id) => return self.write_collection(writer, id, document),

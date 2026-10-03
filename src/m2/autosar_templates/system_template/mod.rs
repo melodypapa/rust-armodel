@@ -63,6 +63,7 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::i
 use crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::ShortNameFragmentId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::ByteOrderEnum;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefTypeId;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::TRefTypeId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::stereotype_mixins::VariationPointCapable;
 use crate::m2::autosar_templates::generic_structure::variant_handling::VariationPointId;
 use crate::m2::autosar_templates::system_template::ecu_resource_mapping::ECUMappingId;
@@ -1051,7 +1052,7 @@ pub struct RootSwCompositionPrototype {
     variation_point_capable: VariationPointCapable,
     calibration_parameter_value_set_refs: Vec<RefTypeId>,
     flat_map_ref: Option<RefTypeId>,
-    software_composition_t_ref: Option<String>,
+    software_composition_t_ref: Option<TRefTypeId>,
 }
 
 impl RootSwCompositionPrototype {
@@ -1092,12 +1093,12 @@ impl RootSwCompositionPrototype {
         self
     }
 
-    pub fn get_software_composition_t_ref(&self) -> Option<&str> {
-        self.software_composition_t_ref.as_deref()
+    pub fn get_software_composition_t_ref(&self) -> Option<TRefTypeId> {
+        self.software_composition_t_ref
     }
 
-    pub fn set_software_composition_t_ref(&mut self, value: impl Into<String>) -> &mut Self {
-        self.software_composition_t_ref = Some(value.into());
+    pub fn set_software_composition_t_ref(&mut self, value: TRefTypeId) -> &mut Self {
+        self.software_composition_t_ref = Some(value);
         self
     }
 

@@ -14,21 +14,23 @@ use crate::m2::autosar_templates::generic_structure::general_template_classes::a
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::{
     ARPackageId, ReferenceBase,
 };
-use crate::m2::autosar_templates::generic_structure::general_template_classes::element_collection::AutoCollectEnum;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::element_collection::{
+    AutoCollectEnum, CollectionId,
+};
 use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::{
     ByteOrderEnum, RefTypeId,
 };
 use crate::m2::autosar_templates::generic_structure::life_cycles::{
-    LifeCycleInfo, LifeCycleInfoId, LifeCyclePeriod, LifeCyclePeriodId,
+    LifeCycleInfo, LifeCycleInfoId, LifeCycleInfoSetId, LifeCyclePeriod, LifeCyclePeriodId,
 };
 use crate::m2::element_registry::{
     element_factory_for_tag, element_set_category, element_set_checksum, element_set_timestamp,
     element_set_uuid,
 };
 use crate::m2::msr::asam_hdo::admin_data::{AdminData, AdminDataId};
-use crate::m2::msr::asam_hdo::base_types::BaseTypeDirectDefinition;
+use crate::m2::msr::asam_hdo::base_types::{BaseTypeDirectDefinition, SwBaseTypeId};
 use crate::m2::msr::asam_hdo::special_data::{Sd, Sdf, Sdg, SdgCaption, SdgContents, SdgId};
-use crate::m2::msr::asam_hdo::units::SingleLanguageUnitNames;
+use crate::m2::msr::asam_hdo::units::{PhysicalDimensionId, SingleLanguageUnitNames, UnitId};
 use crate::m2::msr::documentation::block_elements::list_elements::{ARList, Item, ListEnum};
 use crate::m2::msr::documentation::block_elements::pagination_and_view::{
     ChapterEnumBreak, KeepWithPreviousEnum, Paginateable,
@@ -729,263 +731,295 @@ impl ARXMLParser {
         document: &mut Document,
     ) -> Result<(), ParseError> {
         match element_ref {
-            ElementRef::SwBaseType(id) => {
-                let payload = self.read_identifiable_payload(element, document)?;
-                // py readBaseTypeDirectDefinition(element, getBaseTypeDefinition()):
-                // the definition exists once Task 0's extractor fix landed —
-                // create it lazily only for models built without one.
-                let definition_id = match document
-                    .sw_base_types
-                    .get(id)
-                    .and_then(|sw_base_type| sw_base_type.get_base_type_definition())
-                {
-                    Some(definition_id) => definition_id,
-                    None => {
-                        let definition_id = document
-                            .base_type_direct_definitions
-                            .insert(BaseTypeDirectDefinition::new());
-                        if let Some(sw_base_type) = document.sw_base_types.get_mut(id) {
-                            sw_base_type.set_base_type_definition(definition_id);
-                        }
-                        definition_id
-                    }
-                };
-                if let Some(sw_base_type) = document.sw_base_types.get_mut(id) {
-                    if let Some(long_name) = payload.long_name {
-                        sw_base_type.set_long_name(long_name);
-                    }
-                    if let Some(desc) = payload.desc {
-                        sw_base_type.set_desc(desc);
-                    }
-                    if let Some(introduction) = payload.introduction {
-                        sw_base_type.set_introduction(introduction);
-                    }
-                    if let Some(admin_data) = payload.admin_data {
-                        sw_base_type.set_admin_data(admin_data);
-                    }
-                }
-                if let Some(definition) =
-                    document.base_type_direct_definitions.get_mut(definition_id)
-                {
-                    self.read_base_type_direct_definition(element, definition)?;
-                }
-                Ok(())
-            }
-            ElementRef::Collection(id) => {
-                let payload = self.read_identifiable_payload(element, document)?;
-                // py readCollection — AUTO_COLLECT_XML_MAP: XML token → enum
-                // literal; unknown tokens are a warning, matching py.
-                let auto_collect = match find(element, "AUTO-COLLECT") {
-                    Some(node) => match node.text.as_deref().map(str::trim) {
-                        Some("REF-ALL") => Some(AutoCollectEnum::RefAll),
-                        Some("REF-NONE") => Some(AutoCollectEnum::RefNone),
-                        Some("REF-NON-STANDARD") => Some(AutoCollectEnum::RefNonStandard),
-                        other => {
-                            let message =
-                                format!("Unsupported AUTO-COLLECT <{}>", other.unwrap_or(""));
-                            self.not_implemented(message)?;
-                            None
-                        }
-                    },
-                    None => None,
-                };
-                let collection_semantics =
-                    get_child_element_string(element, "COLLECTION-SEMANTICS").map(str::to_string);
-                let element_role =
-                    get_child_element_string(element, "ELEMENT-ROLE").map(str::to_string);
-                let element_refs =
-                    get_child_element_ref_type_list(element, "ELEMENT-REFS/ELEMENT-REF");
-                let source_element_refs = get_child_element_ref_type_list(
-                    element,
-                    "SOURCE-ELEMENT-REFS/SOURCE-ELEMENT-REF",
-                );
-                // RefType values live in the arena; the model links by id.
-                let element_ref_ids: Vec<_> = element_refs
-                    .into_iter()
-                    .map(|r#ref| document.ref_types.insert(r#ref))
-                    .collect();
-                let source_ref_ids: Vec<_> = source_element_refs
-                    .into_iter()
-                    .map(|r#ref| document.ref_types.insert(r#ref))
-                    .collect();
-
-                if let Some(collection) = document.collections.get_mut(id) {
-                    if let Some(long_name) = payload.long_name {
-                        collection.set_long_name(long_name);
-                    }
-                    if let Some(desc) = payload.desc {
-                        collection.set_desc(desc);
-                    }
-                    if let Some(introduction) = payload.introduction {
-                        collection.set_introduction(introduction);
-                    }
-                    if let Some(admin_data) = payload.admin_data {
-                        collection.set_admin_data(admin_data);
-                    }
-                    if let Some(auto_collect) = auto_collect {
-                        collection.set_auto_collect(auto_collect);
-                    }
-                    if let Some(semantics) = collection_semantics {
-                        collection.set_collection_semantics(semantics);
-                    }
-                    if let Some(role) = element_role {
-                        collection.set_element_role(role);
-                    }
-                    for ref_id in element_ref_ids {
-                        collection.push_element_ref(ref_id);
-                    }
-                    for ref_id in source_ref_ids {
-                        collection.push_source_element_ref(ref_id);
-                    }
-                }
-                Ok(())
-            }
+            ElementRef::SwBaseType(id) => self.read_sw_base_type(element, id, document),
+            ElementRef::Collection(id) => self.read_collection(element, id, document),
             ElementRef::LifeCycleInfoSet(id) => {
-                let payload = self.read_identifiable_payload(element, document)?;
-                let set_payload = self.read_life_cycle_info_set_payload(element, document)?;
-                if let Some(info_set) = document.life_cycle_info_sets.get_mut(id) {
-                    if let Some(long_name) = payload.long_name {
-                        info_set.set_long_name(long_name);
-                    }
-                    if let Some(desc) = payload.desc {
-                        info_set.set_desc(desc);
-                    }
-                    if let Some(introduction) = payload.introduction {
-                        info_set.set_introduction(introduction);
-                    }
-                    if let Some(admin_data) = payload.admin_data {
-                        info_set.set_admin_data(admin_data);
-                    }
-                    if let Some(ref_id) = set_payload.default_lc_state_ref {
-                        info_set.set_default_lc_state_ref(ref_id);
-                    }
-                    if let Some(period_id) = set_payload.default_period_begin {
-                        info_set.set_default_period_begin(period_id);
-                    }
-                    if let Some(period_id) = set_payload.default_period_end {
-                        info_set.set_default_period_end(period_id);
-                    }
-                    for info_id in set_payload.life_cycle_infos {
-                        info_set.push_life_cycle_info(info_id);
-                    }
-                    if let Some(ref_id) = set_payload.used_life_cycle_state_definition_group_ref {
-                        info_set.set_used_life_cycle_state_definition_group_ref(ref_id);
-                    }
-                }
-                Ok(())
+                self.read_life_cycle_info_set(element, id, document)
             }
             ElementRef::PhysicalDimension(id) => {
-                let payload = self.read_identifiable_payload(element, document)?;
-                // py readPhysicalDimension — fixed child order, numerical text.
-                let length_exp =
-                    get_child_element_string(element, "LENGTH-EXP").map(str::to_string);
-                let luminous_intensity_exp =
-                    get_child_element_string(element, "LUMINOUS-INTENSITY-EXP").map(str::to_string);
-                let mass_exp = get_child_element_string(element, "MASS-EXP").map(str::to_string);
-                let molar_amount_exp =
-                    get_child_element_string(element, "MOLAR-AMOUNT-EXP").map(str::to_string);
-                let temperature_exp =
-                    get_child_element_string(element, "TEMPERATURE-EXP").map(str::to_string);
-                let time_exp = get_child_element_string(element, "TIME-EXP").map(str::to_string);
-                let current_exp =
-                    get_child_element_string(element, "CURRENT-EXP").map(str::to_string);
-
-                if let Some(dimension) = document.physical_dimensions.get_mut(id) {
-                    if let Some(long_name) = payload.long_name {
-                        dimension.set_long_name(long_name);
-                    }
-                    if let Some(desc) = payload.desc {
-                        dimension.set_desc(desc);
-                    }
-                    if let Some(introduction) = payload.introduction {
-                        dimension.set_introduction(introduction);
-                    }
-                    if let Some(admin_data) = payload.admin_data {
-                        dimension.set_admin_data(admin_data);
-                    }
-                    if let Some(value) = length_exp {
-                        dimension.set_length_exp(value);
-                    }
-                    if let Some(value) = luminous_intensity_exp {
-                        dimension.set_luminous_intensity_exp(value);
-                    }
-                    if let Some(value) = mass_exp {
-                        dimension.set_mass_exp(value);
-                    }
-                    if let Some(value) = molar_amount_exp {
-                        dimension.set_molar_amount_exp(value);
-                    }
-                    if let Some(value) = temperature_exp {
-                        dimension.set_temperature_exp(value);
-                    }
-                    if let Some(value) = time_exp {
-                        dimension.set_time_exp(value);
-                    }
-                    if let Some(value) = current_exp {
-                        dimension.set_current_exp(value);
-                    }
-                }
-                Ok(())
+                self.read_physical_dimension(element, id, document)
             }
-            ElementRef::Unit(id) => {
-                let payload = self.read_identifiable_payload(element, document)?;
-                // py getSingleLanguageUnitNames — DISPLAY-NAME wrapper whose
-                // text is the mixed string (SUP/SUB attrs and the wrapper's
-                // own S/T never occur in this batch).
-                let display_name = match find(element, "DISPLAY-NAME") {
-                    Some(node) => {
-                        let mut names = SingleLanguageUnitNames::new();
-                        if let Some(text) = &node.text {
-                            names
-                                .base_mut()
-                                .atp_mixed_string_mut()
-                                .set_mixed_string(text.as_str());
-                        }
-                        Some(document.single_language_unit_names.insert(names))
-                    }
-                    None => None,
-                };
-                let factor =
-                    get_child_element_string(element, "FACTOR-SI-TO-UNIT").map(str::to_string);
-                let offset =
-                    get_child_element_string(element, "OFFSET-SI-TO-UNIT").map(str::to_string);
-                let dimension_ref =
-                    match get_child_element_optional_ref_type(element, "PHYSICAL-DIMENSION-REF") {
-                        Some(r#ref) => Some(document.ref_types.insert(r#ref)),
-                        None => None,
-                    };
-
-                if let Some(unit) = document.units.get_mut(id) {
-                    if let Some(long_name) = payload.long_name {
-                        unit.set_long_name(long_name);
-                    }
-                    if let Some(desc) = payload.desc {
-                        unit.set_desc(desc);
-                    }
-                    if let Some(introduction) = payload.introduction {
-                        unit.set_introduction(introduction);
-                    }
-                    if let Some(admin_data) = payload.admin_data {
-                        unit.set_admin_data(admin_data);
-                    }
-                    if let Some(names_id) = display_name {
-                        unit.set_display_name(names_id);
-                    }
-                    if let Some(value) = factor {
-                        unit.set_factor_si_to_unit(value);
-                    }
-                    if let Some(value) = offset {
-                        unit.set_offset_si_to_unit(value);
-                    }
-                    if let Some(ref_id) = dimension_ref {
-                        unit.set_physical_dimension_ref(ref_id);
-                    }
-                }
-                Ok(())
-            }
+            ElementRef::Unit(id) => self.read_unit(element, id, document),
             // Remaining families land in later P2 batches.
             _ => Ok(()),
         }
+    }
+
+    /// py `readSwBaseType`.
+    fn read_sw_base_type(
+        &mut self,
+        element: &Node,
+        id: SwBaseTypeId,
+        document: &mut Document,
+    ) -> Result<(), ParseError> {
+        let payload = self.read_identifiable_payload(element, document)?;
+        // py readBaseTypeDirectDefinition(element, getBaseTypeDefinition()):
+        // the definition exists once Task 0's extractor fix landed —
+        // create it lazily only for models built without one.
+        let definition_id = match document
+            .sw_base_types
+            .get(id)
+            .and_then(|sw_base_type| sw_base_type.get_base_type_definition())
+        {
+            Some(definition_id) => definition_id,
+            None => {
+                let definition_id = document
+                    .base_type_direct_definitions
+                    .insert(BaseTypeDirectDefinition::new());
+                if let Some(sw_base_type) = document.sw_base_types.get_mut(id) {
+                    sw_base_type.set_base_type_definition(definition_id);
+                }
+                definition_id
+            }
+        };
+        if let Some(sw_base_type) = document.sw_base_types.get_mut(id) {
+            if let Some(long_name) = payload.long_name {
+                sw_base_type.set_long_name(long_name);
+            }
+            if let Some(desc) = payload.desc {
+                sw_base_type.set_desc(desc);
+            }
+            if let Some(introduction) = payload.introduction {
+                sw_base_type.set_introduction(introduction);
+            }
+            if let Some(admin_data) = payload.admin_data {
+                sw_base_type.set_admin_data(admin_data);
+            }
+        }
+        if let Some(definition) = document.base_type_direct_definitions.get_mut(definition_id) {
+            self.read_base_type_direct_definition(element, definition)?;
+        }
+        Ok(())
+    }
+
+    /// py `readCollection`.
+    fn read_collection(
+        &mut self,
+        element: &Node,
+        id: CollectionId,
+        document: &mut Document,
+    ) -> Result<(), ParseError> {
+        let payload = self.read_identifiable_payload(element, document)?;
+        // AUTO_COLLECT_XML_MAP: XML token → enum literal; unknown tokens are
+        // a warning, matching py.
+        let auto_collect = match find(element, "AUTO-COLLECT") {
+            Some(node) => match node.text.as_deref().map(str::trim) {
+                Some("REF-ALL") => Some(AutoCollectEnum::RefAll),
+                Some("REF-NONE") => Some(AutoCollectEnum::RefNone),
+                Some("REF-NON-STANDARD") => Some(AutoCollectEnum::RefNonStandard),
+                other => {
+                    let message = format!("Unsupported AUTO-COLLECT <{}>", other.unwrap_or(""));
+                    self.not_implemented(message)?;
+                    None
+                }
+            },
+            None => None,
+        };
+        let collection_semantics =
+            get_child_element_string(element, "COLLECTION-SEMANTICS").map(str::to_string);
+        let element_role = get_child_element_string(element, "ELEMENT-ROLE").map(str::to_string);
+        let element_refs = get_child_element_ref_type_list(element, "ELEMENT-REFS/ELEMENT-REF");
+        let source_element_refs =
+            get_child_element_ref_type_list(element, "SOURCE-ELEMENT-REFS/SOURCE-ELEMENT-REF");
+        // RefType values live in the arena; the model links by id.
+        let element_ref_ids: Vec<_> = element_refs
+            .into_iter()
+            .map(|r#ref| document.ref_types.insert(r#ref))
+            .collect();
+        let source_ref_ids: Vec<_> = source_element_refs
+            .into_iter()
+            .map(|r#ref| document.ref_types.insert(r#ref))
+            .collect();
+
+        if let Some(collection) = document.collections.get_mut(id) {
+            if let Some(long_name) = payload.long_name {
+                collection.set_long_name(long_name);
+            }
+            if let Some(desc) = payload.desc {
+                collection.set_desc(desc);
+            }
+            if let Some(introduction) = payload.introduction {
+                collection.set_introduction(introduction);
+            }
+            if let Some(admin_data) = payload.admin_data {
+                collection.set_admin_data(admin_data);
+            }
+            if let Some(auto_collect) = auto_collect {
+                collection.set_auto_collect(auto_collect);
+            }
+            if let Some(semantics) = collection_semantics {
+                collection.set_collection_semantics(semantics);
+            }
+            if let Some(role) = element_role {
+                collection.set_element_role(role);
+            }
+            for ref_id in element_ref_ids {
+                collection.push_element_ref(ref_id);
+            }
+            for ref_id in source_ref_ids {
+                collection.push_source_element_ref(ref_id);
+            }
+        }
+        Ok(())
+    }
+
+    /// py `readLifeCycleInfoSet`.
+    fn read_life_cycle_info_set(
+        &mut self,
+        element: &Node,
+        id: LifeCycleInfoSetId,
+        document: &mut Document,
+    ) -> Result<(), ParseError> {
+        let payload = self.read_identifiable_payload(element, document)?;
+        let set_payload = self.read_life_cycle_info_set_payload(element, document)?;
+        if let Some(info_set) = document.life_cycle_info_sets.get_mut(id) {
+            if let Some(long_name) = payload.long_name {
+                info_set.set_long_name(long_name);
+            }
+            if let Some(desc) = payload.desc {
+                info_set.set_desc(desc);
+            }
+            if let Some(introduction) = payload.introduction {
+                info_set.set_introduction(introduction);
+            }
+            if let Some(admin_data) = payload.admin_data {
+                info_set.set_admin_data(admin_data);
+            }
+            if let Some(ref_id) = set_payload.default_lc_state_ref {
+                info_set.set_default_lc_state_ref(ref_id);
+            }
+            if let Some(period_id) = set_payload.default_period_begin {
+                info_set.set_default_period_begin(period_id);
+            }
+            if let Some(period_id) = set_payload.default_period_end {
+                info_set.set_default_period_end(period_id);
+            }
+            for info_id in set_payload.life_cycle_infos {
+                info_set.push_life_cycle_info(info_id);
+            }
+            if let Some(ref_id) = set_payload.used_life_cycle_state_definition_group_ref {
+                info_set.set_used_life_cycle_state_definition_group_ref(ref_id);
+            }
+        }
+        Ok(())
+    }
+
+    /// py `readPhysicalDimension` — fixed child order, numerical text.
+    fn read_physical_dimension(
+        &mut self,
+        element: &Node,
+        id: PhysicalDimensionId,
+        document: &mut Document,
+    ) -> Result<(), ParseError> {
+        let payload = self.read_identifiable_payload(element, document)?;
+        let length_exp = get_child_element_string(element, "LENGTH-EXP").map(str::to_string);
+        let luminous_intensity_exp =
+            get_child_element_string(element, "LUMINOUS-INTENSITY-EXP").map(str::to_string);
+        let mass_exp = get_child_element_string(element, "MASS-EXP").map(str::to_string);
+        let molar_amount_exp =
+            get_child_element_string(element, "MOLAR-AMOUNT-EXP").map(str::to_string);
+        let temperature_exp =
+            get_child_element_string(element, "TEMPERATURE-EXP").map(str::to_string);
+        let time_exp = get_child_element_string(element, "TIME-EXP").map(str::to_string);
+        let current_exp = get_child_element_string(element, "CURRENT-EXP").map(str::to_string);
+
+        if let Some(dimension) = document.physical_dimensions.get_mut(id) {
+            if let Some(long_name) = payload.long_name {
+                dimension.set_long_name(long_name);
+            }
+            if let Some(desc) = payload.desc {
+                dimension.set_desc(desc);
+            }
+            if let Some(introduction) = payload.introduction {
+                dimension.set_introduction(introduction);
+            }
+            if let Some(admin_data) = payload.admin_data {
+                dimension.set_admin_data(admin_data);
+            }
+            if let Some(value) = length_exp {
+                dimension.set_length_exp(value);
+            }
+            if let Some(value) = luminous_intensity_exp {
+                dimension.set_luminous_intensity_exp(value);
+            }
+            if let Some(value) = mass_exp {
+                dimension.set_mass_exp(value);
+            }
+            if let Some(value) = molar_amount_exp {
+                dimension.set_molar_amount_exp(value);
+            }
+            if let Some(value) = temperature_exp {
+                dimension.set_temperature_exp(value);
+            }
+            if let Some(value) = time_exp {
+                dimension.set_time_exp(value);
+            }
+            if let Some(value) = current_exp {
+                dimension.set_current_exp(value);
+            }
+        }
+        Ok(())
+    }
+
+    /// py `readUnit`.
+    fn read_unit(
+        &mut self,
+        element: &Node,
+        id: UnitId,
+        document: &mut Document,
+    ) -> Result<(), ParseError> {
+        let payload = self.read_identifiable_payload(element, document)?;
+        // py getSingleLanguageUnitNames — DISPLAY-NAME wrapper whose
+        // text is the mixed string (SUP/SUB attrs and the wrapper's
+        // own S/T never occur in this batch).
+        let display_name = match find(element, "DISPLAY-NAME") {
+            Some(node) => {
+                let mut names = SingleLanguageUnitNames::new();
+                if let Some(text) = &node.text {
+                    names
+                        .base_mut()
+                        .atp_mixed_string_mut()
+                        .set_mixed_string(text.as_str());
+                }
+                Some(document.single_language_unit_names.insert(names))
+            }
+            None => None,
+        };
+        let factor = get_child_element_string(element, "FACTOR-SI-TO-UNIT").map(str::to_string);
+        let offset = get_child_element_string(element, "OFFSET-SI-TO-UNIT").map(str::to_string);
+        let dimension_ref =
+            match get_child_element_optional_ref_type(element, "PHYSICAL-DIMENSION-REF") {
+                Some(r#ref) => Some(document.ref_types.insert(r#ref)),
+                None => None,
+            };
+
+        if let Some(unit) = document.units.get_mut(id) {
+            if let Some(long_name) = payload.long_name {
+                unit.set_long_name(long_name);
+            }
+            if let Some(desc) = payload.desc {
+                unit.set_desc(desc);
+            }
+            if let Some(introduction) = payload.introduction {
+                unit.set_introduction(introduction);
+            }
+            if let Some(admin_data) = payload.admin_data {
+                unit.set_admin_data(admin_data);
+            }
+            if let Some(names_id) = display_name {
+                unit.set_display_name(names_id);
+            }
+            if let Some(value) = factor {
+                unit.set_factor_si_to_unit(value);
+            }
+            if let Some(value) = offset {
+                unit.set_offset_si_to_unit(value);
+            }
+            if let Some(ref_id) = dimension_ref {
+                unit.set_physical_dimension_ref(ref_id);
+            }
+        }
+        Ok(())
     }
 
     /// py `readBaseTypeDirectDefinition`.

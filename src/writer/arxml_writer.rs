@@ -10,13 +10,31 @@ use quick_xml::writer::Writer;
 
 use crate::m2::autosar_templates::autosar_top_level_structure::Document;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::{
     ARPackage, ARPackageId,
 };
 use crate::m2::element_registry;
-use crate::m2::msr::asam_hdo::admin_data::AdminData;
+use crate::m2::msr::asam_hdo::admin_data::{AdminData, AdminDataId};
 use crate::m2::msr::asam_hdo::special_data::{Sd, Sdg};
+use crate::m2::msr::documentation::text_model::block_elements::{
+    DocumentationBlock, DocumentationBlockId,
+};
+use crate::m2::msr::documentation::text_model::multilanguage_data::{
+    MultiLanguageOverviewParagraph, MultiLanguageOverviewParagraphId, MultilanguageLongName,
+    MultilanguageLongNameId,
+};
 use crate::writer::abstract_arxml_writer::{write_text_element, WriteError};
+
+/// The per-class `Identifiable` payload pieces a family emitter hands to
+/// `write_identifiable_parts` (ids resolve through the `Document` arenas).
+struct IdentifiableParts<'a> {
+    long_name: Option<MultilanguageLongNameId>,
+    desc: Option<MultiLanguageOverviewParagraphId>,
+    category: Option<&'a str>,
+    introduction: Option<DocumentationBlockId>,
+    admin_data: Option<AdminDataId>,
+}
 
 const DEFAULT_NAMESPACE: &str = "http://autosar.org/schema/r4.0";
 const XSI_NAMESPACE: &str = "http://www.w3.org/2001/XMLSchema-instance";
@@ -289,17 +307,21 @@ impl ARXMLWriter {
             write_text_element(writer, "SHORT-NAME", short_name_element, Some(short_name))?;
         }
 
-        // py writeIdentifiable: CATEGORY, then ADMIN-DATA, before the children
-        if let Some(category) = package.get_category() {
-            let category_element = BytesStart::new("CATEGORY");
-            write_text_element(writer, "CATEGORY", category_element, Some(category))?;
-        }
-        if let Some(admin_data) = package
-            .get_admin_data()
-            .and_then(|id| document.admin_datas.get(id))
-        {
-            self.write_admin_data(writer, admin_data, document)?;
-        }
+        // py writeIdentifiable emission order after SHORT-NAME:
+        // LONG-NAME, DESC, CATEGORY, INTRODUCTION, ADMIN-DATA. AR-PACKAGE
+        // only carries CATEGORY/ADMIN-DATA today; the full chain serves the
+        // per-class emitters (Tasks 4-9).
+        self.write_identifiable_parts(
+            writer,
+            IdentifiableParts {
+                long_name: None,
+                desc: None,
+                category: package.get_category(),
+                introduction: None,
+                admin_data: package.get_admin_data(),
+            },
+            document,
+        )?;
 
         // py writeARPackageElements — one <TAG> per element carrying the
         // common Identifiable parts; per-class payload is the P2–P4 port.
@@ -307,37 +329,258 @@ impl ARXMLWriter {
         if !elements.is_empty() {
             writer.write_event(Event::Start(BytesStart::new("ELEMENTS")))?;
             for element_ref in elements {
-                let tag = element_registry::element_tag(element_ref);
-                let mut element = BytesStart::new(tag);
-                if let Some(checksum) = element_registry::element_checksum(document, element_ref) {
-                    element.push_attribute(("S", checksum));
-                }
-                if let Some(timestamp) = element_registry::element_timestamp(document, element_ref)
-                {
-                    element.push_attribute(("T", timestamp));
-                }
-                if let Some(uuid) = element_registry::element_uuid(document, element_ref) {
-                    element.push_attribute(("UUID", uuid));
-                }
-                writer.write_event(Event::Start(element))?;
-                let short_name = element_registry::element_short_name(document, element_ref);
-                let short_name_element = BytesStart::new("SHORT-NAME");
-                write_text_element(writer, "SHORT-NAME", short_name_element, short_name)?;
-                if let Some(category) = element_registry::element_category(document, element_ref) {
-                    let category_element = BytesStart::new("CATEGORY");
-                    write_text_element(writer, "CATEGORY", category_element, Some(category))?;
-                }
-                writer.write_event(Event::End(BytesEnd::new(tag)))?;
+                self.write_ar_package_element(writer, *element_ref, document)?;
             }
             writer.write_event(Event::End(BytesEnd::new("ELEMENTS")))?;
         }
 
-        // py writeReferenceBases — nothing to emit in P0 (the list is empty).
+        // py writeReferenceBases — nothing to emit until Task 5 ports it.
 
         // py writeARPackages (nested packages last)
         self.write_ar_packages(writer, package.get_ar_packages(), document)?;
 
         writer.write_event(Event::End(BytesEnd::new("AR-PACKAGE")))?;
+        Ok(())
+    }
+
+    /// S/T/UUID attributes in py's historical order (S, T, UUID) — shared by
+    /// `write_ar_package` and every per-class emitter.
+    fn write_identifiable_attributes(
+        &self,
+        element: &mut BytesStart<'_>,
+        checksum: Option<&str>,
+        timestamp: Option<&str>,
+        uuid: Option<&str>,
+    ) {
+        if let Some(checksum) = checksum {
+            element.push_attribute(("S", checksum));
+        }
+        if let Some(timestamp) = timestamp {
+            element.push_attribute(("T", timestamp));
+        }
+        if let Some(uuid) = uuid {
+            element.push_attribute(("UUID", uuid));
+        }
+    }
+
+    /// py `writeIdentifiable` tail: LONG-NAME, DESC, CATEGORY, INTRODUCTION,
+    /// ADMIN-DATA — in exactly that element order.
+    fn write_identifiable_parts<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        parts: IdentifiableParts<'_>,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        if let Some(long_name) = parts
+            .long_name
+            .and_then(|id| document.multilanguage_long_names.get(id))
+        {
+            self.set_multi_long_name(writer, long_name, document)?;
+        }
+        if let Some(desc) = parts
+            .desc
+            .and_then(|id| document.multi_language_overview_paragraphs.get(id))
+        {
+            self.set_multi_language_overview_paragraph(writer, desc, document)?;
+        }
+        if let Some(category) = parts.category {
+            write_text_element(
+                writer,
+                "CATEGORY",
+                BytesStart::new("CATEGORY"),
+                Some(category),
+            )?;
+        }
+        if let Some(introduction) = parts
+            .introduction
+            .and_then(|id| document.documentation_blocks.get(id))
+        {
+            self.write_documentation_block(writer, "INTRODUCTION", introduction, document)?;
+        }
+        if let Some(admin_data) = parts.admin_data.and_then(|id| document.admin_datas.get(id)) {
+            self.write_admin_data(writer, admin_data, document)?;
+        }
+        Ok(())
+    }
+
+    /// py `setMultiLongName` / `setLLongName` — L attr, text, then S/T
+    /// (writeMixedContentForLongName runs after the text is set).
+    fn set_multi_long_name<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        long_name: &MultilanguageLongName,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let mut element = BytesStart::new("LONG-NAME");
+        self.write_ar_object_attributes(&mut element, long_name.base());
+        writer.write_event(Event::Start(element))?;
+        for l4_id in long_name.get_l4() {
+            if let Some(l4) = document.l_long_names.get(*l4_id) {
+                let mut l4_element = BytesStart::new("L-4");
+                if let Some(l) = l4.get_l() {
+                    l4_element.push_attribute(("L", l));
+                }
+                if let Some(sup) = l4.get_sup() {
+                    l4_element.push_attribute(("SUP", sup));
+                }
+                if let Some(sub) = l4.get_sub() {
+                    l4_element.push_attribute(("SUB", sub));
+                }
+                self.write_ar_object_attributes(&mut l4_element, l4.base().base());
+                write_text_element(writer, "L-4", l4_element, l4.get_value())?;
+            }
+        }
+        writer.write_event(Event::End(BytesEnd::new("LONG-NAME")))?;
+        Ok(())
+    }
+
+    /// py `setMultiLanguageOverviewParagraph` / `setLOverviewParagraph` —
+    /// S/T then L on each L-2 (setLanguageSpecific writes ARObject first).
+    fn set_multi_language_overview_paragraph<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        paragraph: &MultiLanguageOverviewParagraph,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let mut element = BytesStart::new("DESC");
+        self.write_ar_object_attributes(&mut element, paragraph.base());
+        writer.write_event(Event::Start(element))?;
+        for l2_id in paragraph.get_l2() {
+            if let Some(l2) = document.l_overview_paragraphs.get(*l2_id) {
+                let mut l2_element = BytesStart::new("L-2");
+                self.write_ar_object_attributes(&mut l2_element, l2.base().base());
+                if let Some(l) = l2.get_l() {
+                    l2_element.push_attribute(("L", l));
+                }
+                if let Some(blueprint) = l2.get_blueprint_value() {
+                    l2_element.push_attribute(("BLUEPRINT-VALUE", blueprint));
+                }
+                write_text_element(writer, "L-2", l2_element, l2.get_value())?;
+            }
+        }
+        writer.write_event(Event::End(BytesEnd::new("DESC")))?;
+        Ok(())
+    }
+
+    /// py `writeDocumentationBlock` / `writeDocumentationBlockContent` —
+    /// P paragraphs and LISTs; the other block kinds do not occur in the
+    /// pinned fixtures (tracked on the port checklist).
+    fn write_documentation_block<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        key: &str,
+        block: &DocumentationBlock,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        writer.write_event(Event::Start(BytesStart::new(key)))?;
+        self.write_documentation_block_content(writer, block, document)?;
+        writer.write_event(Event::End(BytesEnd::new(key)))?;
+        Ok(())
+    }
+
+    fn write_documentation_block_content<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        block: &DocumentationBlock,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        // py setMultiLanguageParagraphs(element, "P", …)
+        for paragraph_id in block.get_ps() {
+            if let Some(paragraph) = document.multi_language_paragraphs.get(*paragraph_id) {
+                let mut p_element = BytesStart::new("P");
+                if let Some(help) = paragraph.get_help_entry() {
+                    p_element.push_attribute(("HELP-ENTRY", help));
+                }
+                self.write_paginateable_attrs(&mut p_element, paragraph.base());
+                writer.write_event(Event::Start(p_element))?;
+                // py writeLParagraphs — S/T, text, then L (attributes in
+                // py's dict-insertion order; the text is the element text).
+                for l1_id in paragraph.get_l1() {
+                    if let Some(l1) = document.l_paragraphs.get(*l1_id) {
+                        let mut l1_element = BytesStart::new("L-1");
+                        self.write_ar_object_attributes(&mut l1_element, l1.base().base());
+                        if let Some(l) = l1.get_l() {
+                            l1_element.push_attribute(("L", l));
+                        }
+                        write_text_element(writer, "L-1", l1_element, l1.get_value())?;
+                    }
+                }
+                writer.write_event(Event::End(BytesEnd::new("P")))?;
+            }
+        }
+        // py setListElement(element, "LIST", …)
+        for list_id in block.get_lists() {
+            if let Some(list) = document.ar_lists.get(*list_id) {
+                let mut list_element = BytesStart::new("LIST");
+                self.write_paginateable_attrs(&mut list_element, list.base());
+                if let Some(list_type) = list.get_type() {
+                    // py: type.getValue().upper()
+                    let value = list_type.as_str().to_uppercase();
+                    list_element.push_attribute(("TYPE", value.as_str()));
+                }
+                writer.write_event(Event::Start(list_element))?;
+                for item_id in list.get_items() {
+                    if let Some(item) = document.items.get(*item_id) {
+                        let mut item_element = BytesStart::new("ITEM");
+                        self.write_paginateable_attrs(&mut item_element, item.base());
+                        writer.write_event(Event::Start(item_element))?;
+                        if let Some(contents) = item
+                            .get_item_contents()
+                            .and_then(|id| document.documentation_blocks.get(id))
+                        {
+                            self.write_documentation_block_content(writer, contents, document)?;
+                        }
+                        writer.write_event(Event::End(BytesEnd::new("ITEM")))?;
+                    }
+                }
+                writer.write_event(Event::End(BytesEnd::new("LIST")))?;
+            }
+        }
+        Ok(())
+    }
+
+    /// py `writePaginateable` — BREAK / KEEP-WITH-PREVIOUS attributes.
+    fn write_paginateable_attrs(
+        &self,
+        element: &mut BytesStart<'_>,
+        paginateable: &crate::m2::msr::documentation::block_elements::pagination_and_view::Paginateable,
+    ) {
+        if let Some(chapter_break) = paginateable.get_chapter_break() {
+            element.push_attribute(("BREAK", chapter_break.as_str()));
+        }
+        if let Some(keep) = paginateable.get_keep_with_previous() {
+            element.push_attribute(("KEEP-WITH-PREVIOUS", keep.as_str()));
+        }
+    }
+
+    /// py `writeARPackageElement`'s isinstance chain. Grows one arm per
+    /// ported family; the wildcard keeps unported families on the P0 shape
+    /// (common Identifiable parts only).
+    fn write_ar_package_element<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        element_ref: ElementRef,
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        let tag = element_registry::element_tag(&element_ref);
+        let mut element = BytesStart::new(tag);
+        self.write_identifiable_attributes(
+            &mut element,
+            element_registry::element_checksum(document, &element_ref),
+            element_registry::element_timestamp(document, &element_ref),
+            element_registry::element_uuid(document, &element_ref),
+        );
+        writer.write_event(Event::Start(element))?;
+        let short_name = element_registry::element_short_name(document, &element_ref);
+        let short_name_element = BytesStart::new("SHORT-NAME");
+        write_text_element(writer, "SHORT-NAME", short_name_element, short_name)?;
+        if let Some(category) = element_registry::element_category(document, &element_ref) {
+            let category_element = BytesStart::new("CATEGORY");
+            write_text_element(writer, "CATEGORY", category_element, Some(category))?;
+        }
+        // LongName/Desc/Introduction/AdminData per family land with Tasks 4-9;
+        // the registry's category setters own everything the P0 model tracks.
+        writer.write_event(Event::End(BytesEnd::new(tag)))?;
         Ok(())
     }
 }

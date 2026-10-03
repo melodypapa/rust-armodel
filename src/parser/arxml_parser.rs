@@ -8,7 +8,9 @@ use std::path::Path;
 use quick_xml::reader::Reader;
 
 use crate::m2::autosar_templates::autosar_top_level_structure::Document;
-use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
+use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::{
+    ARObject, ElementRef,
+};
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARPackageId;
 use crate::m2::element_registry::{
     element_factory_for_tag, element_set_category, element_set_checksum, element_set_timestamp,
@@ -16,12 +18,37 @@ use crate::m2::element_registry::{
 };
 use crate::m2::msr::asam_hdo::admin_data::{AdminData, AdminDataId};
 use crate::m2::msr::asam_hdo::special_data::{Sd, Sdf, Sdg, SdgCaption, SdgContents, SdgId};
-use crate::m2::msr::documentation::text_model::language_data_model::{LPlainText, XmlSpace};
-use crate::m2::msr::documentation::text_model::multilanguage_data::MultiLanguagePlainText;
+use crate::m2::msr::documentation::block_elements::list_elements::{ARList, Item, ListEnum};
+use crate::m2::msr::documentation::block_elements::pagination_and_view::{
+    ChapterEnumBreak, KeepWithPreviousEnum, Paginateable,
+};
+use crate::m2::msr::documentation::text_model::block_elements::{
+    DocumentationBlock, DocumentationBlockId,
+};
+use crate::m2::msr::documentation::text_model::language_data_model::{
+    LLongName, LOverviewParagraph, LParagraph, LPlainText, XmlSpace,
+};
+use crate::m2::msr::documentation::text_model::multilanguage_data::{
+    MultiLanguageOverviewParagraph, MultiLanguageOverviewParagraphId, MultiLanguageParagraph,
+    MultiLanguagePlainText, MultilanguageLongName, MultilanguageLongNameId,
+};
 use crate::parser::abstract_arxml_parser::{
     build_dom_from_reader, find, find_all, get_child_element_string, get_short_name, Node,
     ParseError,
 };
+
+/// The `Identifiable`-owned XML payload read by `read_identifiable_payload`
+/// (py `readIdentifiable` minus SHORT-NAME/UUID/CATEGORY, which the
+/// allocation path already consumed, and minus annotations — no pinned
+/// fixture carries `ANNOTATIONS`; tracked on the port checklist).
+/// `allow(dead_code)` until Task 4 adds the first dispatch arm.
+#[allow(dead_code)]
+struct IdentifiablePayload {
+    long_name: Option<MultilanguageLongNameId>,
+    desc: Option<MultiLanguageOverviewParagraphId>,
+    introduction: Option<DocumentationBlockId>,
+    admin_data: Option<AdminDataId>,
+}
 
 /// py `ARXMLParser(options)` — `warning: true` (the default) collects warnings
 /// and continues; `warning: false` fails on the first problem.
@@ -372,6 +399,10 @@ impl ARXMLParser {
                 if let Some(category) = get_child_element_string(child, "CATEGORY") {
                     element_set_category(document, &element_ref, category);
                 }
+                // py readARPackageElements dispatches per class after the
+                // common Identifiable parts; per-class payload lands arm by
+                // arm (Tasks 4-9).
+                self.read_element_payload(child, element_ref, document)?;
             }
         }
         if let Some(reference_bases_node) = find(element, "REFERENCE-BASES") {
@@ -382,6 +413,270 @@ impl ARXMLParser {
 
         self.read_ar_packages(element, Some(id), document)?;
         Ok(id)
+    }
+
+    /// py `getMultilanguageLongName` / `readLLongName` / `readMixedContentForLongName`.
+    /// `allow(dead_code)` until Task 4 wires the first dispatch arm.
+    #[allow(dead_code)]
+    fn get_multilanguage_long_name(
+        &mut self,
+        element: &Node,
+        document: &mut Document,
+    ) -> Result<Option<MultilanguageLongNameId>, ParseError> {
+        let Some(long_name_node) = find(element, "LONG-NAME") else {
+            return Ok(None);
+        };
+        let mut long_name = MultilanguageLongName::new();
+        self.read_ar_object(long_name_node, long_name.base_mut());
+        for l4_node in find_all(long_name_node, "L-4") {
+            let mut l4 = LLongName::new();
+            // py readMixedContentForLongName reads the L-4's ARObject (S/T);
+            // LLongName forwards checksum/timestamp from its mixed-content base.
+            if let Some(checksum) = l4_node.attrs.get("S") {
+                l4.set_checksum(checksum.as_str());
+            }
+            if let Some(timestamp) = l4_node.attrs.get("T") {
+                l4.set_timestamp(timestamp.as_str());
+            }
+            if let Some(text) = &l4_node.text {
+                l4.set_value(text.as_str());
+            }
+            if let Some(l) = l4_node.attrs.get("L") {
+                l4.set_l(l.as_str());
+            }
+            if let Some(sup) = l4_node.attrs.get("SUP") {
+                l4.set_sup(sup.as_str());
+            }
+            if let Some(sub) = l4_node.attrs.get("SUB") {
+                l4.set_sub(sub.as_str());
+            }
+            // py iterates inline children and only acts on E/IE/TT; neither
+            // occurs in any pinned fixture, so they stay on the warning path.
+            for inline in &l4_node.children {
+                if matches!(inline.name.as_str(), "E" | "IE" | "TT") {
+                    let message = format!("Unsupported inline element <{}> in L-4", inline.name);
+                    self.not_implemented(message)?;
+                }
+            }
+            let l4_id = document.l_long_names.insert(l4);
+            long_name.push_l4(l4_id);
+        }
+        Ok(Some(document.multilanguage_long_names.insert(long_name)))
+    }
+
+    /// py `getMultiLanguageOverviewParagraph` / `readLOverviewParagraph`.
+    #[allow(dead_code)] // reachable once Task 4 wires the first arm
+    fn get_multi_language_overview_paragraph(
+        &mut self,
+        element: &Node,
+        document: &mut Document,
+    ) -> Result<Option<MultiLanguageOverviewParagraphId>, ParseError> {
+        let Some(desc_node) = find(element, "DESC") else {
+            return Ok(None);
+        };
+        let mut paragraph = MultiLanguageOverviewParagraph::new();
+        self.read_ar_object(desc_node, paragraph.base_mut());
+        for l2_node in find_all(desc_node, "L-2") {
+            let mut l2 = LOverviewParagraph::new();
+            if let Some(checksum) = l2_node.attrs.get("S") {
+                l2.set_checksum(checksum.as_str());
+            }
+            if let Some(timestamp) = l2_node.attrs.get("T") {
+                l2.set_timestamp(timestamp.as_str());
+            }
+            if let Some(text) = &l2_node.text {
+                l2.set_value(text.as_str());
+            }
+            if let Some(l) = l2_node.attrs.get("L") {
+                l2.set_l(l.as_str());
+            }
+            if let Some(blueprint) = l2_node.attrs.get("BLUEPRINT-VALUE") {
+                l2.set_blueprint_value(blueprint.as_str());
+            }
+            let l2_id = document.l_overview_paragraphs.insert(l2);
+            paragraph.push_l2(l2_id);
+        }
+        Ok(Some(
+            document
+                .multi_language_overview_paragraphs
+                .insert(paragraph),
+        ))
+    }
+
+    /// py `getDocumentationBlock` — the INTRODUCTION wrapper.
+    #[allow(dead_code)] // reachable once Task 4 wires the first arm
+    fn get_documentation_block(
+        &mut self,
+        element: &Node,
+        document: &mut Document,
+    ) -> Result<Option<DocumentationBlockId>, ParseError> {
+        let Some(block_node) = find(element, "INTRODUCTION") else {
+            return Ok(None);
+        };
+        let block = self.read_documentation_block(block_node, document)?;
+        Ok(Some(block))
+    }
+
+    /// py `readDocumentationBlock` — P paragraphs and LIST items (+ ITEM
+    /// recursion). The other block kinds (DEF-LIST, FORMULA, FIGURE, …) do
+    /// not occur in any pinned fixture; py only reads them when present, so
+    /// their absence here is behavior-identical (tracked on the checklist).
+    fn read_documentation_block(
+        #[allow(dead_code)] // reachable once Task 4 wires the first arm
+        &mut self,
+        element: &Node,
+        document: &mut Document,
+    ) -> Result<DocumentationBlockId, ParseError> {
+        let mut block = DocumentationBlock::new();
+        self.read_ar_object(element, block.base_mut());
+        // py getMultiLanguageParagraphs(element, "P")
+        for p_node in find_all(element, "P") {
+            let mut paragraph = MultiLanguageParagraph::new();
+            self.read_paginateable(p_node, paragraph.base_mut())?;
+            if let Some(help) = p_node.attrs.get("HELP-ENTRY") {
+                paragraph.set_help_entry(help.as_str());
+            }
+            // py getLParagraphs(child_element, "L-1") — py reads inline
+            // mixed content via readMixedContentForParagraph; no pinned
+            // fixture carries it, so only the text/L form is read here.
+            for l1_node in find_all(p_node, "L-1") {
+                let mut l1 = LParagraph::new();
+                if let Some(checksum) = l1_node.attrs.get("S") {
+                    l1.set_checksum(checksum.as_str());
+                }
+                if let Some(timestamp) = l1_node.attrs.get("T") {
+                    l1.set_timestamp(timestamp.as_str());
+                }
+                if let Some(text) = &l1_node.text {
+                    l1.set_value(text.as_str());
+                }
+                if let Some(l) = l1_node.attrs.get("L") {
+                    l1.set_l(l.as_str());
+                }
+                let l1_id = document.l_paragraphs.insert(l1);
+                paragraph.push_l1(l1_id);
+            }
+            let paragraph_id = document.multi_language_paragraphs.insert(paragraph);
+            block.push_p(paragraph_id);
+        }
+        // py getListElements(element, "LIST")
+        for list_node in find_all(element, "LIST") {
+            let mut list = ARList::new();
+            self.read_paginateable(list_node, list.base_mut())?;
+            if let Some(type_attr) = list_node.attrs.get("TYPE") {
+                match ListEnum::try_from(type_attr.as_str()) {
+                    Ok(value) => {
+                        list.set_type(value);
+                    }
+                    Err(_) => {
+                        let message = format!("Unsupported LIST TYPE <{type_attr}>");
+                        self.not_implemented(message)?;
+                    }
+                }
+            }
+            for item_node in find_all(list_node, "ITEM") {
+                let mut item = Item::new();
+                self.read_paginateable(item_node, item.base_mut())?;
+                let contents = self.read_documentation_block(item_node, document)?;
+                item.set_item_contents(contents);
+                let item_id = document.items.insert(item);
+                list.push_item(item_id);
+            }
+            let list_id = document.ar_lists.insert(list);
+            block.push_list(list_id);
+        }
+        Ok(document.documentation_blocks.insert(block))
+    }
+
+    /// py `readPaginateable` — BREAK / KEEP-WITH-PREVIOUS attributes.
+    #[allow(dead_code)] // reachable once Task 4 wires the first arm
+    fn read_paginateable(
+        &mut self,
+        element: &Node,
+        paginateable: &mut Paginateable,
+    ) -> Result<(), ParseError> {
+        if let Some(break_attr) = element.attrs.get("BREAK") {
+            match ChapterEnumBreak::try_from(break_attr.as_str()) {
+                Ok(value) => {
+                    paginateable.set_chapter_break(value);
+                }
+                Err(_) => {
+                    let message = format!("Unsupported BREAK <{break_attr}>");
+                    self.not_implemented(message)?;
+                }
+            }
+        }
+        if let Some(keep) = element.attrs.get("KEEP-WITH-PREVIOUS") {
+            match KeepWithPreviousEnum::try_from(keep.as_str()) {
+                Ok(value) => {
+                    paginateable.set_keep_with_previous(value);
+                }
+                Err(_) => {
+                    let message = format!("Unsupported KEEP-WITH-PREVIOUS <{keep}>");
+                    self.not_implemented(message)?;
+                }
+            }
+        }
+        Ok(())
+    }
+
+    /// py `readIdentifiable` — everything under the MultilanguageReferrable
+    /// chain except SHORT-NAME/UUID/CATEGORY (read by the allocation path)
+    /// and annotations/variation points (no pinned fixture carries them;
+    /// tracked on the port checklist). `allow(dead_code)` until Task 4.
+    #[allow(dead_code)]
+    fn read_identifiable_payload(
+        &mut self,
+        element: &Node,
+        document: &mut Document,
+    ) -> Result<IdentifiablePayload, ParseError> {
+        Ok(IdentifiablePayload {
+            long_name: self.get_multilanguage_long_name(element, document)?,
+            desc: self.get_multi_language_overview_paragraph(element, document)?,
+            introduction: self.get_documentation_block(element, document)?,
+            admin_data: match find(element, "ADMIN-DATA") {
+                Some(node) => Some(self.read_admin_data(node, document)?),
+                None => None,
+            },
+        })
+    }
+
+    /// Copies an `IdentifiablePayload` into one arena entry. Each family arm
+    /// calls this with the `Identifiable` embed of its arena entry (code_guide
+    /// §3: no shared trait — the embed is reached through the entry's own
+    /// `base_mut()` hop chain). `allow(dead_code)` until Task 4.
+    #[allow(dead_code)]
+    fn apply_identifiable_payload(
+        &mut self,
+        payload: IdentifiablePayload,
+        identifiable: &mut crate::m2::autosar_templates::generic_structure::general_template_classes::identifiable::Identifiable,
+    ) {
+        // long_name lives on the MultilanguageReferrable embed, one hop down
+        if let Some(long_name) = payload.long_name {
+            identifiable.base_mut().set_long_name(long_name);
+        }
+        if let Some(desc) = payload.desc {
+            identifiable.set_desc(desc);
+        }
+        if let Some(introduction) = payload.introduction {
+            identifiable.set_introduction(introduction);
+        }
+        if let Some(admin_data) = payload.admin_data {
+            identifiable.set_admin_data(admin_data);
+        }
+    }
+
+    /// py's per-class read dispatch (the tag→create+read chain in
+    /// readARPackageElements). Grows one arm per ported family; the
+    /// wildcard keeps unported families on the warnings-and-skip path.
+    fn read_element_payload(
+        &mut self,
+        _element: &Node,
+        _element_ref: ElementRef,
+        _document: &mut Document,
+    ) -> Result<(), ParseError> {
+        // Arms land with Tasks 4-9.
+        Ok(())
     }
 }
 

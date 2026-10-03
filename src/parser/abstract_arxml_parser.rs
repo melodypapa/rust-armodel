@@ -12,6 +12,8 @@ use quick_xml::reader::Reader;
 use quick_xml::XmlVersion;
 use thiserror::Error;
 
+use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefType;
+
 /// Error model mirroring py's raise/notImplemented split
 /// (`docs/code_guide.md` §7).
 #[derive(Debug, Error)]
@@ -225,6 +227,47 @@ pub fn get_short_name(element: &Node) -> Result<String, ParseError> {
             reason: "SHORT-NAME is required".to_string(),
         }),
     }
+}
+
+/// py `getChildElementOptionalBooleanValue` — text "true" is true, anything
+/// else false; empty or absent is None.
+pub fn get_child_element_optional_boolean(element: &Node, key: &str) -> Option<bool> {
+    let text = get_child_element_string(element, key)?;
+    if text.is_empty() {
+        None
+    } else {
+        Some(text == "true")
+    }
+}
+
+/// py `getChildElementOptionalRefType` / `_getChildElementRefTypeDestAndValue`
+/// — BASE and DEST attributes plus the text value.
+pub fn get_child_element_optional_ref_type(element: &Node, key: &str) -> Option<RefType> {
+    let child = find(element, key)?;
+    Some(get_ref_type_dest_and_value(child))
+}
+
+/// py `getChildElementRefTypeList` — `key` may be a nested path like
+/// `ELEMENT-REFS/ELEMENT-REF` (`find_all` splits on '/').
+pub fn get_child_element_ref_type_list(element: &Node, key: &str) -> Vec<RefType> {
+    find_all(element, key)
+        .into_iter()
+        .map(get_ref_type_dest_and_value)
+        .collect()
+}
+
+fn get_ref_type_dest_and_value(element: &Node) -> RefType {
+    let mut r#ref = RefType::new();
+    if let Some(base) = element.attrs.get("BASE") {
+        r#ref.set_base(base.as_str());
+    }
+    if let Some(dest) = element.attrs.get("DEST") {
+        r#ref.set_dest(dest.as_str());
+    }
+    if let Some(text) = &element.text {
+        r#ref.set_value(text.as_str());
+    }
+    r#ref
 }
 
 #[cfg(test)]

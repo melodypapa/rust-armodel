@@ -28,6 +28,11 @@ const FIXTURE_COUNT: usize = 32;
 const WARNING_FREE_SOURCES: &[&str] = &[
     "AdminDataWhitespace.arxml",
     "AUTOSAR_MOD_AISpecification_BaseTypes_Standard.arxml",
+    "AUTOSAR_MOD_AISpecification_Collection_Body_Blueprint.arxml",
+    "AUTOSAR_MOD_AISpecification_Collection_Chassis_Blueprint.arxml",
+    "AUTOSAR_MOD_AISpecification_Collection_MmedTelmHmi_Blueprint.arxml",
+    "AUTOSAR_MOD_AISpecification_Collection_OccptPedSfty_Blueprint.arxml",
+    "AUTOSAR_MOD_AISpecification_Collection_Pt_Blueprint.arxml",
 ];
 
 fn fixture_files() -> Vec<PathBuf> {
@@ -128,11 +133,6 @@ const P2_P4_PENDING: &[&str] = &[
     "AUTOSAR_Datatypes.arxml",
     "AUTOSAR_MOD_AISpecification_ApplicationDataType_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_ApplicationDataType_LifeCycle_Standard.arxml",
-    "AUTOSAR_MOD_AISpecification_Collection_Body_Blueprint.arxml",
-    "AUTOSAR_MOD_AISpecification_Collection_Chassis_Blueprint.arxml",
-    "AUTOSAR_MOD_AISpecification_Collection_MmedTelmHmi_Blueprint.arxml",
-    "AUTOSAR_MOD_AISpecification_Collection_OccptPedSfty_Blueprint.arxml",
-    "AUTOSAR_MOD_AISpecification_Collection_Pt_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_CompuMethod_Blueprint.arxml",
     "AUTOSAR_MOD_AISpecification_CompuMethod_LifeCycle_Standard.arxml",
     "AUTOSAR_MOD_AISpecification_DataConstr_Blueprint.arxml",

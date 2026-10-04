@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Split the hand-written `arxml_parser.rs` (2,318 lines) and `arxml_writer.rs` (2,240 lines) into per-domain modules so the P2–P4 mass port (~2,400 more methods) lands in small, reviewable files instead of two multi-thousand-method impl blocks.
+**Goal:** Rename the reader layer to `reader` (matching the port vocabulary) and split the hand-written `arxml_reader.rs` (2,318 lines) and `arxml_writer.rs` (2,240 lines) into per-domain modules so the P2–P4 mass port (~2,400 more methods) lands in small, reviewable files instead of two multi-thousand-method impl blocks.
 
-**Architecture:** Pure-move refactor per the approved spec (`docs/superpowers/specs/2026-10-04-parser-writer-domain-split-design.md`): `arxml_parser.rs` becomes `arxml_parser/mod.rs` + 12 domain files (same for the writer). Every method stays on the same struct — `impl ARXMLParser { … }` blocks simply live in different files. No public API, call site, harness, or fixture changes. Dispatch arms stay in `mod.rs` and only ever call `pub(super)` methods.
+**Architecture:** Task 0 is a mechanical rename (`src/parser/` → `src/reader/`, `ARXMLParser` → `ARXMLReader`, `ParserOptions` → `ReaderOptions`); everything after is a pure-move refactor per the approved spec (`docs/superpowers/specs/2026-10-04-parser-writer-domain-split-design.md`): `arxml_reader.rs` becomes `arxml_reader/mod.rs` + 12 domain files (same for the writer). Every method stays on the same struct — `impl ARXMLReader { … }` blocks simply live in different files. No structural API, call site, harness, or fixture changes beyond Task 0's rename. Dispatch arms stay in `mod.rs` and only ever call `pub(super)` methods.
 
 **Tech Stack:** Rust stable / edition 2021; no new dependencies. Gate after every task: `cargo build && cargo fmt --all && cargo clippy --all-targets -- -D warnings && cargo test` — all must be green before the task's commit.
 
@@ -14,7 +14,7 @@
 
 ## Ground truth (verified at commit `01331e1`, the parent of this branch)
 
-Line ranges below refer to `src/parser/arxml_parser.rs` / `src/writer/arxml_writer.rs` at that commit. After earlier tasks move code, **locate each function with `grep -n "fn <name>" <file>`** — the ranges are a reference map, not stable coordinates. Each moved function's body is copied **verbatim**: same signature, same body, same doc comments.
+Line ranges below refer to `src/reader/arxml_reader.rs` / `src/writer/arxml_writer.rs` at that commit. After earlier tasks move code, **locate each function with `grep -n "fn <name>" <file>`** — the ranges are a reference map, not stable coordinates. Each moved function's body is copied **verbatim**: same signature, same body, same doc comments.
 
 ### Parser inventory → domain
 
@@ -32,9 +32,9 @@ Line ranges below refer to `src/parser/arxml_parser.rs` / `src/writer/arxml_writ
 | `life_cycle.rs` | `read_life_cycle_info_set` (1722), `get_life_cycle_period` (1946), `read_life_cycle_info` (1969), `read_life_cycle_info_set_payload` (2001) | `read_life_cycle_info_set` |
 | `physical_dimension.rs` | `read_physical_dimension` (1763) | `read_physical_dimension` |
 | `unit.rs` | `read_unit` (1820) | `read_unit` |
-| `mod.rs` keeps | `ParserOptions`, `default_options`, struct `ARXMLParser`, `load`, `load_from_reader`, `raise_error`, `not_implemented`, `read_ar_packages` (375), `read_ar_package` (396), `read_element_payload` (759), free fns (`xsd_to_version` 2043, `element_factory_for_tag`, `element_set_*`), tests: `parse_sample`, `load_sets_schema_location_and_release`, `load_rejects_wrong_root`, `reference_bases_parse_into_the_arena`, `packages_nest_through_the_document_factory` | — |
+| `mod.rs` keeps | `ReaderOptions`, `default_options`, struct `ARXMLReader`, `load`, `load_from_reader`, `raise_error`, `not_implemented`, `read_ar_packages` (375), `read_ar_package` (396), `read_element_payload` (759), free fns (`xsd_to_version` 2043, `element_factory_for_tag`, `element_set_*`), tests: `parse_sample`, `load_sets_schema_location_and_release`, `load_rejects_wrong_root`, `reference_bases_parse_into_the_arena`, `packages_nest_through_the_document_factory` | — |
 
-Why `pub(super)`: a child module's private items are invisible to the parent — `read_element_payload` (in `mod.rs`) calls each domain's dispatch-target reader, so those must be `pub(super)` (visible throughout the `arxml_parser` module tree). Functions called only within their own file stay private.
+Why `pub(super)`: a child module's private items are invisible to the parent — `read_element_payload` (in `mod.rs`) calls each domain's dispatch-target reader, so those must be `pub(super)` (visible throughout the `arxml_reader` module tree). Functions called only within their own file stay private.
 
 ### Writer inventory → domain
 
@@ -59,11 +59,11 @@ Why `pub(super)`: a child module's private items are invisible to the parent —
 Every domain file starts with a one-line header and `use super::*;` — a child module's glob import brings the parent's items (struct, `Node`, `ParseError`, `Reader`, arena types), so no import hunting is needed. Glob imports never trigger unused-import warnings, so clippy stays clean even as imports become unnecessary in `mod.rs` (remove a `mod.rs` `use` only when the compiler names it as unused).
 
 ```rust
-//! <Domain> readers (py read<Family> family). Part of the arxml_parser domain split
+//! <Domain> readers (py read<Family> family). Part of the arxml_reader domain split
 //! (docs/superpowers/specs/2026-10-04-parser-writer-domain-split-design.md).
 use super::*;
 
-impl ARXMLParser {
+impl ARXMLReader {
     // moved functions, verbatim, with the pub(super)/private visibility from the table
 }
 ```
@@ -82,19 +82,62 @@ Expected final line of `cargo test`: `test result: ok.` for every suite (8 suite
 
 ---
 
-### Task 1: parser — convert `arxml_parser.rs` to `arxml_parser/mod.rs`
+### Task 0: rename the reader layer (`parser` → `reader`)
 
 **Files:**
-- Create: `src/parser/arxml_parser/mod.rs` (from `src/parser/arxml_parser.rs`)
+- Rename: `src/parser/` → `src/reader/`, `src/parser/abstract_arxml_parser.rs` → `src/reader/abstract_arxml_reader.rs`, `src/parser/arxml_parser.rs` → `src/reader/arxml_reader.rs`
+- Modify: `src/lib.rs`, `src/bin/arxml-dump.rs`, `src/bin/arxml-format.rs`, `tests/integration/all_fixtures.rs`, `tests/integration/format_byte_roundtrip.rs`, `tests/integration/roundtrip.rs`, `tests/integration/arxml_format.rs`
+
+- [ ] **Step 1: Mechanical rename** — move the files, then rewrite exactly five identifier mappings per file (everything else — `ParseError`, prose, py's own `ARXMLParser` class name — stays):
+
+```bash
+git mv src/parser src/reader
+git mv src/reader/abstract_arxml_parser.rs src/reader/abstract_arxml_reader.rs
+git mv src/reader/arxml_parser.rs src/reader/arxml_reader.rs
+
+grep -rl 'ARXMLParser\|ParserOptions\|arxml_parser\|mod parser\|parser::' src tests --include='*.rs' | while read -r f; do
+  sed -i '' -e 's/ARXMLParser/ARXMLReader/g' \
+            -e 's/ParserOptions/ReaderOptions/g' \
+            -e 's/abstract_arxml_parser/abstract_arxml_reader/g' \
+            -e 's/arxml_parser/arxml_reader/g' \
+            -e 's/mod parser/mod reader/' \
+            -e 's/parser::/reader::/g' "$f"
+done
+```
+
+(`sed` applies the expressions in order, so `arxml_parser::` collapses to `arxml_reader::` before the generic `parser::` rule runs; lib.rs becomes `pub mod reader;` / `pub use reader::arxml_reader::{default_options, ARXMLReader, ReaderOptions};` / `pub use reader::abstract_arxml_reader::ParseError;`.)
+
+- [ ] **Step 2: Verify nothing was missed**
+
+```bash
+grep -rn 'ARXMLParser\|ParserOptions\|arxml_parser\|mod parser\|parser::' src tests --include='*.rs' | grep -v 'ParseError' | grep -v 'AbstractARXMLParser'
+```
+
+Expected: empty output (`AbstractARXMLParser` is py's class name in a comment — it stays).
+
+- [ ] **Step 3: Full gate** — expected: all green. The harness exercises the renamed API end-to-end (all four integration files import `armodel::reader::arxml_reader`).
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add -A && git commit -m "refactor!: rename the reader layer (src/parser -> src/reader, ARXMLParser -> ARXMLReader)"
+```
+
+(The crate is 0.x with no external consumers; the public-API rename is deliberate per the spec's Non-goals.)
+
+### Task 1: reader — convert `arxml_reader.rs` to `arxml_reader/mod.rs`
+
+**Files:**
+- Create: `src/reader/arxml_reader/mod.rs` (from `src/reader/arxml_reader.rs`)
 
 - [ ] **Step 1: Pure file move**
 
 ```bash
-mkdir -p src/parser/arxml_parser
-git mv src/parser/arxml_parser.rs src/parser/arxml_parser/mod.rs
+mkdir -p src/reader/arxml_reader
+git mv src/reader/arxml_reader.rs src/reader/arxml_reader/mod.rs
 ```
 
-`src/parser/mod.rs` keeps `pub mod arxml_parser;` — Rust resolves the directory module automatically. `lib.rs` and all call sites are untouched.
+`src/reader/mod.rs` keeps `pub mod arxml_reader;` — Rust resolves the directory module automatically. `lib.rs` and all call sites are untouched.
 
 - [ ] **Step 2: Verify checklist scanner still finds methods in the directory module**
 
@@ -111,24 +154,24 @@ Expected: `CHECK-OK`. If the diff is non-empty, the scanner does not recurse int
 - [ ] **Step 4: Commit**
 
 ```bash
-git add -A && git commit -m "refactor(parser): arxml_parser.rs -> arxml_parser/mod.rs (domain split 1/2, pure move)"
+git add -A && git commit -m "refactor(reader): arxml_reader.rs -> arxml_reader/mod.rs (domain split 1/2, pure move)"
 ```
 
-### Task 2: parser — `common.rs` (abstract-level helpers)
+### Task 2: reader — `common.rs` (abstract-level helpers)
 
 **Files:**
-- Create: `src/parser/arxml_parser/common.rs`
-- Modify: `src/parser/arxml_parser/mod.rs`
+- Create: `src/reader/arxml_reader/common.rs`
+- Modify: `src/reader/arxml_reader/mod.rs`
 
 - [ ] **Step 1: Create the file with moved content**
 
 ```rust
 //! ARObject-level helpers shared by every domain reader (py's abstract-level
-//! readARObject / readIdentifiable chain). Part of the arxml_parser domain split
+//! readARObject / readIdentifiable chain). Part of the arxml_reader domain split
 //! (docs/superpowers/specs/2026-10-04-parser-writer-domain-split-design.md).
 use super::*;
 
-impl ARXMLParser {
+impl ARXMLReader {
     /// py `readARObject` — reads the `S` (checksum) and `T` (timestamp)
     /// attributes.
     pub(super) fn read_ar_object(&mut self, element: &Node, ar_object: &mut ARObject) {
@@ -148,27 +191,27 @@ struct IdentifiablePayload {
 }
 ```
 
-Move these out of `mod.rs` (locate with `grep -n "fn read_ar_object\|fn read_xml_space\|fn read_identifiable_payload\|struct IdentifiablePayload" src/parser/arxml_parser/mod.rs`): `read_ar_object` (~208-219), `read_xml_space` (~220-238), `read_identifiable_payload` (~736-758 incl. doc comment), `struct IdentifiablePayload` (~85-92 incl. doc comment). Make the three functions `pub(super)`. Delete them from `mod.rs`.
+Move these out of `mod.rs` (locate with `grep -n "fn read_ar_object\|fn read_xml_space\|fn read_identifiable_payload\|struct IdentifiablePayload" src/reader/arxml_reader/mod.rs`): `read_ar_object` (~208-219), `read_xml_space` (~220-238), `read_identifiable_payload` (~736-758 incl. doc comment), `struct IdentifiablePayload` (~85-92 incl. doc comment). Make the three functions `pub(super)`. Delete them from `mod.rs`.
 
 - [ ] **Step 2: Move the S/T test** — move `ar_object_s_t_attributes_parse_on_every_read_path` + `const AR_OBJECT_S_T_SAMPLE` from `mod.rs`'s `mod tests` into a new `#[cfg(test)] mod tests { use super::*; }` in `common.rs` (bodies verbatim).
 
 - [ ] **Step 3: Full gate.** Expected: compiler names nothing extra; if a sibling already used one of these via the same-module path and now errors, mark that call site's target `pub(super)` (it will be `pub(super)` already per the table).
 
-- [ ] **Step 4: Commit** — `git add -A && git commit -m "refactor(parser): common domain module (read_ar_object/xml_space/identifiable_payload)"`
+- [ ] **Step 4: Commit** — `git add -A && git commit -m "refactor(reader): common domain module (read_ar_object/xml_space/identifiable_payload)"`
 
-### Task 3: parser — `documentation.rs`
+### Task 3: reader — `documentation.rs`
 
-**Files:** Create `src/parser/arxml_parser/documentation.rs`; modify `mod.rs`.
+**Files:** Create `src/reader/arxml_reader/documentation.rs`; modify `mod.rs`.
 
 - [ ] **Step 1: Create the file**
 
 ```rust
 //! Multilanguage long-name / overview-paragraph / documentation-block readers
-//! (py readMultilanguageReferrable chain). Part of the arxml_parser domain split
+//! (py readMultilanguageReferrable chain). Part of the arxml_reader domain split
 //! (docs/superpowers/specs/2026-10-04-parser-writer-domain-split-design.md).
 use super::*;
 
-impl ARXMLParser {
+impl ARXMLReader {
     // get_multilanguage_long_name (537-583) — verbatim; pub(super)
     // get_multi_language_overview_paragraph (584-621) — verbatim; pub(super)
     // get_documentation_block (622-637) — verbatim; pub(super)
@@ -180,20 +223,20 @@ impl ARXMLParser {
 - [ ] **Step 2: Move the text-node test** — `identifiable_payload_round_trips_text_nodes` + `const IDENTIFIABLE_SAMPLE` move from `mod.rs` tests into `documentation.rs`'s test module (verbatim; it exercises exactly these helpers).
 
 - [ ] **Step 3: Full gate.**
-- [ ] **Step 4: Commit** — `refactor(parser): documentation domain module (long-name/desc/introduction readers)`
+- [ ] **Step 4: Commit** — `refactor(reader): documentation domain module (long-name/desc/introduction readers)`
 
-### Task 4: parser — `admin_data.rs`
+### Task 4: reader — `admin_data.rs`
 
-**Files:** Create `src/parser/arxml_parser/admin_data.rs`; modify `mod.rs`.
+**Files:** Create `src/reader/arxml_reader/admin_data.rs`; modify `mod.rs`.
 
 - [ ] **Step 1: Create the file**
 
 ```rust
-//! ADMIN-DATA / SDG readers. Part of the arxml_parser domain split
+//! ADMIN-DATA / SDG readers. Part of the arxml_reader domain split
 //! (docs/superpowers/specs/2026-10-04-parser-writer-domain-split-design.md).
 use super::*;
 
-impl ARXMLParser {
+impl ARXMLReader {
     // read_admin_data (239-300) — verbatim; pub(super)
     // read_sdg (301-374) — verbatim; private
 }
@@ -224,7 +267,7 @@ mod tests {
     #[test]
     fn admin_data_round_trips_through_the_model() {
         let mut document = Document::new();
-        ARXMLParser::new(default_options())
+        ARXMLReader::new(default_options())
             .load_from_reader(Reader::from_str(ADMIN_DATA_SAMPLE), &mut document)
             .unwrap();
 
@@ -254,21 +297,21 @@ mod tests {
 (The original `ADMIN-DATA` block in `SAMPLE` is unchanged by this substitution — same elements, same values.)
 
 - [ ] **Step 3: Full gate.**
-- [ ] **Step 4: Commit** — `refactor(parser): admin_data domain module (read_admin_data/read_sdg)`
+- [ ] **Step 4: Commit** — `refactor(reader): admin_data domain module (read_admin_data/read_sdg)`
 
-### Task 5: parser — `compu_method.rs`
+### Task 5: reader — `compu_method.rs`
 
-**Files:** Create `src/parser/arxml_parser/compu_method.rs`; modify `mod.rs`.
+**Files:** Create `src/reader/arxml_reader/compu_method.rs`; modify `mod.rs`.
 
 - [ ] **Step 1: Create the file**
 
 ```rust
 //! COMPU-METHOD readers (py readCompuMethod → getCompu → getCompuScales →
-//! readCompuScale → contents). Part of the arxml_parser domain split
+//! readCompuScale → contents). Part of the arxml_reader domain split
 //! (docs/superpowers/specs/2026-10-04-parser-writer-domain-split-design.md).
 use super::*;
 
-impl ARXMLParser {
+impl ARXMLReader {
     // get_compu_const_content (797-838) — verbatim; private
     // get_compu_const (839-856) — verbatim; private
     // read_compu_scale (857-939) — verbatim; private
@@ -279,22 +322,22 @@ impl ARXMLParser {
 ```
 
 - [ ] **Step 2: Full gate.**
-- [ ] **Step 3: Commit** — `refactor(parser): compu_method domain module`
+- [ ] **Step 3: Commit** — `refactor(reader): compu_method domain module`
 
-### Task 6: parser — `data_constr.rs`
+### Task 6: reader — `data_constr.rs`
 
-**Files:** Create `src/parser/arxml_parser/data_constr.rs`; modify `mod.rs`.
+**Files:** Create `src/reader/arxml_reader/data_constr.rs`; modify `mod.rs`.
 
 - [ ] **Step 1: Create the file**
 
 ```rust
 //! DATA-CONSTR readers (py readDataConstr → readDataConstrRule → constrs;
 //! get_child_limit_element is the shared LIMIT helper). Part of the
-//! arxml_parser domain split
+//! arxml_reader domain split
 //! (docs/superpowers/specs/2026-10-04-parser-writer-domain-split-design.md).
 use super::*;
 
-impl ARXMLParser {
+impl ARXMLReader {
     // read_scale_constr (1028-1062) — verbatim; private
     // read_data_constr (1063-1184) — verbatim; pub(super)  [dispatch target]
     // get_child_limit_element (1884-1911) — verbatim; private
@@ -302,41 +345,41 @@ impl ARXMLParser {
 ```
 
 - [ ] **Step 2: Full gate.**
-- [ ] **Step 3: Commit** — `refactor(parser): data_constr domain module`
+- [ ] **Step 3: Commit** — `refactor(reader): data_constr domain module`
 
-### Task 7: parser — `keyword.rs`
+### Task 7: reader — `keyword.rs`
 
-**Files:** Create `src/parser/arxml_parser/keyword.rs`; modify `mod.rs`.
+**Files:** Create `src/reader/arxml_reader/keyword.rs`; modify `mod.rs`.
 
 - [ ] **Step 1: Create the file**
 
 ```rust
-//! KEYWORD / KEYWORD-SET readers. Part of the arxml_parser domain split
+//! KEYWORD / KEYWORD-SET readers. Part of the arxml_reader domain split
 //! (docs/superpowers/specs/2026-10-04-parser-writer-domain-split-design.md).
 use super::*;
 
-impl ARXMLParser {
+impl ARXMLReader {
     // read_keyword (1185-1235) — verbatim; private
     // read_keyword_set (1236-1270) — verbatim; pub(super)  [dispatch target]
 }
 ```
 
 - [ ] **Step 2: Full gate.**
-- [ ] **Step 3: Commit** — `refactor(parser): keyword domain module`
+- [ ] **Step 3: Commit** — `refactor(reader): keyword domain module`
 
-### Task 8: parser — `datatypes.rs`
+### Task 8: reader — `datatypes.rs`
 
-**Files:** Create `src/parser/arxml_parser/datatypes.rs`; modify `mod.rs`.
+**Files:** Create `src/reader/arxml_reader/datatypes.rs`; modify `mod.rs`.
 
 - [ ] **Step 1: Create the file**
 
 ```rust
 //! Application/Implementation datatype readers incl. the shared
-//! SW-DATA-DEF-PROPS wrapper. Part of the arxml_parser domain split
+//! SW-DATA-DEF-PROPS wrapper. Part of the arxml_reader domain split
 //! (docs/superpowers/specs/2026-10-04-parser-writer-domain-split-design.md).
 use super::*;
 
-impl ARXMLParser {
+impl ARXMLReader {
     // get_sw_data_def_props (1271-1361) — verbatim; private
     // read_application_primitive_data_type (1362-1390) — verbatim; pub(super)
     // read_application_array_data_type (1391-1486) — verbatim; pub(super)
@@ -346,21 +389,21 @@ impl ARXMLParser {
 ```
 
 - [ ] **Step 2: Full gate.**
-- [ ] **Step 3: Commit** — `refactor(parser): datatypes domain module`
+- [ ] **Step 3: Commit** — `refactor(reader): datatypes domain module`
 
-### Task 9: parser — leaf domains (`base_types`, `collection`, `life_cycle`, `physical_dimension`, `unit`)
+### Task 9: reader — leaf domains (`base_types`, `collection`, `life_cycle`, `physical_dimension`, `unit`)
 
-**Files:** Create `src/parser/arxml_parser/{base_types,collection,life_cycle,physical_dimension,unit}.rs`; modify `mod.rs`.
+**Files:** Create `src/reader/arxml_reader/{base_types,collection,life_cycle,physical_dimension,unit}.rs`; modify `mod.rs`.
 
-- [ ] **Step 1: Create the five files**, each with the standard skeleton (`//!` header, `use super::*;`, `impl ARXMLParser { … }`):
+- [ ] **Step 1: Create the five files**, each with the standard skeleton (`//!` header, `use super::*;`, `impl ARXMLReader { … }`):
 
 `base_types.rs`:
 ```rust
-//! SW-BASE-TYPE readers. Part of the arxml_parser domain split
+//! SW-BASE-TYPE readers. Part of the arxml_reader domain split
 //! (docs/superpowers/specs/2026-10-04-parser-writer-domain-split-design.md).
 use super::*;
 
-impl ARXMLParser {
+impl ARXMLReader {
     // read_sw_base_type (1604-1650) — verbatim; pub(super)  [dispatch target]
     // read_base_type_direct_definition (1912-1945) — verbatim; private
 }
@@ -368,22 +411,22 @@ impl ARXMLParser {
 
 `collection.rs`:
 ```rust
-//! Collection readers. Part of the arxml_parser domain split
+//! Collection readers. Part of the arxml_reader domain split
 //! (docs/superpowers/specs/2026-10-04-parser-writer-domain-split-design.md).
 use super::*;
 
-impl ARXMLParser {
+impl ARXMLReader {
     // read_collection (1651-1721) — verbatim; pub(super)  [dispatch target]
 }
 ```
 
 `life_cycle.rs`:
 ```rust
-//! LifeCycleInfoSet readers. Part of the arxml_parser domain split
+//! LifeCycleInfoSet readers. Part of the arxml_reader domain split
 //! (docs/superpowers/specs/2026-10-04-parser-writer-domain-split-design.md).
 use super::*;
 
-impl ARXMLParser {
+impl ARXMLReader {
     // read_life_cycle_info_set (1722-1762) — verbatim; pub(super)  [dispatch target]
     // get_life_cycle_period (1946-1968) — verbatim; private
     // read_life_cycle_info (1969-2000) — verbatim; private
@@ -393,27 +436,27 @@ impl ARXMLParser {
 
 `physical_dimension.rs`:
 ```rust
-//! PhysicalDimension readers. Part of the arxml_parser domain split
+//! PhysicalDimension readers. Part of the arxml_reader domain split
 //! (docs/superpowers/specs/2026-10-04-parser-writer-domain-split-design.md).
 use super::*;
 
-impl ARXMLParser {
+impl ARXMLReader {
     // read_physical_dimension (1763-1819) — verbatim; pub(super)  [dispatch target]
 }
 ```
 
 `unit.rs`:
 ```rust
-//! Unit readers. Part of the arxml_parser domain split
+//! Unit readers. Part of the arxml_reader domain split
 //! (docs/superpowers/specs/2026-10-04-parser-writer-domain-split-design.md).
 use super::*;
 
-impl ARXMLParser {
+impl ARXMLReader {
     // read_unit (1820-1883) — verbatim; pub(super)  [dispatch target]
 }
 ```
 
-- [ ] **Step 2: Register the child modules in `mod.rs`** — add directly under the existing `use` block in `src/parser/arxml_parser/mod.rs`:
+- [ ] **Step 2: Register the child modules in `mod.rs`** — add directly under the existing `use` block in `src/reader/arxml_reader/mod.rs`:
 
 ```rust
 mod admin_data;
@@ -433,13 +476,13 @@ mod unit;
 (`common`/`documentation`/`admin_data` etc. were created without registration in Tasks 2–8 only if the compiler didn't demand it — with this task, all twelve are declared once, here. If Tasks 2–8 already needed the `mod` lines to compile, consolidate them here exactly as shown and note it.)
 
 - [ ] **Step 3: Full gate.**
-- [ ] **Step 4: Commit** — `refactor(parser): leaf domain modules (base_types/collection/life_cycle/physical_dimension/unit)`
+- [ ] **Step 4: Commit** — `refactor(reader): leaf domain modules (base_types/collection/life_cycle/physical_dimension/unit)`
 
-### Task 10: parser close-out — `mod.rs` budget + checklist regen
+### Task 10: reader close-out — `mod.rs` budget + checklist regen
 
-**Files:** Modify `src/parser/arxml_parser/mod.rs`.
+**Files:** Modify `src/reader/arxml_reader/mod.rs`.
 
-- [ ] **Step 1: Verify the mod.rs budget** — `wc -l src/parser/arxml_parser/mod.rs`. Expected: < 800 lines (struct + walk + dispatch + 5 tests; spec budget ~500 excluding tests). If larger, list what remains and move stragglers per Rule 1 of the spec before continuing.
+- [ ] **Step 1: Verify the mod.rs budget** — `wc -l src/reader/arxml_reader/mod.rs`. Expected: < 800 lines (struct + walk + dispatch + 5 tests; spec budget ~500 excluding tests). If larger, list what remains and move stragglers per Rule 1 of the spec before continuing.
 
 - [ ] **Step 2: Regenerate + verify the checklist**
 
@@ -449,7 +492,7 @@ python3 tools/py2rust/main.py --py-armodel target/py-armodel --out src --check &
 git diff --stat docs/port_checklist.md   # expected: unchanged
 ```
 
-- [ ] **Step 3: Full gate + commit** — `refactor(parser): domain split complete (12 domain modules, pure moves)`
+- [ ] **Step 3: Full gate + commit** — `refactor(reader): domain split complete (12 domain modules, pure moves)`
 
 ### Task 11: writer — convert `arxml_writer.rs` to `arxml_writer/mod.rs`
 
@@ -672,13 +715,13 @@ mod unit;
 
 **Files:** Modify `docs/code_guide.md` (§8 Parser and writer patterns — append at the end of the section).
 
-- [ ] **Step 1: Append the placement/visibility rules**
+- [ ] **Step 1: Align the §8 heading with the rename, then append the placement/visibility rules** — retitle `## 8. Parser and writer patterns` to `## 8. Reader and writer patterns` and fix §8's prose `parser` references to `reader` (code_guide lines referencing `src/parser/` paths became stale in Task 0). Then append:
 
 ```markdown
 ### Domain split (added 2026-10-04)
 
-The hand-written parser/writer are split into per-domain modules
-(`src/parser/arxml_parser/<domain>.rs`, `src/writer/arxml_writer/<domain>.rs`):
+The hand-written reader/writer are split into per-domain modules
+(`src/reader/arxml_reader/<domain>.rs`, `src/writer/arxml_writer/<domain>.rs`):
 
 - A method lives in the domain module of the family it reads/writes; shared
   base helpers live in `common.rs`. Placement is a pure move — methods stay on
@@ -693,7 +736,7 @@ The hand-written parser/writer are split into per-domain modules
   package-element tags, one delegating dispatch arm in `mod.rs`.
 ```
 
-- [ ] **Step 2: Budget check both mod.rs files** — `wc -l src/parser/arxml_parser/mod.rs src/writer/arxml_writer/mod.rs`; both < 800 lines including tests.
+- [ ] **Step 2: Budget check both mod.rs files** — `wc -l src/reader/arxml_reader/mod.rs src/writer/arxml_writer/mod.rs`; both < 800 lines including tests.
 
 - [ ] **Step 3: Final gate + checklist**
 
@@ -710,8 +753,8 @@ Expected: `CHECK-OK`, checklist unchanged, all suites `test result: ok.`.
 ```bash
 git add -A && git commit -m "docs: domain-split placement rules in code_guide §8 (Closes #<issue>)"
 git push -u origin feature/parser-writer-domain-split
-gh pr create --base main --title "refactor: split parser/writer into per-domain modules" \
-  --body "Closes #<issue> — pure-move domain split per docs/superpowers/specs/2026-10-04-parser-writer-domain-split-design.md. No API/harness/fixture changes; every task ran the full gate. Prepares the P2–P4 mass port to land ~2,400 more methods in small files."
+gh pr create --base main --title "refactor: rename reader layer + split reader/writer into per-domain modules" \
+  --body "Closes #<issue> — pure-move domain split per docs/superpowers/specs/2026-10-04-parser-writer-domain-split-design.md. Includes the parser→reader rename (Task 0) and the pure-move domain split; every task ran the full gate. Prepares the P2–P4 mass port to land ~2,400 more methods in small files."
 ```
 
 ---

@@ -6,23 +6,32 @@ Scope: structural decomposition of the hand-written parser/writer for the P2–P
 
 ## Problem
 
-`src/parser/arxml_parser.rs` (2,318 lines, 39 methods) and `src/writer/arxml_writer.rs`
-(2,240 lines, 41 methods) grow one method per py method. At full parity the reference
-shapes are py's 16,253-line / 1,218-read-method parser and 15,889-line / 1,438-emitter
-writer: each file becomes a multi-thousand-method impl block — unreviewable, merge-hostile,
-and past the size an agent can edit reliably. With only 41/2,438 methods ported, this is
-the cheapest moment to restructure.
+`src/reader/arxml_reader.rs` (2,318 lines, 39 methods — today `src/parser/…`, renamed to
+`reader` by this refactor) and `src/writer/arxml_writer.rs` (2,240 lines, 41 methods) grow
+one method per py method. At full parity the reference shapes are py's 16,253-line /
+1,218-read-method parser and 15,889-line / 1,438-emitter writer: each file becomes a
+multi-thousand-method impl block — unreviewable, merge-hostile, and past the size an agent
+can edit reliably. With only 41/2,438 methods ported, this is the cheapest moment to
+restructure.
 
 ## Decision — domain-module split (P5-shaped), pure-move migration
 
-Keep `ARXMLParser` / `ARXMLWriter` exactly as they are; split each across domain modules.
-Rust allows multiple `impl Type` blocks anywhere in the crate, so a domain file is just
-`impl ArxmlParser { … }` holding one AUTOSAR domain's methods. Module paths stay
-identical (`crate::parser::arxml_parser` → `arxml_parser/mod.rs`), so lib.rs re-exports,
-hand-written call sites, and the harness do not change.
+Terminology first: the reader layer is renamed to match the port vocabulary everything
+else already uses (port-checklist columns, skill rules, `readXxx` → `read_xxx`): `src/parser/`
+→ `src/reader/`, `ARXMLParser` → `ARXMLReader`, `ParserOptions` → `ReaderOptions`,
+`abstract_arxml_parser` → `abstract_arxml_reader`. `ParseError` keeps its name (locked by
+code_guide §7), and prose references to py's own `ARXMLParser` class stay as-is. The crate
+is 0.x with no external consumers, so the public-API rename is deliberate and cheap now.
+
+Keep `ARXMLReader` / `ARXMLWriter` exactly as they are otherwise; split each across domain
+modules. Rust allows multiple `impl Type` blocks anywhere in the crate, so a domain file is
+just `impl ARXMLReader { … }` holding one AUTOSAR domain's methods. Module paths stay
+identical after the rename (`crate::reader::arxml_reader` → `arxml_reader/mod.rs`), so
+lib.rs re-exports (same names, new spelling), hand-written call sites, and the harness do
+not change structurally.
 
 ```
-src/parser/arxml_parser/
+src/reader/arxml_reader/
   mod.rs            struct + options + load/load_from_reader + tag walk +
                     dispatch seams (delegating arms) + free fns (factory, setters, xsd_to_version)
   common.rs         abstract-level helpers: read_ar_object, read_xml_space,
@@ -73,7 +82,9 @@ fn names anywhere under `src/`; verified by re-running it after the first split)
 
 ## Non-goals
 
-- Public API unchanged (`ARXMLParser`/`ARXMLWriter`/options re-exports stay).
+- Public API structurally unchanged — the deliberate exception is the reader rename
+  (`ARXMLParser`→`ARXMLReader`, `ParserOptions`→`ReaderOptions`, `src/parser/`→`src/reader/`);
+  nothing else in the surface moves (`ARXMLWriter`/options/`ParseError` re-exports stay).
 - No trait hierarchies; no py2rust changes beyond a scanner fix if the first split
   exposes one; no dispatch-table generation (that is P5).
 - No fixture, graduation-list, or model changes.

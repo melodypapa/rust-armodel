@@ -2251,6 +2251,53 @@ mod tests {
         assert_eq!(l10.get_value(), Some("English"));
     }
 
+    /// py `readARObject` — the S (checksum) / T (timestamp) attributes must
+    /// arrive on every path that builds an ARObject-derived object: the
+    /// document-level ADMIN-DATA (non-package-element reader), the AR-PACKAGE
+    /// itself, and package elements (allocation loop).
+    const AR_OBJECT_S_T_SAMPLE: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <ADMIN-DATA S="c1" T="2024-11-26T21:25:17+08:00"/>
+  <AR-PACKAGES>
+    <AR-PACKAGE S="c2" T="2024-11-27T08:00:00+08:00">
+      <SHORT-NAME>Pkg</SHORT-NAME>
+      <ELEMENTS>
+        <SW-BASE-TYPE S="c3" T="2024-11-28T09:30:00+08:00">
+          <SHORT-NAME>T</SHORT-NAME>
+        </SW-BASE-TYPE>
+      </ELEMENTS>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>"#;
+
+    #[test]
+    fn ar_object_s_t_attributes_parse_on_every_read_path() {
+        let mut document = Document::new();
+        ARXMLParser::new(default_options())
+            .load_from_reader(Reader::from_str(AR_OBJECT_S_T_SAMPLE), &mut document)
+            .unwrap();
+
+        let admin_data = document.get_admin_data().unwrap();
+        assert_eq!(admin_data.get_checksum(), Some("c1"));
+        assert_eq!(
+            admin_data.get_timestamp(),
+            Some("2024-11-26T21:25:17+08:00")
+        );
+
+        let pkg = document
+            .get_ar_package(document.get_ar_packages()[0])
+            .unwrap();
+        assert_eq!(pkg.get_checksum(), Some("c2"));
+        assert_eq!(pkg.get_timestamp(), Some("2024-11-27T08:00:00+08:00"));
+
+        let ElementRef::SwBaseType(id) = pkg.get_elements()[0] else {
+            panic!("expected SwBaseType element");
+        };
+        let base_type = document.get_sw_base_type(id).unwrap();
+        assert_eq!(base_type.get_checksum(), Some("c3"));
+        assert_eq!(base_type.get_timestamp(), Some("2024-11-28T09:30:00+08:00"));
+    }
+
     #[test]
     fn packages_nest_through_the_document_factory() {
         let document = parse_sample();

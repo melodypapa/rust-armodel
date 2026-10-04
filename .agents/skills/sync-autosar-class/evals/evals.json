@@ -1,0 +1,129 @@
+{
+ "skill_name": "sync-autosar-class",
+ "note": "Adapted from py-armodel's sync-autosar-class evals (1.9.3) for the rust-armodel py-parity port workflow. Prompts assume the repo root is the rust-armodel checkout.",
+ "evals": [
+  {
+   "id": 1,
+   "prompt": "Run Phase 0 (Discovery & Class Closure) for the AUTOSAR class `CompuMethod` in rust-armodel. Do NOT modify any source files. Produce the sync map (closure items with roles, py locations, fixtures, model gaps, queue order) and stop. The repo root is the rust-armodel checkout.",
+   "expected_output": "A closure table listing CompuMethod's py reader/writer methods (readCompuMethod, writeCompuMethod/setCompu) as input, the member-type methods (Compu, CompuScales, CompuScale, CompuScaleConstantContents, CompuScaleRationalFormula, CompuConst, Limit, ...) with the referencing method, the fixtures exercising COMPU-METHOD (AUTOSAR_Datatypes.arxml, AUTOSAR_MOD_AISpecification_CompuMethod_Blueprint.arxml), any model gaps found by comparing py's handled elements with the generated Rust model, and a dependency-first queue (base/member helpers first, input last, model gaps as Task 0). No file modifications under src/ or tests/.",
+   "expectations": [
+    "Output mentions CompuMethod and its py methods with target/py-armodel file locations",
+    "Output lists member-type methods (Compu/CompuScales/CompuScale/contents family) and identifies which methods each is referenced by",
+    "Output lists the fixtures exercising the family's tags",
+    "Output presents an ordered sync queue (dependency-first: helpers before callers, input class last)",
+    "No source files under src/ or tests/ were modified",
+    "Output cites Rule 0012 or the Phase 0 procedure",
+    "Output presents the collected closure set and asks the user to confirm it (membership gate) before building the queue"
+   ]
+  },
+  {
+   "id": 2,
+   "prompt": "Using the sync-autosar-class skill in rust-armodel: during Phase 0 for `ApplicationCompositeElementDataPrototype`, you discover the generated model collapses `TYPE-TREF` to `Option<String>` but the fixtures carry `BASE`/`DEST` attributes on it, so the port needs an arena type the model lacks. Tell me what you do about it. Do NOT modify any files.",
+   "expected_output": "The gap is a model gap handled through tools/py2rust, never a hand-edit to src/m2/**: queue it as Task 0 of the family — write the failing assertion in tools/py2rust/tests/test_model_gaps.py first, fix typemap.py/overrides.py, regenerate with tools/py2rust/main.py --py-armodel target/py-armodel --out src, --check must pass, then port on the regenerated model. No direct edit to src/m2/**.",
+   "expectations": [
+    "Output classifies this as a model gap (Rule 0003)",
+    "Output routes the fix through tools/py2rust (typemap.py/overrides.py + regeneration), never a hand-edit to src/m2/**",
+    "Output writes/extends the gate test in tools/py2rust/tests/test_model_gaps.py before regenerating",
+    "Output runs the regeneration with --check as part of the loop",
+    "Output queues the gap as Task 0, ahead of the reader/writer rows"
+   ]
+  },
+  {
+   "id": 3,
+   "prompt": "Using the sync-autosar-class skill in rust-armodel, you have just finished porting the Compu family: Steps 1 through 9a are complete — the unit tests pass, `cargo build && cargo fmt --all -- --check && cargo clippy --all-targets -- -D warnings && cargo test` are green, CompuMethod_Blueprint and AUTOSAR_Datatypes are byte-identical and warning-free, and the regenerated port checklist shows the family rows [x]. Now perform Step 9b. Do NOT modify any source files; just produce the confirmation.",
+   "expected_output": "A Step 9b port-parity confirmation gate walking the automation-blind items: method parity both directions (every closure py method ported, every new Rust fn traces to a py method), reader/writer element orders diffed against the py bodies (not assumed symmetric), helper chain leveling (no double base reads), warning texts mirroring py, names verified against the generated model, tests asserting field values plus the empty-wrapper-list case, model gaps resolved through the tool or recorded, no unwrap/expect/panic in library code, fixtures graduated in all three lists without regressing earlier fixtures. Ends by asking the user to confirm before committing and flipping the todo row.",
+   "expectations": [
+    "Output presents a Step 9b port-parity confirmation gate (not just 'tests pass')",
+    "Output checks method parity in both directions (py method -> Rust fn and Rust fn -> py method)",
+    "Output checks reader and writer element orders separately against the py bodies",
+    "Output checks helper chain leveling / no double base reads",
+    "Output checks that tests assert field values, not just success or counts",
+    "Output states the commit + todo-row flip happen only after user confirmation",
+    "Output asks the user to confirm before committing or advancing to the next queue item",
+    "No source files were modified"
+   ]
+  },
+  {
+   "id": 4,
+   "prompt": "Using the sync-autosar-class skill in rust-armodel, a previous session ran Phase 0 for `CompuMethod` and finished 2 of 5 queue rows. This is a brand-new session; the previous conversation is gone. The user says 'continue the CompuMethod sync'. The file docs/plan/sync-todo/CompuMethod.md exists with the first rows [x] and a DataConstr row still [ ]. What do you do?",
+   "expected_output": "Resume, never rebuild: read the todo file, take the first row still [ ], and run the 9-step workflow for that one family. Do NOT re-run Phase 0, re-collect the closure, or re-ask the membership/gap gates — they were confirmed when the file was written. Create the 9 session todos, then start at Step 1 for that row.",
+   "expectations": [
+    "Output resumes from the todo file instead of re-running Phase 0",
+    "Output takes the first [ ] row (not an [x] row, not a row of its own choosing)",
+    "Output does not re-ask the confirmed membership or model-gap gates",
+    "Output creates 9 session todos (one per workflow step) before starting Step 1",
+    "Output cites Rule 0009.1 or the resume rule"
+   ]
+  },
+  {
+   "id": 5,
+   "prompt": "IMPORTANT: This is a real scenario. Choose and act. Using the sync-autosar-class skill in rust-armodel, you are in a session syncing the Compu family from the queue in docs/plan/sync-todo/CompuMethod.md. You just finished Step 9b: the user confirmed every checklist item, the commit is made, the todo row is flipped [x] with the hash, and the port checklist was regenerated. The DataConstr row is still [ ] and the context window is only half full. The user says 'go ahead and do DataConstr too since you're already warm'. What do you do?",
+   "expected_output": "Stop. One family per session (Rule 0009.1): the 9b order-diff work degrades silently under a loaded context, and neither the agent nor the user can detect that degradation. Tell the user the Compu family is finished (with the hash) and to start a fresh session for DataConstr — the todo file makes that session cost near zero. Do not start DataConstr in this session.",
+   "expectations": [
+    "Output refuses to start the second family in this session",
+    "Output explains why (silent degradation of Step 9b order diffs under loaded context — Rule 0009.1)",
+    "Output reports the finished family with its commit hash and the queue status",
+    "Output points at the persistent todo file as the reason a fresh session is cheap",
+    "Output does not modify any files after the refusal"
+   ]
+  },
+  {
+   "id": 6,
+   "prompt": "Using the sync-autosar-class skill in rust-armodel (read .agents/skills/sync-autosar-class/SKILL.md and rules.md first): you are porting `read_data_constr`. The py reader body reads CONSTR-LEVEL, INTERNAL-CONSTRS, PHYS-CONSTRS in that order. A team member suggests the writer should emit in the same order 'for consistency'. What does the skill say, and what do you port?",
+   "expected_output": "Reader and writer orders are independent (Rule 0001.4): the reader is find-based and wrapper-relative; the writer emits in py's own writer order (sequenceOffset-encoded). Port each side from its own py body. For DataConstr specifically, py's writer emits CONSTR-LEVEL, PHYS-CONSTRS, INTERNAL-CONSTRS — PHYS first — so the Rust writer ports that exact order; 'fixing' it to match the reader breaks byte-identity against the fixtures.",
+   "expectations": [
+    "Output states reader and writer orders are extracted independently from their own py bodies (Rule 0001.4)",
+    "Output identifies the actual py writer order for the DataConstr rule (PHYS-CONSTRS before INTERNAL-CONSTRS)",
+    "Output explains that matching the reader's order would break byte-identity with the fixtures",
+    "Output refuses the 'consistency' suggestion"
+   ]
+  },
+  {
+   "id": 7,
+   "prompt": "Using the sync-autosar-class skill in rust-armodel (read .agents/skills/sync-autosar-class/SKILL.md and rules.md first): mid-port of a reader you find the generated model lacks a field the py reader handles. The fastest unblock is adding the field directly to the generated struct in src/m2/**. The banner says the file is generated, but the regen tool takes ten minutes. What do you do?",
+   "expected_output": "Do not hand-edit src/m2/** (Rule 0003). The gap goes through the py2rust loop: write the failing assertion in tools/py2rust/tests/test_model_gaps.py, fix overrides.py/typemap.py, regenerate, --check must pass. Until the regenerated model lands, the affected checklist rows stay unported/blocked — record the block in the family todo row. A hand-edit would break --check and be clobbered by the next regeneration.",
+   "expectations": [
+    "Output refuses to hand-edit the generated file (Rule 0003)",
+    "Output routes the fix through tools/py2rust with the gate test written first",
+    "Output marks the affected rows blocked until the regenerated model lands",
+    "Output does not stub the field in hand-written parser/writer code"
+   ]
+  },
+  {
+   "id": 8,
+   "prompt": "Using the sync-autosar-class skill in rust-armodel (read .agents/skills/sync-autosar-class/SKILL.md and rules.md first): Phase 0 for `KeywordSet` is done — the user confirmed the closure. The confirmed set is: model gap (none), member methods readKeyword/writeKeyword + CLASSIFICATIONS wrapper handling (py locations known), input readKeywordSet/writeKeywordSet, and fixtures KeywordSet_Blueprint.arxml (graduates) plus AUTOSAR_Datatypes.arxml (already graduated, contains KEYWORDs). Write the exact queue section of docs/plan/sync-todo/KeywordSet.md (dependency-first, with 9-step sub-checklists).",
+   "expected_output": "A queue section with the member methods first (readKeyword/writeKeyword + classifications wrapper — deeper helper before its caller), then the input readKeywordSet/writeKeywordSet row, each row carrying its full 9-step sub-checklist (all [ ]) written at file creation, with short checkbox lines (role · py location · fixture set) and any notes on separate bullets. No Task 0 row (no model gaps). AUTOSAR_Datatypes noted as already graduated — no re-graduation.",
+   "expectations": [
+    "Output orders the member/keyword methods before the KeywordSet input row (dependency-first)",
+    "Every queue row carries the 9-step sub-checklist with all boxes [ ]",
+    "Step names match the workflow (Extract/Red reader/Port reader/Red writer/Port writer/Harness green/Regenerate checklist/Gaps & deferrals/9a+9b)",
+    "Checkbox lines are short (role · py location · fixtures); write-ups are on separate note bullets",
+    "No Task 0 row since there are no model gaps",
+    "Output cites Rule 0012.6 or the todo-file format"
+   ]
+  },
+  {
+   "id": 9,
+   "prompt": "Using the sync-autosar-class skill in rust-armodel (read .agents/skills/sync-autosar-class/SKILL.md and rules.md first): you are mid-session syncing the Limit helpers (the first [ ] row of docs/plan/sync-todo/DataConstr.md). You created the 9 session todos at workflow start. Step 2 is in progress: you wrote the failing reader unit test and saw it fail. The user asks you to also check off Step 3 (port the reader) now since 'you obviously know the reader works'. What do you do?",
+   "expectations_label": "step discipline",
+   "expected_output": "Refuse to batch-check. Steps complete only when their own work is done and verified: Step 2 completes now (the failing test exists and was seen failing), and it is flipped in both places — the session todo and the todo file's sub-checklist — in the same action. Step 3 starts only after Step 2 is checked, and completes only when the reader is implemented and the test passes (Green). Checking Step 3 before its work exists hides a skipped step until 9b or forever (Rule 0009.2).",
+   "expectations": [
+    "Output refuses to check off Step 3 before its work is done",
+    "Output marks Step 2 completed now, in both the session todo and the todo file's sub-checklist in the same action",
+    "Output states Step 3 completes only when the reader passes the failing test (Green)",
+    "Output cites Rule 0009.2 (no batch-checking, one step = one check)"
+   ]
+  },
+  {
+   "id": 10,
+   "prompt": "Using the sync-autosar-class skill in rust-armodel (read .agents/skills/sync-autosar-class/SKILL.md and rules.md first): while porting a family you notice py's behavior for a rare attribute diverges from its own spec table (py reads an element its upstream `# Spec:` checklist does not list). A teammate says: 'we're the spec-driven project — implement what the spec table says, not what py does.' What does the skill say?",
+   "expected_output": "Parity with the pinned py implementation is the bar (Rule 0013): port py as pinned — the Rust port's correctness gate is byte-identical round-trip against fixtures that py itself wrote, and re-deriving behavior from the spec table would break that parity and desynchronize the two implementations. Note the upstream deviation in the family todo row so it can be raised/fixed in py-armodel (by py-armodel's own sync-autosar-class skill, followed by an explicit pin bump). Never 'fix' it on the Rust side mid-sync, and never bump the pin mid-sync.",
+   "expectations": [
+    "Output ports py as pinned rather than re-deriving from the spec table (Rule 0013)",
+    "Output explains the parity rationale (the harness compares against fixtures produced by py's behavior)",
+    "Output records the upstream deviation in the family row / upstream for py-armodel's own skill",
+    "Output refuses to bump the pin or change behavior mid-sync"
+   ]
+  }
+ ]
+}

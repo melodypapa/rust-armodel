@@ -5,7 +5,7 @@ Input: `Group 1 — Framework & core, PortInterface basics` of `docs/examples/sy
 
 ## Queue (dependency-first)
 
-- [ ] `ARObject` (tracker input · R23-11 markdown · AUTOSAR_FO_TPS_GenericStructureTemplate · Table 6.1)
+- [x] `ARObject` (tracker input · R23-11 markdown · AUTOSAR_FO_TPS_GenericStructureTemplate · Table 6.1 · commit 1be5c3b)
   - Note: py handles this class in the ABSTRACT parser/writer (`readARObject` abstract_arxml_parser.py:493,
     `writeARObject` abstract_arxml_writer.py:81 — S→checksum, T→timestamp, emit order S then T), so it has no
     generated port-checklist rows. Rust: `read_ar_object` (arxml_parser.rs:211), allocation-loop generics
@@ -32,7 +32,8 @@ Input: `Group 1 — Framework & core, PortInterface basics` of `docs/examples/sy
     CAN-COMMUNICATION-CONTROLLER T round-trip lands with its batch (read path already via allocation loop);
     (3) empty-with-attrs self-closing for other structural writers (e.g. `write_sdg` with GID, no children)
     deferred to the writer-fidelity batch that first needs it — no fixture carries one
-  - [ ] Step 9 — Verify (9a) + confirm (9b)
+  - [x] Step 9 — Verify (9a) + confirm (9b) — 9a gates green (fmt, clippy -D warnings, 8 test suites, py2rust
+    --check); 9b port-parity checklist presented and confirmed by the user (github-workflow delivery)
 
 - [ ] `ARElement` (tracker input · R23-11 markdown · AUTOSAR_FO_TPS_GenericStructureTemplate · Table 4.3)
   - [ ] Step 1 — Extract py reference & Rust model shape

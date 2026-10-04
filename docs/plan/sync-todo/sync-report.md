@@ -10,11 +10,11 @@ Generated from all Group files in `docs/plan/sync-todo/` — Classes ordered by 
 
 | Status | Classes | Percent |
 | --- | --- | --- |
-| [x] Done | 0 | 0.0% |
+| [x] Done | 1 | 0.1% |
 | [x] Deferred | 0 | 0.0% |
 | [x] Retired | 0 | 0.0% |
 | [ ] Deferred | 0 | 0.0% |
-| [ ] Implemented | 1378 | 72.4% |
+| [ ] Implemented | 1377 | 72.4% |
 | [ ] Created | 522 | 27.4% |
 | [ ] Pending | 3 | 0.2% |
 
@@ -22,7 +22,7 @@ Generated from all Group files in `docs/plan/sync-todo/` — Classes ordered by 
 | ------------------------------------------------------- | ------------| ---------------------------------------- | ---------------- |
 | `ARElement`                                             | [ ] Implemented| N/A                                      | Group1           |
 | `ARList`                                                | [ ] Implemented| N/A                                      | Group9           |
-| `ARObject`                                              | [ ] Implemented| N/A                                      | Group1           |
+| `ARObject`                                              | [x] Done    | 1be5c3b284                               | Group1           |
 | `ARPackage`                                             | [ ] Implemented| N/A                                      | Group1           |
 | `AUTOSAR`                                               | [ ] Implemented| N/A                                      | Group1           |
 | `AbsoluteTolerance`                                     | [ ] Created | N/A                                      | Group31          |

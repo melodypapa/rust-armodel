@@ -19,7 +19,6 @@ use crate::m2::autosar_templates::common_structure::implementation_data_types::{
     ImplementationDataTypeId,
 };
 use crate::m2::msr::data_dictionary::data_def_properties::{SwDataDefProps, SwDataDefPropsId};
-use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ARObject;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::{
     ARPackage, ARPackageId,
@@ -58,6 +57,8 @@ use crate::writer::abstract_arxml_writer::{
     write_ref_type_list,
     write_text_element,
 };
+
+mod common;
 
 /// The per-class `Identifiable` payload pieces a family emitter hands to
 /// `write_identifiable_parts` (ids resolve through the `Document` arenas).
@@ -154,16 +155,6 @@ impl ARXMLWriter {
 
         std::fs::write(path, buffer)?;
         Ok(())
-    }
-
-    /// py `writeARObject` — the `S`/`T` attributes.
-    fn write_ar_object_attributes(&self, element: &mut BytesStart<'_>, ar_object: &ARObject) {
-        if let Some(checksum) = ar_object.get_checksum() {
-            element.push_attribute(("S", checksum));
-        }
-        if let Some(timestamp) = ar_object.get_timestamp() {
-            element.push_attribute(("T", timestamp));
-        }
     }
 
     /// py `setAdminData`
@@ -425,66 +416,6 @@ impl ARXMLWriter {
         self.write_ar_packages(writer, package.get_ar_packages(), document)?;
 
         writer.write_event(Event::End(BytesEnd::new("AR-PACKAGE")))?;
-        Ok(())
-    }
-
-    /// S/T/UUID attributes in py's historical order (S, T, UUID) — shared by
-    /// `write_ar_package` and every per-class emitter.
-    fn write_identifiable_attributes(
-        &self,
-        element: &mut BytesStart<'_>,
-        checksum: Option<&str>,
-        timestamp: Option<&str>,
-        uuid: Option<&str>,
-    ) {
-        if let Some(checksum) = checksum {
-            element.push_attribute(("S", checksum));
-        }
-        if let Some(timestamp) = timestamp {
-            element.push_attribute(("T", timestamp));
-        }
-        if let Some(uuid) = uuid {
-            element.push_attribute(("UUID", uuid));
-        }
-    }
-
-    /// py `writeIdentifiable` tail: LONG-NAME, DESC, CATEGORY, INTRODUCTION,
-    /// ADMIN-DATA — in exactly that element order.
-    fn write_identifiable_parts<W: Write>(
-        &self,
-        writer: &mut Writer<W>,
-        parts: IdentifiableParts<'_>,
-        document: &Document,
-    ) -> Result<(), WriteError> {
-        if let Some(long_name) = parts
-            .long_name
-            .and_then(|id| document.multilanguage_long_names.get(id))
-        {
-            self.set_multi_long_name(writer, long_name, document)?;
-        }
-        if let Some(desc) = parts
-            .desc
-            .and_then(|id| document.multi_language_overview_paragraphs.get(id))
-        {
-            self.set_multi_language_overview_paragraph(writer, desc, document)?;
-        }
-        if let Some(category) = parts.category {
-            write_text_element(
-                writer,
-                "CATEGORY",
-                BytesStart::new("CATEGORY"),
-                Some(category),
-            )?;
-        }
-        if let Some(introduction) = parts
-            .introduction
-            .and_then(|id| document.documentation_blocks.get(id))
-        {
-            self.write_documentation_block(writer, "INTRODUCTION", introduction, document)?;
-        }
-        if let Some(admin_data) = parts.admin_data.and_then(|id| document.admin_datas.get(id)) {
-            self.write_admin_data(writer, admin_data, document)?;
-        }
         Ok(())
     }
 

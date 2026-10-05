@@ -1,0 +1,906 @@
+# Sync todo: Group 32 — SystemTemplate (p.438–575)
+
+Input: R23-11 rows of `all_classes.md` (issue #846 / PR #847) minus every class already queued in Group1–20 · Generated: 2026-09-29 · Grouped by document (GenericStructureTemplate first, then alphabetical), page-sorted within each document, 75 rows/file
+(resume = first class row still `[ ]`; all class rows `[x]` = sync finished — Rule 0009.4)
+
+## Queue (page order per document segment)
+
+- [ ] `ConditionalChangeNad` — LinConfigurationEntry — R23-11 CP_TPS_SystemTemplate Table 6.105, p.438
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Lin/LinCommunication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SaveConfigurationEntry` — LinConfigurationEntry — R23-11 CP_TPS_SystemTemplate Table 6.106, p.439
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Lin/LinCommunication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DataDumpEntry` — LinConfigurationEntry — R23-11 CP_TPS_SystemTemplate Table 6.107, p.439
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Lin/LinCommunication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `FreeFormat` — FreeFormatEntry — R23-11 CP_TPS_SystemTemplate Table 6.108, p.439
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Lin/LinCommunication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `CanFrame` — Frame — R23-11 CP_TPS_SystemTemplate Table 6.109, p.442
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Can/CanCommunication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `CanFrameTriggering` — FrameTriggering — R23-11 CP_TPS_SystemTemplate Table 6.110, p.443
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Can/CanCommunication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `CanAddressingModeType` — AREnum — R23-11 CP_TPS_SystemTemplate Table 6.111, p.443
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Can/CanCommunication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `RxIdentifierRange` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.112, p.444
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Can/CanCommunication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `CanFrameRxBehaviorEnum` — AREnum — R23-11 CP_TPS_SystemTemplate Table 6.113, p.444
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Can/CanCommunication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `CanFrameTxBehaviorEnum` — AREnum — R23-11 CP_TPS_SystemTemplate Table 6.114, p.445
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Can/CanCommunication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `TtcanAbsolutelyScheduledTiming` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.115, p.450
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ttcan/TtcanCommunication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `TtcanTriggerType` — AREnum — R23-11 CP_TPS_SystemTemplate Table 6.116, p.450
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ttcan/TtcanCommunication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SoAdConfig` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.117, p.452
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/ServiceInstances.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SocketAddress` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.118, p.453
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/ServiceInstances.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `UdpChecksumCalculationEnum` — AREnum — R23-11 CP_TPS_SystemTemplate Table 6.119, p.454
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/ServiceInstances.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `IPv6ExtHeaderFilterSet` — ARElement — R23-11 CP_TPS_SystemTemplate Table 6.120, p.455
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ARPackage.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `ApplicationEndpoint` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.124, p.458
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/EthernetTopology.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `RtpTp` — TransportProtocolConfiguration — R23-11 CP_TPS_SystemTemplate Table 6.130, p.460
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/EthernetTopology.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `Ieee1722Tp` — TransportProtocolConfiguration — R23-11 CP_TPS_SystemTemplate Table 6.131, p.461
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/EthernetTopology.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `HttpTp` — TransportProtocolConfiguration — R23-11 CP_TPS_SystemTemplate Table 6.132, p.461
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/EthernetTopology.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `Ipv6Configuration` — NetworkEndpointAddress — R23-11 CP_TPS_SystemTemplate Table 6.139, p.466
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/EthernetTopology.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `MacMulticastConfiguration` — NetworkEndpointAddress — R23-11 CP_TPS_SystemTemplate Table 6.141, p.467
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/EthernetTopology.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `InfrastructureServices` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.144, p.469
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/EthernetTopology.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `TimeSyncTechnologyEnum` — AREnum — R23-11 CP_TPS_SystemTemplate Table 6.149, p.471
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/EthernetTopology.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DoIpEntityRoleEnum` — AREnum — R23-11 CP_TPS_SystemTemplate Table 6.151, p.471
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/EthernetTopology.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsCpServiceInstance` — Identifiable — R23-11 CP_TPS_SystemTemplate Table 6.152, p.472
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/Identifiable.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsCpProvidedServiceInstance` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.153, p.473
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsCpConsumedServiceInstance` — DdsCpServiceInstance — R23-11 CP_TPS_SystemTemplate Table 6.154, p.475
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/Identifiable.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsCpServiceInstanceEvent` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.155, p.475
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsCpServiceInstanceOperation` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.156, p.476
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `ServiceInstanceCollectionSet` — FibexElement — R23-11 CP_TPS_SystemTemplate Table 6.157, p.476
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/FibexCore/__init__.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `AbstractServiceInstance` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.158, p.477
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/ServiceInstances.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `ProvidedServiceInstance` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.160, p.486
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/ServiceInstances.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `PduActivationRoutingGroup` — Identifiable — R23-11 CP_TPS_SystemTemplate Table 6.161, p.489
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/ServiceInstances.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `EventGroupControlTypeEnum` — AREnum — R23-11 CP_TPS_SystemTemplate Table 6.162, p.489
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/ServiceInstances.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SoConIPduIdentifier` — Referrable — R23-11 CP_TPS_SystemTemplate Table 6.163, p.490
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/Identifiable.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SocketConnectionIpduIdentifierSet` — ARElement — R23-11 CP_TPS_SystemTemplate Table 6.164, p.490
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ARPackage.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `EventHandler` — Identifiable — R23-11 CP_TPS_SystemTemplate Table 6.166, p.492
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/ServiceInstances.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `ConsumedServiceInstance` — Identifiable — R23-11 CP_TPS_SystemTemplate Table 6.167, p.501
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/ServiceInstances.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `ConsumedEventGroup` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.168, p.505
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/ServiceInstances.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SomeipSdServerServiceInstanceConfig` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.169, p.514
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SomeipSdServerEventGroupTimingConfig` — ARElement — R23-11 CP_TPS_SystemTemplate Table 6.172, p.517
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/ServiceInstances.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SomeipSdClientEventGroupTimingConfig` — ARElement — R23-11 CP_TPS_SystemTemplate Table 6.173, p.521
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/ServiceInstances.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsCpConfig` — ARElement — R23-11 CP_TPS_SystemTemplate Table 6.175, p.526
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ARPackage.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsCpDomain` — Identifiable — R23-11 CP_TPS_SystemTemplate Table 6.176, p.526
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/Identifiable.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsCpTopic` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.177, p.527
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsCpPartition` — Identifiable — R23-11 CP_TPS_SystemTemplate Table 6.178, p.527
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/Identifiable.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsCpQosProfile` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.179, p.529
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsTopicData` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.180, p.529
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsDurability` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.181, p.530
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsDurabilityKindEnum` — AREnum — R23-11 CP_TPS_SystemTemplate Table 6.182, p.530
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsDurabilityService` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.183, p.531
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsDurabilityServiceHistoryKindEnum` — AREnum — R23-11 CP_TPS_SystemTemplate Table 6.184, p.531
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsDeadline` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.185, p.532
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsLatencyBudget` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.186, p.532
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsOwnership` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.187, p.532
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsOwnershipKindEnum` — AREnum — R23-11 CP_TPS_SystemTemplate Table 6.188, p.533
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsOwnershipStrength` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.189, p.533
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsLiveliness` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.190, p.534
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsLivenessKindEnum` — AREnum — R23-11 CP_TPS_SystemTemplate Table 6.191, p.534
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsReliability` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.192, p.535
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsReliabilityKindEnum` — AREnum — R23-11 CP_TPS_SystemTemplate Table 6.193, p.535
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsTransportPriority` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.194, p.535
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsLifespan` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.195, p.536
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsDestinationOrder` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.196, p.536
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsDestinationOrderKindEnum` — AREnum — R23-11 CP_TPS_SystemTemplate Table 6.197, p.536
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsHistory` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.198, p.537
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsHistoryKindEnum` — AREnum — R23-11 CP_TPS_SystemTemplate Table 6.199, p.537
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DdsResourceLimits` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.200, p.538
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ArObject.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `StaticSocketConnection` — ARObject — R23-11 CP_TPS_SystemTemplate Table 6.201, p.544
+  - module: M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/ServiceInstances.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `IPSecRule` — Identifiable — R23-11 CP_TPS_SystemTemplate Table 6.222, p.572
+  - module: M2/AUTOSARTemplates/SystemTemplate/SecureCommunication.py (FIXED from Identifiable.py — spec Package M2::AUTOSARTemplates::SystemTemplate::SecureCommunication)
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `IPSecConfigProps` — ARElement — R23-11 CP_TPS_SystemTemplate Table 6.223, p.573
+  - module: M2/AUTOSARTemplates/SystemTemplate/SecureCommunication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `IPsecIpProtocolEnum` — AREnum — R23-11 CP_TPS_SystemTemplate Table 6.224, p.574
+  - module: M2/AUTOSARTemplates/SystemTemplate/SecureCommunication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `IPsecPolicyEnum` — AREnum — R23-11 CP_TPS_SystemTemplate Table 6.225, p.574
+  - module: M2/AUTOSARTemplates/SystemTemplate/SecureCommunication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `IPsecModeEnum` — AREnum — R23-11 CP_TPS_SystemTemplate Table 6.226, p.575
+  - module: M2/AUTOSARTemplates/SystemTemplate/SecureCommunication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)

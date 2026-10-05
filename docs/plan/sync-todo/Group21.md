@@ -1,0 +1,666 @@
+# Sync todo: Group 21 — GenericStructureTemplate (p.61–327)
+
+Input: R23-11 rows of `all_classes.md` (issue #846 / PR #847) minus every class already queued in Group1–20 · Generated: 2026-09-29 · Grouped by document (GenericStructureTemplate first, then alphabetical), page-sorted within each document, 75 rows/file
+(resume = first class row still `[ ]`; all class rows `[x]` = sync finished — Rule 0009.4)
+
+## Queue (page order per document segment)
+
+- [ ] `Identifier` — ARLiteral — R23-11 FO_TPS_GenericStructureTemplate Table 4.5, p.61; also FO_TPS_StandardizationTemplate Table 4.4, p.43
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `LLongName` — LanguageSpecific — R23-11 FO_TPS_GenericStructureTemplate Table 4.8, p.62; also CP_TPS_DiagnosticExtractTemplate Table 4.166, p.180
+  - module: M2/MSR/Documentation/TextModel/LanguageDataModel.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `MixedContentForLongName` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 4.9, p.63
+  - module: M2/MSR/Documentation/TextModel/LanguageDataModel.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `Referrable` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 4.10, p.63
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/Identifiable.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `ReferrableSubtypesEnum` — ARLiteral — R23-11 FO_TPS_GenericStructureTemplate Table 4.15, p.73
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SdgDef` — ARElement — R23-11 FO_TPS_GenericStructureTemplate Table 4.24, p.99
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/SpecialDataDef.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SdgElementWithGid` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 4.25, p.99
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/SpecialDataDef.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SdgClass` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 4.26, p.100
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/SpecialDataDef.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SdgAttribute` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 4.27, p.100
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/SpecialDataDef.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SdgAbstractPrimitiveAttribute` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 4.28, p.100
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/SpecialDataDef.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SdgPrimitiveAttribute` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 4.29, p.101
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/SpecialDataDef.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SdgPrimitiveAttributeWithVariation` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 4.30, p.101
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/SpecialDataDef.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SdgAggregationWithVariation` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 4.31, p.101
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/SpecialDataDef.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SdgReference` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 4.32, p.101
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/SpecialDataDef.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SdgAbstractForeignReference` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 4.33, p.102
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/SpecialDataDef.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SdgForeignReference` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 4.34, p.102
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/SpecialDataDef.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SdgForeignReferenceWithVariation` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 4.35, p.102
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/SpecialDataDef.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `AbstractValueRestriction` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 4.37, p.103; also FO_TPS_StandardizationTemplate Table 6.9, p.87
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ModelRestrictionTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `AbstractVariationRestriction` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 4.38, p.104; also FO_TPS_StandardizationTemplate Table 6.13, p.89
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ModelRestrictionTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `FullBindingTimeEnum` — AREnum — R23-11 FO_TPS_GenericStructureTemplate Table 4.39, p.105; also FO_TPS_StandardizationTemplate Table 6.14, p.89
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ModelRestrictionTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `CIdentifier` — ARLiteral — R23-11 FO_TPS_GenericStructureTemplate Table 4.45, p.108; also FO_TPS_StandardizationTemplate Table 4.5, p.43
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `CategoryString` — ARLiteral — R23-11 FO_TPS_GenericStructureTemplate Table 4.47, p.109
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DateTime` — ARLiteral — R23-11 FO_TPS_GenericStructureTemplate Table 4.48, p.109
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DiagRequirementIdString` — ARLiteral — R23-11 FO_TPS_GenericStructureTemplate Table 4.49, p.109; also CP_TPS_SoftwareComponentTemplate Table 13.16, p.754
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `Ip4AddressString` — ARLiteral — R23-11 FO_TPS_GenericStructureTemplate Table 4.51, p.110; also CP_TPS_SystemTemplate Table 6.142, p.468
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `Ip6AddressString` — ARLiteral — R23-11 FO_TPS_GenericStructureTemplate Table 4.52, p.110; also CP_TPS_SystemTemplate Table 6.142, p.468
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `McdIdentifier` — ARLiteral — R23-11 FO_TPS_GenericStructureTemplate Table 4.54, p.111
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `RegularExpression` — ARLiteral — R23-11 FO_TPS_GenericStructureTemplate Table 4.60, p.112
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `RevisionLabelString` — ARLiteral — R23-11 FO_TPS_GenericStructureTemplate Table 4.61, p.113
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SymbolString` — ARLiteral — R23-11 FO_TPS_GenericStructureTemplate Table 4.65, p.114
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `UriString` — ARLiteral — R23-11 FO_TPS_GenericStructureTemplate Table 4.66, p.114
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `VerbatimStringPlain` — ARLiteral — R23-11 FO_TPS_GenericStructureTemplate Table 4.68, p.115
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `CseCodeType` — ARLiteral — R23-11 FO_TPS_GenericStructureTemplate Table 4.75, p.165; also CP_TPS_SoftwareComponentTemplate Table 4.15, p.110
+  - module: M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/PrimitiveTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `EvaluatedVariantSet` — ARElement — R23-11 FO_TPS_GenericStructureTemplate Table 7.23, p.257
+  - module: M2/AUTOSARTemplates/GenericStructure/VariantHandling/__init__.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `PredefinedVariant` — ARElement — R23-11 FO_TPS_GenericStructureTemplate Table 7.24, p.258
+  - module: M2/AUTOSARTemplates/GenericStructure/VariantHandling/__init__.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DocumentationBlock` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 9.1, p.287; also CP_TPS_DiagnosticExtractTemplate Table 4.12, p.53
+  - module: M2/MSR/Documentation/TextModel/BlockElements/__init__.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `MultiLanguageVerbatim` — Paginateable — R23-11 FO_TPS_GenericStructureTemplate Table 9.5, p.291
+  - module: M2/MSR/Documentation/TextModel/MultilanguageData.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `List` — Paginateable — R23-11 FO_TPS_GenericStructureTemplate Table 9.8, p.295
+  - module: M2/MSR/Documentation/BlockElements/ListElements.py (· src: ARList)
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `LabeledList` — Paginateable — R23-11 FO_TPS_GenericStructureTemplate Table 9.11, p.296
+  - module: M2/MSR/Documentation/BlockElements/ListElements.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `LabeledItem` — Paginateable — R23-11 FO_TPS_GenericStructureTemplate Table 9.12, p.296
+  - module: M2/MSR/Documentation/BlockElements/ListElements.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `IndentSample` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 9.13, p.297
+  - module: M2/MSR/Documentation/BlockElements/ListElements.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `ItemLabelPosEnum` — AREnum — R23-11 FO_TPS_GenericStructureTemplate Table 9.14, p.297
+  - module: M2/MSR/Documentation/BlockElements/ListElements.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DefList` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 9.15, p.298
+  - module: M2/MSR/Documentation/BlockElements/ListElements.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DefItem` — MultilanguageReferrable — R23-11 FO_TPS_GenericStructureTemplate Table 9.16, p.298
+  - module: M2/MSR/Documentation/BlockElements/ListElements.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `MlFormula` — Paginateable — R23-11 FO_TPS_GenericStructureTemplate Table 9.26, p.310
+  - module: M2/MSR/Documentation/BlockElements/Formula.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `Note` — Paginateable — R23-11 FO_TPS_GenericStructureTemplate Table 9.27, p.310
+  - module: M2/MSR/Documentation/BlockElements/Note.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `NoteTypeEnum` — AREnum — R23-11 FO_TPS_GenericStructureTemplate Table 9.28, p.311
+  - module: M2/MSR/Documentation/BlockElements/Note.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `Traceable` — MultilanguageReferrable — R23-11 FO_TPS_GenericStructureTemplate Table 9.29, p.313
+  - module: M2/MSR/Documentation/BlockElements/RequirementsTracing.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `EmphasisText` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 9.34, p.317
+  - module: M2/MSR/Documentation/TextModel/InlineTextElements.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `IndexEntry` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 9.36, p.317
+  - module: M2/MSR/Documentation/TextModel/InlineTextElements.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `Superscript` — ARLiteral — R23-11 FO_TPS_GenericStructureTemplate Table 9.38, p.318
+  - module: M2/MSR/Documentation/TextModel/InlineTextElements.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `Tt` — ARObject — R23-11 FO_TPS_GenericStructureTemplate Table 9.39, p.319
+  - module: M2/MSR/Documentation/TextModel/InlineTextElements.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `EEnumFont` — AREnum — R23-11 FO_TPS_GenericStructureTemplate Table 9.44, p.322
+  - module: M2/MSR/Documentation/TextModel/InlineAttributeEnums.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `EEnum` — AREnum — R23-11 FO_TPS_GenericStructureTemplate Table 9.45, p.322
+  - module: M2/MSR/Documentation/TextModel/InlineAttributeEnums.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DocumentationContext` — MultilanguageReferrable — R23-11 FO_TPS_GenericStructureTemplate Table 9.56, p.327
+  - module: M2/AUTOSARTemplates/GenericStructure/DocumentationOnM1/__init__.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)

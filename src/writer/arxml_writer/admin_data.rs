@@ -15,6 +15,18 @@ impl ARXMLWriter {
     ) -> Result<(), WriteError> {
         let mut element = BytesStart::new("ADMIN-DATA");
         self.write_ar_object_attributes(&mut element, admin_data.base());
+
+        // py: minidom self-closes childless elements and `patch_xml` expands
+        // only attribute-less empties, so an empty ADMIN-DATA carrying S/T
+        // serializes self-closing (`write_text_element` owns the rule).
+        let empty = admin_data.get_language().is_none()
+            && admin_data.get_used_languages().is_none()
+            && admin_data.get_sdgs().is_empty();
+        if empty {
+            write_text_element(writer, "ADMIN-DATA", element, None)?;
+            return Ok(());
+        }
+
         writer.write_event(Event::Start(element))?;
 
         if let Some(language) = admin_data.get_language() {

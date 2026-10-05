@@ -81,3 +81,47 @@ impl ARXMLWriter {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::m2::msr::asam_hdo::admin_data::AdminData;
+
+    /// py `writeARObject` — S (checksum) then T (timestamp), read from the
+    /// getters; an empty element that carries attributes self-closes.
+    /// (Relocated from PR #18's arxml_writer/mod.rs tests by the domain-split
+    /// merge — see docs/plan/sync-todo/Group1.md ARObject row.)
+    #[test]
+    fn ar_object_s_t_attributes_emit_in_py_order() {
+        let mut document = Document::new();
+        document.set_schema_location("http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd");
+
+        let mut admin_data = AdminData::new();
+        admin_data
+            .set_checksum("c1")
+            .set_timestamp("2024-11-26T21:25:17+08:00");
+        let admin_data_id = document.admin_datas.insert(admin_data);
+        document.set_admin_data(admin_data_id);
+
+        let package_id = document.add_ar_package(None, "Pkg");
+        document
+            .ar_packages
+            .get_mut(package_id)
+            .unwrap()
+            .set_checksum("c2")
+            .set_timestamp("2024-11-27T08:00:00+08:00");
+
+        let output = tempfile::NamedTempFile::new().unwrap();
+        ARXMLWriter::new().save(output.path(), &document).unwrap();
+        let text = std::fs::read_to_string(output.path()).unwrap();
+
+        assert!(
+            text.contains("<ADMIN-DATA S=\"c1\" T=\"2024-11-26T21:25:17+08:00\"/>"),
+            "{text}"
+        );
+        assert!(
+            text.contains("<AR-PACKAGE S=\"c2\" T=\"2024-11-27T08:00:00+08:00\">"),
+            "{text}"
+        );
+    }
+}

@@ -6,7 +6,7 @@
 use std::path::Path;
 
 use armodel::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARPackageId;
-use armodel::parser::arxml_parser::{default_options, ARXMLParser};
+use armodel::reader::arxml_reader::{default_options, ARXMLReader};
 use armodel::writer::arxml_writer::ARXMLWriter;
 use armodel::{AdminDataTransformer, Document};
 
@@ -14,7 +14,7 @@ const FIXTURE: &str = "tests/integration/test_files/AdminDataWhitespace.arxml";
 
 fn parse(path: &Path) -> Document {
     let mut document = Document::new();
-    ARXMLParser::new(default_options())
+    ARXMLReader::new(default_options())
         .load(path, &mut document)
         .unwrap();
     document

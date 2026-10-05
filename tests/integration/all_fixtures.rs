@@ -12,7 +12,7 @@ use std::path::{Path, PathBuf};
 
 use armodel::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use armodel::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARPackageId;
-use armodel::parser::arxml_parser::{default_options, ARXMLParser};
+use armodel::reader::arxml_reader::{default_options, ARXMLReader};
 use armodel::writer::arxml_writer::ARXMLWriter;
 use armodel::Document;
 
@@ -66,7 +66,7 @@ fn round_trip(file: &Path) -> Result<(), String> {
         .into_owned();
 
     let mut document = Document::new();
-    ARXMLParser::new(default_options())
+    ARXMLReader::new(default_options())
         .load(file, &mut document)
         .map_err(|error| format!("{name}: parse failed: {error}"))?;
 
@@ -77,7 +77,7 @@ fn round_trip(file: &Path) -> Result<(), String> {
         .map_err(|error| format!("{name}: write failed: {error}"))?;
 
     let mut reparsed = Document::new();
-    ARXMLParser::new(default_options())
+    ARXMLReader::new(default_options())
         .load(output.path(), &mut reparsed)
         .map_err(|error| format!("{name}: re-parse failed: {error}"))?;
 
@@ -94,7 +94,7 @@ fn round_trip(file: &Path) -> Result<(), String> {
 fn elements_are_ingested_through_the_registry() {
     let file = Path::new(FIXTURE_DIR).join("SoftwareComponents.arxml");
     let mut document = Document::new();
-    ARXMLParser::new(default_options())
+    ARXMLReader::new(default_options())
         .load(&file, &mut document)
         .expect("SoftwareComponents.arxml parses");
 
@@ -254,7 +254,7 @@ fn written_output_matches_the_original_text_for_supported_files() {
             continue;
         }
         let mut document = Document::new();
-        ARXMLParser::new(default_options())
+        ARXMLReader::new(default_options())
             .load(file, &mut document)
             .unwrap_or_else(|error| panic!("{name}: {error:?}"));
         let written = std::env::temp_dir().join(name);
@@ -323,7 +323,7 @@ fn warning_free_sources_parse_without_warnings() {
         );
         let path = Path::new(FIXTURE_DIR).join(source);
         let mut document = Document::new();
-        let mut parser = ARXMLParser::new(default_options());
+        let mut parser = ARXMLReader::new(default_options());
         parser
             .load(&path, &mut document)
             .unwrap_or_else(|error| panic!("{source}: parse failed: {error}"));

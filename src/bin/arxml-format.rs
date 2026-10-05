@@ -6,7 +6,7 @@ use std::process;
 
 use clap::Parser;
 
-use armodel::parser::arxml_parser::{ARXMLParser, ParserOptions};
+use armodel::reader::arxml_reader::{ARXMLReader, ReaderOptions};
 use armodel::writer::arxml_writer::{ARXMLWriter, WriterOptions};
 use armodel::{AdminDataTransformer, Document};
 
@@ -47,7 +47,7 @@ fn main() {
     // py passes warning through to the parser; without -w the parser fails
     // on the first problem (py's AbstractARXMLParser default is warning=False).
     let mut document = Document::new();
-    if let Err(error) = ARXMLParser::new(ParserOptions {
+    if let Err(error) = ARXMLReader::new(ReaderOptions {
         warning: args.warning,
     })
     .load(&args.input, &mut document)

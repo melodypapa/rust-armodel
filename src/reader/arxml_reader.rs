@@ -1,4 +1,4 @@
-//! `ARXMLParser::load` with release detection, `read_admin_data`,
+//! `ARXMLReader::load` with release detection, `read_admin_data`,
 //! `read_ar_packages` (P0 design §6). Mirrors py's `arxml_parser.py`
 //! method-for-method so the P2–P4 port stays reviewable.
 
@@ -68,7 +68,7 @@ use crate::m2::msr::documentation::text_model::multilanguage_data::{
     MultiLanguageOverviewParagraph, MultiLanguageOverviewParagraphId, MultiLanguageParagraph,
     MultiLanguagePlainText, MultilanguageLongName, MultilanguageLongNameId,
 };
-use crate::parser::abstract_arxml_parser::{
+use crate::reader::abstract_arxml_reader::{
     Node,
     ParseError,
     build_dom_from_reader,
@@ -107,36 +107,36 @@ struct LifeCycleInfoSetPayload {
 /// py `ARXMLParser(options)` — `warning: true` (the default) collects warnings
 /// and continues; `warning: false` fails on the first problem.
 #[derive(Debug, Clone)]
-pub struct ParserOptions {
+pub struct ReaderOptions {
     pub warning: bool,
 }
 
-impl Default for ParserOptions {
+impl Default for ReaderOptions {
     fn default() -> Self {
         Self { warning: true }
     }
 }
 
 /// py's default options (`warning: true`).
-pub fn default_options() -> ParserOptions {
-    ParserOptions::default()
+pub fn default_options() -> ReaderOptions {
+    ReaderOptions::default()
 }
 
 /// py `ARXMLParser`
 #[derive(Debug)]
-pub struct ARXMLParser {
-    options: ParserOptions,
+pub struct ARXMLReader {
+    options: ReaderOptions,
     warnings: Vec<String>,
 }
 
-impl Default for ARXMLParser {
+impl Default for ARXMLReader {
     fn default() -> Self {
-        Self::new(ParserOptions::default())
+        Self::new(ReaderOptions::default())
     }
 }
 
-impl ARXMLParser {
-    pub fn new(options: ParserOptions) -> Self {
+impl ARXMLReader {
+    pub fn new(options: ReaderOptions) -> Self {
         Self {
             options,
             warnings: Vec::new(),
@@ -2094,7 +2094,7 @@ mod tests {
 
     fn parse_sample() -> Document {
         let mut document = Document::new();
-        ARXMLParser::new(default_options())
+        ARXMLReader::new(default_options())
             .load_from_reader(Reader::from_str(SAMPLE), &mut document)
             .unwrap();
         document
@@ -2113,7 +2113,7 @@ mod tests {
     #[test]
     fn load_rejects_wrong_root() {
         let mut document = Document::new();
-        let result = ARXMLParser::new(default_options()).load_from_reader(
+        let result = ARXMLReader::new(default_options()).load_from_reader(
             Reader::from_str("<?xml version=\"1.0\"?><WRONG/>"),
             &mut document,
         );
@@ -2153,7 +2153,7 @@ mod tests {
     #[test]
     fn identifiable_payload_round_trips_text_nodes() {
         let mut document = Document::new();
-        ARXMLParser::new(default_options())
+        ARXMLReader::new(default_options())
             .load_from_reader(Reader::from_str(IDENTIFIABLE_SAMPLE), &mut document)
             .unwrap();
 
@@ -2205,7 +2205,7 @@ mod tests {
     #[test]
     fn reference_bases_parse_into_the_arena() {
         let mut document = Document::new();
-        ARXMLParser::new(default_options())
+        ARXMLReader::new(default_options())
             .load_from_reader(Reader::from_str(REFERENCE_BASE_SAMPLE), &mut document)
             .unwrap();
 

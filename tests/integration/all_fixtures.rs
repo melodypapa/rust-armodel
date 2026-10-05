@@ -323,14 +323,14 @@ fn warning_free_sources_parse_without_warnings() {
         );
         let path = Path::new(FIXTURE_DIR).join(source);
         let mut document = Document::new();
-        let mut parser = ARXMLReader::new(default_options());
-        parser
+        let mut reader = ARXMLReader::new(default_options());
+        reader
             .load(&path, &mut document)
             .unwrap_or_else(|error| panic!("{source}: parse failed: {error}"));
         assert!(
-            parser.get_warnings().is_empty(),
+            reader.get_warnings().is_empty(),
             "{source}: expected zero warnings, got: {:?}",
-            parser.get_warnings()
+            reader.get_warnings()
         );
     }
 }

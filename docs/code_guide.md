@@ -36,7 +36,7 @@ Module paths mirror the AUTOSAR spec `Package` rows
 - The class name is used unchanged as the Rust type name. Types the spec marks
   `(interface)` are still concrete structs (matching py-armodel).
 - `lib.rs` re-exports only the public surface (`Document`, `ARPackage`,
-  parser/writer types). Everything else is `pub(crate)` until needed.
+  reader/writer types). Everything else is `pub(crate)` until needed.
 
 Never leave a file outside the module tree (the current `identifier.rs` /
 `autosar_top_level_structure.rs` orphans are dead code the compiler cannot
@@ -132,7 +132,7 @@ impl Referrable {
 - Setters return `&mut Self` for chaining (py returns `self`).
 - Do NOT store `Vec<ARPackage>` by value inside `ARPackage` (the current stub
   does this) — ownership recursion forces `Box` gymnastics and fights the
-  parser. Use `Vec<Id<ARPackage>>`.
+  reader. Use `Vec<Id<ARPackage>>`.
 - Do NOT define `fn init()` traits to mimic Python `__init__`; construction is
   `Type::new(...)` or a `Document` factory method.
 
@@ -180,17 +180,17 @@ pub enum ParseError {
 }
 ```
 
-- Mirror py's two modes: `ARXMLParser::new(ParserOptions { warning: true })`
+- Mirror py's two modes: `ARXMLReader::new(ReaderOptions { warning: true })`
   collects warnings and continues; `warning: false` fails on the first error.
   Unknown tags produce an "unsupported element" warning, never a hard failure.
 - The CLI (`src/bin/arxml-dump.rs`) is the only place allowed to print an
   error and `exit(1)` — no `panic!`.
 
-## 8. Parser and writer patterns
+## 8. Reader and writer patterns
 
-Parser (`src/parser/`):
+Reader (`src/reader/`):
 
-- `abstract_arxml_parser.rs` builds a `Node` DOM
+- `abstract_arxml_reader.rs` builds a `Node` DOM
   (`name`, `attrs: BTreeMap<String,String>`, `children`, `text`) from
   quick-xml events; element names are namespace-stripped (`{ns}TAG` → `TAG`).
 - Helpers mirror py's names: `find`, `find_all`, `get_child_element_string`.

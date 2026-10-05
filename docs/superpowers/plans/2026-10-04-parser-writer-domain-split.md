@@ -113,7 +113,7 @@ done
 grep -rn 'ARXMLParser\|ParserOptions\|arxml_parser\|mod parser\|parser::' src tests --include='*.rs' | grep -v 'ParseError' | grep -v 'AbstractARXMLParser'
 ```
 
-Expected: empty output (`AbstractARXMLParser` is py's class name in a comment — it stays).
+Expected: only py-citation comment lines survive (`AbstractARXMLParser`, `py ARXMLParser`, `arxml_parser.py` / `abstract_arxml_parser.py` citations) — those keep py-armodel's real names; every code token is renamed.
 
 - [ ] **Step 3: Full gate** — expected: all green. The harness exercises the renamed API end-to-end (all four integration files import `armodel::reader::arxml_reader`).
 

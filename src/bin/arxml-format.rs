@@ -80,6 +80,7 @@ fn main() {
 
     let writer = ARXMLWriter::with_options(WriterOptions {
         unescape_entities: args.unescape_entities,
+        validate: true,
     });
     if let Err(error) = writer.save(&args.output, &document) {
         eprintln!("[ERROR] : {error}");

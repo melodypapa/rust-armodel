@@ -112,7 +112,15 @@ mod tests {
             .set_timestamp("2024-11-27T08:00:00+08:00");
 
         let output = tempfile::NamedTempFile::new().unwrap();
-        ARXMLWriter::new().save(output.path(), &document).unwrap();
+        // validate = false: this is an emission-order test and must not newly
+        // depend on schema compilation — R23-11 (AUTOSAR_00052.xsd) cannot
+        // compile at all because the py pin ships no R23-11/xml.xsd.
+        ARXMLWriter::with_options(WriterOptions {
+            unescape_entities: false,
+            validate: false,
+        })
+        .save(output.path(), &document)
+        .unwrap();
         let text = std::fs::read_to_string(output.path()).unwrap();
 
         assert!(

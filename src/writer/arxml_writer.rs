@@ -175,6 +175,18 @@ impl ARXMLWriter {
     ) -> Result<(), WriteError> {
         let mut element = BytesStart::new("ADMIN-DATA");
         self.write_ar_object_attributes(&mut element, admin_data.base());
+
+        // py: minidom self-closes childless elements and `patch_xml` expands
+        // only attribute-less empties, so an empty ADMIN-DATA carrying S/T
+        // serializes self-closing (`write_text_element` owns the rule).
+        let empty = admin_data.get_language().is_none()
+            && admin_data.get_used_languages().is_none()
+            && admin_data.get_sdgs().is_empty();
+        if empty {
+            write_text_element(writer, "ADMIN-DATA", element, None)?;
+            return Ok(());
+        }
+
         writer.write_event(Event::Start(element))?;
 
         if let Some(language) = admin_data.get_language() {
@@ -2188,5 +2200,41 @@ mod tests {
         .unwrap();
         let text = std::fs::read_to_string(unescaped.path()).unwrap();
         assert!(text.contains("UUID=\"a\"b'c\""), "{text}");
+    }
+
+    /// py `writeARObject` — S (checksum) then T (timestamp), read from the
+    /// getters; an empty element that carries attributes self-closes.
+    #[test]
+    fn ar_object_s_t_attributes_emit_in_py_order() {
+        let mut document = Document::new();
+        document.set_schema_location("http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd");
+
+        let mut admin_data = AdminData::new();
+        admin_data
+            .set_checksum("c1")
+            .set_timestamp("2024-11-26T21:25:17+08:00");
+        let admin_data_id = document.admin_datas.insert(admin_data);
+        document.set_admin_data(admin_data_id);
+
+        let package_id = document.add_ar_package(None, "Pkg");
+        document
+            .ar_packages
+            .get_mut(package_id)
+            .unwrap()
+            .set_checksum("c2")
+            .set_timestamp("2024-11-27T08:00:00+08:00");
+
+        let output = tempfile::NamedTempFile::new().unwrap();
+        ARXMLWriter::new().save(output.path(), &document).unwrap();
+        let text = std::fs::read_to_string(output.path()).unwrap();
+
+        assert!(
+            text.contains("<ADMIN-DATA S=\"c1\" T=\"2024-11-26T21:25:17+08:00\"/>"),
+            "{text}"
+        );
+        assert!(
+            text.contains("<AR-PACKAGE S=\"c2\" T=\"2024-11-27T08:00:00+08:00\">"),
+            "{text}"
+        );
     }
 }

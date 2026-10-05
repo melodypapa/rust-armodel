@@ -1,0 +1,390 @@
+# Sync todo: Group 10 — SWC communication & datatypes
+
+Input: full-repo orphan audit 2026-09-23 (unstamped ∧ untracked, M2 only) · Queue order = row order
+(resume = first class row still `[ ]`; all class rows `[x]` = sync finished — Rule 0009.4)
+
+## Queue (dependency-first)
+
+- [ ] `DependencyUsageEnum` — AREnum — R23-11 markdown · Table 7.4 (CP_TPS_BSWModuleDescriptionTemplate)
+  - module: M2/AUTOSARTemplates/CommonStructure/Implementation.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `ArrayImplPolicyEnum` — AREnum — R23-11 markdown · Table 5.18 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/CommonStructure/ImplementationDataTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `ApiPrincipleEnum` — AREnum — R23-11 markdown · Table 5.18 (CP_TPS_BSWModuleDescriptionTemplate)
+  - module: M2/AUTOSARTemplates/CommonStructure/InternalBehavior.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `ReentrancyLevelEnum` — AREnum — R23-11 markdown · Table 5.5 (CP_TPS_BSWModuleDescriptionTemplate)
+  - module: M2/AUTOSARTemplates/CommonStructure/InternalBehavior.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `ImplementationProps` — Referrable — R23-11 markdown · Table 5.20 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/CommonStructure/Implementation.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `PerInstanceMemorySize` (input · R23-11 markdown · Table 8.8)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/SwcImplementation.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `SwcImplementation` — Implementation — R23-11 markdown · Table 8.7 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/SwcImplementation.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `ImplementationDataTypeElement` — AbstractImplementationDataTypeElement — R23-11 markdown · Table 5.17 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/CommonStructure/ImplementationDataTypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `ReceptionComSpecProps` — ARObject — R23-11 markdown · Table 4.64 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/Communication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `CompositeNetworkRepresentation` — ARObject — R23-11 markdown · Table 4.74 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/Communication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `ModeSwitchedAckRequest` — ARObject — R23-11 markdown · Table 4.80 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/Communication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `ModeSwitchReceiverComSpec` — RPortComSpec — R23-11 markdown · Table 4.81 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/Communication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `ModeSwitchSenderComSpec` — PPortComSpec — R23-11 markdown · Table 4.79 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/Communication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `NvProvideComSpec` — PPortComSpec — R23-11 markdown · Table 4.85 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/Communication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `NvRequireComSpec` — RPortComSpec — R23-11 markdown · Table 4.84 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/Communication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `ParameterRequireComSpec` — RPortComSpec — R23-11 markdown · Table 4.83 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/Communication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `QueuedReceiverComSpec` — ReceiverComSpec — R23-11 markdown · Table 4.63 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/Communication.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `DataTypeMap` — ARObject — R23-11 markdown · Table 5.3 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/Datatype/Datatypes.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `EndToEndDescription` — ARObject — R23-11 markdown · Table 4.95 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/EndToEndProtection.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `ModeSwitchEventTriggeredActivity` — ARObject — R23-11 markdown · Table 11.7 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/NvBlockComponent.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `AutosarVariableRef` — ARObject — R23-11 markdown · Table 5.33 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/SwcInternalBehavior/DataElements/__init__.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `RoleBasedPortAssignment` — ARObject — R23-11 markdown · Table 7.54 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/SwcInternalBehavior/ServiceMapping.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `AutosarParameterRef` — ARObject — R23-11 markdown · Table 5.34 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/SwcInternalBehavior/DataElements/__init__.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `NvBlockNeedsReliabilityEnum` — AREnum — R23-11 markdown · Table 11.10 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/CommonStructure/ServiceNeeds.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `NvBlockNeedsWritingPriorityEnum` — AREnum — R23-11 markdown · Table 11.9 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/CommonStructure/ServiceNeeds.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `RamBlockStatusControlEnum` — AREnum — R23-11 markdown · Table 13.1 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/CommonStructure/ServiceNeeds.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `NvBlockDataMapping` — ARObject — R23-11 markdown · Table 11.11 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/NvBlockComponent.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `BulkNvDataDescriptor` — AtpStructureElement — R23-11 markdown · Table 11.12 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/NvBlockComponent.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `RoleBasedDataAssignment` — ARObject — R23-11 markdown · Table 12.4 (CP_TPS_BSWModuleDescriptionTemplate)
+  - module: M2/AUTOSARTemplates/CommonStructure/ServiceNeeds.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `InstantiationDataDefProps` — ARObject — R23-11 markdown · Table 7.41 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/SwcInternalBehavior/InstantiationDataDefProps.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `NvBlockNeeds` — ServiceNeeds — R23-11 markdown · Table 11.8 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/CommonStructure/ServiceNeeds.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)
+
+- [ ] `NvBlockDescriptor` — AtpStructureElement — R23-11 markdown · Table 11.6 (CP_TPS_SoftwareComponentTemplate)
+  - module: M2/AUTOSARTemplates/SWComponentTemplate/NvBlockComponent.py
+  - [ ] Step 1 — Extract py reference & Rust model shape
+  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
+  - [ ] Step 3 — Port the reader (Green)
+  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
+  - [ ] Step 5 — Port the writer (Green)
+  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
+  - [ ] Step 7 — Regenerate the port checklist
+  - [ ] Step 8 — Model gaps & deferrals
+  - [ ] Step 9 — Verify (9a) + confirm (9b)

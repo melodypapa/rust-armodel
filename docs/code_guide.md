@@ -208,6 +208,25 @@ Writer (`src/writer/`):
   `xml.sequenceOffset` tags already encoded in py's field order.
 - Never re-derive values (checksums, timestamps) — write what the model holds.
 
+### Domain split (added 2026-10-06)
+
+The hand-written reader/writer are split into per-domain modules
+(`src/reader/arxml_reader/<domain>.rs`, `src/writer/arxml_writer/<domain>.rs`):
+
+- A method lives in the domain module of the family it reads/writes; shared
+  base helpers live in `common.rs`. Placement is a pure move — methods stay on
+  the same struct; no call site changes.
+- Methods default private; anything called from `mod.rs` dispatch or a sibling
+  domain module is `pub(super)` — never `pub(crate)` or `pub`. Cross-module
+  payload structs follow the same rule (`pub(super)` struct with `pub(super)`
+  fields) — do not "fix" this to private.
+- Tests live with their domain; `tests/integration/` is untouched and remains
+  the only contract.
+- `mod.rs` holds struct + options + load/save + walk + dispatch arms only; past
+  ~500 lines (excluding tests) something belongs in a domain module.
+- New P2–P4 batches add their methods to the owning domain module and, for
+  package-element tags, one delegating dispatch arm in `mod.rs`.
+
 ## 9. Equality
 
 A `TId` key is only meaningful inside one `Document`'s arena, so:

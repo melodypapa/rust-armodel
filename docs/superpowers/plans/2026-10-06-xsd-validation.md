@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Port the approved XSD-validation design (`docs/superpowers/specs/2026-10-05-xsd-validation-design.md`, including its AMENDED as-built notes) to rust-armodel: pre-parse validation in `ARXMLReader::load` and pre-save validation in `ARXMLWriter::save`, against bundled AUTOSAR schemas, with the reader's two-mode warning convention.
+**Goal:** Port the approved XSD-validation design (`docs/superpowers/specs/2026-10-05-xsd-validation-design.md`, including its AMENDED as-built notes) to rust-armodel: pre-parse validation in `ARXMLReader::load`, pre-save validation in `ARXMLWriter::save`, and a standalone **`arxml-validator` CLI** (user-requested scope addition beyond py §8) that verifies a file on demand — where an unresolvable schema is an **unsupported-schema failure (exit 2)**, not a warn-and-skip.
 
 **Architecture:** New `src/validation/` module (`ARXMLValidator` + `ValidationError`) backed by the **`libxml` crate** (0.3.21) — the same libxml2 engine py's lxml wraps, so schema-surface fidelity carries over. Bundled schemas are byte-copies of `target/py-armodel/autosar/<release>/xsd/` committed under `schemas/`, embedded at compile time with `include_dir`, materialized to a temp dir once (libxml2 resolves `xs:include`/`xs:import` from file paths), compiled lazily, and cached behind a mutex (libxml validation contexts are `!Send`/`!Sync`). The reader gate reads the file to bytes, validates, then parses from the in-memory buffer; the writer gate validates its existing output buffer before the file write.
 
@@ -666,20 +666,206 @@ impl Default for WriterOptions {
 
 - [ ] **Step 2: Run. If a real fixture FAILS validation:** STOP — do not fix the fixture (they are verbatim, Rule 0006) and do not weaken the assert; report the failure list for a decision (that is exactly the audit working as designed).
 
-- [ ] **Step 3: README prerequisite + close-out**
+### Task 6: `arxml-validator` CLI
 
-`README.md` (root): under a build/deps note add: `XSD validation requires system libxml2 (pkg-config); disable the gates with ReaderOptions/WriterOptions { validate: false }`.
+**Files:**
+- Create: `src/bin/arxml-validator.rs` (auto-discovered — no Cargo.toml `[[bin]]` edit)
+- Modify: `src/validation/mod.rs` (`for_release` + `detect_schema_file` + their tests)
+- Modify: `Cargo.toml` (`[[test]]` entry), Create: `tests/integration/validator_cli.rs`
 
-Final gates + py2rust check (checklist must be unchanged — no new read_/write_ methods) + commit: `feat(validation): corpus audit + docs (xsd validation complete)`.
+- [ ] **Step 1: Write the failing module tests** (in `src/validation`'s test module):
 
-Then push and open the PR:
+```rust
+    #[test]
+    fn for_release_resolves_bundled_and_rejects_unknown() {
+        assert!(ARXMLValidator::for_release("R23-11").is_some());
+        assert!(ARXMLValidator::for_release("r23-11").is_some()); // case-normalized
+        assert!(ARXMLValidator::for_release("R21-11").is_none()); // not bundled
+    }
+
+    #[test]
+    fn detect_schema_file_exposes_the_filename() {
+        let xml = br#"<AUTOSAR xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00050.xsd"/>"#;
+        assert_eq!(super::detect_schema_file(xml), Some(&b"AUTOSAR_00050.xsd"[..]));
+        assert_eq!(super::detect_schema_file(b"<AUTOSAR/>"), None);
+    }
+```
+
+- [ ] **Step 2: Implement the two module functions:**
+
+```rust
+/// Explicit-release constructor (py: explicit release overrides detection).
+/// `None` when the release is not bundled — the CLI surfaces this as its
+/// unsupported-schema failure.
+pub fn for_release(release: &str) -> Option<Self> {
+    let normalized = release.to_ascii_uppercase();
+    REGISTRY
+        .iter()
+        .find(|(_, r)| *r == normalized)
+        .map(|(_, release)| Self { release })
+}
+
+/// The schema filename the document requests (`xsi:schemaLocation` last
+/// token) — for unsupported-schema diagnostics.
+pub fn detect_schema_file(data: &[u8]) -> Option<&[u8]> {
+    schema_location_file(data)
+}
+```
+
+- [ ] **Step 3: Write the CLI** (`src/bin/arxml-validator.rs`):
+
+```rust
+//! `arxml-validator` — validate an AUTOSAR ARXML file against the bundled
+//! AUTOSAR XSD for its release. Standalone verification only; it never
+//! builds the model.
+//!
+//! Exit codes: 0 = valid · 1 = schema violations · 2 = unsupported (no
+//! bundled schema for the detected/explicit release).
+
+use std::path::PathBuf;
+use std::process;
+
+use clap::Parser;
+
+use armodel::validation::ARXMLValidator;
+
+/// Validate an AUTOSAR ARXML file against the bundled AUTOSAR XSD.
+#[derive(Parser)]
+#[command(version, about)]
+struct Args {
+    /// Validate against this bundled release (e.g. R23-11) instead of the
+    /// release detected from the file's xsi:schemaLocation.
+    #[arg(long)]
+    release: Option<String>,
+
+    /// The path of the AUTOSAR ARXML file
+    input: PathBuf,
+}
+
+fn main() {
+    let args = Args::parse();
+
+    let data = match std::fs::read(&args.input) {
+        Ok(data) => data,
+        Err(error) => {
+            eprintln!("error: cannot read {}: {error}", args.input.display());
+            process::exit(1);
+        }
+    };
+
+    let validator = match &args.release {
+        Some(release) => ARXMLValidator::for_release(release),
+        None => ARXMLValidator::for_document(&data),
+    };
+    let Some(validator) = validator else {
+        // Unsupported schema is a FAILURE here (unlike the reader/writer
+        // gates, which warn and continue unvalidated): a validation tool
+        // that cannot resolve a schema must not report success.
+        let detected = ARXMLValidator::detect_schema_file(&data)
+            .map(|f| String::from_utf8_lossy(f).into_owned())
+            .unwrap_or_else(|| "<no xsi:schemaLocation>".to_string());
+        eprintln!(
+            "error: unsupported: no bundled XSD schema (requested: {}; bundled: R23-11, R4.4.0, R4.3.1, R3.2.3)",
+            detected
+        );
+        process::exit(2);
+    };
+
+    let errors = validator.validate(&data);
+    if errors.is_empty() {
+        println!(
+            "{}: valid against the {} schema",
+            args.input.display(),
+            validator.release()
+        );
+        return;
+    }
+    for error in &errors {
+        eprintln!(
+            "{}: line {}, col {}: {}",
+            args.input.display(),
+            error.line,
+            error.column,
+            error.message
+        );
+    }
+    eprintln!(
+        "{}: failed {} schema validation with {} error(s)",
+        args.input.display(),
+        validator.release(),
+        errors.len()
+    );
+    process::exit(1);
+}
+```
+
+- [ ] **Step 4: CLI integration tests** — `tests/integration/validator_cli.rs`:
+
+```rust
+//! End-to-end tests for the `arxml-validator` CLI exit-code contract.
+
+use std::process::Command;
+
+fn run(args: &[&str]) -> (i32, String) {
+    let output = Command::new(env!("CARGO_BIN_EXE_arxml-validator"))
+        .args(args)
+        .output()
+        .expect("binary runs");
+    (output.status.code().unwrap_or(-1),
+     format!("{}{}", String::from_utf8_lossy(&output.stdout), String::from_utf8_lossy(&output.stderr)))
+}
+
+#[test]
+fn valid_fixture_exits_zero() {
+    let (code, out) = run(&["tests/integration/test_files/Os_ECUC_4.4.0.arxml"]);
+    assert_eq!(code, 0, "{out}");
+    assert!(out.contains("valid against the R4.4.0 schema"), "{out}");
+}
+
+#[test]
+fn unresolvable_schema_exits_two_with_unsupported_message() {
+    // 24 fixtures reference AUTOSAR_00050.xsd — not bundled.
+    let (code, err) = run(&["tests/integration/test_files/AUTOSAR_Datatypes.arxml"]);
+    assert_eq!(code, 2, "{err}");
+    assert!(err.contains("unsupported"), "{err}");
+    assert!(err.contains("AUTOSAR_00050.xsd"), "{err}");
+}
+
+#[test]
+fn explicit_release_override_downgrades_to_violations_or_valid() {
+    // --release forces a bundled schema even when the file asks for another;
+    // the run then reports real violations (1) or validity (0) — never 2.
+    let (code, _) = run(&["--release", "R4.3.1", "tests/integration/test_files/Os_ECUC_4.4.0.arxml"]);
+    assert!(code == 0 || code == 1);
+}
+```
+
+Add to `Cargo.toml` after the last `[[test]]` block:
+
+```toml
+[[test]]
+name = "validator_cli"
+path = "tests/integration/validator_cli.rs"
+```
+
+- [ ] **Step 5: Run the three tests to green** (`cargo test --test validator_cli`), then the full gate.
+
+- [ ] **Step 6: Gate + commit** — `feat(validation): arxml-validator CLI (exit 0/1/2, unsupported-schema contract)`
+
+### Task 7: close-out
+
+- [ ] **Step 1: README prerequisite + close-out** — `README.md` (root), under a build/deps note add: `XSD validation requires system libxml2 (pkg-config); disable the gates with ReaderOptions/WriterOptions { validate: false }.`
+
+- [ ] **Step 2: Final gates + py2rust check** (checklist must be unchanged — no new `read_`/`write_` methods) + commit: `feat(validation): corpus audit + docs (xsd validation complete)`.
+
+- [ ] **Step 3: Push and open the PR:**
 
 ```bash
 git push -u origin feature/xsd-validation
-gh pr create --base main --title "feat: XSD validation for parse and write" \
-  --body "Rust port of docs/superpowers/specs/2026-10-05-xsd-validation-design.md (py-armodel lxml design → libxml crate). Closes #<tracking issue>"
+gh pr create --base main --title "feat: XSD validation for parse and write + arxml-validator CLI" \
+  --body "Rust port of docs/superpowers/specs/2026-10-05-xsd-validation-design.md (py-armodel lxml design → libxml crate), plus the arxml-validator CLI (user-requested scope addition beyond py §8). Closes #<tracking issue>"
 ```
 
 ---
 
-**Done when:** `ARXMLReader::load` validates pre-parse (strict = `ParseError::SchemaValidation` after no model construction; warning mode = per-violation warnings + parse continues; `validate: false` = off; unresolvable schema = unvalidated in every mode); `ARXMLWriter::save` validates pre-write (`validate: false` escape); 4 release sets embedded byte-identical to the pin with a sync guard; corpus audit green (2 validated / 30 documented-unvalidated); no new `read_`/`write_` methods (checklist untouched).
+**Done when:** the `arxml-validator` CLI exists (exit 0 valid / 1 violations / 2 unsupported-schema); `ARXMLReader::load` validates pre-parse (strict = `ParseError::SchemaValidation` after no model construction; warning mode = per-violation warnings + parse continues; `validate: false` = off; unresolvable schema = unvalidated in every mode); `ARXMLWriter::save` validates pre-write (`validate: false` escape); 4 release sets embedded byte-identical to the pin with a sync guard; corpus audit green (2 validated / 30 documented-unvalidated); no new `read_`/`write_` methods (checklist untouched).

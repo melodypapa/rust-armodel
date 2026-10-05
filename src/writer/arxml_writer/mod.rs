@@ -1,6 +1,7 @@
-//! `ARXMLWriter::save` emitting the XML declaration, `AUTOSAR` with
-//! namespaces, `ADMIN-DATA`, `AR-PACKAGES` (P0 design §9 step 5).
-//! Mirrors py's `arxml_writer.py`.
+//! Writer entry point: `ARXMLWriter::save` (XML declaration, `AUTOSAR` with
+//! namespaces, `ADMIN-DATA`), the `AR-PACKAGES`/`AR-PACKAGE` walk, and the
+//! `write_ar_package_element` dispatch seam delegating to the per-domain
+//! emitter modules. Mirrors py's `arxml_writer.py`.
 
 use std::io::Write;
 use std::path::Path;
@@ -9,43 +10,35 @@ use quick_xml::events::{BytesDecl, BytesEnd, BytesStart, Event};
 use quick_xml::writer::Writer;
 
 use crate::m2::autosar_templates::autosar_top_level_structure::Document;
-use crate::m2::msr::data_dictionary::data_def_properties::SwDataDefPropsId;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::{
     ARPackage, ARPackageId,
 };
-use crate::m2::autosar_templates::generic_structure::general_template_classes::element_collection::{
-    AutoCollectEnum, CollectionId,
-};
-use crate::m2::autosar_templates::generic_structure::life_cycles::{
-    LifeCycleInfoId, LifeCycleInfoSetId, LifeCyclePeriod,
-};
 use crate::m2::element_registry;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
-use crate::m2::msr::asam_hdo::base_types::SwBaseTypeId;
-use crate::m2::msr::asam_hdo::units::{PhysicalDimensionId, UnitId};
+use crate::m2::msr::data_dictionary::data_def_properties::SwDataDefPropsId;
 use crate::m2::msr::documentation::text_model::block_elements::DocumentationBlockId;
 use crate::m2::msr::documentation::text_model::multilanguage_data::{
     MultiLanguageOverviewParagraphId, MultilanguageLongNameId,
 };
 use crate::writer::abstract_arxml_writer::{
-    WriteError,
-    write_limit_element,
-    write_optional_boolean_element,
-    write_optional_ref_type,
-    write_optional_t_ref_type,
-    write_optional_text_element,
-    write_ref_type_list,
-    write_text_element,
+    write_limit_element, write_optional_boolean_element, write_optional_ref_type,
+    write_optional_t_ref_type, write_optional_text_element, write_ref_type_list,
+    write_text_element, WriteError,
 };
 
 mod admin_data;
+mod base_types;
+mod collection;
 mod common;
 mod compu_method;
 mod data_constr;
 mod datatypes;
 mod documentation;
 mod keyword;
+mod life_cycle;
+mod physical_dimension;
+mod unit;
 
 /// The per-class `Identifiable` payload pieces a family emitter hands to
 /// `write_identifiable_parts` (ids resolve through the `Document` arenas).
@@ -335,424 +328,6 @@ impl ARXMLWriter {
         // LongName/Desc/Introduction/AdminData per family land with Tasks 4-9;
         // the registry's category setters own everything the P0 model tracks.
         writer.write_event(Event::End(BytesEnd::new(tag)))?;
-        Ok(())
-    }
-
-    /// py `writeSwBaseType`.
-    fn write_sw_base_type<W: Write>(
-        &self,
-        writer: &mut Writer<W>,
-        id: SwBaseTypeId,
-        document: &Document,
-    ) -> Result<(), WriteError> {
-        let Some(sw_base_type) = document.sw_base_types.get(id) else {
-            return Ok(());
-        };
-        let mut element = BytesStart::new("SW-BASE-TYPE");
-        self.write_identifiable_attributes(
-            &mut element,
-            sw_base_type.get_checksum(),
-            sw_base_type.get_timestamp(),
-            sw_base_type.get_uuid(),
-        );
-        writer.write_event(Event::Start(element))?;
-
-        let short_name_element = BytesStart::new("SHORT-NAME");
-        write_text_element(
-            writer,
-            "SHORT-NAME",
-            short_name_element,
-            sw_base_type.get_short_name(),
-        )?;
-
-        self.write_identifiable_parts(
-            writer,
-            IdentifiableParts {
-                long_name: sw_base_type.get_long_name(),
-                desc: sw_base_type.get_desc(),
-                category: sw_base_type.get_category(),
-                introduction: sw_base_type.get_introduction(),
-                admin_data: sw_base_type.get_admin_data(),
-                sw_data_def_props: None,
-            },
-            document,
-        )?;
-
-        // py `setBaseTypeDirectDefinition`
-        if let Some(definition) = sw_base_type
-            .get_base_type_definition()
-            .and_then(|definition_id| document.base_type_direct_definitions.get(definition_id))
-        {
-            write_optional_text_element(writer, "BASE-TYPE-SIZE", definition.get_base_type_size())?;
-            write_optional_text_element(
-                writer,
-                "BASE-TYPE-ENCODING",
-                definition.get_base_type_encoding(),
-            )?;
-            write_optional_text_element(writer, "MEM-ALIGNMENT", definition.get_mem_alignment())?;
-            if let Some(byte_order) = definition.get_byte_order() {
-                write_optional_text_element(writer, "BYTE-ORDER", Some(byte_order.as_str()))?;
-            }
-            write_optional_text_element(
-                writer,
-                "NATIVE-DECLARATION",
-                definition.get_native_declaration(),
-            )?;
-        }
-
-        writer.write_event(Event::End(BytesEnd::new("SW-BASE-TYPE")))?;
-        Ok(())
-    }
-
-    /// py `writeCollection`.
-    fn write_collection<W: Write>(
-        &self,
-        writer: &mut Writer<W>,
-        id: CollectionId,
-        document: &Document,
-    ) -> Result<(), WriteError> {
-        let Some(collection) = document.collections.get(id) else {
-            return Ok(());
-        };
-        let mut element = BytesStart::new("COLLECTION");
-        self.write_identifiable_attributes(
-            &mut element,
-            collection.get_checksum(),
-            collection.get_timestamp(),
-            collection.get_uuid(),
-        );
-        writer.write_event(Event::Start(element))?;
-
-        let short_name_element = BytesStart::new("SHORT-NAME");
-        write_text_element(
-            writer,
-            "SHORT-NAME",
-            short_name_element,
-            collection.get_short_name(),
-        )?;
-
-        self.write_identifiable_parts(
-            writer,
-            IdentifiableParts {
-                long_name: collection.get_long_name(),
-                desc: collection.get_desc(),
-                category: collection.get_category(),
-                introduction: collection.get_introduction(),
-                admin_data: collection.get_admin_data(),
-                sw_data_def_props: None,
-            },
-            document,
-        )?;
-
-        // py writeCollection: AUTO-COLLECT, COLLECTION-SEMANTICS,
-        // ELEMENT-ROLE, ELEMENT-REFS, SOURCE-ELEMENT-REFS.
-        if let Some(auto_collect) = collection.get_auto_collect() {
-            let token = match auto_collect {
-                AutoCollectEnum::RefAll => "REF-ALL",
-                AutoCollectEnum::RefNone => "REF-NONE",
-                AutoCollectEnum::RefNonStandard => "REF-NON-STANDARD",
-            };
-            write_optional_text_element(writer, "AUTO-COLLECT", Some(token))?;
-        }
-        write_optional_text_element(
-            writer,
-            "COLLECTION-SEMANTICS",
-            collection.get_collection_semantics(),
-        )?;
-        write_optional_text_element(writer, "ELEMENT-ROLE", collection.get_element_role())?;
-        write_ref_type_list(
-            writer,
-            "ELEMENT-REFS",
-            "ELEMENT-REF",
-            collection.get_element_refs(),
-            document,
-        )?;
-        write_ref_type_list(
-            writer,
-            "SOURCE-ELEMENT-REFS",
-            "SOURCE-ELEMENT-REF",
-            collection.get_source_element_refs(),
-            document,
-        )?;
-
-        writer.write_event(Event::End(BytesEnd::new("COLLECTION")))?;
-        Ok(())
-    }
-
-    /// py `setLifeCyclePeriod` — py does not run `writeARObject` here, so
-    /// only the three value children are emitted.
-    fn write_life_cycle_period<W: Write>(
-        &self,
-        writer: &mut Writer<W>,
-        key: &str,
-        period: &LifeCyclePeriod,
-    ) -> Result<(), WriteError> {
-        writer.write_event(Event::Start(BytesStart::new(key)))?;
-        write_optional_text_element(writer, "DATE", period.get_date())?;
-        write_optional_text_element(
-            writer,
-            "AR-RELEASE-VERSION",
-            period.get_ar_release_version(),
-        )?;
-        write_optional_text_element(writer, "PRODUCT-RELEASE", period.get_product_release())?;
-        writer.write_event(Event::End(BytesEnd::new(key)))?;
-        Ok(())
-    }
-
-    /// py `writeLifeCycleInfo` — one `LIFE-CYCLE-INFO` child of the
-    /// `LIFE-CYCLE-INFOS` wrapper.
-    fn write_life_cycle_info<W: Write>(
-        &self,
-        writer: &mut Writer<W>,
-        id: LifeCycleInfoId,
-        document: &Document,
-    ) -> Result<(), WriteError> {
-        let Some(info) = document.life_cycle_infos.get(id) else {
-            return Ok(());
-        };
-        let mut element = BytesStart::new("LIFE-CYCLE-INFO");
-        self.write_ar_object_attributes(&mut element, info.base());
-        writer.write_event(Event::Start(element))?;
-
-        write_optional_ref_type(
-            writer,
-            "LC-OBJECT-REF",
-            info.get_lc_object_ref()
-                .and_then(|r| document.ref_types.get(r)),
-        )?;
-        write_optional_ref_type(
-            writer,
-            "LC-STATE-REF",
-            info.get_lc_state_ref()
-                .and_then(|r| document.ref_types.get(r)),
-        )?;
-        if let Some(period_id) = info.get_period_begin() {
-            if let Some(period) = document.life_cycle_periods.get(period_id) {
-                self.write_life_cycle_period(writer, "PERIOD-BEGIN", period)?;
-            }
-        }
-        if let Some(period_id) = info.get_period_end() {
-            if let Some(period) = document.life_cycle_periods.get(period_id) {
-                self.write_life_cycle_period(writer, "PERIOD-END", period)?;
-            }
-        }
-        if let Some(remark) = info
-            .get_remark()
-            .and_then(|remark_id| document.documentation_blocks.get(remark_id))
-        {
-            self.write_documentation_block(writer, "REMARK", remark, document)?;
-        }
-        write_ref_type_list(
-            writer,
-            "USE-INSTEAD-REFS",
-            "USE-INSTEAD-REF",
-            info.get_use_instead_refs(),
-            document,
-        )?;
-
-        writer.write_event(Event::End(BytesEnd::new("LIFE-CYCLE-INFO")))?;
-        Ok(())
-    }
-
-    /// py `writeLifeCycleInfoSet`.
-    fn write_life_cycle_info_set<W: Write>(
-        &self,
-        writer: &mut Writer<W>,
-        id: LifeCycleInfoSetId,
-        document: &Document,
-    ) -> Result<(), WriteError> {
-        let Some(info_set) = document.life_cycle_info_sets.get(id) else {
-            return Ok(());
-        };
-        let mut element = BytesStart::new("LIFE-CYCLE-INFO-SET");
-        self.write_identifiable_attributes(
-            &mut element,
-            info_set.get_checksum(),
-            info_set.get_timestamp(),
-            info_set.get_uuid(),
-        );
-        writer.write_event(Event::Start(element))?;
-
-        let short_name_element = BytesStart::new("SHORT-NAME");
-        write_text_element(
-            writer,
-            "SHORT-NAME",
-            short_name_element,
-            info_set.get_short_name(),
-        )?;
-
-        self.write_identifiable_parts(
-            writer,
-            IdentifiableParts {
-                long_name: info_set.get_long_name(),
-                desc: info_set.get_desc(),
-                category: info_set.get_category(),
-                introduction: info_set.get_introduction(),
-                admin_data: info_set.get_admin_data(),
-                sw_data_def_props: None,
-            },
-            document,
-        )?;
-
-        write_optional_ref_type(
-            writer,
-            "DEFAULT-LC-STATE-REF",
-            info_set
-                .get_default_lc_state_ref()
-                .and_then(|r| document.ref_types.get(r)),
-        )?;
-        if let Some(period_id) = info_set.get_default_period_begin() {
-            if let Some(period) = document.life_cycle_periods.get(period_id) {
-                self.write_life_cycle_period(writer, "DEFAULT-PERIOD-BEGIN", period)?;
-            }
-        }
-        if let Some(period_id) = info_set.get_default_period_end() {
-            if let Some(period) = document.life_cycle_periods.get(period_id) {
-                self.write_life_cycle_period(writer, "DEFAULT-PERIOD-END", period)?;
-            }
-        }
-        // py writeLifeCycleInfoSetLifeCycleInfos — wrapper only when non-empty.
-        let infos = info_set.get_life_cycle_infos();
-        if !infos.is_empty() {
-            writer.write_event(Event::Start(BytesStart::new("LIFE-CYCLE-INFOS")))?;
-            for info_id in infos {
-                self.write_life_cycle_info(writer, *info_id, document)?;
-            }
-            writer.write_event(Event::End(BytesEnd::new("LIFE-CYCLE-INFOS")))?;
-        }
-        write_optional_ref_type(
-            writer,
-            "USED-LIFE-CYCLE-STATE-DEFINITION-GROUP-REF",
-            info_set
-                .get_used_life_cycle_state_definition_group_ref()
-                .and_then(|r| document.ref_types.get(r)),
-        )?;
-
-        writer.write_event(Event::End(BytesEnd::new("LIFE-CYCLE-INFO-SET")))?;
-        Ok(())
-    }
-
-    /// py `writePhysicalDimension` — the seven numerical children in fixed
-    /// order after the Identifiable parts.
-    fn write_physical_dimension<W: Write>(
-        &self,
-        writer: &mut Writer<W>,
-        id: PhysicalDimensionId,
-        document: &Document,
-    ) -> Result<(), WriteError> {
-        let Some(dimension) = document.physical_dimensions.get(id) else {
-            return Ok(());
-        };
-        let mut element = BytesStart::new("PHYSICAL-DIMENSION");
-        self.write_identifiable_attributes(
-            &mut element,
-            dimension.get_checksum(),
-            dimension.get_timestamp(),
-            dimension.get_uuid(),
-        );
-        writer.write_event(Event::Start(element))?;
-
-        let short_name_element = BytesStart::new("SHORT-NAME");
-        write_text_element(
-            writer,
-            "SHORT-NAME",
-            short_name_element,
-            dimension.get_short_name(),
-        )?;
-
-        self.write_identifiable_parts(
-            writer,
-            IdentifiableParts {
-                long_name: dimension.get_long_name(),
-                desc: dimension.get_desc(),
-                category: dimension.get_category(),
-                introduction: dimension.get_introduction(),
-                admin_data: dimension.get_admin_data(),
-                sw_data_def_props: None,
-            },
-            document,
-        )?;
-
-        write_optional_text_element(writer, "LENGTH-EXP", dimension.get_length_exp())?;
-        write_optional_text_element(
-            writer,
-            "LUMINOUS-INTENSITY-EXP",
-            dimension.get_luminous_intensity_exp(),
-        )?;
-        write_optional_text_element(writer, "MASS-EXP", dimension.get_mass_exp())?;
-        write_optional_text_element(writer, "MOLAR-AMOUNT-EXP", dimension.get_molar_amount_exp())?;
-        write_optional_text_element(writer, "TEMPERATURE-EXP", dimension.get_temperature_exp())?;
-        write_optional_text_element(writer, "TIME-EXP", dimension.get_time_exp())?;
-        write_optional_text_element(writer, "CURRENT-EXP", dimension.get_current_exp())?;
-
-        writer.write_event(Event::End(BytesEnd::new("PHYSICAL-DIMENSION")))?;
-        Ok(())
-    }
-
-    /// py `writeUnit` — DISPLAY-NAME wrapper, then factor/offset and the
-    /// physical-dimension ref after the Identifiable parts.
-    fn write_unit<W: Write>(
-        &self,
-        writer: &mut Writer<W>,
-        id: UnitId,
-        document: &Document,
-    ) -> Result<(), WriteError> {
-        let Some(unit) = document.units.get(id) else {
-            return Ok(());
-        };
-        let mut element = BytesStart::new("UNIT");
-        self.write_identifiable_attributes(
-            &mut element,
-            unit.get_checksum(),
-            unit.get_timestamp(),
-            unit.get_uuid(),
-        );
-        writer.write_event(Event::Start(element))?;
-
-        let short_name_element = BytesStart::new("SHORT-NAME");
-        write_text_element(
-            writer,
-            "SHORT-NAME",
-            short_name_element,
-            unit.get_short_name(),
-        )?;
-
-        self.write_identifiable_parts(
-            writer,
-            IdentifiableParts {
-                long_name: unit.get_long_name(),
-                desc: unit.get_desc(),
-                category: unit.get_category(),
-                introduction: unit.get_introduction(),
-                admin_data: unit.get_admin_data(),
-                sw_data_def_props: None,
-            },
-            document,
-        )?;
-
-        // py setSingleLanguageUnitNames — the mixed string is the element
-        // text; SUP/SUB attrs only when set (never in this batch).
-        if let Some(names) = unit
-            .get_display_name()
-            .and_then(|names_id| document.single_language_unit_names.get(names_id))
-        {
-            write_text_element(
-                writer,
-                "DISPLAY-NAME",
-                BytesStart::new("DISPLAY-NAME"),
-                names.base().atp_mixed_string().get_mixed_string(),
-            )?;
-        }
-        write_optional_text_element(writer, "FACTOR-SI-TO-UNIT", unit.get_factor_si_to_unit())?;
-        write_optional_text_element(writer, "OFFSET-SI-TO-UNIT", unit.get_offset_si_to_unit())?;
-        write_optional_ref_type(
-            writer,
-            "PHYSICAL-DIMENSION-REF",
-            unit.get_physical_dimension_ref()
-                .and_then(|ref_id| document.ref_types.get(ref_id)),
-        )?;
-
-        writer.write_event(Event::End(BytesEnd::new("UNIT")))?;
         Ok(())
     }
 }

@@ -45,6 +45,7 @@ use crate::reader::abstract_arxml_reader::{
     get_child_element_optional_ref_type, get_child_element_ref_type_list, get_child_element_string,
     get_short_name, Node, ParseError,
 };
+use crate::validation::ARXMLValidator;
 
 mod admin_data;
 mod base_types;
@@ -64,11 +65,16 @@ mod unit;
 #[derive(Debug, Clone)]
 pub struct ReaderOptions {
     pub warning: bool,
+    /// Pre-parse XSD gate (py `options={"validate": False}` escape hatch).
+    pub validate: bool,
 }
 
 impl Default for ReaderOptions {
     fn default() -> Self {
-        Self { warning: true }
+        Self {
+            warning: true,
+            validate: true,
+        }
     }
 }
 
@@ -121,9 +127,48 @@ impl ARXMLReader {
         self.raise_error(message)
     }
 
-    /// py `load`
+    /// py `load` — validates the bytes against the bundled release schema
+    /// before any model construction (escape hatch: `ReaderOptions::validate`).
     pub fn load(&mut self, path: &Path, document: &mut Document) -> Result<(), ParseError> {
-        self.load_from_reader(Reader::from_file(path)?, document)
+        let data = std::fs::read(path)?;
+        self.validate_or_fail(&data)?;
+        self.load_from_reader(Reader::from_reader(&data[..]), document)
+    }
+
+    /// Unresolvable schemas are NOT errors (spec §4 AMENDED): the writer's
+    /// default `AUTOSAR_4-0-3.xsd` and legacy documents have no bundled
+    /// schema — processing continues unvalidated in every mode.
+    fn validate_or_fail(&mut self, data: &[u8]) -> Result<(), ParseError> {
+        if !self.options.validate {
+            return Ok(());
+        }
+        let Some(validator) = ARXMLValidator::for_document(data) else {
+            return Ok(());
+        };
+        let errors = validator.validate(data);
+        if errors.is_empty() {
+            return Ok(());
+        }
+        for error in &errors {
+            let message = format!(
+                "schema validation ({}): line {}, col {}: {}",
+                validator.release(),
+                error.line,
+                error.column,
+                error.message
+            );
+            if self.options.warning {
+                self.warnings.push(message);
+            } else {
+                return Err(ParseError::SchemaValidation {
+                    count: errors.len(),
+                    line: error.line,
+                    column: error.column,
+                    message: error.message.clone(),
+                });
+            }
+        }
+        Ok(())
     }
 
     fn load_from_reader<R: BufRead>(
@@ -486,6 +531,94 @@ mod tests {
             .unwrap();
         assert_eq!(package_ref.get_dest(), Some("AR-PACKAGE"));
         assert_eq!(package_ref.get_value(), Some("/AUTOSAR/Platform"));
+    }
+
+    const SCHEMA_VALID_SAMPLE: &str = r#"<?xml version="1.0"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00046.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE><SHORT-NAME>P</SHORT-NAME></AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>"#;
+
+    const SCHEMA_INVALID_SAMPLE: &str = r#"<?xml version="1.0"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00046.xsd">
+  <ADMIN-DATA>
+    <SDGS><SDG/></SDGS>
+    <USED-LANGUAGES><L-10 L="EN">English</L-10></USED-LANGUAGES>
+  </ADMIN-DATA>
+  <AR-PACKAGES>
+    <AR-PACKAGE><SHORT-NAME>P</SHORT-NAME></AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>"#;
+
+    /// `NamedTempFile` deletes on drop, so the path is kept (leaked into
+    /// the OS temp dir) and returned.
+    fn write_temp(contents: &str) -> std::path::PathBuf {
+        let file = tempfile::NamedTempFile::new().unwrap();
+        std::fs::write(file.path(), contents).unwrap();
+        file.into_temp_path().keep().unwrap()
+    }
+
+    #[test]
+    fn load_rejects_schema_invalid_file_in_strict_mode() {
+        // Control: the schema-valid counterpart passes the strict gate.
+        let valid_path = write_temp(SCHEMA_VALID_SAMPLE);
+        let mut valid_document = Document::new();
+        ARXMLReader::new(ReaderOptions {
+            warning: false,
+            validate: true,
+        })
+        .load(&valid_path, &mut valid_document)
+        .unwrap();
+
+        let path = write_temp(SCHEMA_INVALID_SAMPLE);
+        let mut document = Document::new();
+        let result = ARXMLReader::new(ReaderOptions {
+            warning: false,
+            validate: true,
+        })
+        .load(&path, &mut document);
+        let Err(ParseError::SchemaValidation { count, .. }) = result else {
+            panic!("expected SchemaValidation, got {result:?}");
+        };
+        assert!(count >= 1);
+    }
+
+    #[test]
+    fn load_warns_and_continues_on_schema_invalid_file_in_warning_mode() {
+        let path = write_temp(SCHEMA_INVALID_SAMPLE);
+        let mut document = Document::new();
+        let mut reader = ARXMLReader::new(default_options());
+        reader.load(&path, &mut document).unwrap();
+        assert!(reader
+            .get_warnings()
+            .iter()
+            .any(|w| w.contains("schema validation")));
+        assert_eq!(document.get_ar_packages().len(), 1); // the document still parsed
+    }
+
+    #[test]
+    fn validate_false_disables_the_gate() {
+        let path = write_temp(SCHEMA_INVALID_SAMPLE);
+        let mut document = Document::new();
+        ARXMLReader::new(ReaderOptions {
+            warning: false,
+            validate: false,
+        })
+        .load(&path, &mut document)
+        .unwrap();
+    }
+
+    #[test]
+    fn load_still_works_for_unresolvable_schemas() {
+        let path = write_temp(SAMPLE); // existing SAMPLE: AUTOSAR_00050.xsd — not bundled
+        let mut document = Document::new();
+        let mut reader = ARXMLReader::new(ReaderOptions {
+            warning: false,
+            validate: true,
+        });
+        reader.load(&path, &mut document).unwrap();
+        assert!(reader.get_warnings().is_empty());
     }
 
     #[test]

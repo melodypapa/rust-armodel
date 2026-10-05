@@ -24,6 +24,13 @@ pub enum ParseError {
     UnexpectedRoot(String),
     #[error("invalid {element}: {reason}")]
     InvalidElement { element: String, reason: String },
+    #[error("failed schema validation with {count} error(s) (first: line {line}, col {column}: {message})")]
+    SchemaValidation {
+        count: usize,
+        line: usize,
+        column: usize,
+        message: String,
+    },
     #[error("invalid attribute: {0}")]
     Attr(#[from] AttrError),
     #[error(transparent)]

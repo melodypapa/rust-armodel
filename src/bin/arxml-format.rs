@@ -49,6 +49,7 @@ fn main() {
     let mut document = Document::new();
     if let Err(error) = ARXMLReader::new(ReaderOptions {
         warning: args.warning,
+        validate: true,
     })
     .load(&args.input, &mut document)
     {

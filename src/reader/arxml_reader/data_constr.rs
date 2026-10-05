@@ -171,8 +171,6 @@ impl ARXMLReader {
 
     /// py `getChildLimitElement` — a `<LOWER-LIMIT INTERVAL-TYPE="…">value
     /// </LOWER-LIMIT>` child as an arena-stored `Limit`.
-    /// `allow(dead_code)` until Task 3 wires the Compu arms.
-    #[allow(dead_code)]
     pub(super) fn get_child_limit_element(
         &mut self,
         element: &Node,

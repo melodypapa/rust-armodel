@@ -1,6 +1,12 @@
-//! `ARXMLReader::load` with release detection, `read_ar_packages`
-//! (P0 design §6). Mirrors py's `arxml_parser.py` method-for-method so
-//! the P2–P4 port stays reviewable.
+//! The ARXML reader: document entry points (`load`), release detection
+//! (`xsd_to_version`), the AR-PACKAGE walk (`read_ar_packages`,
+//! `read_ar_package`), and the `read_element_payload` dispatch seam that
+//! delegates to the per-domain reader modules (common, admin_data,
+//! documentation, compu_method, data_constr, keyword, datatypes, base_types,
+//! collection, life_cycle, physical_dimension, unit — see
+//! docs/superpowers/specs/2026-10-04-parser-writer-domain-split-design.md).
+//! Mirrors py's `arxml_parser.py` method-for-method so the P2–P4 port stays
+//! reviewable.
 
 use std::io::BufRead;
 use std::path::Path;

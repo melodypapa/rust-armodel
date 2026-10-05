@@ -13,6 +13,7 @@ license = "MIT"
 [dependencies]
 clap = { version = "4", features = ["derive"] }
 include_dir = "0.7"
+libxml = "0.3"
 quick-xml = "0.42.0"
 slotmap = "1.0"
 thiserror = "2"

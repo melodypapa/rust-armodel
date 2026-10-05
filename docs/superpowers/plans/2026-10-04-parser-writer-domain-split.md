@@ -72,6 +72,10 @@ Test modules move inside the same file: `#[cfg(test)] mod tests { use super::*; 
 
 **Registration:** an unregistered file is not compiled — every task that creates a domain file also adds its `mod <name>;` line to the parent `mod.rs` (under the existing `use` block) in the same step. Tasks 9/18 consolidate and verify the full list.
 
+**Visibility convention (standardized after Task 2):** cross-module payload structs are `pub(super) struct` with `pub(super)` fields — compiler-forced when `mod.rs` destructures the payload and when a `pub(super)` fn returns the type; do not "fix" this to private. Payload structs live near the TOP of their domain file (matches `LifeCycleInfoSetPayload` in mod.rs).
+
+**Branch note (recorded after Task 2):** the S/T tests (`AR_OBJECT_S_T_SAMPLE` / `ar_object_s_t_attributes_parse_on_every_read_path` reader-side, `ar_object_s_t_attributes_emit_in_py_order` writer-side) exist only on `feature/sync-arobject` (PR #18) — not an ancestor of this branch. When that PR merges, those tests arrive in the moved file's test module and must be relocated into the `common.rs` test modules (reader: `src/reader/arxml_reader/common.rs`; writer: `src/writer/arxml_writer/common.rs`), not left in `mod.rs`. Task 10/18 Step 1 includes the check.
+
 **After every task, run the full gate:**
 
 ```bash
@@ -482,7 +486,7 @@ mod unit;
 
 **Files:** Modify `src/reader/arxml_reader/mod.rs`.
 
-- [ ] **Step 1: Verify the mod.rs budget** — `wc -l src/reader/arxml_reader/mod.rs`. Expected: < 800 lines (struct + walk + dispatch + 5 tests; spec budget ~500 excluding tests). If larger, list what remains and move stragglers per Rule 1 of the spec before continuing.
+- [ ] **Step 1: Verify the mod.rs budget + refresh the header doc** — `wc -l src/reader/arxml_reader/mod.rs`. Expected: < 800 lines (struct + walk + dispatch + remaining tests; spec budget ~500 excluding tests). If larger, list what remains and move stragglers per Rule 1 of the spec before continuing. Also rewrite mod.rs's leading `//!` doc comment to describe what the file now holds (struct + options + load + tag walk + dispatch seams) — the original text predates the split and rots otherwise. If PR #18 has merged by now, relocate its S/T tests into `common.rs` per the branch note above (separate commit `refactor(reader): relocate S/T tests from PR #18 into common.rs`).
 
 - [ ] **Step 2: Regenerate + verify the checklist**
 

@@ -36,7 +36,7 @@ Module paths mirror the AUTOSAR spec `Package` rows
 - The class name is used unchanged as the Rust type name. Types the spec marks
   `(interface)` are still concrete structs (matching py-armodel).
 - `lib.rs` re-exports only the public surface (`Document`, `ARPackage`,
-  parser/writer types). Everything else is `pub(crate)` until needed.
+  reader/writer types). Everything else is `pub(crate)` until needed.
 
 Never leave a file outside the module tree (the current `identifier.rs` /
 `autosar_top_level_structure.rs` orphans are dead code the compiler cannot
@@ -132,7 +132,7 @@ impl Referrable {
 - Setters return `&mut Self` for chaining (py returns `self`).
 - Do NOT store `Vec<ARPackage>` by value inside `ARPackage` (the current stub
   does this) — ownership recursion forces `Box` gymnastics and fights the
-  parser. Use `Vec<Id<ARPackage>>`.
+  reader. Use `Vec<Id<ARPackage>>`.
 - Do NOT define `fn init()` traits to mimic Python `__init__`; construction is
   `Type::new(...)` or a `Document` factory method.
 
@@ -180,17 +180,17 @@ pub enum ParseError {
 }
 ```
 
-- Mirror py's two modes: `ARXMLParser::new(ParserOptions { warning: true })`
+- Mirror py's two modes: `ARXMLReader::new(ReaderOptions { warning: true })`
   collects warnings and continues; `warning: false` fails on the first error.
   Unknown tags produce an "unsupported element" warning, never a hard failure.
 - The CLI (`src/bin/arxml-dump.rs`) is the only place allowed to print an
   error and `exit(1)` — no `panic!`.
 
-## 8. Parser and writer patterns
+## 8. Reader and writer patterns
 
-Parser (`src/parser/`):
+Reader (`src/reader/`):
 
-- `abstract_arxml_parser.rs` builds a `Node` DOM
+- `abstract_arxml_reader.rs` builds a `Node` DOM
   (`name`, `attrs: BTreeMap<String,String>`, `children`, `text`) from
   quick-xml events; element names are namespace-stripped (`{ns}TAG` → `TAG`).
 - Helpers mirror py's names: `find`, `find_all`, `get_child_element_string`.
@@ -207,6 +207,25 @@ Writer (`src/writer/`):
 - One emitter method per py writer method; element order follows the spec
   `xml.sequenceOffset` tags already encoded in py's field order.
 - Never re-derive values (checksums, timestamps) — write what the model holds.
+
+### Domain split (added 2026-10-06)
+
+The hand-written reader/writer are split into per-domain modules
+(`src/reader/arxml_reader/<domain>.rs`, `src/writer/arxml_writer/<domain>.rs`):
+
+- A method lives in the domain module of the family it reads/writes; shared
+  base helpers live in `common.rs`. Placement is a pure move — methods stay on
+  the same struct; no call site changes.
+- Methods default private; anything called from `mod.rs` dispatch or a sibling
+  domain module is `pub(super)` — never `pub(crate)` or `pub`. Cross-module
+  payload structs follow the same rule (`pub(super)` struct with `pub(super)`
+  fields) — do not "fix" this to private.
+- Tests live with their domain; `tests/integration/` is untouched and remains
+  the only contract.
+- `mod.rs` holds struct + options + load/save + walk + dispatch arms only; past
+  ~500 lines (excluding tests) something belongs in a domain module.
+- New P2–P4 batches add their methods to the owning domain module and, for
+  package-element tags, one delegating dispatch arm in `mod.rs`.
 
 ## 9. Equality
 

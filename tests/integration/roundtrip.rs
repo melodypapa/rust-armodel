@@ -5,7 +5,7 @@
 use std::path::Path;
 
 use armodel::m2::msr::documentation::text_model::language_data_model::XmlSpace;
-use armodel::parser::arxml_parser::{default_options, ARXMLParser};
+use armodel::reader::arxml_reader::{default_options, ARXMLReader};
 use armodel::writer::arxml_writer::ARXMLWriter;
 use armodel::Document;
 
@@ -15,7 +15,7 @@ fn admin_data_whitespace_roundtrip() {
 
     // 1. parse into a Document
     let mut document = Document::new();
-    ARXMLParser::new(default_options())
+    ARXMLReader::new(default_options())
         .load(source, &mut document)
         .unwrap();
 
@@ -28,7 +28,7 @@ fn admin_data_whitespace_roundtrip() {
 
     // 3. re-parse
     let mut reparsed = Document::new();
-    ARXMLParser::new(default_options())
+    ARXMLReader::new(default_options())
         .load(output.path(), &mut reparsed)
         .unwrap();
 

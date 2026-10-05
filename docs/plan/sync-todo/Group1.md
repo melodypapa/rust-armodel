@@ -6,6 +6,9 @@ Input: `Group 1 — Framework & core, PortInterface basics` of `docs/examples/sy
 ## Queue (dependency-first)
 
 - [x] `ARObject` (tracker input · R23-11 markdown · AUTOSAR_FO_TPS_GenericStructureTemplate · Table 6.1 · commit 1be5c3b)
+  - Merge note (2026-10-06): the PR #20 domain split moved this row's two S/T tests into the
+    reader/writer `common.rs` test modules (ARXMLParser→ARXMLReader renamed); the empty-with-attrs
+    ADMIN-DATA writer fix re-applied to `src/writer/arxml_writer/admin_data.rs`. lib suite 30 tests.
   - Note: py handles this class in the ABSTRACT parser/writer (`readARObject` abstract_arxml_parser.py:493,
     `writeARObject` abstract_arxml_writer.py:81 — S→checksum, T→timestamp, emit order S then T), so it has no
     generated port-checklist rows. Rust: `read_ar_object` (arxml_parser.rs:211), allocation-loop generics

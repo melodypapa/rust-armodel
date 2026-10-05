@@ -3,7 +3,7 @@ use std::process;
 
 use clap::Parser;
 
-use armodel::parser::arxml_parser::{default_options, ARXMLParser};
+use armodel::reader::arxml_reader::{default_options, ARXMLReader};
 use armodel::Document;
 
 /// Dump the packages of an AUTOSAR ARXML file.
@@ -20,7 +20,7 @@ fn main() {
     let path = Path::new(&args.arxml);
 
     let mut document = Document::new();
-    if let Err(error) = ARXMLParser::new(default_options()).load(path, &mut document) {
+    if let Err(error) = ARXMLReader::new(default_options()).load(path, &mut document) {
         eprintln!("Failed to parse {path}: {error}", path = path.display());
         process::exit(1);
     }

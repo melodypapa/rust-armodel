@@ -22,6 +22,15 @@ for the design, and `docs/code_guide.md` for the coding guidelines.
 1. Run `cargo run --bin arxml-dump -- -a <file.arxml>` to run the `arxml-dump` tool on an ARXML file
    (use `-h` to show the help)
 
+## XSD validation
+
+Parsing and writing can validate documents against the bundled AUTOSAR XSD
+schemas (R23-11, R4.4.0, R4.3.1, R3.2.3). Validation requires system libxml2
+(pkg-config). Gates are on by default; disable them with
+`ReaderOptions`/`WriterOptions { validate: false }`. Standalone verification:
+`cargo run --bin arxml-validator -- <file.arxml> [--release R23-11]`
+(exit 0 valid, 1 violations, 2 unsupported schema).
+
 ## How to generate the documentation
 1. Run `cargo doc --open` to generate and open the API documentation
 

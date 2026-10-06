@@ -51,9 +51,11 @@ pub struct ValidationError {
 // Compiled-schema cache. libxml validation contexts are `!Send`/`!Sync`, so
 // a process-wide `static` is off the table even under a `Mutex` (a mutex needs
 // `Send` for `Sync`); a thread-local keeps the compiled schema warm per thread
-// without unsafe.
+// without unsafe. `None` = un-compilable schema — the gate treats the document
+// as unvalidated (never an error, never a panic); the outcome is cached so a
+// broken schema is not re-parsed on every call.
 thread_local! {
-    static SCHEMA_CACHE: RefCell<HashMap<&'static str, libxml::schemas::SchemaValidationContext>> =
+    static SCHEMA_CACHE: RefCell<HashMap<&'static str, Option<libxml::schemas::SchemaValidationContext>>> =
         RefCell::new(HashMap::new());
     #[cfg(test)]
     static SCHEMA_COUNT: Cell<usize> = const { Cell::new(0) };
@@ -64,17 +66,18 @@ pub(crate) fn compiled_schema_count() -> usize {
     SCHEMA_COUNT.with(Cell::get)
 }
 
-/// Extract the embedded `schemas/` tree once so libxml2 can resolve includes
-/// from real paths (py ships them as package data; a published Rust crate
-/// cannot address its packaged files at runtime).
+/// Extract the embedded `schemas/` tree once per process so libxml2 can
+/// resolve includes from real paths (py ships them as package data; a
+/// published Rust crate cannot address its packaged files at runtime).
+/// Extraction overwrites the snapshot in place: a temp dir left behind by an
+/// older binary (e.g. one predating a vendored-schema fix) must never shadow
+/// the schemas this build embeds.
 fn materialized_dir() -> &'static PathBuf {
     static DIR: OnceLock<PathBuf> = OnceLock::new();
     DIR.get_or_init(|| {
         let dir =
             std::env::temp_dir().join(format!("armodel-schemas-{}", env!("CARGO_PKG_VERSION")));
-        if !dir.exists() {
-            SCHEMAS.extract(&dir).expect("materialize embedded schemas");
-        }
+        SCHEMAS.extract(&dir).expect("materialize embedded schemas");
         dir
     })
 }
@@ -98,7 +101,9 @@ impl ARXMLValidator {
 
     /// Validate `data` against the release schema; returns ALL violations.
     /// Ill-formed XML yields no violations: well-formedness is the reader's
-    /// quick-xml gate, not this XSD gate's.
+    /// quick-xml gate, not this XSD gate's. The same goes for a release
+    /// schema that fails to compile: the document counts as unvalidated,
+    /// never an error, never a panic.
     pub fn validate(&self, data: &[u8]) -> Vec<ValidationError> {
         let dir = materialized_dir();
         let xsd = dir.join(self.release).join(schema_file_name(self.release));
@@ -109,15 +114,22 @@ impl ARXMLValidator {
 
         SCHEMA_CACHE.with(|cache| {
             let mut cache = cache.borrow_mut();
-            let ctx = cache.entry(self.release).or_insert_with(|| {
+            // A schema that fails to compile is treated like an unresolvable
+            // one: validation yields no violations (well-formedness and
+            // structure remain the reader's job; the XSD gate never takes the
+            // document down).
+            let ctx = match cache.entry(self.release).or_insert_with(|| {
                 #[cfg(test)]
                 SCHEMA_COUNT.with(|count| count.set(count.get() + 1));
                 let mut parser_ctx = libxml::schemas::SchemaParserContext::from_file(
                     xsd.to_str().expect("materialized temp path is utf-8"),
                 ); // CONFIRM-1: `from_file(&str) -> Self` exists as planned
-                libxml::schemas::SchemaValidationContext::from_parser(&mut parser_ctx)
-                    .expect("bundled schema compiles") // CONFIRM-2: takes `&mut SchemaParserContext`
-            });
+                libxml::schemas::SchemaValidationContext::from_parser(&mut parser_ctx).ok()
+                // CONFIRM-2: takes `&mut SchemaParserContext`
+            }) {
+                None => return Vec::new(),
+                Some(ctx) => ctx,
+            };
             match ctx.validate_document(&libxml_doc) {
                 // CONFIRM-3: no `validate(&Document) -> bool`; the Result
                 // carries the violations, so `drain_errors` is redundant.
@@ -246,6 +258,54 @@ mod tests {
             "{:?}",
             errors[0]
         );
+    }
+
+    /// The xml.xsd copies must be identical to the R4.4.0 original (py keeps
+    /// one shared copy; our per-directory resolution needs bytes in place).
+    #[test]
+    fn xml_xsd_copies_match_the_shared_original() {
+        let shared = SCHEMAS.get_file("R4.4.0/xml.xsd").unwrap().contents();
+        for copy in ["R23-11/xml.xsd", "R4.3.1/xml.xsd"] {
+            assert_eq!(SCHEMAS.get_file(copy).unwrap().contents(), shared, "{copy}");
+        }
+    }
+
+    #[test]
+    fn r23_11_documents_validate_after_the_xml_xsd_import_resolves() {
+        // Before this fix, R23-11's schema could not compile (missing
+        // xml.xsd import) and the gate panicked.
+        let data = br#"<?xml version="1.0"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00052.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE><SHORT-NAME>P</SHORT-NAME></AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>"#;
+        let validator = ARXMLValidator::for_document(data).expect("R23-11 is bundled");
+        assert_eq!(validator.validate(data), vec![]);
+    }
+
+    #[test]
+    fn un_compilable_schema_degrades_to_unvalidated_never_panics() {
+        // Documentation anchor for the degradation path: `validate` never
+        // panics for any bundled release, even when that release's schema
+        // cannot compile (the cache's `None` arm returns an empty violation
+        // list — the gate treats the document as unvalidated, never an error,
+        // never a panic). `for_release` arrives in Task 6, so each release is
+        // selected via its schemaLocation, the way `for_document` detects it.
+        for (file, release) in [
+            ("AUTOSAR_00052.xsd", "R23-11"),
+            ("AUTOSAR_00046.xsd", "R4.4.0"),
+            ("AUTOSAR_00044.xsd", "R4.3.1"),
+            ("AUTOSAR.xsd", "R3.2.3"),
+        ] {
+            let data = format!(
+                r#"<?xml version="1.0"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 {file}"/>"#
+            );
+            let validator = ARXMLValidator::for_document(data.as_bytes()).expect("bundled");
+            assert_eq!(validator.release(), release);
+            let _ = validator.validate(data.as_bytes()); // must not panic
+        }
     }
 
     #[test]

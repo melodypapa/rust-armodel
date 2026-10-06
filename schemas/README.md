@@ -11,7 +11,10 @@ see py-armodel `autosar/<release>/xsd/`). Registries:
 | `AUTOSAR_00044.xsd` | R4.3.1 |
 | `AUTOSAR.xsd`       | R3.2.3 |
 
-`xml.xsd` (W3C) is shared by R4.4.0. Sync-guard: the
+`xml.xsd` (W3C) ships with R4.4.0 and is copied into R23-11/ and R4.3.1/ —
+their top-level schemas import it from their own directory (libxml2 resolves
+includes relative to the schema file). Sync-guard: the
 `schemas_match_pinned_py_armodel` test compares bytes against
 `target/py-armodel/autosar/<release>/xsd/` when that checkout exists locally
-(it is gitignored; CI skips the test).
+(it is gitignored; CI skips the test); `xml_xsd_copies_match_the_shared_original`
+keeps the copies identical to the R4.4.0 original.

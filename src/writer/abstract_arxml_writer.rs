@@ -19,6 +19,13 @@ pub enum WriteError {
     Xml(#[from] quick_xml::Error),
     #[error(transparent)]
     Io(#[from] io::Error),
+    #[error("failed schema validation with {count} error(s) (first: line {line}, col {column}: {message})")]
+    SchemaValidation {
+        count: usize,
+        line: usize,
+        column: usize,
+        message: String,
+    },
 }
 
 /// Emits `<name attrs>text</name>` on one line. Empty text (`None` or `""`)

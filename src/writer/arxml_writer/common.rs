@@ -112,7 +112,15 @@ mod tests {
             .set_timestamp("2024-11-27T08:00:00+08:00");
 
         let output = tempfile::NamedTempFile::new().unwrap();
-        ARXMLWriter::new().save(output.path(), &document).unwrap();
+        // validate = false: this is an emission-order test and must not
+        // depend on schema compilation (R23-11 compiles fine since the shared
+        // xml.xsd landed in schemas/R23-11/, but this test is not about that).
+        ARXMLWriter::with_options(WriterOptions {
+            unescape_entities: false,
+            validate: false,
+        })
+        .save(output.path(), &document)
+        .unwrap();
         let text = std::fs::read_to_string(output.path()).unwrap();
 
         assert!(

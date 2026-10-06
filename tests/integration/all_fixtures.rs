@@ -13,13 +13,20 @@ use std::path::{Path, PathBuf};
 use armodel::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use armodel::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ARPackageId;
 use armodel::reader::arxml_reader::{default_options, ARXMLReader};
-use armodel::writer::arxml_writer::ARXMLWriter;
+use armodel::writer::arxml_writer::{ARXMLWriter, WriterOptions};
 use armodel::Document;
 
 const FIXTURE_DIR: &str = "tests/integration/test_files";
 /// The pinned py-armodel revision ships exactly this many `.arxml` fixtures
 /// (plus `Os_ECUC.yaml`, which is not an ARXML file).
 const FIXTURE_COUNT: usize = 32;
+
+/// Fixtures that are themselves schema-invalid: their legacy root namespace
+/// (`http://autosar.org`) matches no bundled release schema's targetNamespace,
+/// so the writer's pre-save XSD gate (default on — the writer has no warning
+/// mode) rejects the roundtrip output. py ships these files verbatim; the
+/// model roundtrip is still verified, only the write-side gate is skipped.
+const SCHEMA_INVALID_SOURCES: &[&str] = &["Os_ECUC.arxml"];
 
 /// Fixtures whose parse must produce zero warnings — i.e. the parser
 /// consumes every element they contain. A fixture joins this list exactly
@@ -72,9 +79,12 @@ fn round_trip(file: &Path) -> Result<(), String> {
 
     let output =
         tempfile::NamedTempFile::new().map_err(|error| format!("{name}: tempfile: {error}"))?;
-    ARXMLWriter::new()
-        .save(output.path(), &document)
-        .map_err(|error| format!("{name}: write failed: {error}"))?;
+    ARXMLWriter::with_options(WriterOptions {
+        validate: !SCHEMA_INVALID_SOURCES.contains(&name.as_str()),
+        ..WriterOptions::default()
+    })
+    .save(output.path(), &document)
+    .map_err(|error| format!("{name}: write failed: {error}"))?;
 
     let mut reparsed = Document::new();
     ARXMLReader::new(default_options())

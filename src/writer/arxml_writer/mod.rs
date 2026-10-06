@@ -21,6 +21,7 @@ use crate::m2::msr::documentation::text_model::block_elements::DocumentationBloc
 use crate::m2::msr::documentation::text_model::multilanguage_data::{
     MultiLanguageOverviewParagraphId, MultilanguageLongNameId,
 };
+use crate::validation::ARXMLValidator;
 use crate::writer::abstract_arxml_writer::{
     write_limit_element, write_optional_boolean_element, write_optional_ref_type,
     write_optional_t_ref_type, write_optional_text_element, write_ref_type_list,
@@ -59,9 +60,22 @@ const XSI_NAMESPACE: &str = "http://www.w3.org/2001/XMLSchema-instance";
 /// py `ARXMLWriter(options)` — `unescape_entities` mirrors py's `patch_xml`
 /// post-pass; `warning`/`version` exist in py's option table but do not
 /// affect its serialization.
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone)]
 pub struct WriterOptions {
     pub unescape_entities: bool,
+    /// Pre-save XSD gate. Unlike the reader there is no warning mode here:
+    /// the writer has no warning sink, so a failing gate is an error; set
+    /// `validate = false` for the py `warning=True` write-anyway behavior.
+    pub validate: bool,
+}
+
+impl Default for WriterOptions {
+    fn default() -> Self {
+        Self {
+            unescape_entities: false,
+            validate: true,
+        }
+    }
 }
 
 /// py `ARXMLWriter`
@@ -131,6 +145,24 @@ impl ARXMLWriter {
             })?;
             let text = text.replace("&quot;", "\"").replace("&apos;", "'");
             buffer = text.into_bytes();
+        }
+
+        // py §6 saveToFile: serialize → validate → write only if valid. The
+        // gate runs on the exact bytes about to hit disk (post-`patch_xml`).
+        // RUST DEVIATION: no warning sink, so a failing gate is always an
+        // error; `validate = false` is the py `warning=True` write-anyway.
+        if self.options.validate {
+            if let Some(validator) = ARXMLValidator::for_document(&buffer) {
+                let errors = validator.validate(&buffer);
+                if let Some(first) = errors.first() {
+                    return Err(WriteError::SchemaValidation {
+                        count: errors.len(),
+                        line: first.line,
+                        column: first.column,
+                        message: first.message.clone(),
+                    });
+                }
+            }
         }
 
         std::fs::write(path, buffer)?;
@@ -418,10 +450,67 @@ mod tests {
         let unescaped = tempfile::NamedTempFile::new().unwrap();
         ARXMLWriter::with_options(WriterOptions {
             unescape_entities: true,
+            validate: false,
         })
         .save(unescaped.path(), &document)
         .unwrap();
         let text = std::fs::read_to_string(unescaped.path()).unwrap();
         assert!(text.contains("UUID=\"a\"b'c\""), "{text}");
+    }
+
+    /// The writer emits what the model holds (code_guide §8), so a SHORT-NAME
+    /// the XSD identifier pattern rejects serializes fine — and the pre-save
+    /// gate must reject the file. py §6: serialize → validate → write only if
+    /// valid; RUST DEVIATION: no warning sink, so a failing gate is always an
+    /// error.
+    #[test]
+    fn save_rejects_schema_invalid_document() {
+        let mut document = Document::new();
+        document.set_schema_location("http://autosar.org/schema/r4.0 AUTOSAR_00046.xsd");
+        let pkg_id = document.add_ar_package(None, "Pkg");
+        document
+            .ar_packages
+            .get_mut(pkg_id)
+            .unwrap()
+            .set_short_name("bad name!"); // space + '!' violate the XSD identifier pattern
+
+        let output = tempfile::NamedTempFile::new().unwrap();
+        let result = ARXMLWriter::new().save(output.path(), &document);
+        let Err(WriteError::SchemaValidation { count, .. }) = result else {
+            panic!("expected SchemaValidation, got {result:?}");
+        };
+        assert!(count >= 1);
+    }
+
+    /// py `warning=True` write-anyway behavior — the writer has no warning
+    /// sink, so `validate = false` is the only way through a failing gate.
+    #[test]
+    fn save_writes_when_validation_disabled() {
+        let mut document = Document::new();
+        document.set_schema_location("http://autosar.org/schema/r4.0 AUTOSAR_00046.xsd");
+        let pkg_id = document.add_ar_package(None, "Pkg");
+        document
+            .ar_packages
+            .get_mut(pkg_id)
+            .unwrap()
+            .set_short_name("bad name!");
+        let output = tempfile::NamedTempFile::new().unwrap();
+        ARXMLWriter::with_options(WriterOptions {
+            unescape_entities: false,
+            validate: false,
+        })
+        .save(output.path(), &document)
+        .unwrap();
+        assert!(output.path().metadata().unwrap().len() > 0);
+    }
+
+    /// An unresolvable schema (not bundled) skips the gate — same rule as the
+    /// reader: unvalidated, not an error.
+    #[test]
+    fn save_skips_gate_for_unresolvable_schema() {
+        let mut document = Document::new(); // default AUTOSAR_4-0-3.xsd — not bundled
+        document.add_ar_package(None, "Pkg");
+        let output = tempfile::NamedTempFile::new().unwrap();
+        ARXMLWriter::new().save(output.path(), &document).unwrap();
     }
 }

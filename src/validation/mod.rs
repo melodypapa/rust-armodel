@@ -320,4 +320,50 @@ mod tests {
         drop(ARXMLValidator::for_document(data).unwrap().validate(data));
         assert_eq!(compiled_schema_count(), after_first);
     }
+
+    #[test]
+    fn integration_corpus_audit() {
+        // Spec §7 (adapted): every fixture whose schema file IS bundled is
+        // validated. Ground truth established during Task 4 (examined
+        // individually per the spec): Os_ECUC_4.4.0.arxml is clean against
+        // R4.4.0; Os_ECUC.arxml is a verbatim legacy fixture that is
+        // schema-INVALID against R3.2.3 (annotated in all_fixtures.rs'
+        // SCHEMA_INVALID_SOURCES — never edit fixtures, Rule 0006). The other
+        // 30 fixtures reference unbundled schema files → unvalidated path.
+        let mut clean = Vec::new();
+        let mut invalid = Vec::new();
+        let mut undetected = Vec::new();
+        for entry in std::fs::read_dir("tests/integration/test_files").unwrap() {
+            let path = entry.unwrap().path();
+            if path.extension().is_none_or(|e| e != "arxml") {
+                continue;
+            }
+            let data = std::fs::read(&path).unwrap();
+            let name = path.file_name().unwrap().to_string_lossy().into_owned();
+            match detect_release(&data) {
+                Some(_) => {
+                    let validator = ARXMLValidator::for_document(&data).unwrap();
+                    if validator.validate(&data).is_empty() {
+                        clean.push(name);
+                    } else {
+                        invalid.push(name);
+                    }
+                }
+                None => undetected.push(name),
+            }
+        }
+        clean.sort();
+        invalid.sort();
+        assert_eq!(
+            clean,
+            vec!["Os_ECUC_4.4.0.arxml".to_string()],
+            "clean set changed — re-examine individually"
+        );
+        assert_eq!(
+            invalid,
+            vec!["Os_ECUC.arxml".to_string()],
+            "invalid set changed — re-examine individually"
+        );
+        assert_eq!(undetected.len(), 30, "undetected set changed");
+    }
 }

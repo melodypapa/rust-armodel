@@ -34,6 +34,11 @@ struct Args {
     #[arg(long = "unescape-entities")]
     unescape_entities: bool,
 
+    /// Disable XSD schema validation on load and save.
+    /// Legacy escape hatch for files without a bundled schema or with known deviations.
+    #[arg(long = "no-validate")]
+    no_validate: bool,
+
     /// The path of AUTOSAR ARXML file
     input: PathBuf,
 
@@ -49,7 +54,7 @@ fn main() {
     let mut document = Document::new();
     if let Err(error) = ARXMLReader::new(ReaderOptions {
         warning: args.warning,
-        validate: true,
+        validate: !args.no_validate,
     })
     .load(&args.input, &mut document)
     {
@@ -80,7 +85,7 @@ fn main() {
 
     let writer = ARXMLWriter::with_options(WriterOptions {
         unescape_entities: args.unescape_entities,
-        validate: true,
+        validate: !args.no_validate,
     });
     if let Err(error) = writer.save(&args.output, &document) {
         eprintln!("[ERROR] : {error}");

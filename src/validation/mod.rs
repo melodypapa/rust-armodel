@@ -77,15 +77,20 @@ pub(crate) fn compiled_schema_count() -> usize {
 /// published Rust crate cannot address its packaged files at runtime).
 /// Extraction overwrites the snapshot in place: a temp dir left behind by an
 /// older binary (e.g. one predating a vendored-schema fix) must never shadow
-/// the schemas this build embeds.
-fn materialized_dir() -> &'static PathBuf {
-    static DIR: OnceLock<PathBuf> = OnceLock::new();
+/// the schemas this build embeds. `None` = extraction failed; the failure is
+/// cached and documents count as unvalidated, exactly like an un-compilable
+/// schema (never an error, never a panic).
+fn materialized_dir() -> Option<&'static PathBuf> {
+    static DIR: OnceLock<Option<PathBuf>> = OnceLock::new();
     DIR.get_or_init(|| {
         let dir =
             std::env::temp_dir().join(format!("armodel-schemas-{}", env!("CARGO_PKG_VERSION")));
-        SCHEMAS.extract(&dir).expect("materialize embedded schemas");
-        dir
+        match SCHEMAS.extract(&dir) {
+            Ok(()) => Some(dir),
+            Err(_) => None,
+        }
     })
+    .as_ref()
 }
 
 /// py `ARXMLValidator` (AMENDED as-built API, Rust spelling).
@@ -122,8 +127,13 @@ impl ARXMLValidator {
     /// schema that fails to compile: the document counts as unvalidated,
     /// never an error, never a panic.
     pub fn validate(&self, data: &[u8]) -> Vec<ValidationError> {
-        let dir = materialized_dir();
+        let Some(dir) = materialized_dir() else {
+            return Vec::new();
+        };
+        // TMPDIR + ASCII components, so the lossy conversion never loses
+        // bytes — and libxml2 receives exactly these bytes either way.
         let xsd = dir.join(self.release).join(schema_file_name(self.release));
+        let xsd = xsd.to_string_lossy().into_owned();
         let libxml_doc = match libxml::parser::Parser::default().parse_string(data) {
             Ok(doc) => doc,
             Err(_) => return Vec::new(),
@@ -138,18 +148,19 @@ impl ARXMLValidator {
             let ctx = match cache.entry(self.release).or_insert_with(|| {
                 #[cfg(test)]
                 SCHEMA_COUNT.with(|count| count.set(count.get() + 1));
-                let mut parser_ctx = libxml::schemas::SchemaParserContext::from_file(
-                    xsd.to_str().expect("materialized temp path is utf-8"),
-                ); // CONFIRM-1: `from_file(&str) -> Self` exists as planned
+                // `from_file` reads the XSD from disk; `from_parser` takes the
+                // parser context by `&mut` and compiles it (`Err` = schema
+                // did not compile).
+                let mut parser_ctx = libxml::schemas::SchemaParserContext::from_file(&xsd);
                 libxml::schemas::SchemaValidationContext::from_parser(&mut parser_ctx).ok()
-                // CONFIRM-2: takes `&mut SchemaParserContext`
             }) {
                 None => return Vec::new(),
                 Some(ctx) => ctx,
             };
             match ctx.validate_document(&libxml_doc) {
-                // CONFIRM-3: no `validate(&Document) -> bool`; the Result
-                // carries the violations, so `drain_errors` is redundant.
+                // The Result carries the violations directly: this libxml
+                // binding has no boolean `validate`, so `drain_errors` plays
+                // no part here.
                 Ok(()) => Vec::new(),
                 Err(errors) => errors
                     .into_iter()

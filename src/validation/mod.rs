@@ -40,6 +40,12 @@ fn schema_location_file(data: &[u8]) -> Option<&[u8]> {
     Some(&value[start..])
 }
 
+/// The schema filename the document requests (`xsi:schemaLocation` last
+/// token) — for unsupported-schema diagnostics.
+pub fn detect_schema_file(data: &[u8]) -> Option<&[u8]> {
+    schema_location_file(data)
+}
+
 /// A single XSD violation (py `ValidationError` minus the unused `domain`).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ValidationError {
@@ -97,6 +103,17 @@ impl ARXMLValidator {
 
     pub fn release(&self) -> &'static str {
         self.release
+    }
+
+    /// Explicit-release constructor (py: explicit release overrides detection).
+    /// `None` when the release is not bundled — the CLI surfaces this as its
+    /// unsupported-schema failure.
+    pub fn for_release(release: &str) -> Option<Self> {
+        let normalized = release.to_ascii_uppercase();
+        REGISTRY
+            .iter()
+            .find(|(_, r)| *r == normalized)
+            .map(|(_, release)| Self { release })
     }
 
     /// Validate `data` against the release schema; returns ALL violations.
@@ -365,5 +382,22 @@ mod tests {
             "invalid set changed — re-examine individually"
         );
         assert_eq!(undetected.len(), 30, "undetected set changed");
+    }
+
+    #[test]
+    fn for_release_resolves_bundled_and_rejects_unknown() {
+        assert!(ARXMLValidator::for_release("R23-11").is_some());
+        assert!(ARXMLValidator::for_release("r23-11").is_some()); // case-normalized
+        assert!(ARXMLValidator::for_release("R21-11").is_none()); // not bundled
+    }
+
+    #[test]
+    fn detect_schema_file_exposes_the_filename() {
+        let xml = br#"<AUTOSAR xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00050.xsd"/>"#;
+        assert_eq!(
+            super::detect_schema_file(xml),
+            Some(&b"AUTOSAR_00050.xsd"[..])
+        );
+        assert_eq!(super::detect_schema_file(b"<AUTOSAR/>"), None);
     }
 }

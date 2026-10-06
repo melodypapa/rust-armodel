@@ -36,3 +36,7 @@ path = "tests/integration/arxml_format.rs"
 [[test]]
 name = "format_byte_roundtrip"
 path = "tests/integration/format_byte_roundtrip.rs"
+
+[[test]]
+name = "validator_cli"
+path = "tests/integration/validator_cli.rs"

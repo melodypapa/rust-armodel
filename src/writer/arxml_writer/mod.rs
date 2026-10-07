@@ -328,9 +328,6 @@ impl ARXMLWriter {
             // Write — same indenting Writer, same sink.
             return handler(self, writer, element_ref, document);
         }
-        match element_ref {
-            _ => {}
-        }
         let tag = element_registry::element_tag(&element_ref);
         let mut element = BytesStart::new(tag);
         self.write_identifiable_attributes(

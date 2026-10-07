@@ -38,7 +38,7 @@ Input: `Group 1 — Framework & core, PortInterface basics` of `docs/examples/sy
   - [x] Step 9 — Verify (9a) + confirm (9b) — 9a gates green (fmt, clippy -D warnings, 8 test suites, py2rust
     --check); 9b port-parity checklist presented and confirmed by the user (github-workflow delivery)
 
-- [ ] `ARElement` (tracker input · R23-11 markdown · AUTOSAR_FO_TPS_GenericStructureTemplate · Table 4.3)
+- [x] `ARElement` (tracker input · R23-11 markdown · AUTOSAR_FO_TPS_GenericStructureTemplate · Table 4.3 · commit 9c8dd7a)
   - Note (Step 1): py `readARElement` (arxml_parser.py:1793) and `writeARElement`
     (arxml_writer.py:1889) are pure pass-throughs to the Identifiable chain; ARElement is
     abstract (ARElement : PackageableElement, no own fields — generated struct

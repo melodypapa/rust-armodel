@@ -329,27 +329,6 @@ impl ARXMLWriter {
             return handler(self, writer, element_ref, document);
         }
         match element_ref {
-            ElementRef::ApplicationPrimitiveDataType(id) => {
-                return self.write_application_primitive_data_type(writer, id, document);
-            }
-            ElementRef::ApplicationArrayDataType(id) => {
-                return self.write_application_array_data_type(writer, id, document);
-            }
-            ElementRef::ApplicationRecordDataType(id) => {
-                return self.write_application_record_data_type(writer, id, document);
-            }
-            ElementRef::ImplementationDataType(id) => {
-                return self.write_implementation_data_type(writer, id, document);
-            }
-            ElementRef::SwBaseType(id) => return self.write_sw_base_type(writer, id, document),
-            ElementRef::Collection(id) => return self.write_collection(writer, id, document),
-            ElementRef::LifeCycleInfoSet(id) => {
-                return self.write_life_cycle_info_set(writer, id, document)
-            }
-            ElementRef::PhysicalDimension(id) => {
-                return self.write_physical_dimension(writer, id, document)
-            }
-            ElementRef::Unit(id) => return self.write_unit(writer, id, document),
             _ => {}
         }
         let tag = element_registry::element_tag(&element_ref);

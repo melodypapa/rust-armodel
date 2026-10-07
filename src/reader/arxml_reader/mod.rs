@@ -401,9 +401,6 @@ impl ARXMLReader {
             ElementRef::LifeCycleInfoSet(id) => {
                 self.read_life_cycle_info_set(element, id, document)
             }
-            ElementRef::PhysicalDimension(id) => {
-                self.read_physical_dimension(element, id, document)
-            }
             // Remaining families land in later P2 batches.
             _ => Ok(()),
         }

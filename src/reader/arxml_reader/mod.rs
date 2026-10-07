@@ -372,14 +372,18 @@ impl ARXMLReader {
     }
 
     /// py's per-class read dispatch (the tag→create+read chain in
-    /// readARPackageElements). Grows one arm per ported family; the
-    /// wildcard keeps unported families on the warnings-and-skip path.
+    /// readARPackageElements). The generated tag table serves ported
+    /// families (P5); the shrinking hand match below is the strangler
+    /// remainder until the last arm moves.
     fn read_element_payload(
         &mut self,
         element: &Node,
         element_ref: ElementRef,
         document: &mut Document,
     ) -> Result<(), ParseError> {
+        if let Some(handler) = dispatch_tables::lookup_read_handler(element.name.as_str()) {
+            return handler(self, element, element_ref, document);
+        }
         match element_ref {
             ElementRef::CompuMethod(id) => self.read_compu_method(element, id, document),
             ElementRef::DataConstr(id) => self.read_data_constr(element, id, document),

@@ -329,15 +329,6 @@ impl ARXMLWriter {
             return handler(self, writer, element_ref, document);
         }
         match element_ref {
-            ElementRef::CompuMethod(id) => {
-                return self.write_compu_method(writer, id, document);
-            }
-            ElementRef::DataConstr(id) => {
-                return self.write_data_constr(writer, id, document);
-            }
-            ElementRef::KeywordSet(id) => {
-                return self.write_keyword_set(writer, id, document);
-            }
             ElementRef::ApplicationPrimitiveDataType(id) => {
                 return self.write_application_primitive_data_type(writer, id, document);
             }

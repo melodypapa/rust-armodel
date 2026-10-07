@@ -38,15 +38,51 @@ Input: `Group 1 — Framework & core, PortInterface basics` of `docs/examples/sy
   - [x] Step 9 — Verify (9a) + confirm (9b) — 9a gates green (fmt, clippy -D warnings, 8 test suites, py2rust
     --check); 9b port-parity checklist presented and confirmed by the user (github-workflow delivery)
 
-- [ ] `ARElement` (tracker input · R23-11 markdown · AUTOSAR_FO_TPS_GenericStructureTemplate · Table 4.3)
-  - [ ] Step 1 — Extract py reference & Rust model shape
-  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
-  - [ ] Step 3 — Port the reader (Green)
-  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
-  - [ ] Step 5 — Port the writer (Green)
-  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
-  - [ ] Step 7 — Regenerate the port checklist
-  - [ ] Step 8 — Model gaps & deferrals
+- [x] `ARElement` (tracker input · R23-11 markdown · AUTOSAR_FO_TPS_GenericStructureTemplate · Table 4.3 · commit 9c8dd7a)
+  - Note (Step 1): py `readARElement` (arxml_parser.py:1793) and `writeARElement`
+    (arxml_writer.py:1889) are pure pass-throughs to the Identifiable chain; ARElement is
+    abstract (ARElement : PackageableElement, no own fields — generated struct
+    ar_package.rs:2109, no arena, no ElementRef variant). The port = the chain level plus
+    the call-graph reroute: among ported domains py routes ONLY KeywordSet (reader 11908 +
+    writer 10512) and PhysicalDimension (writer 12574) through the ARElement level;
+    SwBaseType/CompuMethod/DataConstr/Unit/Collection/Keyword call the Identifiable
+    helpers directly (py is asymmetric per class — e.g. PhysicalDimension reader 13990 →
+    readIdentifiable but writer 12574 → writeARElement; ported as pinned, Rule 0013).
+    Chain ground truth: writeIdentifiable = S/T attrs + SHORT-NAME + LONG-NAME + UUID attr
+    (order S,T,UUID) + DESC + CATEGORY + INTRODUCTION + ADMIN-DATA. Fixtures exercising
+    the rerouted tags (KeywordSet_Blueprint, PhysicalDimension_Standard,
+    PhysicalDimension_LifeCycle_Standard) are already graduated; graduation N/A (abstract
+    level, no ARELEMENT tag exists). No model gaps.
+  - [x] Step 1 — Extract py reference & Rust model shape
+  - [x] Step 2 — Write failing reader test + graduate fixtures (Red) — direct-call reader test on a
+    KEYWORD-SET fragment seen FAILING to compile (`read_ar_element` not found); graduation N/A:
+    abstract chain level, no ARELEMENT tag — the rerouted tags' fixtures are already graduated
+  - [x] Step 3 — Port the reader (Green) — `read_ar_element` added to reader common.rs as the
+    ARElement chain level (pass-through to `read_identifiable_payload`); `read_keyword_set`
+    rerouted through it (py's only ported-domain reader caller); test green. Note: first
+    fragment draft used SD-child DESC / bare-P shapes — py reads L-2 direct text and P→L-1
+    (readLOverviewParagraph arxml_parser.py:2104ff); fragment corrected to py's shapes
+  - [x] Step 4 — Extract writer order; write failing writer test (Red) — order from py
+    writeIdentifiable body (arxml_writer.py:1874): attrs S,T,UUID then SHORT-NAME, LONG-NAME,
+    DESC, CATEGORY, INTRODUCTION, ADMIN-DATA (≠ reader order: reader's SHORT-NAME/UUID/
+    CATEGORY belong to the allocation loop); two direct-call tests seen FAILING to compile
+    (`write_ar_element`/`IdentifiableAttrs` not found)
+  - [x] Step 5 — Port the writer (Green) — `write_ar_element` (writer common.rs: attrs + Start +
+    SHORT-NAME + `write_identifiable_parts`) with `IdentifiableAttrs` bundle (clippy ≤7 args);
+    `write_keyword_set` + `write_physical_dimension` rerouted (py writeARElement callers);
+    both tests green
+  - [x] Step 6 — Harness to green (zero warnings + byte-identical) — full `cargo test` green
+    (55 lib + all integration gates); the reroute is byte-neutral, all graduated fixtures
+    unregressed (KeywordSet_Blueprint / PhysicalDimension_* among them)
+  - [x] Step 7 — Regenerate the port checklist — `--emit-port-checklist` + `--check` OK
+    (0 drifted); `readARElement`/`writeARElement` rows flipped [x]; port count 43/2438
+  - [x] Step 8 — Model gaps & deferrals — no model gaps (no py2rust change; --check green).
+    Deferrals: (1) ANNOTATIONS / VARIATION-POINT / SHORT-NAME-FRAGMENTS remain the
+    Identifiable/Referrable chain's existing tracked deferrals (see
+    `read_identifiable_payload` doc) — ARElement adds none of its own; (2) py's per-class
+    call-graph asymmetry (SwBaseType/CompuMethod/DataConstr/Unit/Collection/Keyword call the
+    Identifiable helpers directly) is ported as pinned (Rule 0013) — future families for
+    those classes must keep the direct call, not "fix" them onto the ARElement level
   - [ ] Step 9 — Verify (9a) + confirm (9b)
 
 - [ ] `ReferenceBase` (member type of `ARPackage.referenceBase` · Rule 0016.4 stub — blocks ARPackage 9b stamp per Rules 0001.10/0012.1 · R23-11 markdown · AUTOSAR_FO_TPS_GenericStructureTemplate · Table 4.14, p.72)

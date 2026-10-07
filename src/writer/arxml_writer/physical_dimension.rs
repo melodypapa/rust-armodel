@@ -5,8 +5,8 @@ use super::*;
 use crate::m2::msr::asam_hdo::units::PhysicalDimensionId;
 
 impl ARXMLWriter {
-    /// py `writePhysicalDimension` — the seven numerical children in fixed
-    /// order after the Identifiable parts.
+    /// py `writePhysicalDimension` — the ARElement chain level, then the seven
+    /// numerical children in fixed order.
     pub(super) fn write_physical_dimension<W: Write>(
         &self,
         writer: &mut Writer<W>,
@@ -16,25 +16,15 @@ impl ARXMLWriter {
         let Some(dimension) = document.physical_dimensions.get(id) else {
             return Ok(());
         };
-        let mut element = BytesStart::new("PHYSICAL-DIMENSION");
-        self.write_identifiable_attributes(
-            &mut element,
-            dimension.get_checksum(),
-            dimension.get_timestamp(),
-            dimension.get_uuid(),
-        );
-        writer.write_event(Event::Start(element))?;
-
-        let short_name_element = BytesStart::new("SHORT-NAME");
-        write_text_element(
+        self.write_ar_element(
             writer,
-            "SHORT-NAME",
-            short_name_element,
-            dimension.get_short_name(),
-        )?;
-
-        self.write_identifiable_parts(
-            writer,
+            BytesStart::new("PHYSICAL-DIMENSION"),
+            IdentifiableAttrs {
+                checksum: dimension.get_checksum(),
+                timestamp: dimension.get_timestamp(),
+                uuid: dimension.get_uuid(),
+                short_name: dimension.get_short_name(),
+            },
             IdentifiableParts {
                 long_name: dimension.get_long_name(),
                 desc: dimension.get_desc(),

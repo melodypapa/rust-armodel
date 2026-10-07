@@ -3,7 +3,7 @@
 
 | py method | Rust name | ported | py location |
 |---|---|---|---|
-| `readARElement` | `read_ar_element` | [ ] | `parser/arxml_parser.py:1793` |
+| `readARElement` | `read_ar_element` | [x] | `parser/arxml_parser.py:1793` |
 | `readARPackage` | `read_ar_package` | [x] | `parser/arxml_parser.py:16213` |
 | `readARPackageElements` | `read_ar_package_elements` | [ ] | `parser/arxml_parser.py:15192` |
 | `readARPackages` | `read_ar_packages` | [x] | `parser/arxml_parser.py:16221` |
@@ -1221,7 +1221,7 @@
 | `readWhitespaceControlled` | `read_whitespace_controlled` | [ ] | `parser/arxml_parser.py:6281` |
 | `readWorstCaseHeapUsage` | `read_worst_case_heap_usage` | [ ] | `parser/arxml_parser.py:5209` |
 | `readWorstCaseStackUsage` | `read_worst_case_stack_usage` | [ ] | `parser/arxml_parser.py:5278` |
-| `writeARElement` | `write_ar_element` | [ ] | `writer/arxml_writer.py:1889` |
+| `writeARElement` | `write_ar_element` | [x] | `writer/arxml_writer.py:1889` |
 | `writeARPackage` | `write_ar_package` | [x] | `writer/arxml_writer.py:15823` |
 | `writeARPackageElement` | `write_ar_package_element` | [x] | `writer/arxml_writer.py:14925` |
 | `writeARPackageElements` | `write_ar_package_elements` | [ ] | `writer/arxml_writer.py:15832` |
@@ -2442,4 +2442,4 @@
 | `writeWhitespaceControlled` | `write_whitespace_controlled` | [ ] | `writer/arxml_writer.py:1546` |
 | `writeWorstCaseHeapUsage` | `write_worst_case_heap_usage` | [ ] | `writer/arxml_writer.py:6503` |
 
-**41/2438 ported.**
+**43/2438 ported.**

@@ -70,24 +70,15 @@ impl ARXMLWriter {
         let Some(keyword_set) = document.keyword_sets.get(id) else {
             return Ok(());
         };
-        let mut element = BytesStart::new("KEYWORD-SET");
-        self.write_identifiable_attributes(
-            &mut element,
-            keyword_set.get_checksum(),
-            keyword_set.get_timestamp(),
-            keyword_set.get_uuid(),
-        );
-        writer.write_event(Event::Start(element))?;
-        if let Some(short_name) = keyword_set.get_short_name() {
-            write_text_element(
-                writer,
-                "SHORT-NAME",
-                BytesStart::new("SHORT-NAME"),
-                Some(short_name),
-            )?;
-        }
-        self.write_identifiable_parts(
+        self.write_ar_element(
             writer,
+            BytesStart::new("KEYWORD-SET"),
+            IdentifiableAttrs {
+                checksum: keyword_set.get_checksum(),
+                timestamp: keyword_set.get_timestamp(),
+                uuid: keyword_set.get_uuid(),
+                short_name: keyword_set.get_short_name(),
+            },
             IdentifiableParts {
                 long_name: keyword_set.get_long_name(),
                 desc: keyword_set.get_desc(),

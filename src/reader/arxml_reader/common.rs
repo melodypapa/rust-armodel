@@ -55,8 +55,16 @@ impl ARXMLReader {
             },
         })
     }
+    /// py `readARElement` — the ARElement chain level: ARElement adds no own
+    /// payload, so this passes the Identifiable payload through.
+    pub(super) fn read_ar_element(
+        &mut self,
+        element: &Node,
+        document: &mut Document,
+    ) -> Result<IdentifiablePayload, ParseError> {
+        self.read_identifiable_payload(element, document)
+    }
 }
-
 /// The `Identifiable`-owned XML payload read by `read_identifiable_payload`
 /// (py `readIdentifiable` minus SHORT-NAME/UUID/CATEGORY, which the
 /// allocation path already consumed, and minus annotations — no pinned
@@ -71,6 +79,7 @@ pub(super) struct IdentifiablePayload {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::m2::autosar_templates::common_structure::standardization_template::keyword::KeywordSet;
 
     /// py `readARObject` — the S (checksum) / T (timestamp) attributes must
     /// arrive on every path that builds an ARObject-derived object: the
@@ -119,5 +128,69 @@ mod tests {
         let base_type = document.get_sw_base_type(id).unwrap();
         assert_eq!(base_type.get_checksum(), Some("c3"));
         assert_eq!(base_type.get_timestamp(), Some("2024-11-28T09:30:00+08:00"));
+    }
+
+    /// py `readARElement` — the ARElement chain level passes the Identifiable
+    /// payload through: LONG-NAME, DESC, INTRODUCTION, ADMIN-DATA resolve to
+    /// populated arenas. Exercised directly on a KEYWORD-SET fragment (py
+    /// readKeywordSet is the ported-domain caller of readARElement; the
+    /// KEYWORD-SET end-to-end path itself is covered by the graduated
+    /// KeywordSet_Blueprint fixture).
+    #[test]
+    fn ar_element_level_reads_identifiable_payload() {
+        const KEYWORD_SET_SAMPLE: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
+<KEYWORD-SET>
+  <SHORT-NAME>Ks</SHORT-NAME>
+  <LONG-NAME>
+    <L-4 L="EN">Keyword Set Long Name</L-4>
+  </LONG-NAME>
+  <DESC>
+    <L-2 L="EN">Keyword set description</L-2>
+  </DESC>
+  <INTRODUCTION>
+    <P>
+      <L-1 L="EN">Introduction paragraph</L-1>
+    </P>
+  </INTRODUCTION>
+  <ADMIN-DATA>
+    <LANGUAGE>EN</LANGUAGE>
+  </ADMIN-DATA>
+</KEYWORD-SET>"#;
+
+        let node = build_dom_from_reader(Reader::from_str(KEYWORD_SET_SAMPLE)).unwrap();
+
+        let mut document = Document::new();
+        document.keyword_sets.insert(KeywordSet::new());
+        let payload = ARXMLReader::new(default_options())
+            .read_ar_element(&node, &mut document)
+            .unwrap();
+
+        let long_name = document
+            .get_multilanguage_long_name(payload.long_name.unwrap())
+            .unwrap();
+        let l4 = document.get_l_long_name(long_name.get_l4()[0]).unwrap();
+        assert_eq!(l4.get_value(), Some("Keyword Set Long Name"));
+        assert_eq!(l4.get_l(), Some("EN"));
+
+        let desc = document
+            .get_multi_language_overview_paragraph(payload.desc.unwrap())
+            .unwrap();
+        let l2 = document.get_l_overview_paragraph(desc.get_l2()[0]).unwrap();
+        assert_eq!(l2.get_value(), Some("Keyword set description"));
+
+        let block = document
+            .get_documentation_block(payload.introduction.unwrap())
+            .unwrap();
+        let paragraph = document
+            .get_multi_language_paragraph(block.get_ps()[0])
+            .unwrap();
+        let l1 = document.get_l_paragraph(paragraph.get_l1()[0]).unwrap();
+        assert_eq!(l1.get_value(), Some("Introduction paragraph"));
+
+        let admin_data = document
+            .admin_datas
+            .get(payload.admin_data.unwrap())
+            .unwrap();
+        assert_eq!(admin_data.get_language(), Some("EN"));
     }
 }

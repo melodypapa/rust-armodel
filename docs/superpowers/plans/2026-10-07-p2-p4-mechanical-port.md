@@ -21,6 +21,13 @@ per-family procedure or the queue rows.
 (`--emit-port-checklist` / `--check`), pinned py-armodel at `tools/py2rust/PY_ARMODEL_VERSION`
 (32 fixtures), pytest-free verification via `cargo test` harness gates.
 
+> **Note (2026-10-07, user decision):** P5 (table-driven dispatch) runs **before** this
+> phase completes — see the amended prerequisite in
+> `2026-10-07-p5-table-driven-dispatch.md`. After P5 lands, family sessions no longer
+> hand-edit the `ElementRef` dispatch seams: the per-family regen step adds
+> `--emit-dispatch-tables` so landed handlers auto-wire, and new writer emitters use the
+> `&mut Writer<&mut dyn Write>` signature.
+
 ---
 
 ## Current state (2026-10-07, after the ARElement family)

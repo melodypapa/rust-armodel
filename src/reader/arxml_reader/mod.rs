@@ -10,6 +10,7 @@
 
 use std::io::BufRead;
 use std::path::Path;
+use std::sync::LazyLock;
 
 use quick_xml::reader::Reader;
 
@@ -54,6 +55,7 @@ mod common;
 mod compu_method;
 mod data_constr;
 mod datatypes;
+mod dispatch_tables;
 mod documentation;
 mod keyword;
 mod life_cycle;
@@ -370,41 +372,18 @@ impl ARXMLReader {
     }
 
     /// py's per-class read dispatch (the tag→create+read chain in
-    /// readARPackageElements). Grows one arm per ported family; the
-    /// wildcard keeps unported families on the warnings-and-skip path.
+    /// readARPackageElements). Fully table-driven (P5): the generated tag
+    /// table serves ported families; unknown tags keep the
+    /// warning-and-skip path upstream.
     fn read_element_payload(
         &mut self,
         element: &Node,
         element_ref: ElementRef,
         document: &mut Document,
     ) -> Result<(), ParseError> {
-        match element_ref {
-            ElementRef::CompuMethod(id) => self.read_compu_method(element, id, document),
-            ElementRef::DataConstr(id) => self.read_data_constr(element, id, document),
-            ElementRef::KeywordSet(id) => self.read_keyword_set(element, id, document),
-            ElementRef::ApplicationPrimitiveDataType(id) => {
-                self.read_application_primitive_data_type(element, id, document)
-            }
-            ElementRef::ApplicationArrayDataType(id) => {
-                self.read_application_array_data_type(element, id, document)
-            }
-            ElementRef::ApplicationRecordDataType(id) => {
-                self.read_application_record_data_type(element, id, document)
-            }
-            ElementRef::ImplementationDataType(id) => {
-                self.read_implementation_data_type(element, id, document)
-            }
-            ElementRef::SwBaseType(id) => self.read_sw_base_type(element, id, document),
-            ElementRef::Collection(id) => self.read_collection(element, id, document),
-            ElementRef::LifeCycleInfoSet(id) => {
-                self.read_life_cycle_info_set(element, id, document)
-            }
-            ElementRef::PhysicalDimension(id) => {
-                self.read_physical_dimension(element, id, document)
-            }
-            ElementRef::Unit(id) => self.read_unit(element, id, document),
-            // Remaining families land in later P2 batches.
-            _ => Ok(()),
+        match dispatch_tables::lookup_read_handler(element.name.as_str()) {
+            Some(handler) => handler(self, element, element_ref, document),
+            None => Ok(()),
         }
     }
 }

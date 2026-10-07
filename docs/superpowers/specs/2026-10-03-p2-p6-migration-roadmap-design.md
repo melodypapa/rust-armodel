@@ -146,6 +146,12 @@ never re-derive values). The spec adds:
 
 ## 6. P5 — table-driven dispatch engine
 
+> **Status (2026-10-07): landed** ahead of the P2–P4 completion (user decision, recorded in
+> `docs/superpowers/plans/2026-10-07-p5-table-driven-dispatch.md`). Both dispatch seams are
+> table-driven (py2rust `--emit-dispatch-tables`, generated shim fns); the 32-fixture
+> byte-identical harness was green at every strangler merge. Family sessions auto-wire new
+> handlers by regenerating the tables.
+
 "Schema-driven single engine" means concretely, with YAGNI applied:
 
 - Replace the hand-written tag→method dispatch chains with **generated dispatch tables**

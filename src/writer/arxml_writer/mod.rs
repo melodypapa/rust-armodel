@@ -5,6 +5,7 @@
 
 use std::io::Write;
 use std::path::Path;
+use std::sync::LazyLock;
 
 use quick_xml::events::{BytesDecl, BytesEnd, BytesStart, Event};
 use quick_xml::writer::Writer;
@@ -35,6 +36,7 @@ mod common;
 mod compu_method;
 mod data_constr;
 mod datatypes;
+mod dispatch_tables;
 mod documentation;
 mod keyword;
 mod life_cycle;
@@ -110,7 +112,8 @@ impl ARXMLWriter {
         // py saveToFile serializes to a string, runs patch_xml, then writes
         // the file; buffering here gives the post-pass the same reach.
         let mut buffer = Vec::new();
-        let mut writer = Writer::new_with_indent(&mut buffer, b' ', 2);
+        let sink: &mut dyn Write = &mut buffer;
+        let mut writer = Writer::new_with_indent(sink, b' ', 2);
 
         writer.write_event(Event::Decl(BytesDecl::new("1.0", Some("UTF-8"), None)))?;
 
@@ -180,9 +183,9 @@ impl ARXMLWriter {
     }
 
     /// py `writeARPackages`
-    fn write_ar_packages<W: Write>(
+    fn write_ar_packages(
         &self,
-        writer: &mut Writer<W>,
+        writer: &mut Writer<&mut dyn Write>,
         packages: &[ARPackageId],
         document: &Document,
     ) -> Result<(), WriteError> {
@@ -200,9 +203,9 @@ impl ARXMLWriter {
     }
 
     /// py `writeARPackage`
-    fn write_ar_package<W: Write>(
+    fn write_ar_package(
         &self,
-        writer: &mut Writer<W>,
+        writer: &mut Writer<&mut dyn Write>,
         package: &ARPackage,
         document: &Document,
     ) -> Result<(), WriteError> {
@@ -309,47 +312,21 @@ impl ARXMLWriter {
         Ok(())
     }
 
-    /// py `writeARPackageElement`'s isinstance chain. Grows one arm per
-    /// ported family; the wildcard keeps unported families on the P0 shape
-    /// (common Identifiable parts only).
-    fn write_ar_package_element<W: Write>(
+    /// py `writeARPackageElement`'s isinstance chain. Table-driven for
+    /// ported families (P5); unported variants keep the P0 generic shape
+    /// below (common Identifiable parts only).
+    fn write_ar_package_element(
         &self,
-        writer: &mut Writer<W>,
+        writer: &mut Writer<&mut dyn Write>,
         element_ref: ElementRef,
         document: &Document,
     ) -> Result<(), WriteError> {
-        match element_ref {
-            ElementRef::CompuMethod(id) => {
-                return self.write_compu_method(writer, id, document);
-            }
-            ElementRef::DataConstr(id) => {
-                return self.write_data_constr(writer, id, document);
-            }
-            ElementRef::KeywordSet(id) => {
-                return self.write_keyword_set(writer, id, document);
-            }
-            ElementRef::ApplicationPrimitiveDataType(id) => {
-                return self.write_application_primitive_data_type(writer, id, document);
-            }
-            ElementRef::ApplicationArrayDataType(id) => {
-                return self.write_application_array_data_type(writer, id, document);
-            }
-            ElementRef::ApplicationRecordDataType(id) => {
-                return self.write_application_record_data_type(writer, id, document);
-            }
-            ElementRef::ImplementationDataType(id) => {
-                return self.write_implementation_data_type(writer, id, document);
-            }
-            ElementRef::SwBaseType(id) => return self.write_sw_base_type(writer, id, document),
-            ElementRef::Collection(id) => return self.write_collection(writer, id, document),
-            ElementRef::LifeCycleInfoSet(id) => {
-                return self.write_life_cycle_info_set(writer, id, document)
-            }
-            ElementRef::PhysicalDimension(id) => {
-                return self.write_physical_dimension(writer, id, document)
-            }
-            ElementRef::Unit(id) => return self.write_unit(writer, id, document),
-            _ => {}
+        if let Some(handler) = dispatch_tables::variant_index(&element_ref)
+            .and_then(dispatch_tables::lookup_write_handler)
+        {
+            // The shims monomorphize the generic handlers at W = &mut dyn
+            // Write — same indenting Writer, same sink.
+            return handler(self, writer, element_ref, document);
         }
         let tag = element_registry::element_tag(&element_ref);
         let mut element = BytesStart::new(tag);

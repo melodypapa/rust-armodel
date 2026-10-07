@@ -5,7 +5,6 @@
 //! hand-written emitters keep their generic signatures.
 use super::*;
 
-#[allow(dead_code)] // temporary — consumed by write_ar_package_element in P5 Task 4
 pub(crate) type WriteHandler = fn(
     &ARXMLWriter,
     &mut Writer<&mut dyn std::io::Write>,
@@ -13,7 +12,6 @@ pub(crate) type WriteHandler = fn(
     &Document,
 ) -> Result<(), WriteError>;
 
-#[allow(dead_code)] // temporary — consumed by write_ar_package_element in P5 Task 4
 pub(crate) fn variant_index(element: &ElementRef) -> Option<usize> {
     let index: usize = match element {
         ElementRef::ApplicationArrayDataType(_) => 0,
@@ -33,7 +31,6 @@ pub(crate) fn variant_index(element: &ElementRef) -> Option<usize> {
     Some(index)
 }
 
-#[allow(dead_code)] // temporary — consumed by write_ar_package_element in P5 Task 4
 pub(crate) static WRITE_TABLE: LazyLock<Vec<(usize, WriteHandler)>> = LazyLock::new(|| {
     vec![
         (0, ARXMLWriter::shim_write_application_array_data_type),
@@ -51,7 +48,6 @@ pub(crate) static WRITE_TABLE: LazyLock<Vec<(usize, WriteHandler)>> = LazyLock::
     ]
 });
 
-#[allow(dead_code)] // temporary — consumed by write_ar_package_element in P5 Task 4
 pub(crate) fn lookup_write_handler(index: usize) -> Option<WriteHandler> {
     WRITE_TABLE
         .binary_search_by(|entry| entry.0.cmp(&index))
@@ -61,7 +57,6 @@ pub(crate) fn lookup_write_handler(index: usize) -> Option<WriteHandler> {
 
 impl ARXMLWriter {
     /// Dispatch shim for `ElementRef::ApplicationArrayDataType`.
-    #[allow(dead_code)] // temporary — referenced by the table in P5 Task 4
     fn shim_write_application_array_data_type(
         &self,
         serializer: &mut Writer<&mut dyn std::io::Write>,
@@ -74,7 +69,6 @@ impl ARXMLWriter {
         self.write_application_array_data_type(serializer, id, document)
     }
     /// Dispatch shim for `ElementRef::ApplicationPrimitiveDataType`.
-    #[allow(dead_code)] // temporary — referenced by the table in P5 Task 4
     fn shim_write_application_primitive_data_type(
         &self,
         serializer: &mut Writer<&mut dyn std::io::Write>,
@@ -87,7 +81,6 @@ impl ARXMLWriter {
         self.write_application_primitive_data_type(serializer, id, document)
     }
     /// Dispatch shim for `ElementRef::ApplicationRecordDataType`.
-    #[allow(dead_code)] // temporary — referenced by the table in P5 Task 4
     fn shim_write_application_record_data_type(
         &self,
         serializer: &mut Writer<&mut dyn std::io::Write>,
@@ -100,7 +93,6 @@ impl ARXMLWriter {
         self.write_application_record_data_type(serializer, id, document)
     }
     /// Dispatch shim for `ElementRef::Collection`.
-    #[allow(dead_code)] // temporary — referenced by the table in P5 Task 4
     fn shim_write_collection(
         &self,
         serializer: &mut Writer<&mut dyn std::io::Write>,
@@ -113,7 +105,6 @@ impl ARXMLWriter {
         self.write_collection(serializer, id, document)
     }
     /// Dispatch shim for `ElementRef::CompuMethod`.
-    #[allow(dead_code)] // temporary — referenced by the table in P5 Task 4
     fn shim_write_compu_method(
         &self,
         serializer: &mut Writer<&mut dyn std::io::Write>,
@@ -126,7 +117,6 @@ impl ARXMLWriter {
         self.write_compu_method(serializer, id, document)
     }
     /// Dispatch shim for `ElementRef::DataConstr`.
-    #[allow(dead_code)] // temporary — referenced by the table in P5 Task 4
     fn shim_write_data_constr(
         &self,
         serializer: &mut Writer<&mut dyn std::io::Write>,
@@ -139,7 +129,6 @@ impl ARXMLWriter {
         self.write_data_constr(serializer, id, document)
     }
     /// Dispatch shim for `ElementRef::ImplementationDataType`.
-    #[allow(dead_code)] // temporary — referenced by the table in P5 Task 4
     fn shim_write_implementation_data_type(
         &self,
         serializer: &mut Writer<&mut dyn std::io::Write>,
@@ -152,7 +141,6 @@ impl ARXMLWriter {
         self.write_implementation_data_type(serializer, id, document)
     }
     /// Dispatch shim for `ElementRef::KeywordSet`.
-    #[allow(dead_code)] // temporary — referenced by the table in P5 Task 4
     fn shim_write_keyword_set(
         &self,
         serializer: &mut Writer<&mut dyn std::io::Write>,
@@ -165,7 +153,6 @@ impl ARXMLWriter {
         self.write_keyword_set(serializer, id, document)
     }
     /// Dispatch shim for `ElementRef::LifeCycleInfoSet`.
-    #[allow(dead_code)] // temporary — referenced by the table in P5 Task 4
     fn shim_write_life_cycle_info_set(
         &self,
         serializer: &mut Writer<&mut dyn std::io::Write>,
@@ -178,7 +165,6 @@ impl ARXMLWriter {
         self.write_life_cycle_info_set(serializer, id, document)
     }
     /// Dispatch shim for `ElementRef::PhysicalDimension`.
-    #[allow(dead_code)] // temporary — referenced by the table in P5 Task 4
     fn shim_write_physical_dimension(
         &self,
         serializer: &mut Writer<&mut dyn std::io::Write>,
@@ -191,7 +177,6 @@ impl ARXMLWriter {
         self.write_physical_dimension(serializer, id, document)
     }
     /// Dispatch shim for `ElementRef::SwBaseType`.
-    #[allow(dead_code)] // temporary — referenced by the table in P5 Task 4
     fn shim_write_sw_base_type(
         &self,
         serializer: &mut Writer<&mut dyn std::io::Write>,
@@ -204,7 +189,6 @@ impl ARXMLWriter {
         self.write_sw_base_type(serializer, id, document)
     }
     /// Dispatch shim for `ElementRef::Unit`.
-    #[allow(dead_code)] // temporary — referenced by the table in P5 Task 4
     fn shim_write_unit(
         &self,
         serializer: &mut Writer<&mut dyn std::io::Write>,

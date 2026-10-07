@@ -397,9 +397,6 @@ impl ARXMLReader {
             ElementRef::ImplementationDataType(id) => {
                 self.read_implementation_data_type(element, id, document)
             }
-            ElementRef::LifeCycleInfoSet(id) => {
-                self.read_life_cycle_info_set(element, id, document)
-            }
             // Remaining families land in later P2 batches.
             _ => Ok(()),
         }

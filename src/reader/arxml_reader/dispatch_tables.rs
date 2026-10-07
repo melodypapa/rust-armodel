@@ -3,11 +3,9 @@
 //! only for handler fns present in src/ — regenerate after landing families.
 use super::*;
 
-#[allow(dead_code)] // temporary — consumed by read_element_payload in P5 Task 3
 pub(crate) type ReadHandler =
     fn(&mut ARXMLReader, &Node, ElementRef, &mut Document) -> Result<(), ParseError>;
 
-#[allow(dead_code)] // temporary — consumed by read_element_payload in P5 Task 3
 pub(crate) static READ_TABLE: LazyLock<Vec<(&'static str, ReadHandler)>> = LazyLock::new(|| {
     vec![
         (
@@ -37,7 +35,6 @@ pub(crate) static READ_TABLE: LazyLock<Vec<(&'static str, ReadHandler)>> = LazyL
     ]
 });
 
-#[allow(dead_code)] // temporary — consumed by read_element_payload in P5 Task 3
 pub(crate) fn lookup_read_handler(tag: &str) -> Option<ReadHandler> {
     READ_TABLE
         .binary_search_by(|entry| entry.0.cmp(tag))
@@ -46,7 +43,6 @@ pub(crate) fn lookup_read_handler(tag: &str) -> Option<ReadHandler> {
 }
 
 /// Dispatch shim for `APPLICATION-ARRAY-DATA-TYPE` (ElementRef::`ApplicationArrayDataType`).
-#[allow(dead_code)] // temporary — referenced by the table in P5 Task 3
 fn shim_read_application_array_data_type(
     reader: &mut ARXMLReader,
     element: &Node,
@@ -59,7 +55,6 @@ fn shim_read_application_array_data_type(
     reader.read_application_array_data_type(element, id, document)
 }
 /// Dispatch shim for `APPLICATION-PRIMITIVE-DATA-TYPE` (ElementRef::`ApplicationPrimitiveDataType`).
-#[allow(dead_code)] // temporary — referenced by the table in P5 Task 3
 fn shim_read_application_primitive_data_type(
     reader: &mut ARXMLReader,
     element: &Node,
@@ -72,7 +67,6 @@ fn shim_read_application_primitive_data_type(
     reader.read_application_primitive_data_type(element, id, document)
 }
 /// Dispatch shim for `APPLICATION-RECORD-DATA-TYPE` (ElementRef::`ApplicationRecordDataType`).
-#[allow(dead_code)] // temporary — referenced by the table in P5 Task 3
 fn shim_read_application_record_data_type(
     reader: &mut ARXMLReader,
     element: &Node,
@@ -85,7 +79,6 @@ fn shim_read_application_record_data_type(
     reader.read_application_record_data_type(element, id, document)
 }
 /// Dispatch shim for `COLLECTION` (ElementRef::`Collection`).
-#[allow(dead_code)] // temporary — referenced by the table in P5 Task 3
 fn shim_read_collection(
     reader: &mut ARXMLReader,
     element: &Node,
@@ -98,7 +91,6 @@ fn shim_read_collection(
     reader.read_collection(element, id, document)
 }
 /// Dispatch shim for `COMPU-METHOD` (ElementRef::`CompuMethod`).
-#[allow(dead_code)] // temporary — referenced by the table in P5 Task 3
 fn shim_read_compu_method(
     reader: &mut ARXMLReader,
     element: &Node,
@@ -111,7 +103,6 @@ fn shim_read_compu_method(
     reader.read_compu_method(element, id, document)
 }
 /// Dispatch shim for `DATA-CONSTR` (ElementRef::`DataConstr`).
-#[allow(dead_code)] // temporary — referenced by the table in P5 Task 3
 fn shim_read_data_constr(
     reader: &mut ARXMLReader,
     element: &Node,
@@ -124,7 +115,6 @@ fn shim_read_data_constr(
     reader.read_data_constr(element, id, document)
 }
 /// Dispatch shim for `IMPLEMENTATION-DATA-TYPE` (ElementRef::`ImplementationDataType`).
-#[allow(dead_code)] // temporary — referenced by the table in P5 Task 3
 fn shim_read_implementation_data_type(
     reader: &mut ARXMLReader,
     element: &Node,
@@ -137,7 +127,6 @@ fn shim_read_implementation_data_type(
     reader.read_implementation_data_type(element, id, document)
 }
 /// Dispatch shim for `KEYWORD-SET` (ElementRef::`KeywordSet`).
-#[allow(dead_code)] // temporary — referenced by the table in P5 Task 3
 fn shim_read_keyword_set(
     reader: &mut ARXMLReader,
     element: &Node,
@@ -150,7 +139,6 @@ fn shim_read_keyword_set(
     reader.read_keyword_set(element, id, document)
 }
 /// Dispatch shim for `LIFE-CYCLE-INFO-SET` (ElementRef::`LifeCycleInfoSet`).
-#[allow(dead_code)] // temporary — referenced by the table in P5 Task 3
 fn shim_read_life_cycle_info_set(
     reader: &mut ARXMLReader,
     element: &Node,
@@ -163,7 +151,6 @@ fn shim_read_life_cycle_info_set(
     reader.read_life_cycle_info_set(element, id, document)
 }
 /// Dispatch shim for `PHYSICAL-DIMENSION` (ElementRef::`PhysicalDimension`).
-#[allow(dead_code)] // temporary — referenced by the table in P5 Task 3
 fn shim_read_physical_dimension(
     reader: &mut ARXMLReader,
     element: &Node,
@@ -176,7 +163,6 @@ fn shim_read_physical_dimension(
     reader.read_physical_dimension(element, id, document)
 }
 /// Dispatch shim for `SW-BASE-TYPE` (ElementRef::`SwBaseType`).
-#[allow(dead_code)] // temporary — referenced by the table in P5 Task 3
 fn shim_read_sw_base_type(
     reader: &mut ARXMLReader,
     element: &Node,
@@ -189,7 +175,6 @@ fn shim_read_sw_base_type(
     reader.read_sw_base_type(element, id, document)
 }
 /// Dispatch shim for `UNIT` (ElementRef::`Unit`).
-#[allow(dead_code)] // temporary — referenced by the table in P5 Task 3
 fn shim_read_unit(
     reader: &mut ARXMLReader,
     element: &Node,

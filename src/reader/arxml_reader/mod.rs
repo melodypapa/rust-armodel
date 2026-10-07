@@ -372,33 +372,18 @@ impl ARXMLReader {
     }
 
     /// py's per-class read dispatch (the tag→create+read chain in
-    /// readARPackageElements). The generated tag table serves ported
-    /// families (P5); the shrinking hand match below is the strangler
-    /// remainder until the last arm moves.
+    /// readARPackageElements). Fully table-driven (P5): the generated tag
+    /// table serves ported families; unknown tags keep the
+    /// warning-and-skip path upstream.
     fn read_element_payload(
         &mut self,
         element: &Node,
         element_ref: ElementRef,
         document: &mut Document,
     ) -> Result<(), ParseError> {
-        if let Some(handler) = dispatch_tables::lookup_read_handler(element.name.as_str()) {
-            return handler(self, element, element_ref, document);
-        }
-        match element_ref {
-            ElementRef::ApplicationPrimitiveDataType(id) => {
-                self.read_application_primitive_data_type(element, id, document)
-            }
-            ElementRef::ApplicationArrayDataType(id) => {
-                self.read_application_array_data_type(element, id, document)
-            }
-            ElementRef::ApplicationRecordDataType(id) => {
-                self.read_application_record_data_type(element, id, document)
-            }
-            ElementRef::ImplementationDataType(id) => {
-                self.read_implementation_data_type(element, id, document)
-            }
-            // Remaining families land in later P2 batches.
-            _ => Ok(()),
+        match dispatch_tables::lookup_read_handler(element.name.as_str()) {
+            Some(handler) => handler(self, element, element_ref, document),
+            None => Ok(()),
         }
     }
 }

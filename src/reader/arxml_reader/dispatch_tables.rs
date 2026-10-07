@@ -186,3 +186,17 @@ fn shim_read_unit(
     };
     reader.read_unit(element, id, document)
 }
+
+#[cfg(test)]
+mod contract {
+    use super::*;
+
+    /// P5 contract: the tag table stays sorted + duplicate-free —
+    /// binary-search correctness and generator hygiene in one assertion.
+    #[test]
+    fn reader_table_entries_are_sorted_and_unique() {
+        let table = &*READ_TABLE;
+        assert!(table.windows(2).all(|w| w[0].0 < w[1].0));
+        assert!(!table.is_empty());
+    }
+}

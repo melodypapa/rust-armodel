@@ -38,3 +38,9 @@ def test_unported_methods_produce_no_table_entry(tmp_path):
     reader, writer = _emit(tmp_path)
     assert "read_sender_com_spec" not in reader        # not ported at P5 start
     assert "write_sender_com_spec" not in writer
+
+
+def test_reader_table_carries_contract_test(tmp_path):
+    reader, _ = _emit(tmp_path)
+    assert "mod contract" in reader
+    assert "reader_table_entries_are_sorted_and_unique" in reader

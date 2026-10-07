@@ -81,7 +81,7 @@ any change to the m2 structs or the public `ARXMLReader`/`ARXMLWriter` API, warn
 **Files:**
 - Create: `tools/py2rust/tests/test_dispatch_tables.py`
 
-- [ ] **Step 1: Write the failing gate test**
+- [x] **Step 1: Write the failing gate test**
 
 ```python
 """Gate tests for --emit-dispatch-tables (P5, roadmap 2026-10-03 §6)."""
@@ -127,7 +127,7 @@ def test_unported_methods_produce_no_table_entry(tmp_path):
 writer handlers table-storable; before that conversion the generated writer file must not
 be declared as a module — a generic fn cannot be a fn pointer.)
 
-- [ ] **Step 2: Run it to verify it fails**
+- [x] **Step 2: Run it to verify it fails**
 
 Run: `python3 -m pytest tools/py2rust/tests/test_dispatch_tables.py -v`
 Expected: FAIL — `main.py: error: unrecognized arguments: --emit-dispatch-tables`.
@@ -138,7 +138,7 @@ Expected: FAIL — `main.py: error: unrecognized arguments: --emit-dispatch-tabl
 - Create: `tools/py2rust/dispatch_tables.py`
 - Modify: `tools/py2rust/main.py`
 
-- [ ] **Step 1: Implement the emitter**
+- [x] **Step 1: Implement the emitter**
 
 `dispatch_tables.py` (core logic; `scan_ported_handlers` and the py AST walk are reused
 from the existing `--emit-port-checklist` implementation in `main.py` — import them, do not
@@ -229,7 +229,7 @@ def emit_dispatch_tables(ported_reader_methods, ported_writer_methods, element_v
     )
 ```
 
-- [ ] **Step 2: Wire the flag in `main.py`**
+- [x] **Step 2: Wire the flag in `main.py`**
 
 In the argparse block (`main.py:266-270`), after the `--emit-port-checklist` line:
 
@@ -262,7 +262,7 @@ with `parse_element_ref_variants` reading the `ElementRef` enum's `Variant(Id)` 
 10-line regex scan — the enum lives at
 `src/m2/autosar_templates/generic_structure/general_template_classes/ar_object.rs`).
 
-- [ ] **Step 3: Declare the reader module** (the generated writer file also lands on disk
+- [x] **Step 3: Declare the reader module** (the generated writer file also lands on disk
   but stays **undeclared** until Task 4's dyn-Write conversion — a generic fn cannot be a
   fn pointer):
 
@@ -271,11 +271,11 @@ with `parse_element_ref_variants` reading the `ElementRef` enum's `Variant(Id)` 
 mod dispatch_tables;
 ```
 
-- [ ] **Step 4: Add `use std::sync::LazyLock;`** to both `mod.rs` files (or rely on the
+- [x] **Step 4: Add `use std::sync::LazyLock;`** to both `mod.rs` files (or rely on the
   generated file's `use super::*` if the parent already imports it — it does not yet, so
   add it to both parents).
 
-- [ ] **Step 5: Regenerate and run the gate test**
+- [x] **Step 5: Regenerate and run the gate test**
 
 ```bash
 python3 tools/py2rust/main.py --py-armodel target/py-armodel --out src --emit-dispatch-tables
@@ -290,7 +290,7 @@ Task 3 Step 5):
 #[allow(dead_code)] // temporary — consumed by read_element_payload in P5 Task 3
 ```
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add tools/py2rust src/reader/arxml_reader/dispatch_tables.rs src/writer/arxml_writer/dispatch_tables.rs src/reader/arxml_reader/mod.rs src/writer/arxml_writer/mod.rs
@@ -321,7 +321,7 @@ dispatch arms):
 | 8 | life_cycle | `ElementRef::LifeCycleInfoSet` |
 | 9 | datatypes | `ApplicationPrimitiveDataType`, `ApplicationArrayDataType`, `ApplicationRecordDataType`, `ImplementationDataType` |
 
-- [ ] **Step 1: Insert the table-first probe ahead of the hand match**
+- [x] **Step 1: Insert the table-first probe ahead of the hand match**
 
 ```rust
 fn read_element_payload(
@@ -340,11 +340,11 @@ fn read_element_payload(
 }
 ```
 
-- [ ] **Step 2: Run the full harness** — same command block as Task 3 of the P2–P4 plan
+- [x] **Step 2: Run the full harness** — same command block as Task 3 of the P2–P4 plan
   (`--check`, build, fmt, clippy, test). Expected: green (behavior-neutral: every tag the
   table covers was already an arm; the probe only reorders lookup).
 
-- [ ] **Step 3: Move unit 1 (compu_method) and commit**
+- [x] **Step 3: Move unit 1 (compu_method) and commit**
 
 Delete the `ElementRef::CompuMethod(id) => self.read_compu_method(element, id, document),`
 arm from the hand match (the table now serves that tag), then:
@@ -357,7 +357,7 @@ git add -A && git commit -m "refactor(p5): reader strangler — compu_method via
 
 Expected: green.
 
-- [ ] **Step 4: Repeat for units 2–9**, one commit each, message
+- [x] **Step 4: Repeat for units 2–9**, one commit each, message
   `refactor(p5): reader strangler — <unit> via dispatch table`. After unit 9 the hand match
   is `match element_ref { _ => Ok(()) }` — delete the whole match and reduce the seam to:
 
@@ -375,7 +375,7 @@ fn read_element_payload(
 }
 ```
 
-- [ ] **Step 5: Remove the temporary `#[allow(dead_code)]`** from Task 2 Step 5 (lookups are
+- [x] **Step 5: Remove the temporary `#[allow(dead_code)]`** from Task 2 Step 5 (lookups are
   now used). Harness once more, then:
 
 ```bash
@@ -388,7 +388,7 @@ git add -A && git commit -m "refactor(p5): reader dispatch fully table-driven"
 - Modify: `src/writer/arxml_writer/mod.rs` (`write_ar_package_element` ~line 315, `save()`)
 - Modify: every `src/writer/arxml_writer/<domain>.rs` emitter (signature change only)
 
-- [ ] **Step 1: Convert handler signatures to `&mut Writer<&mut dyn Write>`** (one commit;
+- [x] **Step 1: Convert handler signatures to `&mut Writer<&mut dyn Write>`** (one commit;
   must precede any table use — generic fn pointers cannot be table entries)
 
 Mechanical, compiler-guided: in every emitter, change
@@ -423,7 +423,7 @@ Harness green, then:
 git add -A && git commit -m "refactor(p5): writer handlers on dyn Write (table prerequisite)"
 ```
 
-- [ ] **Step 1b: Declare the writer table module + extend the gate test**
+- [x] **Step 1b: Declare the writer table module + extend the gate test**
 
 ```rust
 // src/writer/arxml_writer/mod.rs — after the last `mod <domain>;` line
@@ -454,7 +454,7 @@ cargo build && cargo fmt --all -- --check && cargo clippy --all-targets -- -D wa
 git add -A && git commit -m "refactor(p5): writer dispatch table declared (dyn handlers)"
 ```
 
-- [ ] **Step 2: Insert the table-first probe ahead of the hand match** (same coexistence
+- [x] **Step 2: Insert the table-first probe ahead of the hand match** (same coexistence
   pattern as reader Task 3 Step 1):
 
 ```rust
@@ -479,7 +479,7 @@ fn write_ar_package_element(
 
 Harness green; commit `refactor(p5): writer table probe ahead of hand match`.
 
-- [ ] **Step 3: Move the nine units one commit each** (same unit table as reader Task 3):
+- [x] **Step 3: Move the nine units one commit each** (same unit table as reader Task 3):
   delete the arm from the hand match, harness green, commit
   `refactor(p5): writer strangler — <unit> via dispatch table`. After the last unit, reduce
   the seam to the final shape:
@@ -500,7 +500,7 @@ fn write_ar_package_element(
 }
 ```
 
-- [ ] **Step 4: Full harness green** — same command block. Commit:
+- [x] **Step 4: Full harness green** — same command block. Commit:
 
 ```bash
 git add -A && git commit -m "refactor(p5): writer dispatch fully table-driven"
@@ -516,7 +516,7 @@ This keeps the invariant checked on every `cargo test` run without widening the 
 **Files:**
 - Modify: `tools/py2rust/dispatch_tables.py` (`READER_TEMPLATE` gains the test block)
 
-- [ ] **Step 1: Add the test block to `READER_TEMPLATE`**
+- [x] **Step 1: Add the test block to `READER_TEMPLATE`**
 
 ```python
 READER_TEST_BLOCK = """
@@ -540,7 +540,7 @@ Append `READER_TEST_BLOCK` to the emitted reader file text in `emit_dispatch_tab
 (Writer-side index coverage is already enforced by the generator's pytest gate — the index
 arms are an exhaustive match emitted from the same variant list.)
 
-- [ ] **Step 2: Extend the pytest gate** — add to
+- [x] **Step 2: Extend the pytest gate** — add to
   `tools/py2rust/tests/test_dispatch_tables.py`:
 
 ```python
@@ -550,7 +550,7 @@ def test_reader_table_carries_contract_test(tmp_path):
     assert "reader_table_entries_are_sorted_and_unique" in reader
 ```
 
-- [ ] **Step 3: Regenerate, run, commit**
+- [x] **Step 3: Regenerate, run, commit**
 
 ```bash
 python3 tools/py2rust/main.py --py-armodel target/py-armodel --out src --emit-dispatch-tables
@@ -563,7 +563,7 @@ Expected: all green (`reader_table_entries_are_sorted_and_unique` runs in the li
 
 ### Task 6: Phase exit — P5 done
 
-- [ ] **Step 1: Full gate suite**
+- [x] **Step 1: Full gate suite**
 
 ```bash
 set -o pipefail
@@ -576,12 +576,43 @@ cargo clippy --all-targets -- -D warnings && cargo test
 Expected: everything green; `grep -n "ElementRef::" src/reader/arxml_reader/mod.rs
 src/writer/arxml_writer/mod.rs` returns no dispatch arms (only imports, if any).
 
-- [ ] **Step 2: Update the roadmap status line** in
+- [x] **Step 2: Update the roadmap status line** in
   `docs/superpowers/specs/2026-10-03-p2-p6-migration-roadmap-design.md` (§6): table-driven
   dispatch landed, both seams migrated, harness green at every merge.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add -A && git commit -m "docs(p5): phase exit — dispatch is table-driven"
 ```
+
+---
+
+## Execution record (2026-10-07, executed on `feature/p5-dispatch-tables`)
+
+All tasks completed. Three deviations from the written steps, all discovered by grounding
+against the real sources and all behavior-neutral (32-fixture harness green at every merge):
+
+1. **Registry pairing parses `element_tag`, not the `ElementRef` enum.** The generated
+   `src/m2/element_registry.rs` carries a clean one-arm-per-variant
+   `ElementRef::X(_) => "X-TAG"` map (`element_tag`, lines 662-846); parsing it is total and
+   one regex, instead of stitching the enum together with a separate tag scan. A first-cut
+   parser that scanned the whole file produced cross-function garbage pairings — caught by
+   the gate test's duplicate-tag assertion (added during execution).
+2. **Table entries route through generated shim fns.** Handlers take typed ids (and writer
+   handlers are generic), so a bare fn-pointer table cannot reference them. The emitter
+   generates per-entry shims: reader shims destructure the `ElementRef` to the typed id;
+   writer shims monomorphize each handler at `W = &mut dyn Write`. Consequence: **handlers
+   keep their signatures untouched** — Task 4's planned mass `&mut Writer<&mut dyn Write>`
+   conversion was dropped; only the `save() → write_ar_packages → write_ar_package → seam`
+   chain is dyn-typed (the indent state lives in quick-xml's `Writer`, so the table must be
+   called through the same indenting writer — a first-cut `get_mut()` re-wrap dropped all
+   indentation and was caught by the byte-identity gate).
+3. **The writer fallback is the generic P0 emitter, not a silent skip.** The hand match's
+   `_ => {}` fell through to the common-Identifiable-parts emitter that serves unported
+   families; the final seam is `table hit → handler, else → generic P0 emitter`, preserving
+   that contract (14 pending fixtures depend on it).
+
+Commits: Task 0 `9c46450`; Task 1 (Red) + Task 2 (emitter) `bcd1a15`; reader probe `a7dd3d6`
++ 8 per-unit strangler commits + `3914898`; writer probe `52629e2` + 2 strangler commits +
+`313c88b`; allows dropped `8d1aa96`; contract gate `fdb4f18`.

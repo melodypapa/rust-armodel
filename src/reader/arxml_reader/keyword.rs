@@ -58,14 +58,14 @@ impl ARXMLReader {
         Ok(document.keywords.insert(keyword))
     }
 
-    /// py `readKeywordSet` — Identifiable chain + KEYWORDS children.
+    /// py `readKeywordSet` — ARElement chain level + KEYWORDS children.
     pub(super) fn read_keyword_set(
         &mut self,
         element: &Node,
         id: KeywordSetId,
         document: &mut Document,
     ) -> Result<(), ParseError> {
-        let payload = self.read_identifiable_payload(element, document)?;
+        let payload = self.read_ar_element(element, document)?;
         let mut keywords = Vec::new();
         for keyword_node in find_all(element, "KEYWORDS/KEYWORD") {
             keywords.push(self.read_keyword(keyword_node, document)?);

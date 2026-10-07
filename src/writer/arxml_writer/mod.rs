@@ -54,6 +54,16 @@ struct IdentifiableParts<'a> {
     sw_data_def_props: Option<SwDataDefPropsId>,
 }
 
+/// The per-class attribute-level pieces of the Identifiable chain (py
+/// `writeReferrable`/`writeIdentifiable` attribute writes): S/T/UUID plus the
+/// SHORT-NAME child, which py emits between the attribute and payload levels.
+struct IdentifiableAttrs<'a> {
+    checksum: Option<&'a str>,
+    timestamp: Option<&'a str>,
+    uuid: Option<&'a str>,
+    short_name: Option<&'a str>,
+}
+
 const DEFAULT_NAMESPACE: &str = "http://autosar.org/schema/r4.0";
 const XSI_NAMESPACE: &str = "http://www.w3.org/2001/XMLSchema-instance";
 

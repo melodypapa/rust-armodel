@@ -404,7 +404,6 @@ impl ARXMLReader {
             ElementRef::PhysicalDimension(id) => {
                 self.read_physical_dimension(element, id, document)
             }
-            ElementRef::Unit(id) => self.read_unit(element, id, document),
             // Remaining families land in later P2 batches.
             _ => Ok(()),
         }

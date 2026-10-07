@@ -385,7 +385,6 @@ impl ARXMLReader {
             return handler(self, element, element_ref, document);
         }
         match element_ref {
-            ElementRef::CompuMethod(id) => self.read_compu_method(element, id, document),
             ElementRef::DataConstr(id) => self.read_data_constr(element, id, document),
             ElementRef::KeywordSet(id) => self.read_keyword_set(element, id, document),
             ElementRef::ApplicationPrimitiveDataType(id) => {

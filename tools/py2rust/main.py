@@ -268,6 +268,8 @@ def main() -> int:
     parser.add_argument("--check", action="store_true", help="fail (exit 1) if regeneration differs")
     parser.add_argument("--emit-port-checklist", action="store_true",
                         help="write docs/port_checklist.md (py read*/write* methods, ported status by scanning src/)")
+    parser.add_argument("--emit-dispatch-tables", action="store_true",
+                        help="emit reader/writer dispatch tables for ported handlers (P5)")
     args = parser.parse_args()
 
     ir = extract_repo(args.py_armodel)
@@ -333,6 +335,12 @@ def main() -> int:
         ported = sum(1 for name, _ in methods
                      if port_checklist_mod.rust_name(name) in fns)
         print(f"port checklist: {ported}/{len(methods)} reader/writer methods ported")
+    if args.emit_dispatch_tables:
+        # flat sibling import, matching main.py's other imports (see above)
+        import dispatch_tables as dispatch_tables_mod
+
+        reader_table, writer_table = dispatch_tables_mod.emit_dispatch_tables(out_root)
+        print(f"dispatch tables: {reader_table}, {writer_table}")
     return 1 if (args.check and changed) else 0
 
 

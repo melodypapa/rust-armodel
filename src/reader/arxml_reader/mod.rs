@@ -10,6 +10,7 @@
 
 use std::io::BufRead;
 use std::path::Path;
+use std::sync::LazyLock;
 
 use quick_xml::reader::Reader;
 
@@ -54,6 +55,7 @@ mod common;
 mod compu_method;
 mod data_constr;
 mod datatypes;
+mod dispatch_tables;
 mod documentation;
 mod keyword;
 mod life_cycle;

@@ -1,4 +1,5 @@
 """Gate tests for --emit-dispatch-tables (P5, roadmap 2026-10-03 §6)."""
+import re
 import shutil
 import subprocess
 import sys
@@ -25,8 +26,10 @@ def _emit(tmp_path: Path) -> tuple[str, str]:
 
 def test_reader_table_is_sorted_and_covers_ported_handlers(tmp_path):
     reader, _ = _emit(tmp_path)
-    tags = [line.split('"')[1] for line in reader.splitlines() if line.startswith('    (')]
+    tags = re.findall(r'\(\s*"([A-Z0-9-]+)",', reader)
+    assert tags, "no reader table entries parsed"
     assert tags == sorted(tags), "reader table must be sorted by tag for binary search"
+    assert len(tags) == len(set(tags)), "duplicate tags mean registry pairing went wrong"
     assert "COMPU-METHOD" in tags          # ported handler (read_compu_method exists)
     assert "DATA-CONSTR" in tags
 

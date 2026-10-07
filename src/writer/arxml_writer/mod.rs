@@ -5,6 +5,7 @@
 
 use std::io::Write;
 use std::path::Path;
+use std::sync::LazyLock;
 
 use quick_xml::events::{BytesDecl, BytesEnd, BytesStart, Event};
 use quick_xml::writer::Writer;
@@ -35,6 +36,7 @@ mod common;
 mod compu_method;
 mod data_constr;
 mod datatypes;
+mod dispatch_tables;
 mod documentation;
 mod keyword;
 mod life_cycle;

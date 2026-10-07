@@ -21,9 +21,16 @@ hand matches are deleted. Handler bodies are untouched.
 search), Python (py2rust generator + its pytest gate), the 32-fixture byte-identical harness
 as the only migration contract.
 
-**Prerequisite:** P2–P4 complete (`docs/superpowers/plans/2026-10-07-p2-p4-mechanical-port.md`
-Task 7 exit gate green). Migrating a partially-ported dispatch makes the table a second
-source of truth for coverage — the strangler starts only when the hand chain is feature-complete.
+**Prerequisite (amended 2026-10-07, user decision):** P5 executes **before** P2–P4
+completes. The original gate ("hand chain feature-complete first") existed to avoid locking
+the dispatch design against thin porting evidence; the tradeoff was judged acceptable
+because (a) the strangler only moves already-ported handlers and the table fallback is
+byte-equivalent to the hand match's fallback, and (b) post-migration every future family
+session auto-wires dispatch by regenerating the table instead of hand-editing the
+`ElementRef` seams — work the remaining ~1,860 families would otherwise each pay for.
+Two procedural changes inherited by family sessions from now on: (1) new writer emitters
+use the `&mut Writer<&mut dyn Write>` signature (P5 Task 4); (2) the family regen step adds
+`--emit-dispatch-tables` beside `--emit-port-checklist`.
 
 **Out of scope (roadmap §6):** XSD validation machinery, reflection-style generic modeling,
 any change to the m2 structs or the public `ARXMLReader`/`ARXMLWriter` API, warning policy.

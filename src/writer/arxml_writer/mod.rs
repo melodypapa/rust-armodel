@@ -13,7 +13,7 @@ use quick_xml::writer::Writer;
 use crate::m2::autosar_templates::autosar_top_level_structure::Document;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_object::ElementRef;
 use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::{
-    ARPackage, ARPackageId,
+    ARPackage, ARPackageId, ReferenceBaseId,
 };
 use crate::m2::element_registry;
 use crate::m2::msr::asam_hdo::admin_data::AdminDataId;
@@ -246,51 +246,7 @@ impl ARXMLWriter {
         )?;
 
         // py writeReferenceBases — REFERENCE-BASES comes before ELEMENTS.
-        let reference_bases = package.get_reference_bases();
-        if !reference_bases.is_empty() {
-            writer.write_event(Event::Start(BytesStart::new("REFERENCE-BASES")))?;
-            for base_id in reference_bases {
-                if let Some(base) = document.reference_bases.get(*base_id) {
-                    writer.write_event(Event::Start(BytesStart::new("REFERENCE-BASE")))?;
-                    write_optional_text_element(writer, "SHORT-LABEL", base.get_short_label())?;
-                    write_optional_boolean_element(writer, "IS-DEFAULT", base.get_is_default())?;
-                    write_optional_boolean_element(writer, "IS-GLOBAL", base.get_is_global())?;
-                    write_optional_boolean_element(
-                        writer,
-                        "BASE-IS-THIS-PACKAGE",
-                        base.get_base_is_this_package(),
-                    )?;
-                    write_ref_type_list(
-                        writer,
-                        "GLOBAL-IN-PACKAGE-REFS",
-                        "GLOBAL-IN-PACKAGE-REF",
-                        base.get_global_in_package_refs(),
-                        document,
-                    )?;
-                    let global_elements = base.get_global_elements();
-                    if !global_elements.is_empty() {
-                        writer.write_event(Event::Start(BytesStart::new("GLOBAL-ELEMENTS")))?;
-                        for element_text in global_elements {
-                            write_text_element(
-                                writer,
-                                "GLOBAL-ELEMENT",
-                                BytesStart::new("GLOBAL-ELEMENT"),
-                                Some(element_text),
-                            )?;
-                        }
-                        writer.write_event(Event::End(BytesEnd::new("GLOBAL-ELEMENTS")))?;
-                    }
-                    write_optional_ref_type(
-                        writer,
-                        "PACKAGE-REF",
-                        base.get_package_ref()
-                            .and_then(|ref_id| document.ref_types.get(ref_id)),
-                    )?;
-                    writer.write_event(Event::End(BytesEnd::new("REFERENCE-BASE")))?;
-                }
-            }
-            writer.write_event(Event::End(BytesEnd::new("REFERENCE-BASES")))?;
-        }
+        self.write_reference_bases(writer, package.get_reference_bases(), document)?;
 
         // py writeARPackageElements — one <TAG> per element carrying the
         // common Identifiable parts; per-class payload is the P2–P4 port.
@@ -303,12 +259,67 @@ impl ARXMLWriter {
             writer.write_event(Event::End(BytesEnd::new("ELEMENTS")))?;
         }
 
-        // py writeReferenceBases — nothing to emit until Task 5 ports it.
-
         // py writeARPackages (nested packages last)
         self.write_ar_packages(writer, package.get_ar_packages(), document)?;
 
         writer.write_event(Event::End(BytesEnd::new("AR-PACKAGE")))?;
+        Ok(())
+    }
+
+    /// py `writeReferenceBases` — REFERENCE-BASES wrapper only when the list
+    /// is non-empty; GLOBAL-IN-PACKAGE-REFS / GLOBAL-ELEMENTS wrappers follow
+    /// the same empty-wrapper rule.
+    fn write_reference_bases<W: Write>(
+        &self,
+        writer: &mut Writer<W>,
+        bases: &[ReferenceBaseId],
+        document: &Document,
+    ) -> Result<(), WriteError> {
+        if bases.is_empty() {
+            return Ok(());
+        }
+        writer.write_event(Event::Start(BytesStart::new("REFERENCE-BASES")))?;
+        for base_id in bases {
+            if let Some(base) = document.reference_bases.get(*base_id) {
+                writer.write_event(Event::Start(BytesStart::new("REFERENCE-BASE")))?;
+                write_optional_text_element(writer, "SHORT-LABEL", base.get_short_label())?;
+                write_optional_boolean_element(writer, "IS-DEFAULT", base.get_is_default())?;
+                write_optional_boolean_element(writer, "IS-GLOBAL", base.get_is_global())?;
+                write_optional_boolean_element(
+                    writer,
+                    "BASE-IS-THIS-PACKAGE",
+                    base.get_base_is_this_package(),
+                )?;
+                write_ref_type_list(
+                    writer,
+                    "GLOBAL-IN-PACKAGE-REFS",
+                    "GLOBAL-IN-PACKAGE-REF",
+                    base.get_global_in_package_refs(),
+                    document,
+                )?;
+                let global_elements = base.get_global_elements();
+                if !global_elements.is_empty() {
+                    writer.write_event(Event::Start(BytesStart::new("GLOBAL-ELEMENTS")))?;
+                    for element_text in global_elements {
+                        write_text_element(
+                            writer,
+                            "GLOBAL-ELEMENT",
+                            BytesStart::new("GLOBAL-ELEMENT"),
+                            Some(element_text),
+                        )?;
+                    }
+                    writer.write_event(Event::End(BytesEnd::new("GLOBAL-ELEMENTS")))?;
+                }
+                write_optional_ref_type(
+                    writer,
+                    "PACKAGE-REF",
+                    base.get_package_ref()
+                        .and_then(|ref_id| document.ref_types.get(ref_id)),
+                )?;
+                writer.write_event(Event::End(BytesEnd::new("REFERENCE-BASE")))?;
+            }
+        }
+        writer.write_event(Event::End(BytesEnd::new("REFERENCE-BASES")))?;
         Ok(())
     }
 
@@ -489,6 +500,70 @@ mod tests {
         .save(output.path(), &document)
         .unwrap();
         assert!(output.path().metadata().unwrap().len() > 0);
+    }
+
+    /// py `writeReferenceBases` — REFERENCE-BASES wrapper only when the list
+    /// is non-empty; per base SHORT-LABEL, IS-DEFAULT, IS-GLOBAL,
+    /// BASE-IS-THIS-PACKAGE, GLOBAL-IN-PACKAGE-REFS (wrapper only when
+    /// non-empty), GLOBAL-ELEMENTS (wrapper only when non-empty), PACKAGE-REF
+    /// — exactly py's writer order (extracted from the py writer body).
+    #[test]
+    fn write_reference_bases_emits_py_element_order() {
+        use crate::m2::autosar_templates::generic_structure::general_template_classes::ar_package::ReferenceBase;
+        use crate::m2::autosar_templates::generic_structure::general_template_classes::primitive_types::RefType;
+
+        let mut document = Document::new();
+
+        let mut base = ReferenceBase::new();
+        base.set_short_label("AUTOSAR_TPS");
+        base.set_is_default(true);
+        base.set_is_global(true);
+        base.set_base_is_this_package(false);
+
+        let mut in_package_ref = RefType::new();
+        in_package_ref
+            .set_dest("AR-PACKAGE")
+            .set_value("/Base/Sub1");
+        base.push_global_in_package_ref(document.ref_types.insert(in_package_ref));
+
+        base.push_global_elements("COMPU-METHOD");
+        base.push_global_elements("SW-BASE-TYPE");
+
+        let mut package_ref = RefType::new();
+        package_ref.set_dest("AR-PACKAGE").set_value("/AUTOSAR/TPS");
+        base.set_package_ref(document.ref_types.insert(package_ref));
+
+        let base_id = document.reference_bases.insert(base);
+
+        let mut minimal = ReferenceBase::new();
+        minimal.set_short_label("Minimal");
+        let minimal_id = document.reference_bases.insert(minimal);
+
+        let writer = ARXMLWriter::new();
+        let mut buffer = Vec::new();
+        let mut serializer = Writer::new(&mut buffer);
+        writer
+            .write_reference_bases(&mut serializer, &[base_id, minimal_id], &document)
+            .unwrap();
+        assert_eq!(
+            String::from_utf8(buffer).unwrap(),
+            "<REFERENCE-BASES>\
+             <REFERENCE-BASE><SHORT-LABEL>AUTOSAR_TPS</SHORT-LABEL>\
+             <IS-DEFAULT>true</IS-DEFAULT><IS-GLOBAL>true</IS-GLOBAL>\
+             <BASE-IS-THIS-PACKAGE>false</BASE-IS-THIS-PACKAGE>\
+             <GLOBAL-IN-PACKAGE-REFS><GLOBAL-IN-PACKAGE-REF DEST=\"AR-PACKAGE\">/Base/Sub1</GLOBAL-IN-PACKAGE-REF></GLOBAL-IN-PACKAGE-REFS>\
+             <GLOBAL-ELEMENTS><GLOBAL-ELEMENT>COMPU-METHOD</GLOBAL-ELEMENT><GLOBAL-ELEMENT>SW-BASE-TYPE</GLOBAL-ELEMENT></GLOBAL-ELEMENTS>\
+             <PACKAGE-REF DEST=\"AR-PACKAGE\">/AUTOSAR/TPS</PACKAGE-REF></REFERENCE-BASE>\
+             <REFERENCE-BASE><SHORT-LABEL>Minimal</SHORT-LABEL></REFERENCE-BASE>\
+             </REFERENCE-BASES>"
+        );
+
+        let mut buffer = Vec::new();
+        let mut serializer = Writer::new(&mut buffer);
+        writer
+            .write_reference_bases(&mut serializer, &[], &document)
+            .unwrap();
+        assert!(buffer.is_empty(), "no bases → no REFERENCE-BASES wrapper");
     }
 
     /// An unresolvable schema (not bundled) skips the gate — same rule as the

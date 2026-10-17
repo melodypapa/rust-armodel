@@ -325,50 +325,60 @@ impl ARXMLReader {
             }
         }
         // py readReferenceBases
-        if let Some(bases_node) = find(element, "REFERENCE-BASES") {
-            for base_node in find_all(bases_node, "REFERENCE-BASE") {
-                let mut base = ReferenceBase::new();
-                self.read_ar_object(base_node, base.base_mut());
-                if let Some(label) = get_child_element_string(base_node, "SHORT-LABEL") {
-                    base.set_short_label(label);
-                }
-                if let Some(value) = get_child_element_optional_boolean(base_node, "IS-DEFAULT") {
-                    base.set_is_default(value);
-                }
-                if let Some(value) = get_child_element_optional_boolean(base_node, "IS-GLOBAL") {
-                    base.set_is_global(value);
-                }
-                if let Some(value) =
-                    get_child_element_optional_boolean(base_node, "BASE-IS-THIS-PACKAGE")
-                {
-                    base.set_base_is_this_package(value);
-                }
-                // RefType values live in the arena; the model links by id.
-                for r#ref in get_child_element_ref_type_list(
-                    base_node,
-                    "GLOBAL-IN-PACKAGE-REFS/GLOBAL-IN-PACKAGE-REF",
-                ) {
-                    let ref_id = document.ref_types.insert(r#ref);
-                    base.push_global_in_package_ref(ref_id);
-                }
-                for global in find_all(base_node, "GLOBAL-ELEMENTS/GLOBAL-ELEMENT") {
-                    if let Some(text) = &global.text {
-                        base.push_global_elements(text.as_str());
-                    }
-                }
-                if let Some(r#ref) = get_child_element_optional_ref_type(base_node, "PACKAGE-REF") {
-                    let ref_id = document.ref_types.insert(r#ref);
-                    base.set_package_ref(ref_id);
-                }
-                let base_id = document.reference_bases.insert(base);
-                if let Some(package) = document.ar_packages.get_mut(id) {
-                    package.push_reference_base(base_id);
-                }
-            }
-        }
+        self.read_reference_bases(element, id, document)?;
 
         self.read_ar_packages(element, Some(id), document)?;
         Ok(id)
+    }
+
+    /// py `readReferenceBases` — REFERENCE-BASES/REFERENCE-BASE children of
+    /// the AR-PACKAGE. py reads no attributes on REFERENCE-BASE (no
+    /// `readARObject` call in the pinned body), so none are read here;
+    /// RefType values link through the `document.ref_types` arena.
+    fn read_reference_bases(
+        &mut self,
+        element: &Node,
+        package_id: ARPackageId,
+        document: &mut Document,
+    ) -> Result<(), ParseError> {
+        for base_node in find_all(element, "REFERENCE-BASES/REFERENCE-BASE") {
+            let mut base = ReferenceBase::new();
+            if let Some(label) = get_child_element_string(base_node, "SHORT-LABEL") {
+                base.set_short_label(label);
+            }
+            if let Some(value) = get_child_element_optional_boolean(base_node, "IS-DEFAULT") {
+                base.set_is_default(value);
+            }
+            if let Some(value) = get_child_element_optional_boolean(base_node, "IS-GLOBAL") {
+                base.set_is_global(value);
+            }
+            if let Some(value) =
+                get_child_element_optional_boolean(base_node, "BASE-IS-THIS-PACKAGE")
+            {
+                base.set_base_is_this_package(value);
+            }
+            for r#ref in get_child_element_ref_type_list(
+                base_node,
+                "GLOBAL-IN-PACKAGE-REFS/GLOBAL-IN-PACKAGE-REF",
+            ) {
+                let ref_id = document.ref_types.insert(r#ref);
+                base.push_global_in_package_ref(ref_id);
+            }
+            for global in find_all(base_node, "GLOBAL-ELEMENTS/GLOBAL-ELEMENT") {
+                if let Some(text) = &global.text {
+                    base.push_global_elements(text.as_str());
+                }
+            }
+            if let Some(r#ref) = get_child_element_optional_ref_type(base_node, "PACKAGE-REF") {
+                let ref_id = document.ref_types.insert(r#ref);
+                base.set_package_ref(ref_id);
+            }
+            let base_id = document.reference_bases.insert(base);
+            if let Some(package) = document.ar_packages.get_mut(package_id) {
+                package.push_reference_base(base_id);
+            }
+        }
+        Ok(())
     }
 
     /// py's per-class read dispatch (the tag→create+read chain in
@@ -510,6 +520,107 @@ mod tests {
             .unwrap();
         assert_eq!(package_ref.get_dest(), Some("AR-PACKAGE"));
         assert_eq!(package_ref.get_value(), Some("/AUTOSAR/Platform"));
+    }
+
+    /// py `readReferenceBases` — direct-call test over all seven elements in
+    /// py's order, including the two wrapper lists (GLOBAL-IN-PACKAGE-REFS,
+    /// GLOBAL-ELEMENTS) no pinned fixture carries, plus an optional-less
+    /// second base and the empty case (a package without REFERENCE-BASES
+    /// yields `[]`).
+    #[test]
+    fn read_reference_bases_reads_every_element() {
+        const REFERENCE_BASES_SAMPLE: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
+<AR-PACKAGE>
+  <SHORT-NAME>Pkg</SHORT-NAME>
+  <REFERENCE-BASES>
+    <REFERENCE-BASE>
+      <SHORT-LABEL>AUTOSAR_TPS</SHORT-LABEL>
+      <IS-DEFAULT>true</IS-DEFAULT>
+      <IS-GLOBAL>true</IS-GLOBAL>
+      <BASE-IS-THIS-PACKAGE>false</BASE-IS-THIS-PACKAGE>
+      <GLOBAL-IN-PACKAGE-REFS>
+        <GLOBAL-IN-PACKAGE-REF DEST="AR-PACKAGE">/Base/Sub1</GLOBAL-IN-PACKAGE-REF>
+        <GLOBAL-IN-PACKAGE-REF DEST="AR-PACKAGE">/Base/Sub2</GLOBAL-IN-PACKAGE-REF>
+      </GLOBAL-IN-PACKAGE-REFS>
+      <GLOBAL-ELEMENTS>
+        <GLOBAL-ELEMENT>COMPU-METHOD</GLOBAL-ELEMENT>
+        <GLOBAL-ELEMENT>SW-BASE-TYPE</GLOBAL-ELEMENT>
+      </GLOBAL-ELEMENTS>
+      <PACKAGE-REF DEST="AR-PACKAGE">/AUTOSAR/TPS</PACKAGE-REF>
+    </REFERENCE-BASE>
+    <REFERENCE-BASE>
+      <SHORT-LABEL>Minimal</SHORT-LABEL>
+    </REFERENCE-BASE>
+  </REFERENCE-BASES>
+</AR-PACKAGE>"#;
+
+        let node = build_dom_from_reader(Reader::from_str(REFERENCE_BASES_SAMPLE)).unwrap();
+
+        let mut document = Document::new();
+        let package_id = document.add_ar_package(None, "Pkg");
+        ARXMLReader::new(default_options())
+            .read_reference_bases(&node, package_id, &mut document)
+            .unwrap();
+
+        let package = document.get_ar_package(package_id).unwrap();
+        assert_eq!(package.get_reference_bases().len(), 2);
+
+        let first = document
+            .reference_bases
+            .get(package.get_reference_bases()[0])
+            .unwrap();
+        assert_eq!(first.get_short_label(), Some("AUTOSAR_TPS"));
+        assert_eq!(first.get_is_default(), Some(true));
+        assert_eq!(first.get_is_global(), Some(true));
+        assert_eq!(first.get_base_is_this_package(), Some(false));
+
+        let in_package_refs: Vec<_> = first
+            .get_global_in_package_refs()
+            .iter()
+            .map(|id| document.ref_types.get(*id).unwrap())
+            .collect();
+        assert_eq!(in_package_refs.len(), 2);
+        assert_eq!(in_package_refs[0].get_value(), Some("/Base/Sub1"));
+        assert_eq!(in_package_refs[0].get_dest(), Some("AR-PACKAGE"));
+        assert_eq!(in_package_refs[1].get_value(), Some("/Base/Sub2"));
+
+        assert_eq!(
+            first.get_global_elements(),
+            ["COMPU-METHOD", "SW-BASE-TYPE"]
+        );
+
+        let package_ref = document
+            .ref_types
+            .get(first.get_package_ref().unwrap())
+            .unwrap();
+        assert_eq!(package_ref.get_value(), Some("/AUTOSAR/TPS"));
+        assert_eq!(package_ref.get_dest(), Some("AR-PACKAGE"));
+
+        let second = document
+            .reference_bases
+            .get(package.get_reference_bases()[1])
+            .unwrap();
+        assert_eq!(second.get_short_label(), Some("Minimal"));
+        assert_eq!(second.get_is_default(), None);
+        assert_eq!(second.get_is_global(), None);
+        assert_eq!(second.get_base_is_this_package(), None);
+        assert!(second.get_global_in_package_refs().is_empty());
+        assert!(second.get_global_elements().is_empty());
+        assert_eq!(second.get_package_ref(), None);
+
+        let empty_package_id = document.add_ar_package(None, "Empty");
+        let no_bases = build_dom_from_reader(Reader::from_str(
+            r#"<AR-PACKAGE><SHORT-NAME>Empty</SHORT-NAME></AR-PACKAGE>"#,
+        ))
+        .unwrap();
+        ARXMLReader::new(default_options())
+            .read_reference_bases(&no_bases, empty_package_id, &mut document)
+            .unwrap();
+        assert!(document
+            .get_ar_package(empty_package_id)
+            .unwrap()
+            .get_reference_bases()
+            .is_empty());
     }
 
     const SCHEMA_VALID_SAMPLE: &str = r#"<?xml version="1.0"?>

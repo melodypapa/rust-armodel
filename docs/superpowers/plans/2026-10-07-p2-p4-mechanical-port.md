@@ -25,8 +25,9 @@ per-family procedure or the queue rows.
 > phase completes — see the amended prerequisite in
 > `2026-10-07-p5-table-driven-dispatch.md`. After P5 lands, family sessions no longer
 > hand-edit the `ElementRef` dispatch seams: the per-family regen step adds
-> `--emit-dispatch-tables` so landed handlers auto-wire, and new writer emitters use the
-> `&mut Writer<&mut dyn Write>` signature.
+> `--emit-dispatch-tables` so landed handlers auto-wire. Handler signatures are unchanged
+> by P5 (generated shims absorb the dispatch typing) — new emitters follow the existing
+> generic `&mut Writer<W>` shape.
 
 ---
 

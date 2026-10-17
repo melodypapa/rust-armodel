@@ -12,9 +12,12 @@ sync usually covers its whole family):
   ported → py location; Rule 0002)
 - generated Rust model: `src/m2/**` (spec-package-derived paths,
   `docs/code_guide.md` §2; never hand-edited — Rule 0003)
-- hand-written port surface: `src/parser/arxml_parser.rs`,
-  `src/writer/arxml_writer.rs` (dispatch seams: `read_element_payload` /
-  `write_ar_package_element`)
+- hand-written port surface (post domain-split, PR #20): readers in
+  `src/reader/arxml_reader/<domain>.rs`, writers in `src/writer/arxml_writer/<domain>.rs`;
+  chain-level helpers in each side's `common.rs`, seams in the `mod.rs` files. Dispatch is
+  table-driven since P5 (PR #26): `src/{reader,writer}/**/dispatch_tables.rs` are generated
+  (`py2rust --emit-dispatch-tables`) — landing a handler + regenerating wires its dispatch,
+  never hand-edit the seams or the tables
 - correctness bar: the fixture harness — zero parser warnings +
   byte-identical written output + model equality over the 32 verbatim
   fixtures in `tests/integration/test_files/`
@@ -199,7 +202,7 @@ hand-edit `src/m2/**`, do not stub a field in hand-written code.
   receiver (adapts py Rule 0013); each call is its own statement. Spot-check
   with:
   ```bash
-  grep -nE '\)\s*\.\s*(set|add)_[a-z_]+' src/parser/arxml_parser.rs src/writer/arxml_writer.rs
+  grep -rnE '\)\s*\.\s*(set|add)_[a-z_]+' src/reader/arxml_reader/ src/writer/arxml_writer/
   ```
   (must return nothing for chained mutators; value-reading sub-expressions
   like `ref.get_dest()` are fine).
@@ -356,9 +359,10 @@ A family is finished only after Step 9b passes. Then, in this order:
    before committing.
 2. **Flip the todo row `[x]`** with the commit hash — in the same commit (or
    an immediate follow-up amending the todo file only).
-3. **Regenerate the checklist** (`--emit-port-checklist`, then `--check`
-   must pass) and commit the regenerated `docs/port_checklist.md` with the
-   row flip — never hand-edit it.
+3. **Regenerate the checklist** (`--emit-port-checklist --emit-dispatch-tables`,
+   then `--check` must pass) and commit the regenerated `docs/port_checklist.md`
+   with the row flip — never hand-edit it. Since P5, the regen is also what wires
+   the new family's dispatch into the generated tables.
 4. **Report and stop.** Class finished (hash), N of M rows done, start a new
    session for the next family — or, if all rows are `[x]`, that the sync
    is complete.

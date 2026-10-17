@@ -85,7 +85,7 @@ Input: `Group 1 — Framework & core, PortInterface basics` of `docs/examples/sy
     those classes must keep the direct call, not "fix" them onto the ARElement level
   - [ ] Step 9 — Verify (9a) + confirm (9b)
 
-- [ ] `ReferenceBase` (member type of `ARPackage.referenceBase` · Rule 0016.4 stub — blocks ARPackage 9b stamp per Rules 0001.10/0012.1 · R23-11 markdown · AUTOSAR_FO_TPS_GenericStructureTemplate · Table 4.14, p.72)
+- [x] `ReferenceBase` (member type of `ARPackage.referenceBase` · Rule 0016.4 stub — blocks ARPackage 9b stamp per Rules 0001.10/0012.1 · R23-11 markdown · AUTOSAR_FO_TPS_GenericStructureTemplate · Table 4.14, p.72 · commit 4753bab)
   - Note (Step 1): py has ONE method per side — `readReferenceBases` (arxml_parser.py:16054-16068, called
     from readARPackage :16219 as the last of readIdentifiable→readARPackages→readARPackageElements→
     readReferenceBases) and `writeReferenceBases` (arxml_writer.py:15498-15517, called from writeARPackage

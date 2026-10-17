@@ -8,13 +8,13 @@ Class-availability lifecycle: `Created` = the class exists in src as an empty st
 
 ## Group1
 
-Status: **2/75** completed
+Status: **3/75** completed
 
 | Class Name                              | Status          | Commit ID  |
 | --------------------------------------- | --------------- | ---------- |
 | `ARObject`                              | [x] Done        | 1be5c3b284 |
 | `ARElement`                             | [x] Done        | 9c8dd7a    |
-| `ReferenceBase`                         | [ ] Implemented | N/A        |
+| `ReferenceBase`                         | [x] Done        | 4753bab    |
 | `MultilanguageReferrable`               | [ ] Implemented | N/A        |
 | `HwPin`                                 | [ ] Implemented | N/A        |
 | `HwPinGroup`                            | [ ] Implemented | N/A        |

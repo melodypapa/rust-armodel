@@ -85,15 +85,74 @@ Input: `Group 1 — Framework & core, PortInterface basics` of `docs/examples/sy
     those classes must keep the direct call, not "fix" them onto the ARElement level
   - [ ] Step 9 — Verify (9a) + confirm (9b)
 
-- [ ] `ReferenceBase` (member type of `ARPackage.referenceBase` · Rule 0016.4 stub — blocks ARPackage 9b stamp per Rules 0001.10/0012.1 · R23-11 markdown · AUTOSAR_FO_TPS_GenericStructureTemplate · Table 4.14, p.72)
-  - [ ] Step 1 — Extract py reference & Rust model shape
-  - [ ] Step 2 — Write failing reader test + graduate fixtures (Red)
-  - [ ] Step 3 — Port the reader (Green)
-  - [ ] Step 4 — Extract writer order; write failing writer test (Red)
-  - [ ] Step 5 — Port the writer (Green)
-  - [ ] Step 6 — Harness to green (zero warnings + byte-identical)
-  - [ ] Step 7 — Regenerate the port checklist
-  - [ ] Step 8 — Model gaps & deferrals
+- [x] `ReferenceBase` (member type of `ARPackage.referenceBase` · Rule 0016.4 stub — blocks ARPackage 9b stamp per Rules 0001.10/0012.1 · R23-11 markdown · AUTOSAR_FO_TPS_GenericStructureTemplate · Table 4.14, p.72 · commit 4753bab)
+  - Note (Step 1): py has ONE method per side — `readReferenceBases` (arxml_parser.py:16054-16068, called
+    from readARPackage :16219 as the last of readIdentifiable→readARPackages→readARPackageElements→
+    readReferenceBases) and `writeReferenceBases` (arxml_writer.py:15498-15517, called from writeARPackage
+    :15828 right after writeIdentifiable, BEFORE ELEMENTS; nested AR-PACKAGES last — current Rust writer
+    position already matches). Reader order per REFERENCE-BASE: SHORT-LABEL, IS-DEFAULT, IS-GLOBAL,
+    BASE-IS-THIS-PACKAGE, GLOBAL-IN-PACKAGE-REFS/GLOBAL-IN-PACKAGE-REF (list), GLOBAL-ELEMENTS/
+    GLOBAL-ELEMENT (findall; text → ReferrableSubtypesEnum — Rust model keeps Vec<String> per the generated
+    banner note), PACKAGE-REF. Writer order identical + wrapper-only-when-non-empty (REFERENCE-BASES,
+    GLOBAL-IN-PACKAGE-REFS, GLOBAL-ELEMENTS). py reads NO attributes (no readARObject call) and has no
+    warnings in either method. Rust model: generated `ReferenceBase` (ar_package.rs:2291, `: ARObject`),
+    arena `document.reference_bases` (top_level_structure.rs:1882), package-side `push_reference_base`/
+    `get_reference_bases`; NO ElementRef variant → non-package-element, no dispatch arm (Rule 0001.1).
+    Current tree: reader inline block (reader mod.rs:327-368) + writer inline block (writer mod.rs:248-293)
+    + stale placeholder comment (writer mod.rs:306); an existing reader test asserts field values. Reconcile:
+    extract both into `read_reference_bases`/`write_reference_bases` (checklist-precomputed names), remove
+    the invented `read_ar_object` S/T read (py reads none — Rule 0001.3 no invented handling), drop the
+    stale comment. No model gaps (all accessors exist). Fixtures: 19 carry REFERENCE-BASE — 13 already
+    graduated (Unit_Standard, Unit/CompuMethod/DataConstr/Keyword/PhysicalDimension/ApplicationDataType
+    _LifeCycle_Standard, DataConstr_Blueprint, Collection_{Body,Chassis,MmedTelmHmi,OccptPedSfty,Pt}
+    _Blueprint), 6 pending for OTHER families (ApplicationDataType/CompuMethod/PortInterface/
+    PortPrototypeBlueprint Blueprints + PortInterface_LifeCycle_Standard) → graduation N/A for this family
+    alone. No fixture carries GLOBAL-ELEMENTS/GLOBAL-IN-PACKAGE-REFS → unit-test-only (Rule 0008 deferral).
+  - [x] Step 1 — Extract py reference & Rust model shape
+  - [x] Step 2 — Write failing reader test + graduate fixtures (Red) — direct-call reader test
+    `read_reference_bases_reads_every_element` seen FAILING to compile (`read_reference_bases` not
+    found, 2 call sites); graduation N/A: the 13 REFERENCE-BASE-carrying fixtures are already
+    graduated, the other 6 are pending on PortInterface/PortPrototypeBlueprint/ApplicationDataType/
+    CompuMethod-Blueprint families, not on ReferenceBase
+  - [x] Step 3 — Port the reader (Green) — inline block extracted into `read_reference_bases`
+    (reader mod.rs, one method per py method, called from `read_ar_package`); py-parity fix: dropped
+    the invented `read_ar_object` S/T read (py's pinned body reads no attributes); findall collapsed
+    to py's single `REFERENCE-BASES/REFERENCE-BASE` path; direct-call test + all 57 lib tests green
+  - [x] Step 4 — Extract writer order; write failing writer test (Red) — order extracted independently
+    from py writeReferenceBases (arxml_writer.py:15498): REFERENCE-BASES wrapper only if non-empty;
+    per base SHORT-LABEL, IS-DEFAULT, IS-GLOBAL, BASE-IS-THIS-PACKAGE, GLOBAL-IN-PACKAGE-REFS (only
+    if non-empty), GLOBAL-ELEMENTS (only if non-empty), PACKAGE-REF; direct-call writer test
+    `write_reference_bases_emits_py_element_order` seen FAILING to compile (`write_reference_bases`
+    not found, 2 call sites)
+  - [x] Step 5 — Port the writer (Green) — inline block extracted into `write_reference_bases`
+    (writer mod.rs, generic `W: Write`, called from `write_ar_package` at py's position: after the
+    Identifiable chain, before ELEMENTS; stale "nothing to emit" placeholder comment removed);
+    writer test green on first run
+  - [x] Step 6 — Harness to green (zero warnings + byte-identical) — full `cargo test` green
+    (58 lib + 11 integration); no graduation edits (Step 2 N/A), the 13 already-graduated
+    REFERENCE-BASE fixtures stayed green incl. byte-identity, no fixture regressed
+  - [x] Step 7 — Regenerate the port checklist — `--emit-port-checklist --emit-dispatch-tables` +
+    `--check` exit 0 (0 drifted); `readReferenceBases`/`writeReferenceBases` rows flipped [x],
+    port count 45/2438; dispatch tables unchanged (non-package-element helpers carry no arms)
+  - [x] Step 8 — Model gaps & deferrals — no model gaps (generated model already carries every
+    field/accessor; no py2rust change, `--check` green). Deferrals: (1) GLOBAL-IN-PACKAGE-REFS and
+    GLOBAL-ELEMENTS are implemented both directions and unit-test-covered, but NO pinned fixture
+    carries them — fixture-proof deferred until the corpus grows one; (2) py's GLOBAL-ELEMENT
+    `ReferrableSubtypesEnum` is kept as `Vec<String>` per the generated model banner (py's
+    `setValue` never validates; verbatim text is what the byte round-trip needs) — pinned model
+    behavior, not a gap; (3) empty-text `<GLOBAL-ELEMENT/>`: py stores a literal with
+    `setValue(None)` and its writer would re-emit the element, Rust skips the push — branch no
+    fixture triggers (Rule 0008); (4) the pre-existing inline reader's `read_ar_object` S/T read
+    was REMOVED as invented handling — py's pinned readReferenceBases reads no attributes and its
+    writer writes none (no fixture carries S/T on REFERENCE-BASE); (5) py's readARPackage call
+    order is readIdentifiable→readARPackages→readARPackageElements→readReferenceBases while the
+    Rust find-based reader reads REFERENCE-BASES between ELEMENTS and nested AR-PACKAGES (pre-
+    existing P0 position) — semantically neutral for a find-based walk, not restructured here
+  - Step 9 (9a automated, run 2026-10-17): py2rust `--check` exit 0 (0 drifted), `cargo build` OK,
+    `cargo fmt --all -- --check` clean, `cargo clippy --all-targets -- -D warnings` clean,
+    `cargo test` 69 passed / 0 failed (58 lib incl. the two new direct-call tests + 11 integration:
+    zero-warning gate, byte-identity gate, model-equality gate all green; earlier fixtures
+    unregressed). 9b human confirmation pending — row and Step 9 checkbox left `[ ]` for the gate
   - [ ] Step 9 — Verify (9a) + confirm (9b)
 
 - [ ] `MultilanguageReferrable` (heritage-chain parent of Identifiable · unstamped Rule 0001.10 stub · R23-11 markdown · AUTOSAR_FO_TPS_GenericStructureTemplate · Table 4.11, content md l.1777–1793)

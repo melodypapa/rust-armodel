@@ -887,7 +887,7 @@
 | `readRVariableInAtomicSwcInstanceRef` | `read_r_variable_in_atomic_swc_instance_ref` | [ ] | `parser/arxml_parser.py:5739` |
 | `readReceiverComSpec` | `read_receiver_com_spec` | [ ] | `parser/arxml_parser.py:7229` |
 | `readRecordValueSpecificationFields` | `read_record_value_specification_fields` | [ ] | `parser/arxml_parser.py:8724` |
-| `readReferenceBases` | `read_reference_bases` | [ ] | `parser/arxml_parser.py:16054` |
+| `readReferenceBases` | `read_reference_bases` | [x] | `parser/arxml_parser.py:16054` |
 | `readReferenceValue` | `read_reference_value` | [ ] | `parser/arxml_parser.py:13771` |
 | `readReferrable` | `read_referrable` | [ ] | `parser/arxml_parser.py:1738` |
 | `readRequiredComSpec` | `read_required_com_spec` | [ ] | `parser/arxml_parser.py:7428` |
@@ -2111,7 +2111,7 @@
 | `writeReceiverReplaceWith` | `write_receiver_replace_with` | [ ] | `writer/arxml_writer.py:2061` |
 | `writeReceptionComSpecProps` | `write_reception_com_spec_props` | [ ] | `writer/arxml_writer.py:2054` |
 | `writeRecordValueSpecification` | `write_record_value_specification` | [ ] | `writer/arxml_writer.py:3794` |
-| `writeReferenceBases` | `write_reference_bases` | [ ] | `writer/arxml_writer.py:15498` |
+| `writeReferenceBases` | `write_reference_bases` | [x] | `writer/arxml_writer.py:15498` |
 | `writeReferenceValue` | `write_reference_value` | [ ] | `writer/arxml_writer.py:12982` |
 | `writeReferenceValueSpecification` | `write_reference_value_specification` | [ ] | `writer/arxml_writer.py:2177` |
 | `writeReferrable` | `write_referrable` | [ ] | `writer/arxml_writer.py:1507` |
@@ -2442,4 +2442,4 @@
 | `writeWhitespaceControlled` | `write_whitespace_controlled` | [ ] | `writer/arxml_writer.py:1546` |
 | `writeWorstCaseHeapUsage` | `write_worst_case_heap_usage` | [ ] | `writer/arxml_writer.py:6503` |
 
-**43/2438 ported.**
+**45/2438 ported.**
